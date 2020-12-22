@@ -58,16 +58,18 @@ Data Sheets:
 * [74LS32 Quad OR Gate](https://www.ti.com/lit/ds/symlink/sn74ls32.pdf)
 * [74LS04 Hex Inverter](https://www.ti.com/lit/ds/symlink/sn74ls04.pdf)
 
-### Bit Layout
+### EEPROM Address Line Usage
+The 15 address lines of the 28C256 EEPROMs will be used as follows:
 
-Between the three 74LS238 and the balance of the data bits from the three EEPROMs, there is a total of 39 available control signals. One of the considerations that must be made due to the use fo the 74HCT238 3-to-8 decoder is that each 74HCT238 can only activate one control line at a time. So control lines that have the potential of being activated on the same microcode step must be on different 74HCT238s or be on one of the directly exposed 28C256 data lines. 
-
-Additionally, the following design elements are included:
 * Two address lines one the EEPROMs will be added to the instruction code selection for a total of 6. This will allow the instruction set to grow to 64 instructions. Since the original SAP-1 only enables 4 bit instruction codes, the two high bits used for the instruction set will be tied low in this project. 
 * Four address lines will be used for control flags. The original SAP-1 only has two control flags, `CF` and `ZF`, so two of these address lines will be tied low in this project.
 * Two address lines are needed to select the EEPROM. Since this design will use three EEPROMs, two address lines are needed. Given the use of two address lines, it is feasible to add a fourth EEPROM in the future. 
 
 With three EEPROM address lines used to indicate the microcode step, that accounts for all 15 address lines of the 28C256.
+
+### Bit Layout
+
+Between the three 74LS238 and the balance of the data bits from the three EEPROMs, there is a total of 39 available control signals. One of the considerations that must be made due to the use fo the 74HCT238 3-to-8 decoder is that each 74HCT238 can only activate one control line at a time. So control lines that have the potential of being activated on the same microcode step must be on different 74HCT238s or be on one of the directly exposed 28C256 data lines. 
 
 To enable the original SAP-1 instruction set, the control signals will be laid out in the data bits as follows:
 
