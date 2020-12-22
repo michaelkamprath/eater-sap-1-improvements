@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name control-logic)(type Legacy)(uri ${KIPRJMOD}/control-logic.lib)(options "")(descr ""))
+)
