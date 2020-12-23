@@ -47,7 +47,7 @@ With this project, we will add the following new control signals:
 ### IC Selection
 For the EEPROMs, the 28C256 EEPROM will be used. The 28C256 adds 4 more address lines over the 28C16 used in the original SPA-1 design. This enables later instruction code expansion and more flag lines. 
 
-Control line expansion will be accomplished by both using three EEPROMs rather than just two and then strategically using 3-to-8 decoders on some of the EEPROM data line. Since we want our control lines to be active high, the 74HCT238 is used as the 3-to-8 decoder instead of the 74LS138, which would need an inverter prior to the control line status LED.Using one 74HCT238 with each 28C256 will yield a total of 39 control lines.
+Control line expansion will be accomplished by both using three EEPROMs rather than just two and then strategically using 3-to-8 decoders on some of the EEPROM data line. Since we want our control lines to be active high, the 74HCT238 is used as the 3-to-8 decoder instead of the 74LS138, which would need an inverter prior to the control line status LED. one important thing to note is that even thought the 74HCT238 has 8 outputs, only 7 can be used. The `Y0` output is actively if the input is zero, and the input will always be zero if we aren't selecting another value on the input. So, this means the `Y0` output needs to be ignored when it is high. Using one 74HCT238 with each 28C256 will yield a total of 36 usable control lines (12 from each 28C256/74HCT238).
 
 Finally, the step counter will be similar in design to the original SAP-1, however since the `SCr` step counter reset is going to be active high, the step counter design is simplified 74HCT238 3-to-8 decoder as all possible step reset signals (the reset button, the maximum step in the step counter, and the `SCr` microcode signal) will now be active high. These signals can then be combined together with OR gates and the final results inverted before being fed into the M̅R̅ signal on the 74LS161 4-bit binary counter.
 
@@ -69,7 +69,7 @@ With three EEPROM address lines used to indicate the microcode step, that accoun
 
 ### Bit Layout
 
-Between the three 74LS238 and the balance of the data bits from the three EEPROMs, there is a total of 39 available control signals. One of the considerations that must be made due to the use fo the 74HCT238 3-to-8 decoder is that each 74HCT238 can only activate one control line at a time. So control lines that have the potential of being activated on the same microcode step must be on different 74HCT238s or be on one of the directly exposed 28C256 data lines. 
+Between the three 74LS238 and the balance of the data bits from the three EEPROMs, there is a total of 36 available control signals. One of the considerations that must be made due to the use fo the 74HCT238 3-to-8 decoder is that each 74HCT238 can only activate one control line at a time. So control lines that have the potential of being activated on the same microcode step must be on different 74HCT238s or be on one of the directly exposed 28C256 data lines. 
 
 To enable the original SAP-1 instruction set, the control signals will be laid out in the data bits as follows:
 
