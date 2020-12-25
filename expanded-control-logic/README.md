@@ -5,7 +5,7 @@ In order to expand the SAP-1 with more modules, more control lines are needed. H
 The specific goals pf this project are:
 * Ability to grow the instruction code space and flags used by using EEPROMs with more address lines. 
 * Expand the number of control lines by at least 2x.
-* Make available to the microcode more steps than 5 as enabled by the 3 bit step counter. This requires the introduction of a "reset steps" control that every instruction with less than 8 steps would need to issue on its last step. 
+* Make available to the microcode more steps than 5 as enabled by the 4 bit step counter. Since the step display is using a 3-to-8 decoder, we will enable 8 full steps for each instruction. This requires the introduction of a "reset steps" control that every instruction with less than 8 steps would need to issue on its last step. 
 * Enable the register B out control which is not enabled on the original SAP-1. 
 
 When all done, the SAP-1 with expanded control logic should behave identically to the original SAP-1 with the exception that instructions with fewer than 5 steps will end earlier than before, thus speeding up the computer. 
@@ -47,9 +47,9 @@ With this project, we will add the following new control signals:
 ### IC Selection
 For the EEPROMs, the 28C256 EEPROM will be used. The 28C256 adds 4 more address lines over the 28C16 used in the original SPA-1 design. This enables later instruction code expansion and more flag lines. 
 
-Control line expansion will be accomplished by both using three EEPROMs rather than just two and then pairing a 3-to-8 decoders to each of the EEPROMs. Since we want our control lines to be active high, the 74HCT238 is used as the 3-to-8 decoder instead of the 74LS138. One important thing to note is that even though the 74HCT238 has 8 outputs, only 7 can be used. The `Y0` output is active if the input is zero, and the input will always be zero if we aren't selecting another value on the input. So, this means the `Y0` output needs to be ignored when it is high. Using one 74HCT238 with each 28C256 will yield a total of 36 usable control lines (12 from each 28C256/74HCT238 pair).
+Control line expansion will be accomplished by both using three EEPROMs rather than just two and then pairing a 3-to-8 decoders to each of the EEPROMs. Since we want our control lines to be active high, the 74HCT238 is used as the 3-to-8 decoder instead of the 74LS138. One important thing to note is that even though the 74HCT238 has 8 outputs, only 7 can be used. The `Y0` output is active if the input is zero, and the input will always be zero if we aren't selecting another value on the input. So, this means the `Y0` output needs to be ignored. Using one 74HCT238 with each 28C256 will yield a total of 36 usable control lines (12 from each 28C256/74HCT238 pair).
 
-Finally, the step counter will be similar in design to the original SAP-1. However, since the `SCr` step counter reset is  active high straight out of the EEPROM, the step counter design can be simplified as all possible step reset signals (the reset button, the maximum step in the step counter, and the `SCr` microcode signal) will now be active high. These signals can then be combined together with OR gates and the final results inverted before being fed into the M̅R̅ signal on the 74LS161 4-bit binary counter.
+Finally, the step counter will be similar in design to the original SAP-1. However, since the `SCr` step counter reset is  active high straight out of the EEPROM, the step counter design can be simplified as all possible step reset signals - the reset button, the maximum step in the step counter (which is when bit 3 of the output goes high), and the `SCr` microcode signal - will now be active high. These signals can then be combined together with OR gates and the final results inverted before being fed into the M̅R̅ signal on the 74LS161 4-bit binary counter.
 
 Data Sheets:
 * [74HCT238 non-inverting 3-to-8 decoder](https://www.ti.com/lit/ds/symlink/cd74hct238.pdf)
@@ -63,9 +63,10 @@ The 15 address lines of the 28C256 EEPROMs will be used as follows:
 
 * Two address lines one the EEPROMs will be added to the instruction code selection for a total of 6 address lines being used to indicate the instruction. This will allow the instruction set to grow to 64 instructions. Since the original SAP-1 only enables 4 bit instruction codes, the two high bits used for the instruction set will be tied low in this project. 
 * Four address lines will be used for control flags. The original SAP-1 only has two control flags, `CF` and `ZF`, so two of these address lines will be tied low in this project.
-* Two address lines are needed to select the EEPROM since this design will use three EEPROMs. Given the use of two address lines, it is feasible to add a fourth EEPROM in the future if needed. 
+* Two address lines are needed to select the EEPROM since this design will use three EEPROMs. Given the use of two address lines, it is feasible to add a fourth EEPROM in the future if needed. These two lines could be used for other purposes if we forgo the design where the EEPROM content is identical between each bank, but the convenience of only needing to program the EEPROMs identically wins out in this design.
+* The alast 3 EEPROM address lines are used to indicate the microcode step.
 
-With another three EEPROM address lines used to indicate the microcode step, that accounts for all 15 address lines of the 28C256.
+This accounts for all 15 address lines of the 28C256.
 
 ### Bit Layout
 
@@ -82,5 +83,5 @@ The KiCad project containing the electrical schematic for the expanded control l
 
 ### Microcode
 
-A [python program has been written](microcode) to generate a binary file containing a it image that should be burned onto the EEPROM using a EEPROM programmer. Note that this approach is not compatible with the EEPROM programmer created by Ben Eater in his original video series to create the SAP-1.
+A [python program has been written](microcode) to generate a binary file containing a it image that should be burned onto the EEPROM using a EEPROM programmer. Note that this approach is not compatible with the EEPROM programmer created by Ben Eater in his original video series to create the SAP-1. A EEPROM burner, such as the TL-866, must be used. 
 

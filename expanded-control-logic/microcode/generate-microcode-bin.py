@@ -68,32 +68,42 @@ class Microcode:
         self.setBits(SCr, instruction=cmd_NOP, step=2)
         
         self.setBits(ARi|IRo, instruction=cmd_LDA, step=2)
-        self.setBits(SCr|Ai|RMo, instruction=cmd_LDA, step=3)
+        self.setBits(Ai|RMo, instruction=cmd_LDA, step=3)
+        self.setBits(SCr, instruction=cmd_LDA, step=4)
         
         self.setBits(ARi|IRo, instruction=cmd_ADD, step=2)
         self.setBits(Bi|RMo, instruction=cmd_ADD, step=3)
-        self.setBits(SCr|SUMf|Ai|SUMo, instruction=cmd_ADD, step=4)
+        self.setBits(SUMf|Ai|SUMo, instruction=cmd_ADD, step=4)
+        self.setBits(SCr, instruction=cmd_ADD, step=5)
         
         self.setBits(ARi|IRo, instruction=cmd_SUB, step=2)
         self.setBits(Bi|RMo, instruction=cmd_SUB, step=3)
-        self.setBits(SCr|SUB|SUMf|Ai|SUMo, instruction=cmd_SUB, step=4)
+        self.setBits(SUB|SUMf|Ai|SUMo, instruction=cmd_SUB, step=4)
+        self.setBits(SCr, instruction=cmd_SUB, step=5)
         
         self.setBits(ARi|IRo, instruction=cmd_STA, step=2)
-        self.setBits(SCr|RMi|Ao, instruction=cmd_STA, step=3)
+        self.setBits(RMi|Ao, instruction=cmd_STA, step=3)
+        self.setBits(SCr, instruction=cmd_STA, step=4)
         
-        self.setBits(SCr|Ai|IRo, instruction=cmd_LDI, step=2)
+        self.setBits(Ai|IRo, instruction=cmd_LDI, step=2)
+        self.setBits(SCr, instruction=cmd_LDI, step=3)
         
-        self.setBits(SCr|Jump|IRo, instruction=cmd_JMP, step=2)
+        self.setBits(Jump|IRo, instruction=cmd_JMP, step=2)
+        self.setBits(SCr, instruction=cmd_JMP, step=3)
         
         self.setBits(SCr, instruction=cmd_JC, step=2, carrry_flag=0)
-        self.setBits(SCr|Jump|IRo, instruction=cmd_JC, step=2, carrry_flag=1)
+        self.setBits(Jump|IRo, instruction=cmd_JC, step=2, carrry_flag=1)
+        self.setBits(SCr, instruction=cmd_JC, step=3, carrry_flag=1)
         
         self.setBits(SCr, instruction=cmd_JZ, step=2, zero_flag=0)
-        self.setBits(SCr|Jump|IRo, instruction=cmd_JZ, step=2, zero_flag=1)
+        self.setBits(Jump|IRo, instruction=cmd_JZ, step=2, zero_flag=1)
+        self.setBits(SCr, instruction=cmd_JZ, step=3, zero_flag=1)
         
-        self.setBits(SCr|OUT|Ao, instruction=cmd_OUT, step=2)
+        self.setBits(OUT|Ao, instruction=cmd_OUT, step=2)
+        self.setBits(SCr, instruction=cmd_OUT, step=3)
         
-        self.setBits(SCr|HLT, instruction=cmd_HLT, step=2)
+        self.setBits(HLT, instruction=cmd_HLT, step=2)
+        self.setBits(SCr, instruction=cmd_HLT, step=3)
         
         return
     
@@ -134,11 +144,11 @@ class Microcode:
         bits = Microcode._get_with_defaulting(carry_dict, zero_flag)
         if bits is None:
             return 0
-        elif eeprom_select == 0:
+        elif eeprom_select == 0b00:
             return bits.getLeftByteValue()
-        elif eeprom_select == 1:
+        elif eeprom_select == 0b10:
             return bits.getMiddleByteValue()
-        elif eeprom_select == 2:
+        elif eeprom_select == 0b01:
             return bits.getRightByteValue()
         return 0
     
@@ -165,10 +175,10 @@ if __name__ == '__main__':
     print("Generating eeprom contents ...")
     for i in range(0,eeprom_size):
         eeprom_contents[i] = mc.getByteForAddress(i)
+
     
     print('Writing eeprom contents to "{0}"'.format(out_file_name))
     with open(out_file_name, 'wb') as f:
         f.write(eeprom_contents)
-    print(mc.microcode)
     
     print("Done!")

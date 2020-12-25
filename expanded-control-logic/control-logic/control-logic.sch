@@ -4,7 +4,7 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
+Title "Eater SAP-1 Expanded Control Logic"
 Date ""
 Rev ""
 Comp ""
@@ -365,8 +365,6 @@ Wire Wire Line
 	5575 6250 6125 6250
 Wire Wire Line
 	5575 6350 6150 6350
-Wire Wire Line
-	5600 6450 6175 6450
 Wire Wire Line
 	4225 5975 4700 5975
 Wire Wire Line
@@ -883,7 +881,6 @@ Connection ~ 2875 1125
 Wire Wire Line
 	2675 1225 2925 1225
 Connection ~ 2925 1225
-NoConn ~ 2675 1325
 NoConn ~ 2675 1525
 $Comp
 L 74xx:74LS32 U?
@@ -999,10 +996,6 @@ Wire Wire Line
 Wire Wire Line
 	2575 2550 2575 3625
 Connection ~ 2575 2550
-Wire Wire Line
-	1825 3525 1825 3825
-Wire Wire Line
-	1825 3825 1225 3825
 Wire Wire Line
 	1550 1525 1550 725 
 Wire Wire Line
@@ -1225,17 +1218,6 @@ F 3 "" H 1500 5375 50  0001 C CNN
 	1    1500 5375
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:R_Network07_US RN?
-U 1 1 627DCA1B
-P 1725 4950
-F 0 "RN?" H 1345 4904 50  0000 R CNN
-F 1 "R_Network07_US" H 1345 4995 50  0000 R CNN
-F 2 "Resistor_THT:R_Array_SIP8" V 2200 4950 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 1725 4950 50  0001 C CNN
-	1    1725 4950
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
 	1350 4150 1350 4475
 Wire Wire Line
@@ -1297,12 +1279,12 @@ Wire Wire Line
 $Comp
 L power:GND #PWR?
 U 1 1 6325A30E
-P 2025 5150
-F 0 "#PWR?" H 2025 4900 50  0001 C CNN
-F 1 "GND" H 2030 4977 50  0000 C CNN
-F 2 "" H 2025 5150 50  0001 C CNN
-F 3 "" H 2025 5150 50  0001 C CNN
-	1    2025 5150
+P 2125 5150
+F 0 "#PWR?" H 2125 4900 50  0001 C CNN
+F 1 "GND" H 2130 4977 50  0000 C CNN
+F 2 "" H 2125 5150 50  0001 C CNN
+F 3 "" H 2125 5150 50  0001 C CNN
+	1    2125 5150
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1413,12 +1395,12 @@ $EndComp
 $Comp
 L 74xx:74LS04 U?
 U 4 1 63AF0D4E
-P 9050 1725
-F 0 "U?" H 9200 1550 50  0000 C CNN
-F 1 "74LS04" H 9225 1625 50  0000 C CNN
-F 2 "" H 9050 1725 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9050 1725 50  0001 C CNN
-	4    9050 1725
+P 9050 2425
+F 0 "U?" H 9200 2250 50  0000 C CNN
+F 1 "74LS04" H 9225 2325 50  0000 C CNN
+F 2 "" H 9050 2425 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9050 2425 50  0001 C CNN
+	4    9050 2425
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1435,12 +1417,12 @@ $EndComp
 $Comp
 L 74xx:74LS04 U?
 U 6 1 63DC8B63
-P 9050 2425
-F 0 "U?" H 9200 2250 50  0000 C CNN
-F 1 "74LS04" H 9225 2325 50  0000 C CNN
-F 2 "" H 9050 2425 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9050 2425 50  0001 C CNN
-	6    9050 2425
+P 9050 1725
+F 0 "U?" H 9200 1550 50  0000 C CNN
+F 1 "74LS04" H 9225 1625 50  0000 C CNN
+F 2 "" H 9050 1725 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9050 1725 50  0001 C CNN
+	6    9050 1725
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1856,4 +1838,48 @@ Wire Wire Line
 	10450 5325 10450 4350
 Wire Wire Line
 	10450 4350 6025 4350
+$Comp
+L Device:LED_Small D?
+U 1 1 5FF03B5B
+P 2225 4575
+F 0 "D?" V 2225 4505 50  0001 R CNN
+F 1 "LED_Small" V 2180 4505 50  0001 R CNN
+F 2 "" V 2225 4575 50  0001 C CNN
+F 3 "~" V 2225 4575 50  0001 C CNN
+	1    2225 4575
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1825 4125 2225 4125
+Wire Wire Line
+	2225 4125 2225 4475
+Wire Wire Line
+	1825 3525 1825 4125
+Wire Wire Line
+	2675 1325 2750 1325
+Wire Wire Line
+	2750 1325 2750 575 
+Wire Wire Line
+	2750 575  1450 575 
+Wire Wire Line
+	1450 575  1450 3825
+Wire Wire Line
+	1450 3825 1225 3825
+$Comp
+L Device:R_Network08_US RN?
+U 1 1 6011EC35
+P 1725 4950
+F 0 "RN?" H 1245 4904 50  0000 R CNN
+F 1 "R_Network08_US" H 1245 4995 50  0000 R CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 2200 4950 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 1725 4950 50  0001 C CNN
+	1    1725 4950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2225 4675 2125 4675
+Wire Wire Line
+	2125 4675 2125 4750
+Wire Wire Line
+	5575 6450 6175 6450
 $EndSCHEMATC
