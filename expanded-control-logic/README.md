@@ -79,9 +79,17 @@ To enable the original SAP-1 instruction set, the control signals will be laid o
 Note that many of the data pins, either directly on a 74C256 or on a 74LS238, are unused. Again, these are in reserve for future expansion.
 
 ### Electrical Design
-The KiCad project containing the electrical schematic for the expanded control logic module [is provided in this repository](./control-logic/). 
+The KiCad project containing the electrical schematic for the expanded control logic module [is provided in this repository](./control-logic/). The schematic is shown here:
+
+![Expanded Control Logic Schematic](sap-1-expanded-control-logic-schematic.png)
 
 ### Microcode
 
 A [python program has been written](microcode) to generate a binary file containing a it image that should be burned onto the EEPROM using a EEPROM programmer. Note that this approach is not compatible with the EEPROM programmer created by Ben Eater in his original video series to create the SAP-1. A EEPROM burner, such as the TL-866, must be used. 
+
+To generate the microcode binary file that will be used with the EEPROM burner, simply run the python script found in the `microcode` directory as follows:
+```
+python3 generate-microcode-bin.py
+```
+
 
