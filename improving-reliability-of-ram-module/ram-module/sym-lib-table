@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name ram-module-rescue)(type Legacy)(uri ${KIPRJMOD}/ram-module-rescue.lib)(options "")(descr ""))
+)
