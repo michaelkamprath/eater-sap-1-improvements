@@ -1,9 +1,9 @@
 # RAM Module Reliability
 
 ## Project Overview
-The design of the RAM Module in Ben Eater's SAP-1 has two issues that impact the reliability of not only the RAM module, but the SAP-1 computer as a whole. The first problem is that the RC circuit used to convert the clock signal that drives the RAM write enable line into a shorter pulse has the side effect of creating a "negative pulse" back into the clock line on the trailing edge of the click signal. The second issue is that the 74LS157 used to select whether the RAM write enable signal comes from the manual switch or from the control logic can on occasion create spurious low signals into the RAM write enable despite both of the input lines being high that the 74LS157 is selecting from. I explain the details of both of these problems, and their solution, [in a video on YouTube here](https://youtu.be/ELf-rHNZkA8):
+The design of the RAM Module in Ben Eater's SAP-1 has two issues that impact the reliability of not only the RAM module, but the SAP-1 computer as a whole. The first problem is that the RC circuit used to convert the clock signal that drives the RAM write enable line into a shorter pulse has the side effect of creating a "negative pulse" back into the clock line on the trailing edge of the click signal. The second issue is that the 74LS157 used to select whether the RAM write enable signal comes from the manual switch or from the control logic can on occasion create spurious low signals into the RAM write enable despite both of the input lines being high that the 74LS157 is selecting from. I explain the details of both of these problems, and their solution, [in a video on YouTube here](https://youtu.be/W2w9KVmyxRs):
 
-[![SAP-1 RAM Reliability Video](https://img.youtube.com/vi/ELf-rHNZkA8/maxresdefault.jpg)](https://youtu.be/ELf-rHNZkA8)
+[![SAP-1 RAM Reliability Video](https://img.youtube.com/vi/W2w9KVmyxRs/maxresdefault.jpg)](https://youtu.be/W2w9KVmyxRs)
 
 ## Design
 ### Isolating the Clock Line
