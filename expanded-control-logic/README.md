@@ -13,7 +13,15 @@ When all done, the SAP-1 with expanded control logic should behave identically t
 
 ### SAP-1 Control Signals
 
-The existing SAP-1 control signals are listed below. In order to enable future expansion of the control signals and enhance clarity, new symbols for each control signal are provided.
+The existing SAP-1 control signals are listed below. In order to enable future expansion of the control signals and enhance clarity, new symbols for each control signal are provided. The new scheme allows for the use of 3 letters to identify the signal. Typically, the control signal name will be composes of one or two capital letters that unique identify the module the control signal pertains to, and is followed by one of the following lowercase characters, which specific meanings:
+
+* `i` - The module will input data from the bus
+* `o` - The module will output data to the bus
+* `e` - Enable a specialized function, typically counting
+* `f` - Input the status of flags from a particular source
+
+Some control signals will forgo the this naming convention in favor of more mnemonic names. `OUT` is prime example of this. The existing SAP-1 control signals then become: 
+
 
 | Original Symbol | New Symbol |Component | Description |
 |:-:|:-:|:--|:--|
@@ -64,7 +72,7 @@ The 15 address lines of the 28C256 EEPROMs will be used as follows:
 * Two address lines one the EEPROMs will be added to the instruction code selection for a total of 6 address lines being used to indicate the instruction. This will allow the instruction set to grow to 64 instructions. Since the original SAP-1 only enables 4 bit instruction codes, the two high bits used for the instruction set will be tied low in this project. 
 * Four address lines will be used for control flags. The original SAP-1 only has two control flags, `CF` and `ZF`, so two of these address lines will be tied low in this project.
 * Two address lines are needed to select the EEPROM since this design will use three EEPROMs. Given the use of two address lines, it is feasible to add a fourth EEPROM in the future if needed. These two lines could be used for other purposes if we forgo the design where the EEPROM content is identical between each bank, but the convenience of only needing to program the EEPROMs identically wins out in this design.
-* The alast 3 EEPROM address lines are used to indicate the microcode step.
+* The last 3 EEPROM address lines are used to indicate the microcode step.
 
 This accounts for all 15 address lines of the 28C256.
 
