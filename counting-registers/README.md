@@ -17,7 +17,7 @@ The following control signals are used in each counting register (here notated a
 | Control Signal | Active | Description |
 |:-:|:-:|:--|
 | `Io` | HIGH | Controls whether the current register value is written to the data bus |
-| `Ii` | HIGH | When active, when cause the register to update it's value to the data base value on the rising edge of the clock. |
+| `Ii` | HIGH | When active, when cause the register to update 	 value to the data base value on the rising edge of the clock. |
 | `Ie` | HIGH | When active, the register will on the clock's rising edge increment or decrement its current value depending on the state fo the `SUB` control signal |
 |  `SUB` | HIGH | Will cause the `Ie` signal to decrement the register value rather than increment it. Note that this is the same `SUB` control signal that the original SAP-1 ALU uses. |
 | `CLR` | HIGH | When active, will cause the temporary flags register to clear its state. Note that this does not impact the value held in the counting register. |
@@ -39,8 +39,7 @@ However, measuring the carry flag state at the end of the clock cycle means that
 #### Integration with Flag Register
 The challenge with integrating one or more counting registers with the existing flags register is that now multiple modules could set the zero flag or the carry flag. The existing flags register design always reads in the current state of the zero flag or carry flag register from the ALU. When there is only one thing setting the zero flag (for example), this OK. But when multiple things could set the zero flag, signals could collide. Imagine a scenario where the ALU is adding 5 plus 3, but the `I` register isn't being used but contains a value fo zero.  If all sources of the zero flag connected directly to the flags register, the zero flag would be set despite the ALU operation not resulting in zero. A similar example could be constructed for the carry flag. 
 
-To fix this issue, each source of a flag status must be explicitly controlled as to when it can set the flags register status or not. In some ways, Ben Eater's original SAP-1 did this with the `∑f` (or `FI` in the original notation) signal. The flags register only get set when the `∑f` signal is asserted. This can be built on by having a control line for each source of flags t control exactly which component gets to set the flags register at any given moment. So each counting register will have a `If` control signal (here notated for the `I` register) to indicate that its modules flag statuses are to be read into the flags register. This control signal must be used to  enable the 74LS173 register. Basically any module's flags enable line would enable the 74LS173. To control which module's flags status will be read, the flag status signals from each model will be AND'ed with the flags enable control signal for that module, and the results will be OR'ed together by flag type before being fed into the 74LS173. To OR together more than two lines, a 74HCT4075 is used, with has -input OR gates on it. 
-
+To fix this issue, each source of a flag status must be explicitly controlled as to when it can set the flags register status or not. In some ways, Ben Eater's original SAP-1 did this with the `∑f` (or `FI` in the original notation) signal. The flags register only get set when the `∑f` signal is asserted. This can be built on by having a control line for each source of flags t control exactly which component gets to set the flags register at any given moment. So each counting register will have a `If` control signal (here notated for the `I` register) to indicate that its modules flag statuses are to be read into the flags register. This control signal must be used to  enable the 74LS173 register. Basically any module's flags enable line would enable the 74LS173. To control which module's flags status will be read, the flag status signals from each model will be AND'ed with the flags enable control signal for that module, and the results will be OR'ed together by flag type before being fed into the 74LS173. To OR together more than two lines, a 74HCT4075 is used, with has 3-input OR gates on it. 
 
 
 ### Data Sheets
@@ -63,7 +62,17 @@ To fix this issue, each source of a flag status must be explicitly controlled as
 
 ![Single Counting Register](./docs/counting-register-schematic.png)
 
+### Microcode
+On a SAP-1 with the original 16 bytes of RAM, there isn't enough room in the 4 bits used to identify an instruction to enable all instructions that would be possible with the counting registers. 
+
 ### Construction Tips
 
+The counting registers are especially useful when two are implemented for the SAP-1. This allows the managing of two loops in hardware, which markedly improves the computing power of the SAP-1. When laying out the registers, it is recommends that three standard size bread boards are used, and the center breadboard contains the 74LS04 inverts used to invert the control signals, the 74LS21 used to determine the state of the carry flag, and the 74LS173 used to cache the state of the zero and carry flags. Furthermore, note that only "half" of the 74LS21 and 74LS173 is used for a single counting register. Given that, it is recommended that only one 74LS21 and 74LS173 is used across two counting registers, where the second register simply uses the unused portion of the chip. For the 74LS21 that means the second register used the second gate on the chip, and for the 74LS173 the second register will use the 3rd and 4th register bit. 
 
+It's also worth noting that a counting register can use only the gates on 74LS04 hex inverters that face it, as this will simplify wiring, and similarly with the 74LS21. Finally, being thoughtful about the gate usage arrangement on the 74LS08 in each register will allow you to route the zero flag single from a gate that faces "inward" towards 74LS173 and 74LS21 to which it needs to connect.
+
+Here is an annotated photo of a dual counting register layout:
+
+
+![Dual Counting Register Breadboard Layout](./docs/dual-counting-register-annotated.png)
 
