@@ -63,7 +63,27 @@ To fix this issue, each source of a flag status must be explicitly controlled as
 ![Single Counting Register](./docs/counting-register-schematic.png)
 
 ### Microcode
-On a SAP-1 with the original 16 bytes of RAM, there isn't enough room in the 4 bits used to identify an instruction to enable all instructions that would be possible with the counting registers. 
+On a SAP-1 with the original 16 bytes of RAM, there isn't enough room in the 4 bits used to identify an instruction to enable all instructions that would be possible with the counting registers. So any number of instructions combinations could be defined. The commands you could create using these registers include:
+
+* `INCx` - Increment value in register `x` (`I` or `J`). If incrementing from 255, carry flag and zero is set.
+* `DECx` - Decrement value in register `x`. If decrement results in zero, zero flag is set. 
+* `LDx` - Load into register `x` the value found at the memory location specified in command parameter.
+* `STx` - Store current value in register `x` into memory location in command parameter.
+* `MVxy` - Copy (move) value in register `x` to register `y`. For example, `CPAI` would copy the value in register `A` to register `I`. 
+
+Also, for clarity, load immediate instructions will be notated `LDiX` (note the lower case `i`) where `X` is the register the lower 4 bits if the instruction will be loaded into.
+
+[In this directory](./microcode) is a version of the microcode generator that defines the following instructions in addition to the original SAP-1 instruction set for a SAP-1 set up with two counting registers, `I` and `J`:
+
+* `LDI` - Load into the `I` register the value held in the memory location indicated in the command parameter.
+* `MVAI` - Move (copy) the value currently held in the `A` register into the `I` register.
+* `MVIJ` - Move (copy) the value currently held in the `I` into the `J` register
+* `DECI` - Decrement the value fo the `I` register. Set the zero flag if the `I` register value becomes 0. 
+* `DECJ` - Decrement the value fo the `J` register. Set the zero flag if the `J` register value becomes 0. 
+
+The microcode table for this would look like the following. Note that this table indicates what control lines any given counting register control signal should be attached to.
+
+![Dual Counting Registers Microcode Table](./docs/counting-registers-microcode-table.png)
 
 ### Construction Tips
 
