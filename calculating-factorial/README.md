@@ -74,7 +74,7 @@ The SAP-1 uses a 4-bit instruction code and thus has room for the definition of 
  2: DECI      ; decrement I. start of outer I loop
  3: JZ 12     ; jump to end of loop of I is zero
  4: STA 14    ; Store current A register to results variable, "X variable"
- 5: CPIJ      ; Copy current J value to J for multiplication loop
+ 5: MVIJ      ; Copy current I value to J for multiplication loop
  6: DECJ      ; decrement J before start of multiplication loop
  7: JZ 2      ; don't start multiplication loop if J started at 1
  8: ADD 14    ; Add "x variable" to A
