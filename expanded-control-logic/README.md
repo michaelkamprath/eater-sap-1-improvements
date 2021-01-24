@@ -86,6 +86,8 @@ To enable the original SAP-1 instruction set, the control signals will be laid o
 
 Note that many of the data pins, either directly on a 74C256 or on a 74LS238, are unused. Again, these are in reserve for future expansion.
 
+This microcode diagram may be [viewed in more detail here](http://bit.ly/sap-1-extended-control-lines-microcode).
+
 ### Electrical Design
 The KiCad project containing the electrical schematic for the expanded control logic module [is provided in this repository](./control-logic/). The schematic is shown here:
 
