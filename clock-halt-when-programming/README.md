@@ -1,5 +1,5 @@
 # Clock Halt When Programming
-In the original design, the system clock can be halted with either the manual clock switch or the system control `HLT`. However, if you switch the computer to programming mode and order to enter RAM values by asserting the `PROG` signal (which, despite notation, is active low), the system clock may continue running, causing the the computer to continue to iterate through the microcode steps of the current instruction. This can create problems if you happen to switch to programming mode when the computer was on a step that has a "RAM in" step. 
+In the original design, the system clock can be halted with either the manual clock switch or the system control `HLT`. However, if you switch the computer to programming mode in order to enter RAM values by asserting the `PROG` signal (which, despite notation, is active low), the system clock may continue running, causing the the computer to continue to iterate through the microcode steps of the current instruction. This can create problems if you happen to switch to programming mode when the computer was on a step that has a "RAM in" step. 
 
 This improvement changes the SAP-1 to simply halt the system clock when switched to programming mode. 
 
