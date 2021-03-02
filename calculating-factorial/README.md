@@ -64,7 +64,7 @@ If you had such registers, the commands you could create using these registers i
 * `STx` - Store current value in register `x` into memory location in command parameter.
 * `MVxy` - Copy (move) value in register `x` to register `y`. For example, `CPIJ` would copy the value in register `I` to register `J`. 
 
-Also, for clarity, load immediate instructions will be notated `LDiX` (note the lower case `i`) where `X` is the register the lower 4 bits if the instruction will be loaded into.
+Also, for clarity, load immediate instructions will be notated `SETX` where `X` is the register the lower 4 bits if the instruction will be loaded into.
 
 The SAP-1 uses a 4-bit instruction code and thus has room for the definition of 16 different instructions. The original instruction set has 12 defined instructions, leaving room for only 4 new instructions. For the factorial algorithm with the `I` and `J` registers, we would need the `DECI`, `DECJ`, `LDI`, and `CPIJ` instructions in addition to the original SAP-1 instruction set. With those new instructions defined and the corresponding I and J registers implemented in hardware, the factorial program then becomes:
 
@@ -94,8 +94,8 @@ Here, the `A` register is equivalent to the python `results` variable, and memor
 ### Expanding the Control Logic
 The original SAP-1 only has capacity for 16 distinct control lines, and uses them all. In order to add additional registers as described, more control lines are needed. So we will need to expand the SAP-1 CPU control logic. [This project documented here](../expanded-control-logic/) describes the approach for adding additional control lines to the control logic of the SAP-1. 
 
-### `I` and `J` Counting Registers
-Creating counting registers proved to be a mild challenge, mostly on the part of integrating the counting registers' `Z` and `C` flags with the rest of the computer. [This project documented here](../counting-registers/) describes both how to build the counting registers and how to integrate them into a SAP-1 with the expanded control logic. Implementing the factorial algorithm requires two fo these counting registers, `I` and `J`.
+### `I` and `J` Increment Registers
+Creating increment registers proved to be a mild challenge, mostly on the part of integrating the counting registers' `Z` and `C` flags with the rest of the computer. [This project documented here](../counting-registers/) describes both how to build the counting registers and how to integrate them into a SAP-1 with the expanded control logic. Implementing the factorial algorithm requires two of these counting registers, `I` and `J`.
 
 ### Microcode
 The [microcode included with the original counting register implementation project](../counting-registers/microcode/) is the correct microcode for this project. 
