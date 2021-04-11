@@ -627,53 +627,53 @@ ADDR_BUS_0
 Wire Wire Line
 	9450 3650 9450 3400
 Wire Wire Line
-	9450 3400 9900 3400
+	9450 3400 9750 3400
 Wire Wire Line
 	9150 3650 9150 3300
 Wire Wire Line
-	9150 3300 9900 3300
+	9150 3300 9650 3300
 Wire Wire Line
-	8850 3200 9900 3200
+	8850 3200 9550 3200
 Wire Wire Line
-	8550 3100 9900 3100
+	8550 3100 9450 3100
 Wire Wire Line
 	7400 3650 7400 3000
 Wire Wire Line
-	7400 3000 9900 3000
+	7400 3000 9350 3000
 Wire Wire Line
 	7100 3650 7100 2900
 Wire Wire Line
-	7100 2900 9900 2900
+	7100 2900 9250 2900
 Wire Wire Line
-	6800 2800 9900 2800
+	6800 2800 9150 2800
 Wire Wire Line
-	6500 2700 9900 2700
+	6500 2700 9050 2700
 Wire Wire Line
 	5300 3650 5300 2450
 Wire Wire Line
-	5300 2450 9900 2450
+	5300 2450 8600 2450
 Wire Wire Line
 	5000 3650 5000 2350
 Wire Wire Line
-	5000 2350 9900 2350
+	5000 2350 8500 2350
 Wire Wire Line
-	4700 2250 9900 2250
+	4700 2250 8400 2250
 Wire Wire Line
-	4400 2150 9900 2150
+	4400 2150 8300 2150
 Wire Wire Line
 	3125 3650 3125 2050
 Wire Wire Line
-	3125 2050 9900 2050
+	3125 2050 8200 2050
 Wire Wire Line
 	2825 3650 2825 1950
 Wire Wire Line
-	2825 1950 9900 1950
+	2825 1950 8100 1950
 Wire Wire Line
 	2525 3650 2525 1850
 Wire Wire Line
-	2525 1850 9900 1850
+	2525 1850 8000 1850
 Wire Wire Line
-	2225 1750 9900 1750
+	2225 1750 7900 1750
 $Comp
 L ram-rom-upgrade-symbols:BarGraphLED_8P BAR?
 U 1 1 6086E85F
@@ -828,4 +828,122 @@ F 3 "" H 5550 6400 50  0001 C CNN
 	1    5550 6400
 	1    0    0    -1  
 $EndComp
+$Comp
+L Device:R_Network08_US RN?
+U 1 1 60736850
+P 9450 1400
+F 0 "RN?" H 9838 1446 50  0000 L CNN
+F 1 "10K" H 9838 1355 50  0000 L CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 9925 1400 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 9450 1400 50  0001 C CNN
+	1    9450 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Network08_US RN?
+U 1 1 6073A7C3
+P 8300 1400
+F 0 "RN?" H 8688 1446 50  0000 L CNN
+F 1 "10K" H 8688 1355 50  0000 L CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 8775 1400 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 8300 1400 50  0001 C CNN
+	1    8300 1400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9750 1600 9750 3400
+Connection ~ 9750 3400
+Wire Wire Line
+	9750 3400 9900 3400
+Wire Wire Line
+	9650 1600 9650 3300
+Connection ~ 9650 3300
+Wire Wire Line
+	9650 3300 9900 3300
+Wire Wire Line
+	9550 1600 9550 3200
+Connection ~ 9550 3200
+Wire Wire Line
+	9550 3200 9900 3200
+Wire Wire Line
+	9450 1600 9450 3100
+Connection ~ 9450 3100
+Wire Wire Line
+	9450 3100 9900 3100
+Wire Wire Line
+	9350 1600 9350 3000
+Connection ~ 9350 3000
+Wire Wire Line
+	9350 3000 9900 3000
+Wire Wire Line
+	9250 1600 9250 2900
+Connection ~ 9250 2900
+Wire Wire Line
+	9250 2900 9900 2900
+Wire Wire Line
+	9150 1600 9150 2800
+Connection ~ 9150 2800
+Wire Wire Line
+	9150 2800 9900 2800
+Wire Wire Line
+	9050 1600 9050 2700
+Connection ~ 9050 2700
+Wire Wire Line
+	9050 2700 9900 2700
+Wire Wire Line
+	8600 1600 8600 2450
+Connection ~ 8600 2450
+Wire Wire Line
+	8600 2450 9900 2450
+Wire Wire Line
+	8500 1600 8500 2350
+Connection ~ 8500 2350
+Wire Wire Line
+	8500 2350 9900 2350
+Wire Wire Line
+	8400 1600 8400 2250
+Connection ~ 8400 2250
+Wire Wire Line
+	8400 2250 9900 2250
+Wire Wire Line
+	8300 1600 8300 2150
+Connection ~ 8300 2150
+Wire Wire Line
+	8300 2150 9900 2150
+Wire Wire Line
+	8200 1600 8200 2050
+Connection ~ 8200 2050
+Wire Wire Line
+	8200 2050 9900 2050
+Wire Wire Line
+	8100 1600 8100 1950
+Connection ~ 8100 1950
+Wire Wire Line
+	8100 1950 9900 1950
+Wire Wire Line
+	8000 1600 8000 1850
+Connection ~ 8000 1850
+Wire Wire Line
+	8000 1850 9900 1850
+Wire Wire Line
+	7900 1600 7900 1750
+Connection ~ 7900 1750
+Wire Wire Line
+	7900 1750 9900 1750
+Wire Wire Line
+	9050 1200 7900 1200
+$Comp
+L power:GND #PWR?
+U 1 1 60809B64
+P 7625 1200
+F 0 "#PWR?" H 7625 950 50  0001 C CNN
+F 1 "GND" H 7630 1027 50  0000 C CNN
+F 2 "" H 7625 1200 50  0001 C CNN
+F 3 "" H 7625 1200 50  0001 C CNN
+	1    7625 1200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7900 1200 7625 1200
+Connection ~ 7900 1200
 $EndSCHEMATC
