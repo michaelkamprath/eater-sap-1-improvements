@@ -6,13 +6,15 @@
 * Have both ROM and RAM in the memory address space.
   * ROM would be used for a boot-loader, common subroutines, and programs
   * 32K of ROM and 32K of RAM. The ROM will be `0x0000` though `0x7FFF`, and the RAM will be at `0x8000` through `0xFFFF`.
-* 1Both the program counter and memory address register should be 16 bit registers.
-* Like the program counter, he memory address register should enable being incremented in order to quickly get the next location in memory. 
+* Both the program counter and memory address register should be 16 bit registers.
+* Like the program counter, The memory address register should enable being incremented in order to quickly get the next location in memory. 
   * This feature is actually needed due to memory address values now occupying two bytes, and we want our instruction parameters to just point at the first byte.
  * This would be controlled by microcode.
 * For multi-byte values in RAM, such as memory addresses and 16-bit integers, the values will be arranged as little endian.
   * This makes implementing multi-byte math so much easier later on. It does make data entry a little less intuitive. 
-  * The program counter and memory address register will be physically arranged as big endian to make the LEDs used to represent their values more human interpretable. 
+  * The program counter and memory address register will be physically arranged as big endian to make the LEDs used to represent their values more human interpretable.
+* Implement an assembler using [the `customasm` tool](https://github.com/hlorenzi/customasm).
+  * This is done to make creating the ROM images easier. 
 
 
 Not in scope for this project:
