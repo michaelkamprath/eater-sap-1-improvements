@@ -165,17 +165,6 @@ Text HLabel 8150 5850 2    50   BiDi ~ 0
 BUS_6
 Text HLabel 8150 5775 2    50   BiDi ~ 0
 BUS_7
-$Comp
-L 74xx:74LS157 U5
-U 1 1 60556B06
-P 7275 4750
-F 0 "U5" V 7525 3925 50  0000 R CNN
-F 1 "74LS157" V 7300 4875 50  0000 R CNN
-F 2 "" H 7275 4750 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS157" H 7275 4750 50  0001 C CNN
-	1    7275 4750
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	7575 3200 7575 4250
 Wire Wire Line
@@ -824,17 +813,6 @@ Wire Wire Line
 	5250 3575 3025 3575
 Wire Wire Line
 	5250 3575 5250 4250
-$Comp
-L 74xx:74LS157 U3
-U 1 1 6055348B
-P 5250 4750
-F 0 "U3" V 5500 3925 50  0000 R CNN
-F 1 "74LS157" V 5250 4925 50  0000 R CNN
-F 2 "" H 5250 4750 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS157" H 5250 4750 50  0001 C CNN
-	1    5250 4750
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	7875 5650 5850 5650
 Wire Wire Line
@@ -1122,4 +1100,26 @@ Wire Wire Line
 Connection ~ 8275 1375
 Wire Wire Line
 	8275 1375 8275 1825
+$Comp
+L ram-rom-upgrade-symbols:74LS257 U?
+U 1 1 607C5143
+P 7275 4750
+F 0 "U?" V 7525 3925 50  0000 R CNN
+F 1 "74LS257" V 7275 4900 50  0000 R CNN
+F 2 "" H 7275 4750 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS257" H 7275 4750 50  0001 C CNN
+	1    7275 4750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L ram-rom-upgrade-symbols:74LS257 U?
+U 1 1 60814B6F
+P 5250 4750
+F 0 "U?" V 5500 3925 50  0000 R CNN
+F 1 "74LS257" V 5250 4900 50  0000 R CNN
+F 2 "" H 5250 4750 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS257" H 5250 4750 50  0001 C CNN
+	1    5250 4750
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC
