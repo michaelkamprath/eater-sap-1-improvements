@@ -158,23 +158,23 @@ Wire Wire Line
 $Comp
 L 74xx:74LS00 U?
 U 1 1 60A45F3A
-P 2375 2825
-F 0 "U?" H 2375 3150 50  0000 C CNN
-F 1 "74LS00" H 2375 3059 50  0000 C CNN
-F 2 "" H 2375 2825 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 2375 2825 50  0001 C CNN
-	1    2375 2825
-	1    0    0    -1  
-$EndComp
-$Comp
-L 74xx:74LS00 U?
-U 2 1 60A4F86B
 P 2375 3400
 F 0 "U?" H 2375 3725 50  0000 C CNN
 F 1 "74LS00" H 2375 3634 50  0000 C CNN
 F 2 "" H 2375 3400 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 2375 3400 50  0001 C CNN
-	2    2375 3400
+	1    2375 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74LS00 U?
+U 2 1 60A4F86B
+P 2375 2825
+F 0 "U?" H 2375 3150 50  0000 C CNN
+F 1 "74LS00" H 2375 3059 50  0000 C CNN
+F 2 "" H 2375 2825 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 2375 2825 50  0001 C CNN
+	2    2375 2825
 	1    0    0    -1  
 $EndComp
 Text HLabel 825  3300 0    50   Input ~ 0
