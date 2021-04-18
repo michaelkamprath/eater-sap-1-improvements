@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L clock-module-with-prog-halt-rescue:LM555-8bit-computer-rescue-8bit-computer-rescue U1
+L clock-module-v2-rescue:LM555-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U1
 U 1 1 5B52B53B
 P 2000 2100
 F 0 "U1" H 2250 2450 50  0000 L CNN
@@ -80,7 +80,7 @@ F 3 "" H 5500 1650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:POT-8bit-computer-rescue-8bit-computer-rescue RV1
+L clock-module-v2-rescue:POT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue RV1
 U 1 1 5B52B6D7
 P 3150 2200
 F 0 "RV1" V 2975 2200 50  0000 C CNN
@@ -146,7 +146,7 @@ F 3 "" H 1550 2800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue U4
+L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
 U 1 1 5B52B95A
 P 3000 4900
 F 0 "U4" H 3195 5015 50  0000 C CNN
@@ -157,7 +157,7 @@ F 3 "" H 3000 4900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue U5
+L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
 U 1 1 5B52B9AD
 P 4200 4200
 F 0 "U5" H 4200 4250 50  0000 C CNN
@@ -168,7 +168,7 @@ F 3 "" H 4200 4200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue U6
+L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
 U 1 1 5B52B9E8
 P 5600 4600
 F 0 "U6" H 5600 4650 50  0000 C CNN
@@ -179,7 +179,7 @@ F 3 "" H 5600 4600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:SW_SPDT-8bit-computer-rescue-8bit-computer-rescue SW2
+L clock-module-v2-rescue:SW_SPDT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue SW2
 U 1 1 5B52BA7F
 P 6850 2200
 F 0 "SW2" H 6850 2370 50  0000 C CNN
@@ -190,7 +190,7 @@ F 3 "" H 6850 2200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:SW_Push-8bit-computer-rescue-8bit-computer-rescue SW1
+L clock-module-v2-rescue:SW_Push-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue SW1
 U 1 1 5B52BB68
 P 3950 1900
 F 0 "SW1" H 4000 2000 50  0000 L CNN
@@ -385,7 +385,7 @@ Connection ~ 7350 1450
 Connection ~ 7950 1450
 NoConn ~ 8450 2100
 $Comp
-L clock-module-with-prog-halt-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue U5
+L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
 U 2 1 5B52E719
 P 4200 5000
 F 0 "U5" H 4200 5050 50  0000 C CNN
@@ -396,7 +396,7 @@ F 3 "" H 4200 5000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue U5
+L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
 U 3 1 5B52E764
 P 7000 4700
 F 0 "U5" H 7000 4750 50  0000 C CNN
@@ -407,25 +407,25 @@ F 3 "" H 7000 4700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue U4
+L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
 U 4 1 5B52E7BF
-P 3000 5800
-F 0 "U4" H 3195 5915 50  0000 C CNN
-F 1 "74LS04" H 3190 5675 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm" H 3000 5800 50  0001 C CNN
-F 3 "" H 3000 5800 50  0001 C CNN
-	4    3000 5800
-	1    0    0    -1  
-$EndComp
-$Comp
-L clock-module-with-prog-halt-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue U4
-U 6 1 5B52E82B
 P 8800 4250
 F 0 "U4" H 8995 4365 50  0000 C CNN
 F 1 "74LS04" H 8990 4125 50  0000 C CNN
 F 2 "Package_DIP:DIP-14_W7.62mm" H 8800 4250 50  0001 C CNN
 F 3 "" H 8800 4250 50  0001 C CNN
-	6    8800 4250
+	4    8800 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
+U 6 1 5B52E82B
+P 2250 6000
+F 0 "U4" H 2445 6115 50  0000 C CNN
+F 1 "74LS04" H 2440 5875 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm" H 2250 6000 50  0001 C CNN
+F 3 "" H 2250 6000 50  0001 C CNN
+	6    2250 6000
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -532,7 +532,7 @@ $EndComp
 Wire Wire Line
 	9900 1750 9900 1850
 $Comp
-L clock-module-with-prog-halt-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue U4
+L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
 U 2 1 5B5304B0
 P 1700 6650
 F 0 "U4" H 1895 6765 50  0000 C CNN
@@ -543,7 +543,7 @@ F 3 "" H 1700 6650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue U4
+L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
 U 3 1 5B5304FB
 P 1700 7050
 F 0 "U4" H 1895 7165 50  0000 C CNN
@@ -554,18 +554,18 @@ F 3 "" H 1700 7050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue U4
+L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
 U 5 1 5B53108F
-P 2250 6000
-F 0 "U4" H 2445 6115 50  0000 C CNN
-F 1 "74LS04" H 2440 5875 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm" H 2250 6000 50  0001 C CNN
-F 3 "" H 2250 6000 50  0001 C CNN
-	5    2250 6000
+P 3000 5800
+F 0 "U4" H 3195 5915 50  0000 C CNN
+F 1 "74LS04" H 3190 5675 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm" H 3000 5800 50  0001 C CNN
+F 3 "" H 3000 5800 50  0001 C CNN
+	5    3000 5800
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue U5
+L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
 U 4 1 5B53125C
 P 4250 5900
 F 0 "U5" H 4250 5950 50  0000 C CNN
@@ -576,7 +576,7 @@ F 3 "" H 4250 5900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue U6
+L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
 U 2 1 5B5312F6
 P 3000 7400
 F 0 "U6" H 3000 7450 50  0000 C CNN
@@ -587,7 +587,7 @@ F 3 "" H 3000 7400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-with-prog-halt-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue U6
+L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
 U 3 1 5B5313CF
 P 4350 6800
 F 0 "U6" H 4350 6850 50  0000 C CNN
@@ -763,7 +763,7 @@ NoConn ~ 4950 7400
 Text HLabel 1450 6000 0    50   Input ~ 0
 PROG
 $Comp
-L clock-module-with-prog-halt-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue U6
+L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
 U 4 1 5B531491
 P 4350 7400
 F 0 "U6" H 4350 7450 50  0000 C CNN

@@ -55,15 +55,17 @@ One design challenge that had to be overcome is that the UM61512AK-15 uses the s
 
 ### Address Bus
 
-
-## Assembler
-
-## Boot Loaders
-
 ### Component Data sheets
 
 * [UM61512AK-15](./datasheets/UM61512A.pdf) - 64 K x 8 bit SRAM. Any 32K or larger SRAM chip could be used for this project with minimal modifications. 
 * [AT28C256](https://www.mouser.com/datasheet/2/268/doc0006-1108095.pdf) - 32K x 8 bit EEPROM. Any 32K or larger EPROM could be used with minimal modification to the wiring. EEPROMs are convenient for reprogramming, which we will likely do often.
 
-## Design Notes
+### Breadboard Layout
+
+### Control Logic and Microcode
+
+## Assembler
+
+## Boot Loaders
+
 

@@ -112,11 +112,11 @@ X Q 9 500 200 150 L 50 50 2 1 O
 ENDDRAW
 ENDDEF
 #
-# clock-module-with-prog-halt-rescue_74LS04-8bit-computer-rescue-8bit-computer-rescue
+# clock-module-v2-rescue_74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue
 #
-DEF clock-module-with-prog-halt-rescue_74LS04-8bit-computer-rescue-8bit-computer-rescue U 0 30 Y Y 6 F N
+DEF clock-module-v2-rescue_74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U 0 30 Y Y 6 F N
 F0 "U" 195 115 50 H V C CNN
-F1 "clock-module-with-prog-halt-rescue_74LS04-8bit-computer-rescue-8bit-computer-rescue" 190 -125 50 H V C CNN
+F1 "clock-module-v2-rescue_74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue" 190 -125 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -150,11 +150,11 @@ X ~ 13 -450 0 300 R 50 50 6 2 I I
 ENDDRAW
 ENDDEF
 #
-# clock-module-with-prog-halt-rescue_74LS08-8bit-computer-rescue-8bit-computer-rescue
+# clock-module-v2-rescue_74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue
 #
-DEF clock-module-with-prog-halt-rescue_74LS08-8bit-computer-rescue-8bit-computer-rescue U 0 30 Y Y 4 F N
+DEF clock-module-v2-rescue_74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U 0 30 Y Y 4 F N
 F0 "U" 0 50 50 H V C CNN
-F1 "clock-module-with-prog-halt-rescue_74LS08-8bit-computer-rescue-8bit-computer-rescue" 0 -50 50 H V C CNN
+F1 "clock-module-v2-rescue_74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue" 0 -50 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -194,11 +194,11 @@ X ~ 13 -600 -100 370 R 50 50 4 2 I I
 ENDDRAW
 ENDDEF
 #
-# clock-module-with-prog-halt-rescue_74LS32-8bit-computer-rescue-8bit-computer-rescue
+# clock-module-v2-rescue_74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue
 #
-DEF clock-module-with-prog-halt-rescue_74LS32-8bit-computer-rescue-8bit-computer-rescue U 0 30 Y Y 4 F N
+DEF clock-module-v2-rescue_74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U 0 30 Y Y 4 F N
 F0 "U" 0 50 50 H V C CNN
-F1 "clock-module-with-prog-halt-rescue_74LS32-8bit-computer-rescue-8bit-computer-rescue" 0 -50 50 H V C CNN
+F1 "clock-module-v2-rescue_74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue" 0 -50 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
@@ -238,11 +238,11 @@ X ~ 13 -600 -100 300 R 50 50 4 2 I I
 ENDDRAW
 ENDDEF
 #
-# clock-module-with-prog-halt-rescue_LM555-8bit-computer-rescue-8bit-computer-rescue
+# clock-module-v2-rescue_LM555-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue
 #
-DEF clock-module-with-prog-halt-rescue_LM555-8bit-computer-rescue-8bit-computer-rescue U 0 20 Y Y 1 F N
+DEF clock-module-v2-rescue_LM555-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U 0 20 Y Y 1 F N
 F0 "U" -400 350 50 H V L CNN
-F1 "clock-module-with-prog-halt-rescue_LM555-8bit-computer-rescue-8bit-computer-rescue" 100 350 50 H V L CNN
+F1 "clock-module-v2-rescue_LM555-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue" 100 350 50 H V L CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -264,11 +264,11 @@ X DIS 7 500 0 150 L 50 50 1 1 I
 ENDDRAW
 ENDDEF
 #
-# clock-module-with-prog-halt-rescue_POT-8bit-computer-rescue-8bit-computer-rescue
+# clock-module-v2-rescue_POT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue
 #
-DEF clock-module-with-prog-halt-rescue_POT-8bit-computer-rescue-8bit-computer-rescue RV 0 40 N N 1 F N
+DEF clock-module-v2-rescue_POT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue RV 0 40 N N 1 F N
 F0 "RV" -175 0 50 V V C CNN
-F1 "clock-module-with-prog-halt-rescue_POT-8bit-computer-rescue-8bit-computer-rescue" -100 0 50 V V C CNN
+F1 "clock-module-v2-rescue_POT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue" -100 0 50 V V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 $FPLIST
@@ -284,11 +284,11 @@ X 3 3 0 -150 50 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# clock-module-with-prog-halt-rescue_SW_Push-8bit-computer-rescue-8bit-computer-rescue
+# clock-module-v2-rescue_SW_Push-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue
 #
-DEF clock-module-with-prog-halt-rescue_SW_Push-8bit-computer-rescue-8bit-computer-rescue SW 0 40 N N 1 F N
+DEF clock-module-v2-rescue_SW_Push-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue SW 0 40 N N 1 F N
 F0 "SW" 50 100 50 H V L CNN
-F1 "clock-module-with-prog-halt-rescue_SW_Push-8bit-computer-rescue-8bit-computer-rescue" 0 -60 50 H V C CNN
+F1 "clock-module-v2-rescue_SW_Push-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue" 0 -60 50 H V C CNN
 F2 "" 0 200 50 H I C CNN
 F3 "" 0 200 50 H I C CNN
 DRAW
@@ -301,11 +301,11 @@ X 2 2 200 0 100 L 50 50 0 1 P
 ENDDRAW
 ENDDEF
 #
-# clock-module-with-prog-halt-rescue_SW_SPDT-8bit-computer-rescue-8bit-computer-rescue
+# clock-module-v2-rescue_SW_SPDT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue
 #
-DEF clock-module-with-prog-halt-rescue_SW_SPDT-8bit-computer-rescue-8bit-computer-rescue SW 0 0 Y N 1 F N
+DEF clock-module-v2-rescue_SW_SPDT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue SW 0 0 Y N 1 F N
 F0 "SW" 0 170 50 H V C CNN
-F1 "clock-module-with-prog-halt-rescue_SW_SPDT-8bit-computer-rescue-8bit-computer-rescue" 0 -200 50 H V C CNN
+F1 "clock-module-v2-rescue_SW_SPDT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue" 0 -200 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW
