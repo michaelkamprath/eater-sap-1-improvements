@@ -9,7 +9,7 @@ It turns that that the unenhanced SAP-1 as Ben Eater originally designed cannot 
 
 To illustrate the two loops needed, here is an implementation of factorial in Python that does not use any multiplication operation:
 
-```
+```python
 def factorial(n):
   result = n
   for i in range(n-1,1,-1):
@@ -20,7 +20,7 @@ def factorial(n):
 ```
 
 The challenge with this factorial algorithm is that is has two loops and a variable into which the results is accumulated. Handling the loops requires a number of instructions simply to move the iterated variable into the A register and then add or subtract 1 from it. This is what causes the factorial algorithm to not fit within the 16 bytes of memory available in the SAP-1. To illustrate this, here is how factorial would be implemented using he original SAP-1 instructions set if there was no RAM limitations:
-```
+```asm
  0: LDA 26      ; Load N value
  1: STA 24      ; Store N value in results variable
  2: SUB 21      ; Subtract 1 from I. On first pass, N and I are equivalent
@@ -69,7 +69,7 @@ Also, for clarity, load immediate instructions will be notated `SETX` where `X` 
 
 The SAP-1 uses a 4-bit instruction code and thus has room for the definition of 16 different instructions. The original instruction set has 12 defined instructions, leaving room for only 4 new instructions. For the factorial algorithm with the `I` and `J` registers, we would need the `DECI`, `DECJ`, `LDI`, and `CPIJ` instructions in addition to the original SAP-1 instruction set. With those new instructions defined and the corresponding I and J registers implemented in hardware, the factorial program then becomes:
 
-```
+```asm
  0: LDI 15    ; Load value N in register I
  1: LDA 15    ; Load register A with N value
  2: DECI      ; decrement I. start of outer I loop
