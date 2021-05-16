@@ -105,8 +105,47 @@ Purely for layout reasons, the system clock was redesigned to slightly reduce ch
 ### Breadboard Layout
 
 ### Connecting to Control Logic
+At this point in the breadboard CPU's evolution away from the original Eater SAP-1 design, the following control lines are in use:
+
+| Symbol | Title | Description |
+|:-:|:--|:--|
+| `SCr` | Step Counter Reset | Resets the microcode step counter to zero. |
+| `PCe` | Program Counter Enable | Increments the current value in the Program Counter |
+| `SUB` | Subtract | Signals that math operations should be subtraction |
+|`HILO` | High/Low Byte Selector | Controls which byte of a 16 bit register is being operated on when interacting with 8-bit data bus. **New** |
+| `HLT` | Halt | Stops the system clock. |
+| `OUT` | Output Data Bus | Writes data bus value to the display register |
+| `Ie` | I-Register Enable | Increments the value in the I register, or decrements is `SUB` is set |
+| `Je` | J-Register Enable | Increments the value in the J register, or decrements is `SUB` is set |
+| `ARe` | Address Register Enable | Increments the current value in the Address Register. **New**|
+| `PCi` | Program Counter In | Renamed `J` control line, which sets the program counter to the data bus value. Used in conjunction with `HILO`. **Updated** |
+| `∑f` | ALU Flags | Load flags register with current flags from ALU |
+| `If` | I Register Flags | Load flags register with current flags from I register |
+| `Jf` | J Register Flags | Load flags register with current flags from J register |
+| `RMi` | RAM Value In | Loads into RAM at the current memory address the current data bus value. No action of current memory address points to ROM. |
+| `IRi` | Instruction Register In | Loads into the instruction register the current data bus value. |
+| `Ai` | A Register In | Loads into the A register the current data bus value. |
+| `Bi` | B Register In | Loads into the B register the current data bus value. |
+| `Ii` | I Register In | Loads into the I register the current data bus value. |
+| `Ji` | J Register In | Loads into the J register the current data bus value. |
+| `ARi` | Address Register In | Loads into the address register the current data bus value. Used in conjunction with `HILO`. **Updated** |
+| `PCa` | Program Counter to Address Bus | Writes the current program counter value to the address bus. This replaces the original `PCo` control line which wrote the program counter value to the data bus. **New** |
+| `∑o` | ALU Out | Writes to the data bus the current ALU results value |
+| `ARa` | Address Register to Address Bus | Writes the current address register value to the address bus. **New** |
+| `ABo` | Address Bus Out | Writes to the data bus the current value being written to the address bus. Used in conjunction with the `HILO` control line.  **New** |
+| `RMo` | RAM Value Out | Writes to the data bus the memory value at the current memory address. |
+| `IRo` | Instruction Register Out | Writes to the data bus the lower bits of the instruction register that are not part of the instruction. |
+| `Ao` | A Register Out | Writes to the data bus the current value in the A register. |
+| `Bo` | B Register Out | Writes to the data bus the current value in the B register. |
+| `Io` | I Register Out | Writes to the data bus the current value in the I register. |
+| `Jo` | J Register Out | Writes to the data bus the current value in the J register. |
 
 ### Control Logic Microcode
+
+
+The micro code for the original Eater SAP-1 instruction set [can be viewed here](http://bit.ly/breadboard-cpu-16-bit-addressing-4-bit-instructions).
+
+
 
 ## Programming 
 
