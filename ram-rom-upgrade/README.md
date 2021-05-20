@@ -105,7 +105,7 @@ Purely for layout reasons, the system clock was redesigned to slightly reduce ch
 ### Breadboard Layout
 
 ### Connecting to Control Logic
-At this point in the breadboard CPU's evolution away from the original Eater SAP-1 design, the following control lines are in use:
+At this point in the breadboard CPU's evolution away from the original Eater SAP-1 design, the following control lines are in use. Some control lines are marked as **New** or **Updated** in comparison to the previous [Increment Registers](../increment-registers/) project.
 
 | Symbol | Title | Description |
 |:-:|:--|:--|
@@ -141,9 +141,37 @@ At this point in the breadboard CPU's evolution away from the original Eater SAP
 | `Jo` | J Register Out | Writes to the data bus the current value in the J register. |
 
 ### Control Logic Microcode
+The big challenge in developing the microcode for the this project is the fact that the memory addresses are now 16 bits. Since we are not upgrading the instruction register in this project, the instruction is still 4 bits, but a 16 bit address can't fit in the bottom 4 bits of the instruction byte (obviously), so now we are in the world of multibyte instructions. Furthermore, it will take more than one instruction step to move the 16 bit address through the 8 bit data bus. 
 
+When figuring out how to change the design to handle the above facts, probably the biggest decision to make is whether multibyte values should be saved in RAM/ROM as [big or little endian](https://en.wikipedia.org/wiki/Endianness). The endianness of a computer is really a design choice, one is not better than the other, but each have design implications. To make the choice here, I am going to consider what I am looking to do next. Eventually I do intend to implement multibyte math operations. To do this using an 8 bit ALU requires that the math operations start on the lest significant byte, and the moving forward through the higher order bytes, carrying the carry bit of each previous 8 bit math operation. This is more easily done with multibyte numbers that are arranged with little endian, as the first memory address of the multibyte number is the least significant byte. 
 
-The micro code for the original Eater SAP-1 instruction set [can be viewed here](http://bit.ly/breadboard-cpu-16-bit-addressing-4-bit-instructions).
+So given the choice of little endian, what does this mean for how instructions are laid out in memory and then acted on in microcode? To a get a general sense, let's investigate the `LDA` instruction to load the value at memory address 0xABCD into register A. Using the original Ben Eater SAP-1 4-bit instruction value, the instruction machine code would look like this:
+
+```
+ Byte:    0      1      2
+      | 0x1X | 0xCD | OxAB |
+          |    -+--   -+--
+          |     |      |
+  Instruction   LSB    MSB
+```
+
+The upper 4 bits of the first byte contain the instruction code of `0001`, or `0x1` in hex. The lower 4 bits of the first byte used to be the memory address for this command under the original Eater SAP-1 design, but now it is ignored in this transitional instruction set. The second byte is the least significant byte of the address, since the least significant byte goes first in little endian encoding. This leaves the third byte of the full instruction encoding to be the most significant byte of the address value. A similar pattern can be described for the other instructions.
+
+The next question is how the micro code will work when the full set of information for the instruction is spread across multiple bytes. Again, let's take a close look as to how the `LDA 0xABCD` instruction would be acted on in microcode:
+
+| Step | Active Control Lines | Description |
+|:-:|:--|:--|
+| 0 | `PCa`, `RMo`, `IRi` | At the start of any instruction, we expect the program counter is already pointing at the first byte of the next instruction, so the first task is to move the byte value at the program counter address into the instruction register. Here, we write the program counter value to the address buss (`PCa`), which will cause the memory to make available the value at that address. Then we write the memory value to the data bus (`RMo`) and write whats on the data bus into the instruction register (`IRi`). |
+| 1 | `PCe` | Increment the program counter to point at the next memory address. We don't know yet whether that memory address is the next instruction or a parameter to the current instruction. |
+| 2 | `PCa`, `RMo`, `ARi` | We now know we are doing the `LDA` instruction, which means the program a counter is now pointing at the LSB of the address from where to read the value into register A. So, we write the value at that address into the lower byte of the address register. Note that the `HILO` line is not LOW here (not activated), so that state in combination with `ARi` causes the data bus value to be written to the lower byte of the address register. |
+| 3 | `PCe` | We need to next get the MSB of the instruction parameter, so increment the program counter. |
+| 4 | `PCa`, `RMo`, `ARi`, `HILO` | We now write the value at the third byte in the instruction to the MSB of the address register. |
+| 5 | `PCe`, `ARa`, `RMo`, `Ai` | We increment the program counter so that it now points at the next instruction. At the same time we can write the address register value to the address bus (`ARa`), and then writing the memory value at that address to the data bus (`RMo`) which in turn is written into register A (`Ai`) |
+| 6 |  `SCr` | The instruction is done, so reset the step counter (`SCr`). |
+
+The rest of the instructions would follow similar patterns with respect to handling multi-byte instructions. The key point here is that the program counter is now incremented not just to get the next instruction, but to also fetch all bytes in the current instruction. 
+
+The microcode for the original Eater SAP-1 instruction set [can be viewed here](http://bit.ly/breadboard-cpu-16-bit-addressing-4-bit-instructions).
 
 
 
