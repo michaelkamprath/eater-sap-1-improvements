@@ -9,7 +9,7 @@ It turns that that the unenhanced SAP-1 as Ben Eater originally designed cannot 
 
 To illustrate the two loops needed, here is an implementation of factorial in Python that does not use any multiplication operation:
 
-```
+```python
 def factorial(n):
   result = n
   for i in range(n-1,1,-1):
@@ -20,33 +20,34 @@ def factorial(n):
 ```
 
 The challenge with this factorial algorithm is that is has two loops and a variable into which the results is accumulated. Handling the loops requires a number of instructions simply to move the iterated variable into the A register and then add or subtract 1 from it. This is what causes the factorial algorithm to not fit within the 16 bytes of memory available in the SAP-1. To illustrate this, here is how factorial would be implemented using he original SAP-1 instructions set if there was no RAM limitations:
-```
- 0: LDA 25      ; Load N value
- 1: STA 23      ; Store N value in results variable
- 2: SUB 20      ; Subtract 1 from I. On first pass, N and I are equivalent
- 3: JZ 17       ; If I is 0, end both loops
- 4: STA 21      ; Save current I value
- 5: STA 22      ; Initialize J value with current I value
- 6: LDA 23      ; Load results variable
- 7: STA 24      ; Store results variable to X variable
- 8: LDA 22      ; Load J loop index
- 9: SUB 20      ; Decrement J
-10: JZ 15       ; End J loops if J is zero
-11: LDA 23      ; Load results variable
-12: ADD 24      ; Add X variable to results variable
-13: STA 23      ; Save updated results variable
-14: JMP 8       ; restart J loop
-15: LDA 21      ; Load current I index
-16: JMP 2       ; restart I loop
-17: LDA 23      ; Load results variable
-18: OUT         ; Display results
-19: HLT         ; end program
-20:             ; storage location for value of 1
-21:             ; Storage location for I index variable
-22:             ; storage location for J index variable
-23:             ; storage location for results variable
-24:             ; storage location for X variable
-25:             ; storage location for N value
+```asm
+ 0: LDA 26      ; Load N value
+ 1: STA 24      ; Store N value in results variable
+ 2: SUB 21      ; Subtract 1 from I. On first pass, N and I are equivalent
+ 3: JZ 18       ; If I is 0, end both loops
+ 4: STA 22      ; Save current I value
+ 5: STA 23      ; Initialize J value with current I value
+ 6: LDA 24      ; Load results variable
+ 7: STA 25      ; Store results variable to X variable
+ 8: LDA 23      ; Load J loop index
+ 9: SUB 21      ; Decrement J
+10: JZ 16       ; End J loops if J is zero
+11: STA 23      ; Save decremented J value
+12: LDA 24      ; Load results variable
+13: ADD 25      ; Add X variable to results variable
+14: STA 24      ; Save updated results variable
+15: JMP 8       ; restart J loop
+16: LDA 22      ; Load current I index
+17: JMP 2       ; restart I loop
+18: LDA 24      ; Load results variable
+19: OUT         ; Display results
+20: HLT         ; end program
+21:             ; storage location for value of 1
+22:             ; Storage location for I index variable
+23:             ; storage location for J index variable
+24:             ; storage location for results variable
+25:             ; storage location for X variable
+26:             ; storage location for N value
 ```
 
 As can be seen, more than 16 bytes are needed to implement factorial in the original SAP-1 instruction set.
@@ -68,7 +69,7 @@ Also, for clarity, load immediate instructions will be notated `SETX` where `X` 
 
 The SAP-1 uses a 4-bit instruction code and thus has room for the definition of 16 different instructions. The original instruction set has 12 defined instructions, leaving room for only 4 new instructions. For the factorial algorithm with the `I` and `J` registers, we would need the `DECI`, `DECJ`, `LDI`, and `CPIJ` instructions in addition to the original SAP-1 instruction set. With those new instructions defined and the corresponding I and J registers implemented in hardware, the factorial program then becomes:
 
-```
+```asm
  0: LDI 15    ; Load value N in register I
  1: LDA 15    ; Load register A with N value
  2: DECI      ; decrement I. start of outer I loop
@@ -95,8 +96,8 @@ Here, the `A` register is equivalent to the python `results` variable, and memor
 The original SAP-1 only has capacity for 16 distinct control lines, and uses them all. In order to add additional registers as described, more control lines are needed. So we will need to expand the SAP-1 CPU control logic. [This project documented here](../expanded-control-logic/) describes the approach for adding additional control lines to the control logic of the SAP-1. 
 
 ### `I` and `J` Increment Registers
-Creating increment registers proved to be a mild challenge, mostly on the part of integrating the counting registers' `Z` and `C` flags with the rest of the computer. [This project documented here](../counting-registers/) describes both how to build the counting registers and how to integrate them into a SAP-1 with the expanded control logic. Implementing the factorial algorithm requires two of these counting registers, `I` and `J`.
+Creating increment registers proved to be a mild challenge, mostly on the part of integrating the counting registers' `Z` and `C` flags with the rest of the computer. [This project documented here](../increment-registers/) describes both how to build the counting registers and how to integrate them into a SAP-1 with the expanded control logic. Implementing the factorial algorithm requires two of these counting registers, `I` and `J`.
 
 ### Microcode
-The [microcode included with the original counting register implementation project](../counting-registers/microcode/) is the correct microcode for this project. 
+The [microcode included with the original counting register implementation project](../increment-registers/microcode/) is the correct microcode for this project. 
 
