@@ -1,0 +1,165 @@
+microcode_file_name: eeprom_microcode.bin
+control_lines:
+  SCr: 1
+  PCe: 2
+  SUB: 3
+  HLT: 6
+  OUT: 7
+  J: 13
+  SUMf: 14
+  RMi: 18
+  IRi: 19
+  Ai: 20
+  Bi: 21
+  ARi: 24
+  PCo: 25
+  SUMo: 26
+  RMo: 30
+  IRo: 31
+  Ao: 32
+  Bo: 33
+flags:
+  - zero
+  - carry
+instruction_prefix_steps:
+  - - flags:
+        zero: X
+        carry: X
+      control_lines:
+        ARi
+        PCo
+  - - flags:
+        zero: X
+        carry: X
+      control_lines:
+        PCe
+        IRi
+        RMo
+instructions:
+  NOP:
+    value: 0
+    steps:
+      - - control_lines:
+            SCr
+  LDA:
+    value: 1
+    steps:
+      - - control_lines:
+            ARi
+            IRo
+      - - control_lines:
+            Ai
+            RMo
+      - - control_lines:
+            SCr
+  ADD:
+    value: 2
+    steps:
+      - - control_lines:
+            ARi
+            IRo
+      - - control_lines:
+            Bi
+            RMo
+      - - control_lines:
+            SUMf
+            Ai
+            SUMo
+      - - control_lines:
+            SCr
+  SUB:
+    value: 3
+    steps:
+      - - control_lines:
+            ARi
+            IRo
+      - - control_lines:
+            Bi
+            RMo
+      - - control_lines:
+            SUMf
+            Ai
+            SUMo
+            SUB
+      - - control_lines:
+            SCr
+  STA:
+    value: 4
+    steps:
+      - - control_lines:
+            ARi
+            IRo
+      - - control_lines:
+            RMi
+            Ao
+      - - control_lines:
+            SCr
+  LDI:
+    value: 5
+    steps:
+      - - control_lines:
+            Ai
+            IRo
+      - - control_lines:
+            SCr
+  JMP:
+    value: 6
+    steps:
+      - - control_lines:
+            J
+            IRo
+      - - control_lines:
+            SCr
+  JC:
+    value: 7
+    steps:
+      - - flags:
+            zero: X
+            carry: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: X
+            carry: 1
+          control_lines:
+            J
+            IRo
+      - - flags:
+            zero: X
+            carry: 1
+          control_lines:
+            SCr
+  JZ:
+    value: 8
+    steps:
+      - - flags:
+            zero: 0
+            carry: X
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+            carry: X
+          control_lines:
+            J
+            IRo
+      - - flags:
+            zero: 1
+            carry: X
+          control_lines:
+            SCr
+  OUT:
+    value: 14
+    steps:
+      - - control_lines:
+            OUT
+            Ao
+      - - control_lines:
+            SCr
+  HLT:
+    value: 15
+    steps:
+      - - control_lines:
+            HLT
+      - - control_lines:
+            SCr
