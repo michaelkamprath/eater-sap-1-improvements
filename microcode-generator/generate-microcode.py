@@ -25,8 +25,8 @@ class Microcode:
         for step_num, step_config_list in enumerate(config_dict['instruction_prefix_steps']):
             for step_config in step_config_list:
                 mb = self._generate_final_microbits(step_config['control_lines'], microbits)
-                carry_flag = (step_config['flags']['carry'] if 'flags' in step_config else 'X')
-                zero_flag = (step_config['flags']['zero'] if 'flags' in step_config else 'X')
+                carry_flag = (step_config['flags'].get('carry', 'X') if 'flags' in step_config else 'X')
+                zero_flag = (step_config['flags'].get('zero', 'X') if 'flags' in step_config else 'X')
                 for instruction_val in instruction_values:
                     self._setBits(mb, instruction=instruction_val, step=step_num, carrry_flag=carry_flag, zero_flag=zero_flag)
 
@@ -48,8 +48,8 @@ class Microcode:
             mb,
             instruction=instr_val,
             step=step_num,
-            carrry_flag=(step_config['flags']['carry'] if 'flags' in step_config else 'X'),
-            zero_flag=(step_config['flags']['zero'] if 'flags' in step_config else 'X'),
+            carrry_flag=(step_config['flags'].get('carry', 'X') if 'flags' in step_config else 'X'),
+            zero_flag=(step_config['flags'].get('zero', 'X') if 'flags' in step_config else 'X'),
         )
 
     def _generate_final_microbits(self, control_line_list, microbits):
