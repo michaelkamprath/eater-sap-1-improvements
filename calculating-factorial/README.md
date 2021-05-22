@@ -96,8 +96,8 @@ Here, the `A` register is equivalent to the python `results` variable, and memor
 The original SAP-1 only has capacity for 16 distinct control lines, and uses them all. In order to add additional registers as described, more control lines are needed. So we will need to expand the SAP-1 CPU control logic. [This project documented here](../expanded-control-logic/) describes the approach for adding additional control lines to the control logic of the SAP-1. 
 
 ### `I` and `J` Increment Registers
-Creating increment registers proved to be a mild challenge, mostly on the part of integrating the counting registers' `Z` and `C` flags with the rest of the computer. [This project documented here](../counting-registers/) describes both how to build the counting registers and how to integrate them into a SAP-1 with the expanded control logic. Implementing the factorial algorithm requires two of these counting registers, `I` and `J`.
+Creating increment registers proved to be a mild challenge, mostly on the part of integrating the counting registers' `Z` and `C` flags with the rest of the computer. [This project documented here](../increment-registers/) describes both how to build the counting registers and how to integrate them into a SAP-1 with the expanded control logic. Implementing the factorial algorithm requires two of these counting registers, `I` and `J`.
 
 ### Microcode
-The [microcode included with the original counting register implementation project](../counting-registers/microcode/) is the correct microcode for this project. 
+The [microcode included with the original counting register implementation project](../increment-registers/microcode/) is the correct microcode for this project. 
 
