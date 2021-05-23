@@ -171,8 +171,7 @@ The next question is how the micro code will work when the full set of informati
 
 The rest of	 the instructions would follow similar patterns with respect to handling multi-byte instructions. The key point here is that the program counter is now incremented not just to get the next instruction, but to also fetch all bytes in the current instruction. 
 
-The microcode table for the original Eater SAP-1 instruction set [can be viewed here](http://bit.ly/breadboard-cpu-16-bit-addressing-4-bit-instructions).
-
+The microcode table for the original Eater SAP-1 instruction set [can be viewed here](http://bit.ly/breadboard-cpu-16-bit-addressing-4-bit-instructions). A YAML configuration for generating the control lines EEPROM images [can be found here](microcode/upgrade-ram-4-bit-instructions-microcode.yaml), which is used with [the microcode generator here](../microcode-generator).
 
 ## Programming 
 
