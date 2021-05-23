@@ -169,10 +169,9 @@ The next question is how the micro code will work when the full set of informati
 | 5 | `PCe`, `ARa`, `RMo`, `Ai` | We increment the program counter so that it now points at the next instruction. At the same time we can write the address register value to the address bus (`ARa`), and then writing the memory value at that address to the data bus (`RMo`) which in turn is written into register A (`Ai`) |
 | 6 |  `SCr` | The instruction is done, so reset the step counter (`SCr`). |
 
-The rest of the instructions would follow similar patterns with respect to handling multi-byte instructions. The key point here is that the program counter is now incremented not just to get the next instruction, but to also fetch all bytes in the current instruction. 
+The rest of	 the instructions would follow similar patterns with respect to handling multi-byte instructions. The key point here is that the program counter is now incremented not just to get the next instruction, but to also fetch all bytes in the current instruction. 
 
-The microcode for the original Eater SAP-1 instruction set [can be viewed here](http://bit.ly/breadboard-cpu-16-bit-addressing-4-bit-instructions).
-
+The microcode table for the original Eater SAP-1 instruction set [can be viewed here](http://bit.ly/breadboard-cpu-16-bit-addressing-4-bit-instructions).
 
 
 ## Programming 
