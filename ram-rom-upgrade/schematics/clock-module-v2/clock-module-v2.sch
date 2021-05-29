@@ -784,10 +784,10 @@ Wire Wire Line
 Wire Wire Line
 	2700 6000 3650 6000
 $Comp
-L Timer:LM556 U?
+L Timer:LM556 U2
 U 1 1 607D2826
 P 4900 2100
-F 0 "U?" H 5175 2450 50  0000 C CNN
+F 0 "U2" H 5175 2450 50  0000 C CNN
 F 1 "LM556" H 4900 2100 50  0000 C CNN
 F 2 "" H 4900 2100 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm556.pdf" H 4900 2100 50  0001 C CNN
@@ -795,10 +795,10 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm556.pdf" H 4900 2100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Timer:LM556 U?
+L Timer:LM556 U2
 U 2 1 607D78F1
 P 7950 2100
-F 0 "U?" H 8225 2450 50  0000 C CNN
+F 0 "U2" H 8225 2450 50  0000 C CNN
 F 1 "LM556" H 7950 2100 50  0000 C CNN
 F 2 "" H 7950 2100 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm556.pdf" H 7950 2100 50  0001 C CNN
