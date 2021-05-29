@@ -611,8 +611,6 @@ Connection ~ 4350 1875
 Wire Wire Line
 	4100 2325 4375 2325
 Wire Wire Line
-	3425 1850 3425 1800
-Wire Wire Line
 	5675 2725 5675 3200
 Connection ~ 5675 3200
 Wire Wire Line
@@ -854,8 +852,6 @@ Connection ~ 8750 5650
 Wire Wire Line
 	7575 3200 5675 3200
 Wire Wire Line
-	3425 1800 4675 1800
-Wire Wire Line
 	3200 1000 4575 1000
 Wire Wire Line
 	6575 2325 7075 2325
@@ -864,7 +860,6 @@ Wire Wire Line
 Connection ~ 7075 2325
 Wire Wire Line
 	4675 1800 6850 1800
-Connection ~ 4675 1800
 Wire Wire Line
 	8750 5650 10925 5650
 Wire Wire Line
@@ -1101,10 +1096,10 @@ Connection ~ 8275 1375
 Wire Wire Line
 	8275 1375 8275 1825
 $Comp
-L ram-rom-upgrade-symbols:74LS257 U?
+L ram-rom-upgrade-symbols:74LS257 U9
 U 1 1 607C5143
 P 7275 4750
-F 0 "U?" V 7525 3925 50  0000 R CNN
+F 0 "U9" V 7525 3925 50  0000 R CNN
 F 1 "74LS257" V 7275 4900 50  0000 R CNN
 F 2 "" H 7275 4750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS257" H 7275 4750 50  0001 C CNN
@@ -1112,14 +1107,35 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS257" H 7275 4750 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L ram-rom-upgrade-symbols:74LS257 U?
+L ram-rom-upgrade-symbols:74LS257 U5
 U 1 1 60814B6F
 P 5250 4750
-F 0 "U?" V 5500 3925 50  0000 R CNN
+F 0 "U5" V 5500 3925 50  0000 R CNN
 F 1 "74LS257" V 5250 4900 50  0000 R CNN
 F 2 "" H 5250 4750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS257" H 5250 4750 50  0001 C CNN
 	1    5250 4750
 	0    -1   -1   0   
 $EndComp
+$Comp
+L 74xx:74LS04 U3
+U 1 1 60BA129D
+P 3500 750
+F 0 "U3" H 3450 750 50  0000 C CNN
+F 1 "74LS04" H 3500 976 50  0001 C CNN
+F 2 "" H 3500 750 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 3500 750 50  0001 C CNN
+	1    3500 750 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3200 1000 3200 750 
+Wire Wire Line
+	3800 750  3800 1800
+Wire Wire Line
+	3800 1800 3425 1800
+Wire Wire Line
+	3425 1800 3425 1850
+Text Notes 3425 625  0    39   ~ 0
+Use one of the extra inverters\nfrom the program counter build.
 $EndSCHEMATC
