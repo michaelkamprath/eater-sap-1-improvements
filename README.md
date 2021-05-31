@@ -11,13 +11,13 @@ Multiple independent projects are described in this repository. It is recommende
 3. **[Expanding the SAP-1 Control Logic](./expanded-control-logic/)** - The original SAP-1 can control at most 16 control lines in the computer. This project add more control lines that and sets the SAP-1 up for other future expansions. 
 4. **[Adding Two General Purpose Increment Registers to the SAP-1](./increment-registers/)** - This project adds to the SAP-1 two general purpose registers that have the ability to increment or decrement the value they contain.
 5. **[Calculating Factorial](./calculating-factorial/)** - This project builds on everything done up to this point to enable the SAP-1 to calculating the _n!_ math algorithm. 
+6. **[Adding 64K of RAM and ROM](./ram-rom-upgrade/)** - This project changes the SAP-1's memory address space to 16 bit, and then splits the address space between ROM and RAM.Still maintains the original 4-bit instructions, as this will be changed in a later project. This project also introduces an assembler to help build the ROM code. 
 
 
 # Future Projects
 The following projects are planned but have not been designed yet, however, I have put sufficient though into them or have seen other attempt them to be convinced that they are viable:
-* Expanding the RAM to use 8-bit addressing
-* Adding a boot ROM
 * Improved ALU
+* Adding a stack pointer
 * Adding a 8x8 LED pixel display
 * Interfacing with the TMS9918a video processor (?)
 * Interfacing with a 80's tech sound chip

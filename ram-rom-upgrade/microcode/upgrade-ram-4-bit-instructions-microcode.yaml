@@ -1,13 +1,15 @@
-microcode_file_name: microcode_with_counters.bin
+microcode_file_name: upgraded_ram_4bit_instrutions_microcode.bin
 control_lines:
   SCr: 1
   PCe: 2
   SUB: 3
+  HILO: 4
   HLT: 6
   OUT: 7
   Ie: 8
   Je: 9
-  J: 13
+  ARe: 10
+  PCi: 13
   SUMf: 14
   If: 15
   Jf: 16
@@ -18,8 +20,10 @@ control_lines:
   Ii: 22
   Ji: 23
   ARi: 24
-  PCo: 25
+  PCa: 25
   SUMo: 26
+  ARa: 27
+  ABo: 28
   RMo: 30
   IRo: 31
   Ao: 32
@@ -30,19 +34,12 @@ flags:
   - zero
   - carry
 instruction_prefix_steps:
-  - - flags:
-        zero: X
-        carry: X
-      control_lines:
-        ARi
-        PCo
-  - - flags:
-        zero: X
-        carry: X
-      control_lines:
-        PCe
+  - - control_lines:
         IRi
+        PCa
         RMo
+  - - control_lines:
+        PCe
 instructions:
   NOP:
     value: 0
@@ -54,20 +51,38 @@ instructions:
     steps:
       - - control_lines:
             ARi
-            IRo
-      - - control_lines:
-            Ai
+            PCa
             RMo
       - - control_lines:
-            SCr
+            PCe
+      - - control_lines:
+            HILO
+            ARi
+            PCa
+            RMo
+      - - control_lines:
+            PCe
+            Ai
+            ARa
+            RMo
   ADD:
     value: 2
     steps:
       - - control_lines:
             ARi
-            IRo
+            PCa
+            RMo
       - - control_lines:
+            PCe
+      - - control_lines:
+            HILO
+            ARi
+            PCa
+            RMo
+      - - control_lines:
+            PCe
             Bi
+            ARa
             RMo
       - - control_lines:
             SUMf
@@ -80,15 +95,25 @@ instructions:
     steps:
       - - control_lines:
             ARi
-            IRo
-      - - control_lines:
-            Bi
+            PCa
             RMo
       - - control_lines:
+            PCe
+      - - control_lines:
+            HILO
+            ARi
+            PCa
+            RMo
+      - - control_lines:
+            PCe
+            Bi
+            ARa
+            RMo
+      - - control_lines:
+            SUB
             SUMf
             Ai
             SUMo
-            SUB
       - - control_lines:
             SCr
   STA:
@@ -96,9 +121,19 @@ instructions:
     steps:
       - - control_lines:
             ARi
-            IRo
+            PCa
+            RMo
       - - control_lines:
+            PCe
+      - - control_lines:
+            HILO
+            ARi
+            PCa
+            RMo
+      - - control_lines:
+            PCe
             RMi
+            ARa
             Ao
       - - control_lines:
             SCr
@@ -107,56 +142,113 @@ instructions:
     steps:
       - - control_lines:
             Ai
-            IRo
+            PCa
+            RMo
+      - - control_lines:
+            PCe
       - - control_lines:
             SCr
   JMP:
     value: 6
     steps:
       - - control_lines:
-            J
-            IRo
+            Bi
+            PCa
+            RMo
+      - - control_lines:
+            PCe
+      - - control_lines:
+            HILO
+            PCi
+            PCa
+            RMo
+      - - control_lines:
+            PCi
+            Bo
       - - control_lines:
             SCr
   JC:
     value: 7
     steps:
       - - flags:
-            zero: X
+            carry: 0
+          control_lines:
+            PCe
+        - flags:
+            carry: 1
+          control_lines:
+            Bi
+            PCa
+            RMo
+      - - flags:
+            carry: 0
+          control_lines:
+            PCe
+        - flags:
+            carry: 1
+          control_lines:
+            PCe
+      - - flags:
             carry: 0
           control_lines:
             SCr
         - flags:
-            zero: X
             carry: 1
           control_lines:
-            J
-            IRo
-      - - flags:
-            zero: X
+            HILO
+            PCi
+            PCa
+            RMo
+      - - falgs:
             carry: 1
           control_lines:
-            SCr
+            PCi
+            Bo
+      - - falgs:
+            carry: 1
+          control_lines:
+            SCr         
   JZ:
     value: 8
     steps:
       - - flags:
             zero: 0
-            carry: X
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            Bi
+            PCa
+            RMo
+      - - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCe
+      - - flags:
+            zero: 0
           control_lines:
             SCr
         - flags:
             zero: 1
-            carry: X
           control_lines:
-            J
-            IRo
-      - - flags:
+            HILO
+            PCi
+            PCa
+            RMo
+      - - falgs:
             zero: 1
-            carry: X
           control_lines:
-            SCr
-  LDI:
+            PCi
+            Bo
+      - - falgs:
+            zero: 1
+          control_lines:
+            SCr   LDI:
     value: 9
     steps:
       - - control_lines:
@@ -167,6 +259,25 @@ instructions:
             RMo
       - - control_lines:
             SCr
+  LDI:
+    value: 9
+    steps:
+      - - control_lines:
+            ARi
+            PCa
+            RMo
+      - - control_lines:
+            PCe
+      - - control_lines:
+            HILO
+            ARi
+            PCa
+            RMo
+      - - control_lines:
+            PCe
+            Ii
+            ARa
+            RMo
   MVAI:
     value: 10
     steps:
