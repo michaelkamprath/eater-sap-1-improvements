@@ -65,6 +65,8 @@ instructions:
             Ai
             ARa
             RMo
+      - - control_lines:
+            SCr
   ADD:
     value: 2
     steps:
@@ -199,12 +201,12 @@ instructions:
             PCi
             PCa
             RMo
-      - - falgs:
+      - - flags:
             carry: 1
           control_lines:
             PCi
             Bo
-      - - falgs:
+      - - flags:
             carry: 1
           control_lines:
             SCr         
@@ -240,25 +242,15 @@ instructions:
             PCi
             PCa
             RMo
-      - - falgs:
+      - - flags:
             zero: 1
           control_lines:
             PCi
             Bo
-      - - falgs:
+      - - flags:
             zero: 1
           control_lines:
-            SCr   LDI:
-    value: 9
-    steps:
-      - - control_lines:
-            ARi
-            IRo
-      - - control_lines:
-            Ii
-            RMo
-      - - control_lines:
-            SCr
+            SCr   
   LDI:
     value: 9
     steps:
