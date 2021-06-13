@@ -209,7 +209,7 @@ instructions:
       - - flags:
             carry: 1
           control_lines:
-            SCr         
+            SCr
   JZ:
     value: 8
     steps:
