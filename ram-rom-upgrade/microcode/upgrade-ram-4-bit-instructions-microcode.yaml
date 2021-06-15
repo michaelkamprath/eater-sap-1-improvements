@@ -38,7 +38,6 @@ instruction_prefix_steps:
         IRi
         PCa
         RMo
-  - - control_lines:
         PCe
 instructions:
   NOP:
@@ -53,7 +52,6 @@ instructions:
             ARi
             PCa
             RMo
-      - - control_lines:
             PCe
       - - control_lines:
             HILO
@@ -74,7 +72,6 @@ instructions:
             ARi
             PCa
             RMo
-      - - control_lines:
             PCe
       - - control_lines:
             HILO
@@ -99,7 +96,6 @@ instructions:
             ARi
             PCa
             RMo
-      - - control_lines:
             PCe
       - - control_lines:
             HILO
@@ -125,7 +121,6 @@ instructions:
             ARi
             PCa
             RMo
-      - - control_lines:
             PCe
       - - control_lines:
             HILO
@@ -157,7 +152,6 @@ instructions:
             Bi
             PCa
             RMo
-      - - control_lines:
             PCe
       - - control_lines:
             HILO
@@ -182,18 +176,11 @@ instructions:
             Bi
             PCa
             RMo
-      - - flags:
-            carry: 0
-          control_lines:
-            PCe
-        - flags:
-            carry: 1
-          control_lines:
             PCe
       - - flags:
             carry: 0
           control_lines:
-            SCr
+            PCe
         - flags:
             carry: 1
           control_lines:
@@ -202,6 +189,10 @@ instructions:
             PCa
             RMo
       - - flags:
+            carry: 0
+          control_lines:
+            SCr
+        - flags:
             carry: 1
           control_lines:
             PCi
@@ -223,18 +214,11 @@ instructions:
             Bi
             PCa
             RMo
-      - - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
             PCe
       - - flags:
             zero: 0
           control_lines:
-            SCr
+            PCe
         - flags:
             zero: 1
           control_lines:
@@ -243,6 +227,10 @@ instructions:
             PCa
             RMo
       - - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
             zero: 1
           control_lines:
             PCi
@@ -258,7 +246,6 @@ instructions:
             ARi
             PCa
             RMo
-      - - control_lines:
             PCe
       - - control_lines:
             HILO
@@ -270,6 +257,8 @@ instructions:
             Ii
             ARa
             RMo
+      - - control_lines:
+            SCr
   MVAI:
     value: 10
     steps:
