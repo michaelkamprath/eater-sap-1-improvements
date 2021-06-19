@@ -7,7 +7,7 @@
 init:
     seta 0              ; initialize display
     out
-    sta f_n_1           ; init F_n-1
+    sta f_n-1           ; init F_n-1
     seta 1              
     sta f_n             ; init F_n
     ldi max_n           ; init loop counter
@@ -15,11 +15,11 @@ init:
 start:
     lda f_n             ; load F_n value into A
     sta temp_val        ; store F_n to temp variable 
-    add f_n_1           ; add F_n-1 to F_n to find new F_n
+    add f_n-1           ; add F_n-1 to F_n to find new F_n
     sta f_n             ; store the new F_n
     out                 ; diplay  fibonacci number
     lda temp_val        ; load the old F_n to write to F_n-1
-    sta f_n_1           ; save the old F_n to F_n-1
+    sta f_n-1           ; save the old F_n to F_n-1
     deci                ; decrement loop counter
     jz end              ; if at zero, we are done
     jmp start           ; restart loop

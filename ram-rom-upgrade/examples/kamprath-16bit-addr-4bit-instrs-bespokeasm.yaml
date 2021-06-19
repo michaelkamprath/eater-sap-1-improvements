@@ -7,7 +7,7 @@ argument_config:
     byte_align: true
     bit_size: 8
   address:
-    type: numeric
+    type: expression
     byte_align: true
     bit_size: 16
 instructions:
