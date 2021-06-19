@@ -105,13 +105,13 @@ Purely for layout reasons, the system clock was redesigned to slightly reduce ch
 * [AT28C256](https://www.mouser.com/datasheet/2/268/doc0006-1108095.pdf) - 32K x 8 bit EEPROM. Any 32K or larger EPROM could be used with minimal modification to the wiring. EEPROMs are convenient for reprogramming, which we will likely do often.
 * [74LS161](https://www.ti.com/lit/ds/symlink/sn54ls161a-sp.pdf) - A 4-bit counter
 * [74LS245](https://www.ti.com/lit/ds/symlink/sn54ls245-sp.pdf) - Octal Bus Transceivers With 3-State Outputs
-* 74LS00
-* 74LS04
-* 74LS32
-* 74LS157
-* 74LS257
-* 555
-* 556
+* [74LS00](https://www.ti.com/lit/ds/symlink/sn74ls00.pdf) - Quadruple 2-Input NAND Gates
+* [74LS04](https://www.ti.com/lit/ds/symlink/sn74ls04.pdf) - Hex Inverters
+* [74LS32](https://www.ti.com/lit/ds/symlink/sn74ls32.pdf) - Quadruple 2-input OR gates
+* [74LS157](https://www.ti.com/lit/ds/symlink/sn74ls157.pdf) - Quadruple 2-to-1 Line Data Selector/Multiplexer
+* [74LS257](https://www.ti.com/lit/ds/symlink/sn74ls257b.pdf) - Quadruple 2-to-1 Line Data Selector/Multiplexer with Tristate Output
+* [555](https://www.ti.com/lit/ds/symlink/lm555.pdf) - LM555 Timer
+* [556](https://www.jameco.com/Jameco/Products/ProdDS/24328.pdf) - LM556 Dual Timer
 
 ## Integration with Breadboard Computer
 
