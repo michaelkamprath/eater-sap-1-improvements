@@ -14,17 +14,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L instruction-register-symbols:27C1024 U?
-U 1 1 60D31697
-P 3925 2975
-F 0 "U?" V 4725 3050 50  0000 C CNN
-F 1 "27C1024" V 4325 1425 50  0000 C CNN
-F 2 "" H 4000 2900 50  0001 C CNN
-F 3 "" H 4000 2900 50  0001 C CNN
-	1    3925 2975
-	0    1    1    0   
-$EndComp
-$Comp
 L instruction-register-symbols:74HCT238 U?
 U 1 1 60DA7B46
 P 5450 4550
@@ -322,17 +311,6 @@ CL_26
 Text HLabel 4350 6150 3    50   Input ~ 0
 CL_27
 $Comp
-L instruction-register-symbols:27C1024 U?
-U 1 1 60E15E62
-P 8900 2975
-F 0 "U?" V 9700 3050 50  0000 C CNN
-F 1 "27C1024" V 9325 1425 50  0000 C CNN
-F 2 "" H 8975 2900 50  0001 C CNN
-F 3 "" H 8975 2900 50  0001 C CNN
-	1    8900 2975
-	0    1    1    0   
-$EndComp
-$Comp
 L instruction-register-symbols:74HCT238 U?
 U 1 1 60E15E68
 P 10425 4550
@@ -629,8 +607,6 @@ Text HLabel 9250 6150 3    50   Input ~ 0
 CL_53
 Text HLabel 9325 6150 3    50   Input ~ 0
 CL_54
-Wire Wire Line
-	1475 3325 1475 3475
 $Comp
 L power:GND #PWR?
 U 1 1 60E3EE03
@@ -642,7 +618,6 @@ F 3 "" H 1475 3475 50  0001 C CNN
 	1    1475 3475
 	1    0    0    -1  
 $EndComp
-Connection ~ 1475 3475
 $Comp
 L power:GND #PWR?
 U 1 1 60E3F44C
@@ -845,23 +820,7 @@ Wire Wire Line
 	2325 1675 2325 1900
 Connection ~ 2325 1900
 Wire Wire Line
-	1900 2875 1900 2800
-Wire Wire Line
-	1900 2800 1775 2800
-Wire Wire Line
-	1475 2800 1475 3325
-Connection ~ 1475 3325
-Wire Wire Line
-	1775 2875 1775 2800
-Connection ~ 1775 2800
-Wire Wire Line
-	1775 2800 1475 2800
-Wire Wire Line
-	2025 2875 2025 2800
-Wire Wire Line
-	2025 2800 2225 2800
-Wire Wire Line
-	4175 2800 4175 3325
+	4175 2725 4175 3325
 Wire Wire Line
 	4175 3475 4025 3475
 Wire Wire Line
@@ -883,10 +842,6 @@ F 3 "" H 4350 3325 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7000 2750 9150 2750
-Wire Wire Line
-	9150 2750 9150 3325
-Wire Wire Line
 	9150 3475 9000 3475
 Wire Wire Line
 	9000 3325 9150 3325
@@ -907,28 +862,12 @@ F 3 "" H 9325 3325 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7000 2750 7000 2875
-Wire Wire Line
-	2225 2875 2225 2800
-Connection ~ 2225 2800
-Wire Wire Line
-	2225 2800 4175 2800
-Wire Wire Line
-	6450 3325 6450 2800
-Wire Wire Line
-	6450 2800 6750 2800
+	6450 2800 6650 2800
 Wire Wire Line
 	6750 2800 6750 2875
-Wire Wire Line
-	6750 2800 6875 2800
-Wire Wire Line
-	6875 2800 6875 2875
 Connection ~ 6750 2800
 Wire Wire Line
 	7200 2875 7200 2800
-Wire Wire Line
-	7200 2800 6875 2800
-Connection ~ 6875 2800
 $Comp
 L power:GND #PWR?
 U 1 1 6136464F
@@ -966,9 +905,6 @@ $EndComp
 Connection ~ 11050 4100
 Text Notes 1375 6975 0    79   ~ 0
 All control lines should be each be connected to an LED and current\nlimiting resistor combo as an indicator of the control line being HIGH.
-Wire Wire Line
-	6450 3325 6450 3475
-Connection ~ 6450 3325
 $Comp
 L power:GND #PWR?
 U 1 1 60CF9E7D
@@ -980,9 +916,74 @@ F 3 "" H 6450 3475 50  0001 C CNN
 	1    6450 3475
 	1    0    0    -1  
 $EndComp
-Connection ~ 6450 3475
 Text Notes 1575 3925 0    59   ~ 0
 LEFT
 Text Notes 6550 3925 0    59   ~ 0
 RIGHT
+Wire Wire Line
+	1475 2800 1475 3325
+$Comp
+L instruction-register-symbols:27C4096 U?
+U 1 1 60DAC648
+P 3925 2975
+F 0 "U?" V 4700 3000 50  0000 L CNN
+F 1 "27C4096" V 4325 1625 50  0000 L CNN
+F 2 "" H 4000 2900 50  0001 C CNN
+F 3 "" H 4000 2900 50  0001 C CNN
+	1    3925 2975
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1475 2800 1675 2800
+Wire Wire Line
+	1675 2800 1675 2875
+Wire Wire Line
+	1675 2800 1775 2800
+Wire Wire Line
+	1775 2800 1775 2875
+Connection ~ 1675 2800
+Connection ~ 1775 2800
+Wire Wire Line
+	2125 2800 2125 2875
+Wire Wire Line
+	6450 2800 6450 3325
+$Comp
+L instruction-register-symbols:27C4096 U?
+U 1 1 60E3BD23
+P 8900 2975
+F 0 "U?" V 9675 3000 50  0000 L CNN
+F 1 "27C4096" V 9300 1625 50  0000 L CNN
+F 2 "" H 8975 2900 50  0001 C CNN
+F 3 "" H 8975 2900 50  0001 C CNN
+	1    8900 2975
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6750 2800 7000 2800
+Wire Wire Line
+	7100 2875 7100 2800
+Connection ~ 7100 2800
+Wire Wire Line
+	7100 2800 7200 2800
+Wire Wire Line
+	7000 2875 7000 2800
+Connection ~ 7000 2800
+Wire Wire Line
+	7000 2800 7100 2800
+Wire Wire Line
+	6650 2875 6650 2800
+Connection ~ 6650 2800
+Wire Wire Line
+	6650 2800 6750 2800
+Wire Wire Line
+	1775 2800 2125 2800
+Wire Wire Line
+	2025 2725 2025 2875
+Wire Wire Line
+	2025 2725 4175 2725
+Wire Wire Line
+	2125 2800 2225 2800
+Wire Wire Line
+	2225 2800 2225 2875
+Connection ~ 2125 2800
 $EndSCHEMATC

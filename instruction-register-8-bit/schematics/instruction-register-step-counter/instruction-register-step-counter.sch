@@ -211,8 +211,6 @@ CLK
 Text HLabel 9825 2500 2    50   Input ~ 0
 IRi
 Wire Wire Line
-	9825 2300 8675 2300
-Wire Wire Line
 	9825 2500 8575 2500
 Wire Wire Line
 	7975 2400 7975 3600
@@ -412,18 +410,13 @@ Wire Wire Line
 	4850 3475 4850 3600
 Connection ~ 4950 3475
 Wire Wire Line
-	8675 2300 8675 1900
+	8650 1975 5825 1975
 Wire Wire Line
-	8675 1900 5825 1900
-Wire Wire Line
-	5825 1900 5825 3200
+	5825 1975 5825 3200
 Wire Wire Line
 	5825 3200 4750 3200
 Wire Wire Line
 	4750 3200 4750 3600
-Connection ~ 8675 2300
-Wire Wire Line
-	8675 2300 8575 2300
 $Comp
 L power:GND #PWR?
 U 1 1 60D63CEC
@@ -599,4 +592,12 @@ Wire Wire Line
 Wire Wire Line
 	7875 1700 7875 3600
 Connection ~ 2425 1700
+Wire Wire Line
+	8575 2300 9825 2300
+Text HLabel 9825 2100 2    50   Input ~ 0
+~CLK
+Wire Wire Line
+	9825 2100 8650 2100
+Wire Wire Line
+	8650 2100 8650 1975
 $EndSCHEMATC

@@ -435,4 +435,168 @@ F 3 "" H 4250 4100 50  0001 C CNN
 	1    4250 4100
 	1    0    0    -1  
 $EndComp
+Text HLabel 5550 6075 3    50   Output ~ 0
+SC_0
+Text HLabel 5450 6075 3    50   Output ~ 0
+SC_1
+Text HLabel 5350 6075 3    50   Output ~ 0
+SC_2
+Wire Wire Line
+	5550 4600 5550 5550
+Wire Wire Line
+	5450 4600 5450 5650
+Wire Wire Line
+	5350 4600 5350 5750
+Wire Wire Line
+	4575 5550 5550 5550
+Connection ~ 5550 5550
+Wire Wire Line
+	5550 5550 5550 6075
+Wire Wire Line
+	4575 5650 5450 5650
+Connection ~ 5450 5650
+Wire Wire Line
+	5450 5650 5450 6075
+Wire Wire Line
+	4575 5750 5350 5750
+Connection ~ 5350 5750
+Wire Wire Line
+	5350 5750 5350 6075
+$Comp
+L instruction-register-symbols:BarGraphLED_8P BAR?
+U 1 1 60D969A0
+P 3375 5800
+F 0 "BAR?" H 3375 5233 50  0000 C CNN
+F 1 "BarGraphLED_8P" H 3375 5324 50  0000 C CNN
+F 2 "" H 3375 5800 50  0001 C CNN
+F 3 "" H 3375 5800 50  0001 C CNN
+	1    3375 5800
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3875 5500 3575 5500
+Wire Wire Line
+	3875 5600 3575 5600
+Wire Wire Line
+	3875 5700 3575 5700
+Wire Wire Line
+	3875 5800 3575 5800
+Wire Wire Line
+	3875 5900 3575 5900
+Wire Wire Line
+	3875 6000 3575 6000
+Wire Wire Line
+	3875 6100 3575 6100
+Wire Wire Line
+	3575 6200 3875 6200
+$Comp
+L Device:R_Network08_US RN?
+U 1 1 60DB642E
+P 2650 5800
+F 0 "RN?" V 3175 5800 50  0000 C CNN
+F 1 "R_Network08_US" V 3084 5800 50  0000 C CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 3125 5800 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 2650 5800 50  0001 C CNN
+	1    2650 5800
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2850 5500 3175 5500
+Wire Wire Line
+	2850 5600 3175 5600
+Wire Wire Line
+	3175 5700 2850 5700
+Wire Wire Line
+	2850 5800 3175 5800
+Wire Wire Line
+	3175 5900 2850 5900
+Wire Wire Line
+	2850 6000 3175 6000
+Wire Wire Line
+	3175 6100 2850 6100
+Wire Wire Line
+	2850 6200 3175 6200
+$Comp
+L power:GND #PWR?
+U 1 1 60DDAC2E
+P 2450 6325
+F 0 "#PWR?" H 2450 6075 50  0001 C CNN
+F 1 "GND" H 2455 6152 50  0000 C CNN
+F 2 "" H 2450 6325 50  0001 C CNN
+F 3 "" H 2450 6325 50  0001 C CNN
+	1    2450 6325
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2450 6325 2450 6200
+$Comp
+L power:GND #PWR?
+U 1 1 60DE01F3
+P 7575 4100
+F 0 "#PWR?" H 7575 3850 50  0001 C CNN
+F 1 "GND" H 7580 3927 50  0000 C CNN
+F 2 "" H 7575 4100 50  0001 C CNN
+F 3 "" H 7575 4100 50  0001 C CNN
+	1    7575 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR?
+U 1 1 60DE082D
+P 9175 4100
+F 0 "#PWR?" H 9175 3950 50  0001 C CNN
+F 1 "VCC" H 9190 4273 50  0000 C CNN
+F 2 "" H 9175 4100 50  0001 C CNN
+F 3 "" H 9175 4100 50  0001 C CNN
+	1    9175 4100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4575 6200 4650 6200
+Wire Wire Line
+	4650 6200 4650 6525
+Wire Wire Line
+	4650 6525 4225 6525
+Wire Wire Line
+	4575 6100 4650 6100
+Wire Wire Line
+	4650 6100 4650 6200
+Connection ~ 4650 6200
+Wire Wire Line
+	4575 6300 4725 6300
+Wire Wire Line
+	4725 6300 4725 5150
+Wire Wire Line
+	4725 5150 4225 5150
+Wire Wire Line
+	4225 5150 4225 5225
+$Comp
+L power:VCC #PWR?
+U 1 1 60DEFCE4
+P 4225 5150
+F 0 "#PWR?" H 4225 5000 50  0001 C CNN
+F 1 "VCC" H 4240 5323 50  0000 C CNN
+F 2 "" H 4225 5150 50  0001 C CNN
+F 3 "" H 4225 5150 50  0001 C CNN
+	1    4225 5150
+	1    0    0    -1  
+$EndComp
+Connection ~ 4225 5150
+$Comp
+L power:GND #PWR?
+U 1 1 60DF031A
+P 4650 6525
+F 0 "#PWR?" H 4650 6275 50  0001 C CNN
+F 1 "GND" H 4655 6352 50  0000 C CNN
+F 2 "" H 4650 6525 50  0001 C CNN
+F 3 "" H 4650 6525 50  0001 C CNN
+	1    4650 6525
+	1    0    0    -1  
+$EndComp
+Connection ~ 4650 6525
+Wire Wire Line
+	2425 1700 7875 1700
+Wire Wire Line
+	7875 1700 7875 3600
+Connection ~ 2425 1700
 $EndSCHEMATC
