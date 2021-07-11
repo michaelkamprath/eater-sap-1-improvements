@@ -59,13 +59,19 @@ To implement this, a 28C256 EEPROM will be used for the ROM and a UM61512AK-15 w
 
 One design challenge that had to be overcome is that the UM61512AK-15 uses the same pin for both data input and data output. This creates the potential for bus contention if the RAM is outputting a value at the moment a value is read in from the data bus. Bus contention could also occur if the 74LS157 2-to-2 multiplexers are used to switch between input from the DIP switches and input from the data bus. The reason for this is that when inactive, the 74LS157's output pins are set to LOW. This creates a short circuit if the RAM or ROM chip are writing a HIGH to any data line. In order to address these issues, 74LS257 2-to-1 multiplexers are used instead, as these chips have a tri-state output and places the output lines to high impedance if the chip is set to inactive. Then, logic is added to ensure that the 74LS257s are only active when the RAM chip is reading from the data lines. Otherwise, the 74LS257s will be set inactive so bus contention does not develop when either the RAM or ROM are writing to the data lines.
 
+![16-bit RAM/ROM Module](documentation/ram-rom-module-schematic.png)
+
 ### Program Counter
 Since this memory module has a 16 bit address space and I wish to make all of it available to code, the program counter itself needs to be a 16 bit counter. This is accomplished by using four 74LS161 4-bit counters. The design is similar to the original Eater SAP-1 program counter, but with four counters rather than one.
 
 Another difference is in how the program counter reads in data from the data bus for the purpose of jump instructions. Since the program counter is 16 bit and the data bus is 8 bit, setting the program counter value from the data bus requires two read operations. To signal this, a `PCi` signal is used to indicate that the program counter should read in from the bus, and a `HILO` signal is used to indicate whether the bus value should be placed into the high byte or low byte of the program counter. The `HILO` signal is in fact reused through out the breadboard computer's design to generally indicate whether the operation pertains to the high or low byte of a 16-bit word. 
 
+![16-bit Program Counter](documentation/program-counter-16bit-schematic.png)
+
 ### Memory Address Register
 In this design, the memory address register is used to load address values from the data bus and then use them to indicate what address in memory should be read. Now that memory addresses themselves are multi-byte values, it is expected that we will increasingly want to read multiple consecutive bytes of data from memory. Given that, it would be convenient if the memory address register could increment itself rather than requiring an ALU operating simply to add 1 to the current memory address. to accomplish that, the memory address used 74LS161 4-bit counters similar to the program counter. In fact, the general design of the memory address register and the program counter are identical. 
+
+![16-bit Memory Address Register](documentation/address-register-16bit-schematic.png)
 
 ### Address Bus
 
@@ -83,8 +89,15 @@ Added to the address bus design is a way to output the address bus value to the 
 
 Finally the address bus's connection to the address lines of the memory ICs is arbitrated by a set of 74LS157 2-to-1 multiplexers. This design enables a run mode switch, which indicates whether the memory address should be read from the address bus or a set of microswitches that are used when manually keying memory values. 
 
+
+![Run Mode Selector](documentation/run-mode-selector-16bit-schematic.png)
+
+![Address Bus to Data Bus](documentation/address-bus-to-data-bus-schematic.png)
+
 ### Compact System Clock
 Purely for layout reasons, the system clock was redesigned to slightly reduce chip count and in turn fit within a smaller footprint on the breadboard. This was done because the combination of the memory module, program counter, and memory address register require much more breadboard footprint than the previous RAM design did. Instead of using three 555 timers, the system clock now uses one 555 timer and one 556 dual timer. Other than that, the clock design is functionally the same. 
+
+![Compact Clock Module](documentation/clock-module-v2-schematic.png)
 
 ## Component Data sheets
 
@@ -92,13 +105,13 @@ Purely for layout reasons, the system clock was redesigned to slightly reduce ch
 * [AT28C256](https://www.mouser.com/datasheet/2/268/doc0006-1108095.pdf) - 32K x 8 bit EEPROM. Any 32K or larger EPROM could be used with minimal modification to the wiring. EEPROMs are convenient for reprogramming, which we will likely do often.
 * [74LS161](https://www.ti.com/lit/ds/symlink/sn54ls161a-sp.pdf) - A 4-bit counter
 * [74LS245](https://www.ti.com/lit/ds/symlink/sn54ls245-sp.pdf) - Octal Bus Transceivers With 3-State Outputs
-* 74LS00
-* 74LS04
-* 74LS32
-* 74LS157
-* 74LS257
-* 555
-* 556
+* [74LS00](https://www.ti.com/lit/ds/symlink/sn74ls00.pdf) - Quadruple 2-Input NAND Gates
+* [74LS04](https://www.ti.com/lit/ds/symlink/sn74ls04.pdf) - Hex Inverters
+* [74LS32](https://www.ti.com/lit/ds/symlink/sn74ls32.pdf) - Quadruple 2-input OR gates
+* [74LS157](https://www.ti.com/lit/ds/symlink/sn74ls157.pdf) - Quadruple 2-to-1 Line Data Selector/Multiplexer
+* [74LS257](https://www.ti.com/lit/ds/symlink/sn74ls257b.pdf) - Quadruple 2-to-1 Line Data Selector/Multiplexer with Tristate Output
+* [555](https://www.ti.com/lit/ds/symlink/lm555.pdf) - LM555 Timer
+* [556](https://www.jameco.com/Jameco/Products/ProdDS/24328.pdf) - LM556 Dual Timer
 
 ## Integration with Breadboard Computer
 
@@ -150,24 +163,22 @@ So given the choice of little endian, what does this mean for how instructions a
 ```
  Byte:    0      1      2
       | 0x1X | 0xCD | OxAB |
-          |    -+--   -+--
-          |     |      |
+          ^      ^      ^
+          |      |      |
   Instruction   LSB    MSB
 ```
 
 The upper 4 bits of the first byte contain the instruction code of `0001`, or `0x1` in hex. The lower 4 bits of the first byte used to be the memory address for this command under the original Eater SAP-1 design, but now it is ignored in this transitional instruction set. The second byte is the least significant byte of the address, since the least significant byte goes first in little endian encoding. This leaves the third byte of the full instruction encoding to be the most significant byte of the address value. A similar pattern can be described for the other instructions.
 
-The next question is how the micro code will work when the full set of information for the instruction is spread across multiple bytes. Again, let's take a close look as to how the `LDA 0xABCD` instruction would be acted on in microcode:
+The next question is how the microcode will work when the full set of information for the instruction is spread across multiple bytes. Again, let's take a close look as to how the `LDA 0xABCD` instruction would be acted on in microcode:
 
 | Step | Active Control Lines | Description |
 |:-:|:--|:--|
-| 0 | `PCa`, `RMo`, `IRi` | At the start of any instruction, we expect the program counter is already pointing at the first byte of the next instruction, so the first task is to move the byte value at the program counter address into the instruction register. Here, we write the program counter value to the address buss (`PCa`), which will cause the memory to make available the value at that address. Then we write the memory value to the data bus (`RMo`) and write whats on the data bus into the instruction register (`IRi`). |
-| 1 | `PCe` | Increment the program counter to point at the next memory address. We don't know yet whether that memory address is the next instruction or a parameter to the current instruction. |
-| 2 | `PCa`, `RMo`, `ARi` | We now know we are doing the `LDA` instruction, which means the program a counter is now pointing at the LSB of the address from where to read the value into register A. So, we write the value at that address into the lower byte of the address register. Note that the `HILO` line is not LOW here (not activated), so that state in combination with `ARi` causes the data bus value to be written to the lower byte of the address register. |
-| 3 | `PCe` | We need to next get the MSB of the instruction parameter, so increment the program counter. |
-| 4 | `PCa`, `RMo`, `ARi`, `HILO` | We now write the value at the third byte in the instruction to the MSB of the address register. |
-| 5 | `PCe`, `ARa`, `RMo`, `Ai` | We increment the program counter so that it now points at the next instruction. At the same time we can write the address register value to the address bus (`ARa`), and then writing the memory value at that address to the data bus (`RMo`) which in turn is written into register A (`Ai`) |
-| 6 |  `SCr` | The instruction is done, so reset the step counter (`SCr`). |
+| 0 | `PCa`, `RMo`, `IRi`,  `PCe` | At the start of any instruction, we expect the program counter is already pointing at the first byte of the next instruction, so the first task is to move the byte value at the program counter address into the instruction register. Here, we write the program counter value to the address buss (`PCa`), which will cause the memory to make available the value at that address. Then we write the memory value to the data bus (`RMo`) and write whats on the data bus into the instruction register (`IRi`). Finally, increment the program counter to point at the next memory address. We don't know yet whether that memory address is the next instruction or a parameter to the current instruction. |
+| 1 | `PCa`, `RMo`, `ARi`, `PCe` | We now know we are doing the `LDA` instruction, which means the program a counter is now pointing at the LSB of the address from where to read the value into register A. So, we write the value at that address into the lower byte of the address register. Note that the `HILO` line is not LOW here (not activated), so that state in combination with `ARi` causes the data bus value to be written to the lower byte of the address register. Finally, in the next step we will need to next get the MSB of the instruction parameter, so increment the program counter. |
+| 2 | `PCa`, `RMo`, `ARi`, `HILO` | We now write the value at the third byte in the instruction to the MSB of the address register. |
+| 3 | `PCe`, `ARa`, `RMo`, `Ai` | We increment the program counter so that it now points at the next instruction. At the same time we can write the address register value to the address bus (`ARa`), and then writing the memory value at that address to the data bus (`RMo`) which in turn is written into register A (`Ai`) |
+| 4 |  `SCr` | The instruction is done, so reset the step counter (`SCr`). |
 
 The rest of	 the instructions would follow similar patterns with respect to handling multi-byte instructions. The key point here is that the program counter is now incremented not just to get the next instruction, but to also fetch all bytes in the current instruction. 
 
@@ -175,8 +186,14 @@ The microcode table for the original Eater SAP-1 instruction set [can be viewed 
 
 ## Programming 
 
-### Assembler
+### Boot Loader 
+If it is desired to manually key in a program using the microswitches, the device now needs a simple boot loader to handle the fact that when reset, the program counter will be pointing at address `0x0000`, which is in ROM. To get the program counter to jump to the start of RAM at address `0x8000`, a simple ROM image was created that has the `JMP 0x8000` instruction at address `0x0000`. The ROM image may be [found here](bootcode).
 
-### Boot Loaders
+### Assembler
+In order to create ROM images or even to more easily calculate the machine code to be manually keyed into RAM, an [assembler](https://en.wikipedia.org/wiki/Assembly_language#Assembler) is a useful tool. However, there exists no assembler for my breadboard computer. To address that, I wrote an assembler called [BespokeASM](https://github.com/michaelkamprath/bespokeasm). The key feature I needed in the assembler was the ability to easily change the instruction set architecture that the assembler builds to. BespokeASM allows the creation of a configuration file where the instruction set that should be use to generate machine code is defined. Instructions on how to install BespokeASM can be [found at the BespokeASM wiki](https://github.com/michaelkamprath/bespokeasm/wiki/Installation-and-Usage). 
+
+The BespokeASM configuration file for the breadboard CPU's instruction set at this point in it's evolution [can be found here](examples/kamprath-16bit-addr-4bit-instrs-bespokeasm.yaml), and example programs can be found in [the examples directory](examples).
+
+
 
 
