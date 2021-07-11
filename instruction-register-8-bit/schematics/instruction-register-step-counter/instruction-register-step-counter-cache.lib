@@ -300,11 +300,11 @@ X B 2 200 0 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# instruction-register-symbols_74HCT238
+# common-symbols_74HCT238
 #
-DEF instruction-register-symbols_74HCT238 U 0 40 Y Y 1 F N
+DEF common-symbols_74HCT238 U 0 40 Y Y 1 F N
 F0 "U" 625 1225 50 H V C CNN
-F1 "instruction-register-symbols_74HCT238" 0 0 50 V V C CNN
+F1 "common-symbols_74HCT238" 0 0 50 V V C CNN
 F2 "" -150 -175 50 H I C CNN
 F3 "" -150 -175 50 H I C CNN
 DRAW
@@ -328,11 +328,11 @@ X Y6 9 350 -250 100 L 50 50 0 0 O
 ENDDRAW
 ENDDEF
 #
-# instruction-register-symbols_BarGraphLED_8P
+# common-symbols_BarGraphLED_8P
 #
-DEF instruction-register-symbols_BarGraphLED_8P BAR 0 40 Y Y 1 F N
+DEF common-symbols_BarGraphLED_8P BAR 0 40 Y Y 1 F N
 F0 "BAR" 0 550 50 H V C CNN
-F1 "instruction-register-symbols_BarGraphLED_8P" 0 -475 50 H V C CNN
+F1 "common-symbols_BarGraphLED_8P" 0 -475 50 H V C CNN
 F2 "" 0 0 50 H I C CNN
 F3 "" 0 0 50 H I C CNN
 DRAW

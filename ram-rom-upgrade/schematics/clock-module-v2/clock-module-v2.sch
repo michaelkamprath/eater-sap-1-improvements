@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L clock-module-v2-rescue:LM555-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U1
+L Timer:LM555xN U1
 U 1 1 5B52B53B
 P 2000 2100
 F 0 "U1" H 2250 2450 50  0000 L CNN
@@ -80,7 +80,7 @@ F 3 "" H 5500 1650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:POT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue RV1
+L Device:R_POT RV1
 U 1 1 5B52B6D7
 P 3150 2200
 F 0 "RV1" V 2975 2200 50  0000 C CNN
@@ -146,7 +146,7 @@ F 3 "" H 1550 2800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
+L 74xx:74LS04 U4
 U 1 1 5B52B95A
 P 3000 4900
 F 0 "U4" H 3195 5015 50  0000 C CNN
@@ -157,7 +157,7 @@ F 3 "" H 3000 4900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
+L 74xx:74LS08 U5
 U 1 1 5B52B9AD
 P 4200 4200
 F 0 "U5" H 4200 4250 50  0000 C CNN
@@ -168,7 +168,7 @@ F 3 "" H 4200 4200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
+L 74xx:74LS32 U6
 U 1 1 5B52B9E8
 P 5600 4600
 F 0 "U6" H 5600 4650 50  0000 C CNN
@@ -179,7 +179,7 @@ F 3 "" H 5600 4600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:SW_SPDT-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue SW2
+L Switch:SW_SPDT SW2
 U 1 1 5B52BA7F
 P 6850 2200
 F 0 "SW2" H 6850 2370 50  0000 C CNN
@@ -190,7 +190,7 @@ F 3 "" H 6850 2200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:SW_Push-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue SW1
+L Switch:SW_Push SW1
 U 1 1 5B52BB68
 P 3950 1900
 F 0 "SW1" H 4000 2000 50  0000 L CNN
@@ -385,7 +385,7 @@ Connection ~ 7350 1450
 Connection ~ 7950 1450
 NoConn ~ 8450 2100
 $Comp
-L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
+L 74xx:74LS08 U5
 U 2 1 5B52E719
 P 4200 5000
 F 0 "U5" H 4200 5050 50  0000 C CNN
@@ -396,7 +396,7 @@ F 3 "" H 4200 5000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
+L 74xx:74LS08 U5
 U 3 1 5B52E764
 P 7000 4700
 F 0 "U5" H 7000 4750 50  0000 C CNN
@@ -407,7 +407,7 @@ F 3 "" H 7000 4700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
+L 74xx:74LS04 U4
 U 4 1 5B52E7BF
 P 8800 4250
 F 0 "U4" H 8995 4365 50  0000 C CNN
@@ -418,7 +418,7 @@ F 3 "" H 8800 4250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
+L 74xx:74LS04 U4
 U 6 1 5B52E82B
 P 2250 6000
 F 0 "U4" H 2445 6115 50  0000 C CNN
@@ -429,33 +429,13 @@ F 3 "" H 2250 6000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3450 4900 3600 4900
-Wire Wire Line
-	4800 4200 4900 4200
-Wire Wire Line
 	4900 4200 4900 4500
-Wire Wire Line
-	4900 4500 5000 4500
-Wire Wire Line
-	5000 4700 4900 4700
 Wire Wire Line
 	4900 4700 4900 5000
 Wire Wire Line
-	4900 5000 4800 5000
-Wire Wire Line
-	6200 4600 6400 4600
-Wire Wire Line
-	6300 4800 6400 4800
-Wire Wire Line
-	2400 4900 2550 4900
-Wire Wire Line
 	2400 3700 2400 4300
 Wire Wire Line
-	2400 4300 3600 4300
-Wire Wire Line
 	2500 1900 3450 1900
-Wire Wire Line
-	3450 4100 3600 4100
 Wire Wire Line
 	5400 1900 5800 1900
 Wire Wire Line
@@ -464,8 +444,6 @@ Wire Wire Line
 	5800 3550 2150 3550
 Wire Wire Line
 	2150 3550 2150 5100
-Wire Wire Line
-	2150 5100 3600 5100
 Wire Wire Line
 	3450 1900 3450 4100
 Wire Wire Line
@@ -477,8 +455,6 @@ Wire Wire Line
 Connection ~ 2400 4300
 Text HLabel 1450 5800 0    60   Input ~ 0
 HLT
-Wire Wire Line
-	1450 5800 2550 5800
 Wire Wire Line
 	7900 5200 7900 5350
 $Comp
@@ -499,14 +475,8 @@ CLK
 Text HLabel 9700 4250 2    60   Output ~ 0
 ~CLK
 Wire Wire Line
-	9700 4250 9250 4250
-Wire Wire Line
-	7600 4700 7900 4700
-Wire Wire Line
 	7900 4250 7900 4700
 Connection ~ 7900 4700
-Wire Wire Line
-	7900 4250 8350 4250
 $Comp
 L Device:C C1
 U 1 1 5B52B80F
@@ -532,7 +502,7 @@ $EndComp
 Wire Wire Line
 	9900 1750 9900 1850
 $Comp
-L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
+L 74xx:74LS04 U4
 U 2 1 5B5304B0
 P 1700 6650
 F 0 "U4" H 1895 6765 50  0000 C CNN
@@ -543,7 +513,7 @@ F 3 "" H 1700 6650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
+L 74xx:74LS04 U4
 U 3 1 5B5304FB
 P 1700 7050
 F 0 "U4" H 1895 7165 50  0000 C CNN
@@ -554,7 +524,7 @@ F 3 "" H 1700 7050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS04-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U4
+L 74xx:74LS04 U4
 U 5 1 5B53108F
 P 3000 5800
 F 0 "U4" H 3195 5915 50  0000 C CNN
@@ -565,7 +535,7 @@ F 3 "" H 3000 5800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS08-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U5
+L 74xx:74LS08 U5
 U 4 1 5B53125C
 P 4250 5900
 F 0 "U5" H 4250 5950 50  0000 C CNN
@@ -576,7 +546,7 @@ F 3 "" H 4250 5900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
+L 74xx:74LS32 U6
 U 2 1 5B5312F6
 P 3000 7400
 F 0 "U6" H 3000 7450 50  0000 C CNN
@@ -587,7 +557,7 @@ F 3 "" H 3000 7400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
+L 74xx:74LS32 U6
 U 3 1 5B5313CF
 P 4350 6800
 F 0 "U6" H 4350 6850 50  0000 C CNN
@@ -597,16 +567,16 @@ F 3 "" H 4350 6800 50  0001 C CNN
 	3    4350 6800
 	1    0    0    -1  
 $EndComp
-NoConn ~ 2150 6650
-NoConn ~ 1250 6650
-NoConn ~ 1250 7050
-NoConn ~ 2150 7050
-NoConn ~ 3600 7400
-NoConn ~ 2400 7300
-NoConn ~ 2400 7500
-NoConn ~ 3750 6700
-NoConn ~ 3750 6900
-NoConn ~ 4950 6800
+NoConn ~ 2000 6650
+NoConn ~ 1400 6650
+NoConn ~ 1400 7050
+NoConn ~ 2000 7050
+NoConn ~ 3300 7400
+NoConn ~ 2700 7300
+NoConn ~ 2700 7500
+NoConn ~ 4050 6700
+NoConn ~ 4050 6900
+NoConn ~ 4650 6800
 Wire Wire Line
 	7950 2500 7950 2850
 Wire Wire Line
@@ -757,13 +727,13 @@ Wire Wire Line
 	9750 1350 9900 1350
 Wire Wire Line
 	9750 1850 9900 1850
-NoConn ~ 3750 7500
-NoConn ~ 3750 7300
-NoConn ~ 4950 7400
+NoConn ~ 4050 7500
+NoConn ~ 4050 7300
+NoConn ~ 4650 7400
 Text HLabel 1450 6000 0    50   Input ~ 0
 PROG
 $Comp
-L clock-module-v2-rescue:74LS32-8bit-computer-rescue-8bit-computer-rescue-clock-module-with-prog-halt-rescue U6
+L 74xx:74LS32 U6
 U 4 1 5B531491
 P 4350 7400
 F 0 "U6" H 4350 7450 50  0000 C CNN
@@ -774,15 +744,7 @@ F 3 "" H 4350 7400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3450 5800 3650 5800
-Wire Wire Line
-	4850 5900 6300 5900
-Wire Wire Line
 	6300 4800 6300 5900
-Wire Wire Line
-	1450 6000 1800 6000
-Wire Wire Line
-	2700 6000 3650 6000
 $Comp
 L Timer:LM556 U2
 U 1 1 607D2826
@@ -805,4 +767,42 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm556.pdf" H 7950 2100 50  0001 C CNN
 	2    7950 2100
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	4500 4200 4900 4200
+Wire Wire Line
+	4500 5000 4900 5000
+Wire Wire Line
+	3450 4100 3900 4100
+Wire Wire Line
+	2400 4300 3900 4300
+Wire Wire Line
+	2150 5100 3900 5100
+Wire Wire Line
+	6300 4800 6700 4800
+Wire Wire Line
+	4550 5900 6300 5900
+Wire Wire Line
+	3300 5800 3950 5800
+Wire Wire Line
+	3300 4900 3900 4900
+Wire Wire Line
+	2400 4900 2700 4900
+Wire Wire Line
+	1450 5800 2700 5800
+Wire Wire Line
+	1450 6000 1950 6000
+Wire Wire Line
+	2550 6000 3950 6000
+Wire Wire Line
+	9100 4250 9700 4250
+Wire Wire Line
+	7900 4250 8500 4250
+Wire Wire Line
+	7300 4700 7900 4700
+Wire Wire Line
+	5900 4600 6700 4600
+Wire Wire Line
+	4900 4500 5300 4500
+Wire Wire Line
+	4900 4700 5300 4700
 $EndSCHEMATC

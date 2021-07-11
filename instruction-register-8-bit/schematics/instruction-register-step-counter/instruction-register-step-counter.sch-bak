@@ -46,7 +46,7 @@ IR_6
 Text HLabel 8175 6050 3    50   Output ~ 0
 IR_7
 $Comp
-L instruction-register-symbols:BarGraphLED_8P BAR?
+L common-symbols:BarGraphLED_8P BAR?
 U 1 1 60CF32C9
 P 10000 5275
 F 0 "BAR?" H 10000 5942 50  0000 C CNN
@@ -119,24 +119,13 @@ IRi
 $Comp
 L 74xx:74LS161 U?
 U 1 1 60D1A6A2
-P 5050 4100
-F 0 "U?" V 5325 4725 50  0000 L CNN
-F 1 "74LS161" V 5050 3975 50  0000 L CNN
-F 2 "" H 5050 4100 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS161" H 5050 4100 50  0001 C CNN
-	1    5050 4100
+P 4525 4100
+F 0 "U?" V 4800 4725 50  0000 L CNN
+F 1 "74LS161" V 4525 3975 50  0000 L CNN
+F 2 "" H 4525 4100 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS161" H 4525 4100 50  0001 C CNN
+	1    4525 4100
 	0    1    1    0   
-$EndComp
-$Comp
-L instruction-register-symbols:74HCT238 U?
-U 1 1 60D24130
-P 4225 5850
-F 0 "U?" V 4000 6450 50  0000 C CNN
-F 1 "74HCT238" V 4225 5825 50  0000 C CNN
-F 2 "" H 4075 5675 50  0001 C CNN
-F 3 "" H 4075 5675 50  0001 C CNN
-	1    4225 5850
-	-1   0    0    -1  
 $EndComp
 $Comp
 L Switch:SW_SPST SW?
@@ -220,9 +209,7 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 2800 2525 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5250 4600 5250 4675
-Wire Wire Line
-	5250 4675 3275 4675
+	4725 4600 4725 4675
 Wire Wire Line
 	3275 4675 3275 2725
 Wire Wire Line
@@ -232,11 +219,11 @@ Wire Wire Line
 Wire Wire Line
 	1400 3525 1500 3525
 Connection ~ 1400 3525
-NoConn ~ 5250 3600
-NoConn ~ 5350 3600
-NoConn ~ 5550 3600
-NoConn ~ 5450 3600
-NoConn ~ 5050 4600
+NoConn ~ 4725 3600
+NoConn ~ 4825 3600
+NoConn ~ 5025 3600
+NoConn ~ 4925 3600
+NoConn ~ 4525 4600
 $Comp
 L 74xx:74LS32 U?
 U 2 1 60D49D1D
@@ -262,15 +249,11 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 5150 2525 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4725 2525 4850 2525
-Wire Wire Line
 	5450 2525 5725 2525
 Wire Wire Line
 	5725 2525 5725 3100
 Wire Wire Line
-	5725 3100 4550 3100
-Wire Wire Line
-	4550 3100 4550 3600
+	4025 3100 4025 3600
 Wire Wire Line
 	2425 2525 2425 1700
 Wire Wire Line
@@ -296,36 +279,34 @@ Wire Wire Line
 Wire Wire Line
 	4125 1375 1475 1375
 Wire Wire Line
-	5050 3600 5050 3475
+	4525 3600 4525 3475
 Wire Wire Line
-	5050 3475 5850 3475
+	4525 3475 5325 3475
 Wire Wire Line
-	5850 3475 5850 4100
+	5325 3475 5325 4100
 Wire Wire Line
-	4950 3600 4950 3475
+	4425 3600 4425 3475
 Wire Wire Line
-	4950 3475 5050 3475
-Connection ~ 5050 3475
+	4425 3475 4525 3475
+Connection ~ 4525 3475
 Wire Wire Line
-	4950 3475 4850 3475
+	4425 3475 4325 3475
 Wire Wire Line
-	4850 3475 4850 3600
-Connection ~ 4950 3475
+	4325 3475 4325 3600
+Connection ~ 4425 3475
 Wire Wire Line
 	5825 2100 5825 3200
 Wire Wire Line
-	5825 3200 4750 3200
-Wire Wire Line
-	4750 3200 4750 3600
+	4225 3200 4225 3600
 $Comp
 L power:GND #PWR?
 U 1 1 60D63CEC
-P 4250 4100
-F 0 "#PWR?" H 4250 3850 50  0001 C CNN
-F 1 "GND" H 4255 3927 50  0000 C CNN
-F 2 "" H 4250 4100 50  0001 C CNN
-F 3 "" H 4250 4100 50  0001 C CNN
-	1    4250 4100
+P 3725 4100
+F 0 "#PWR?" H 3725 3850 50  0001 C CNN
+F 1 "GND" H 3730 3927 50  0000 C CNN
+F 2 "" H 3725 4100 50  0001 C CNN
+F 3 "" H 3725 4100 50  0001 C CNN
+	1    3725 4100
 	1    0    0    -1  
 $EndComp
 Text HLabel 5550 6075 3    50   Output ~ 0
@@ -335,28 +316,25 @@ SC_1
 Text HLabel 5350 6075 3    50   Output ~ 0
 SC_2
 Wire Wire Line
-	5550 4600 5550 5550
+	5025 4600 5025 5550
 Wire Wire Line
-	5450 4600 5450 5650
+	4925 4600 4925 5650
 Wire Wire Line
-	5350 4600 5350 5750
+	4825 4600 4825 5750
 Wire Wire Line
-	4575 5550 5550 5550
-Connection ~ 5550 5550
+	4575 5550 5025 5550
 Wire Wire Line
 	5550 5550 5550 6075
 Wire Wire Line
-	4575 5650 5450 5650
-Connection ~ 5450 5650
+	4575 5650 4925 5650
 Wire Wire Line
 	5450 5650 5450 6075
 Wire Wire Line
-	4575 5750 5350 5750
-Connection ~ 5350 5750
+	4575 5750 4825 5750
 Wire Wire Line
 	5350 5750 5350 6075
 $Comp
-L instruction-register-symbols:BarGraphLED_8P BAR?
+L common-symbols:BarGraphLED_8P BAR?
 U 1 1 60D969A0
 P 3375 5800
 F 0 "BAR?" H 3375 5233 50  0000 C CNN
@@ -422,28 +400,6 @@ F 3 "" H 2450 6325 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2450 6325 2450 6200
-$Comp
-L power:GND #PWR?
-U 1 1 60DE01F3
-P 12600 4225
-F 0 "#PWR?" H 12600 3975 50  0001 C CNN
-F 1 "GND" H 12605 4052 50  0000 C CNN
-F 2 "" H 12600 4225 50  0001 C CNN
-F 3 "" H 12600 4225 50  0001 C CNN
-	1    12600 4225
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:VCC #PWR?
-U 1 1 60DE082D
-P 12425 3325
-F 0 "#PWR?" H 12425 3175 50  0001 C CNN
-F 1 "VCC" H 12440 3498 50  0000 C CNN
-F 2 "" H 12425 3325 50  0001 C CNN
-F 3 "" H 12425 3325 50  0001 C CNN
-	1    12425 3325
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4575 6200 4650 6200
 Wire Wire Line
@@ -655,8 +611,6 @@ Wire Wire Line
 	5825 2100 9825 2100
 Wire Wire Line
 	8550 3325 8550 2300
-Wire Wire Line
-	8550 2300 9825 2300
 Connection ~ 8550 3325
 Wire Wire Line
 	7025 3600 7025 3550
@@ -792,4 +746,77 @@ Wire Wire Line
 	1150 2975 1500 2975
 Wire Wire Line
 	1500 2975 1500 3525
+Wire Wire Line
+	4725 4675 3275 4675
+Connection ~ 4825 5750
+Wire Wire Line
+	4825 5750 5350 5750
+Connection ~ 4925 5650
+Wire Wire Line
+	4925 5650 5450 5650
+Connection ~ 5025 5550
+Wire Wire Line
+	5025 5550 5550 5550
+Wire Wire Line
+	4225 3200 5825 3200
+Wire Wire Line
+	4025 3100 5725 3100
+$Comp
+L 74xx:74LS74 U?
+U 1 1 60E828E3
+P 7175 1050
+F 0 "U?" H 7000 1325 50  0000 C CNN
+F 1 "74LS74" H 7425 1325 50  0000 C CNN
+F 2 "" H 7175 1050 50  0001 C CNN
+F 3 "74xx/74hc_hct74.pdf" H 7175 1050 50  0001 C CNN
+	1    7175 1050
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	4725 2525 4850 2525
+Wire Wire Line
+	5725 2525 5725 1350
+Wire Wire Line
+	5725 1350 7175 1350
+Connection ~ 5725 2525
+Wire Wire Line
+	7475 1050 7475 2300
+Wire Wire Line
+	7475 2300 8550 2300
+Connection ~ 8550 2300
+Wire Wire Line
+	8550 2300 9825 2300
+Wire Wire Line
+	7475 950  9850 950 
+Text HLabel 9850 950  2    50   Input ~ 0
+XTD
+NoConn ~ 6875 1150
+$Comp
+L power:VCC #PWR?
+U 1 1 60EFFFD1
+P 7175 750
+F 0 "#PWR?" H 7175 600 50  0001 C CNN
+F 1 "VCC" H 7190 923 50  0000 C CNN
+F 2 "" H 7175 750 50  0001 C CNN
+F 3 "" H 7175 750 50  0001 C CNN
+	1    7175 750 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6875 950  5925 950 
+Wire Wire Line
+	5925 950  5925 6075
+Text HLabel 5925 6075 3    50   Output ~ 0
+XTD_INSTR
+$Comp
+L common-symbols:74HCT238 U?
+U 1 1 60D24130
+P 4225 5850
+F 0 "U?" V 4000 6450 50  0000 C CNN
+F 1 "74HCT238" V 4225 5825 50  0000 C CNN
+F 2 "" H 4075 5675 50  0001 C CNN
+F 3 "" H 4075 5675 50  0001 C CNN
+	1    4225 5850
+	-1   0    0    -1  
+$EndComp
 $EndSCHEMATC

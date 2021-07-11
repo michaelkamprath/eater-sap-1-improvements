@@ -1,4 +1,3 @@
 (sym_lib_table
-  (lib (name ram-rom-module-parts)(type Legacy)(uri ${KIPRJMOD}/ram-rom-module-parts.lib)(options "")(descr ""))
-  (lib (name ram-rom-upgrade-symbols)(type Legacy)(uri ${KIPRJMOD}/../ram-rom-upgrade-symbols/ram-rom-upgrade-symbols.lib)(options "")(descr ""))
+  (lib (name common-symbols)(type Legacy)(uri ${KIPRJMOD}/../../../common-symbols/common-symbols.lib)(options "")(descr ""))
 )

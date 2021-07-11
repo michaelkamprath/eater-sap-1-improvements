@@ -1,11 +1,11 @@
 EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
-# instruction-register-symbols_27C4096
+# common-symbols_27C4096
 #
-DEF instruction-register-symbols_27C4096 U 0 40 Y Y 1 F N
+DEF common-symbols_27C4096 U 0 40 Y Y 1 F N
 F0 "U" 425 -400 50 H V C CNN
-F1 "instruction-register-symbols_27C4096" 425 -300 50 H V C CNN
+F1 "common-symbols_27C4096" 425 -300 50 H V C CNN
 F2 "" 75 -75 50 H I C CNN
 F3 "" 75 -75 50 H I C CNN
 DRAW
@@ -53,11 +53,11 @@ X Q9 9 925 -1100 100 L 50 50 0 0 O
 ENDDRAW
 ENDDEF
 #
-# instruction-register-symbols_74HCT238
+# common-symbols_74HCT238
 #
-DEF instruction-register-symbols_74HCT238 U 0 40 Y Y 1 F N
+DEF common-symbols_74HCT238 U 0 40 Y Y 1 F N
 F0 "U" 625 1225 50 H V C CNN
-F1 "instruction-register-symbols_74HCT238" 0 0 50 V V C CNN
+F1 "common-symbols_74HCT238" 0 0 50 V V C CNN
 F2 "" -150 -175 50 H I C CNN
 F3 "" -150 -175 50 H I C CNN
 DRAW

@@ -378,7 +378,7 @@ IR_6
 Text HLabel 2725 1675 1    50   Input ~ 0
 IR_7
 Text HLabel 2625 1675 1    50   Input ~ 0
-XTD
+XTD_INSTR
 Text HLabel 2525 1675 1    50   Input ~ 0
 ZF
 Text HLabel 2425 1675 1    50   Input ~ 0

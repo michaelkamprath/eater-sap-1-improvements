@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name ram-rom-upgrade-symbols)(type Legacy)(uri ${KIPRJMOD}/../ram-rom-upgrade-symbols/ram-rom-upgrade-symbols.lib)(options "")(descr ""))
+  (lib (name instruction-register-symbols)(type Legacy)(uri ${KIPRJMOD}/../instruction-register-symbols/instruction-register-symbols.lib)(options "")(descr ""))
 )

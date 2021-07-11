@@ -12,6 +12,7 @@ Multiple independent projects are described in this repository. It is recommende
 4. **[Adding Two General Purpose Increment Registers to the SAP-1](./increment-registers/)** - This project adds to the SAP-1 two general purpose registers that have the ability to increment or decrement the value they contain.
 5. **[Calculating Factorial](./calculating-factorial/)** - This project builds on everything done up to this point to enable the SAP-1 to calculating the _n!_ math algorithm. 
 6. **[Adding 64K of RAM and ROM](./ram-rom-upgrade/)** - This project changes the SAP-1's memory address space to 16 bit, and then splits the address space between ROM and RAM.Still maintains the original 4-bit instructions, as this will be changed in a later project. This project also introduces an assembler to help build the ROM code. 
+7. **[Instruction Register and Memory Map Update](./instruction-register-8-bit/)** - In this project I upgrade the instruction register to use the full 8-bits. I also realized that I once again needed to upgrade my control logic, so I expanded the instruction-based control logic plus added a memory map mechanism. 
 
 
 # Future Projects

@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L instruction-register-symbols:74HCT238 U?
+L common-symbols:74HCT238 U?
 U 1 1 60DA7B46
 P 5450 4825
 F 0 "U?" V 5675 5375 50  0000 L CNN
@@ -25,7 +25,7 @@ F 3 "" H 5300 4650 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L instruction-register-symbols:74HCT238 U?
+L common-symbols:74HCT238 U?
 U 1 1 60D8B240
 P 3975 4825
 F 0 "U?" V 4200 5375 50  0000 L CNN
@@ -465,7 +465,7 @@ LEFT
 Wire Wire Line
 	1475 2800 1475 3325
 $Comp
-L instruction-register-symbols:27C4096 U?
+L common-symbols:27C4096 U?
 U 1 1 60DAC648
 P 3925 2975
 F 0 "U?" V 4700 3000 50  0000 L CNN
@@ -568,7 +568,7 @@ Wire Wire Line
 Wire Wire Line
 	3600 5700 4225 5700
 $Comp
-L instruction-register-symbols:74HCT238 U?
+L common-symbols:74HCT238 U?
 U 1 1 61437C3F
 P 10425 4825
 F 0 "U?" V 10650 5375 50  0000 L CNN
@@ -579,7 +579,7 @@ F 3 "" H 10275 4650 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L instruction-register-symbols:74HCT238 U?
+L common-symbols:74HCT238 U?
 U 1 1 61437C45
 P 8950 4825
 F 0 "U?" V 9175 5375 50  0000 L CNN
@@ -814,7 +814,7 @@ LEFT
 Wire Wire Line
 	6450 2800 6450 3325
 $Comp
-L instruction-register-symbols:27C4096 U?
+L common-symbols:27C4096 U?
 U 1 1 61437CC3
 P 8900 2975
 F 0 "U?" V 9675 3000 50  0000 L CNN

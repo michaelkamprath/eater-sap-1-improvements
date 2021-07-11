@@ -469,7 +469,7 @@ Wire Wire Line
 	7150 4300 7150 4475
 Connection ~ 2750 4300
 $Comp
-L ram-rom-upgrade-symbols:BarGraphLED_8P BAR?
+L common-symbols:BarGraphLED_8P BAR?
 U 1 1 606FFA03
 P 4825 4750
 F 0 "BAR?" V 4825 4125 50  0000 L CNN
@@ -480,7 +480,7 @@ F 3 "" H 4825 4750 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L ram-rom-upgrade-symbols:BarGraphLED_8P BAR?
+L common-symbols:BarGraphLED_8P BAR?
 U 1 1 607039DE
 P 5800 4750
 F 0 "BAR?" V 5800 5280 50  0000 L CNN
