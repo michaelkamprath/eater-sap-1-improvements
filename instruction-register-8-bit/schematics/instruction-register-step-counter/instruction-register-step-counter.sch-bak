@@ -773,7 +773,7 @@ F 3 "74xx/74hc_hct74.pdf" H 7175 1050 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	4725 2525 4850 2525
+	4725 2525 4775 2525
 Wire Wire Line
 	5725 2525 5725 1350
 Wire Wire Line
@@ -819,4 +819,13 @@ F 3 "" H 4075 5675 50  0001 C CNN
 	1    4225 5850
 	-1   0    0    -1  
 $EndComp
+Wire Wire Line
+	4775 2525 4775 1225
+Wire Wire Line
+	4775 1225 1475 1225
+Connection ~ 4775 2525
+Wire Wire Line
+	4775 2525 4850 2525
+Text HLabel 1475 1225 0    50   Output ~ 0
+INSTR_RESET
 $EndSCHEMATC

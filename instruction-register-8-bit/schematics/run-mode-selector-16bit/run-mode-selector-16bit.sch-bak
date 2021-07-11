@@ -4,7 +4,7 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title "16 Bit Address Bus Run Mode Selector"
+Title "16 Bit Address Bus Run Mode Selector v1.1"
 Date ""
 Rev ""
 Comp ""
@@ -635,7 +635,7 @@ Wire Wire Line
 Wire Wire Line
 	2450 3025 2450 1225
 $Comp
-L ram-rom-upgrade-symbols:BarGraphLED_8P BAR1
+L common-symbols:BarGraphLED_8P BAR1
 U 1 1 6086E85F
 P 4075 5175
 F 0 "BAR1" V 4075 4550 50  0000 L CNN
@@ -646,7 +646,7 @@ F 3 "" H 4075 5175 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L ram-rom-upgrade-symbols:BarGraphLED_8P BAR2
+L common-symbols:BarGraphLED_8P BAR2
 U 1 1 608742C3
 P 5075 5175
 F 0 "BAR2" V 5075 5725 50  0000 L CNN
@@ -807,7 +807,7 @@ L Device:R_Network08_US RN3
 U 1 1 6073A7C3
 P 7925 825
 F 0 "RN3" H 8313 871 50  0000 L CNN
-F 1 "10K" H 8313 780 50  0000 L CNN
+F 1 "1K" H 8313 780 50  0000 L CNN
 F 2 "Resistor_THT:R_Array_SIP9" V 8400 825 50  0001 C CNN
 F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 7925 825 50  0001 C CNN
 	1    7925 825 
@@ -818,7 +818,7 @@ L Device:R_Network08_US RN4
 U 1 1 60736850
 P 9075 825
 F 0 "RN4" H 9463 871 50  0000 L CNN
-F 1 "10K" H 9463 780 50  0000 L CNN
+F 1 "1K" H 9463 780 50  0000 L CNN
 F 2 "Resistor_THT:R_Array_SIP9" V 9550 825 50  0001 C CNN
 F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 9075 825 50  0001 C CNN
 	1    9075 825 
@@ -944,4 +944,34 @@ Wire Wire Line
 	2375 4775 2375 7500
 Wire Wire Line
 	2450 4100 2450 7500
+Text HLabel 2075 7500 3    50   Output ~ 0
+A16
+$Comp
+L power:GND #PWR?
+U 1 1 61F7ADFA
+P 1575 7375
+F 0 "#PWR?" H 1575 7125 50  0001 C CNN
+F 1 "GND" H 1580 7202 50  0000 C CNN
+F 2 "" H 1575 7375 50  0001 C CNN
+F 3 "" H 1575 7375 50  0001 C CNN
+	1    1575 7375
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 61F7B8D9
+P 1825 7375
+F 0 "R?" V 1750 7375 50  0000 C CNN
+F 1 "1K" V 1825 7375 50  0000 C CNN
+F 2 "" V 1755 7375 50  0001 C CNN
+F 3 "~" H 1825 7375 50  0001 C CNN
+	1    1825 7375
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1975 7375 2075 7375
+Wire Wire Line
+	2075 7375 2075 7500
+Wire Wire Line
+	1675 7375 1575 7375
 $EndSCHEMATC

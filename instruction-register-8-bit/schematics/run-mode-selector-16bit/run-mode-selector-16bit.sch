@@ -635,7 +635,7 @@ Wire Wire Line
 Wire Wire Line
 	2450 3025 2450 1225
 $Comp
-L ram-rom-upgrade-symbols:BarGraphLED_8P BAR1
+L common-symbols:BarGraphLED_8P BAR1
 U 1 1 6086E85F
 P 4075 5175
 F 0 "BAR1" V 4075 4550 50  0000 L CNN
@@ -646,7 +646,7 @@ F 3 "" H 4075 5175 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L ram-rom-upgrade-symbols:BarGraphLED_8P BAR2
+L common-symbols:BarGraphLED_8P BAR2
 U 1 1 608742C3
 P 5075 5175
 F 0 "BAR2" V 5075 5725 50  0000 L CNN
@@ -944,34 +944,4 @@ Wire Wire Line
 	2375 4775 2375 7500
 Wire Wire Line
 	2450 4100 2450 7500
-Text HLabel 2075 7500 3    50   Output ~ 0
-A16
-$Comp
-L power:GND #PWR?
-U 1 1 61F7ADFA
-P 1575 7375
-F 0 "#PWR?" H 1575 7125 50  0001 C CNN
-F 1 "GND" H 1580 7202 50  0000 C CNN
-F 2 "" H 1575 7375 50  0001 C CNN
-F 3 "" H 1575 7375 50  0001 C CNN
-	1    1575 7375
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 61F7B8D9
-P 1825 7375
-F 0 "R?" V 1750 7375 50  0000 C CNN
-F 1 "1K" V 1825 7375 50  0000 C CNN
-F 2 "" V 1755 7375 50  0001 C CNN
-F 3 "~" H 1825 7375 50  0001 C CNN
-	1    1825 7375
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	1975 7375 2075 7375
-Wire Wire Line
-	2075 7375 2075 7500
-Wire Wire Line
-	1675 7375 1575 7375
 $EndSCHEMATC
