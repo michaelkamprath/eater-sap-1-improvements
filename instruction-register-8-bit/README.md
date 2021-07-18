@@ -49,7 +49,7 @@ In addition to the byte code for the instruction, the machine code will need the
    |  |   |     +------ The second operand's operand value of $F0 
    |  |   +------------ The byte code 111 indicating the second operand is a direct value
    |  +---------------- The byte code 001 indicating the first operand is register A
-   +------------------- The byte code 01 indicating the mov mnemonic 
+   +------------------- The byte code 01 indicating the mov instruction 
  ```
  
 So to flesh out this approach, one just needs to define the instruction prefix bits and the set of operand parameter bits, and which operands would require trailing byte code values. There will be some instructions that do not require operand parameters, such as `HLT`, and some may only require 1 operand parameter. 
@@ -97,7 +97,73 @@ Finally, the step counter reset circuit has a couple enhancements. As with befor
 
 
 ## Control Logic
+When designing the full instruction set I wanted to build towards, including support for a stack pointer and a more capable ALU, one thing stood out rather quickly: the additional control lines I created in [a prior project](../expanded-control-logic/) were not sufficient. While I could add another EPROM to that design, the number of EEPROMs was getting a bit excessive. But using EPROMs for driving the combinational logic is a great choice, especially for a project intended for hacking. So I reconsidered how to make EPROM-driven control logic design. I came across [the `27C4096` UV-erasable EPROMs](./documentation/AM27C4096.pdf). These EPROMs hold 4 Mb of 16 bit words. That means there are 18 address lines and 16 data lines. So these chips not only increase the number of input signals to the control logic, but also reduce the number of chips needed for the same number of control lines.  
 
+The number of control lines I wanted to add was 48, which could easily be done with three `27C4096` EPROMs. However, I would have to either dedicate 2 address lines to ROM identification, or program each ROM differently. I din't want to do either of those, so I came up with a design that uses two `27C4096` ROMs and four `74HCT238` 3-to-8 line decoders. This gives me 48 control lines, with 28 of the lines being split between 4 banks of `74HCT238` decoders. The design plans on the following usage for address lines:
+
+* 3 lines for the step counter
+* 8 lines for the instruction register
+* 1 line for the `XTD` bit controlling extended instructions
+* 4 lines for status flags, 2 of which are future expansion
+* 1 line for future expansion
+* 1 line for chip identification so both ROMs can be programmed identically
+
+So this leaves me 3 address lines for future expansion, 2 of which are already earmarked for flags from a future ALU upgrade.
+
+### Control Line Assignment
+My schematic for the control logic change does not indicate which control line belongs to which control signal. I did that on purpose, leaving control line assignment to be something I manage outside of the schematic (at least for now). So I document it below, including indicating intended future uses. Control line assignment is fairly arbitrary, but I did try to group the register outs with each other on the same `74HCT238` group since only one can be active at the same time. Same is true for the register in control lines. In this table, "Bank" indicates which EPROM the control line is associated with, and "Group" indicates whether the line emanates from the EPROM itself ("Direct") or one of the two `74HCT238`s ("High" and "Low", depending on address lines). 
+
+
+| Control Line Position | Bank | Group | Symbol | Notes | 
+|:-:|:--|:--|:-:|:--|
+|1 | Left | Direct | `HILO` | |
+|2 | Left | Direct | `PCa` | |
+|3 | Left | Direct | `ARa` | |
+|4 | Left | Direct | | Reserved: `SPa` (stack pointer address activate) |
+|5 | Left | Direct | | |
+|6 | Left | Direct | | |
+|7 | Left | Direct | `XTD` | Activate extended instruction bit |
+|8 | Left | Direct | | Reserved: `AOi` (Address Offset In) |
+|9 | Left | Direct | `PCi` | |
+|10 | Left | Direct | `IRi` | |
+|11 | Left | High | `MDi` | Memory device read from data bus |
+|12 | Left | High | `Ai` | |
+|13 | Left | High | `Ti` | Temp register (attached to ALU) |
+|14 | Left | High |  | Reserved: `Bi` |
+|15 | Left | High | `Ii` | |
+|16 | Left | High | `Ji` | |
+|17 | Left | High | `ARi`	 | |
+|18 | Left | Low | `PCe` |  |
+|19 | Left | Low | `ARe` | |
+|20 | Left | Low |  | Reserved: `SPe` |
+|21 | Left | Low | `Ie` |  |
+|22 | Left | Low | `Je` | |
+|23 | Left | Low |  |  |
+|24 | Left | Low | `OUT` |  |
+|25 | Right | Direct | `SUB` |  |
+|26 | Right | Direct |  | Reserved: `CRY` |
+|27 | Right | Direct |  | Reserved: ALU `S0` |
+|28 | Right | Direct |  | Reserved: ALU `S1` |
+|29 | Right | Direct |  | Reserved: ALU `S2` |
+|30 | Right | Direct |  | Reserved: ALU `S3` (1 for Shift, Rotate, etc; 0 for ALU) |
+|31 | Right | Direct |  | |
+|32 | Right | Direct |  | Reserved: `INTi` (load interupt status) |
+|33 | Right | Direct |  | Reserved: `INTr` (reset interupt status) |
+|34 | Right | Direct | `ABo` | |
+|35 | Right | High | `MDo` | Memory device output to data bus |
+|36 | Right | High | `Ao`	 |  |
+|37 | Right | High | `To` | Temp register (attached to ALU) |
+|38 | Right | High |  | Reserved: `Bo` |
+|39 | Right | High | `Io` |  |
+|40 | Right | High | `Jo` | |
+|41 | Right | High | `∑o` | |
+|42 | Right | Low | `SCr` | Resets both the step counter, the offset register,  the extended instruction bit. A step counter overflow needs to do the same thing. |
+|43 | Right | Low |  | Reserved: `SPr` (Stack Pointer reset) |
+|44 | Right | Low |  | Reserved: `AOr` (Address Offset register reset) |
+|45 | Right | Low | `∑f` |  |
+|46 | Right | Low | `If` |  |
+|47 | Right | Low | `Jf` | |
+|48 | Right | Low | `HLT` | | 
 
 ### Microcode
 
