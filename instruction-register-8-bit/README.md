@@ -169,8 +169,13 @@ My schematic for the control logic change does not indicate which control line b
 
 ## Memory Map Controller
 
+
 ```
-    0xFFFF  +-----+
+   0x17FFF  +-----+
+            |     | 
+            | RAM | <-- Unused "High" RAM
+            |     |   
+   0x10000  +-----+
             | RAM | <-- Stack
     0xF000  +-----+
             |     |
@@ -186,3 +191,4 @@ My schematic for the control logic change does not indicate which control line b
 
 ```
 
+### Separate RAM and ROM Modules
