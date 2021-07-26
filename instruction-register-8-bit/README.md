@@ -116,59 +116,78 @@ My schematic for the control logic change does not indicate which control line b
 
 | Control Line Position | Bank | Group | Symbol | Notes | 
 |:-:|:--|:--|:-:|:--|
-|1 | Left | Direct | `HILO` | |
-|2 | Left | Direct | `PCa` | |
-|3 | Left | Direct | `ARa` | |
-|4 | Left | Direct | | Reserved: `SPa` (stack pointer address activate) |
-|5 | Left | Direct | | |
-|6 | Left | Direct | | |
+|1 | Left | Direct | `HILO` | Indicates which byte of a 16-bit register is being operated on |
+|2 | Left | Direct | `PCa` | Write program counter value to address bus |
+|3 | Left | Direct | `ARa` | Write memory address register value to address bus |
+|4 | Left | Direct | | **Reserved:** `SPa` (stack pointer address activate) |
+|5 | Left | Direct | | *unused* |
+|6 | Left | Direct | | *unused* |
 |7 | Left | Direct | `XTD` | Activate extended instruction bit |
-|8 | Left | Direct | | Reserved: `AOi` (Address Offset In) |
-|9 | Left | Direct | `PCi` | |
-|10 | Left | Direct | `IRi` | |
+|8 | Left | Direct | | **Reserved:** `AOi` (Address Offset In) |
+|9 | Left | Direct | `PCi` | Read data bus value into single program counter byte indicated by `HILO` |
+|10 | Left | Direct | `IRi` | Read data bus value into instruction register s|
 |11 | Left | High | `MDi` | Memory device read from data bus |
-|12 | Left | High | `Ai` | |
-|13 | Left | High | `Ti` | Temp register (attached to ALU) |
-|14 | Left | High |  | Reserved: `Bi` |
-|15 | Left | High | `Ii` | |
-|16 | Left | High | `Ji` | |
-|17 | Left | High | `ARi`	 | |
-|18 | Left | Low | `PCe` |  |
-|19 | Left | Low | `ARe` | |
-|20 | Left | Low |  | Reserved: `SPe` |
-|21 | Left | Low | `Ie` |  |
-|22 | Left | Low | `Je` | |
-|23 | Left | Low |  |  |
-|24 | Left | Low | `OUT` |  |
-|25 | Right | Direct | `SUB` |  |
-|26 | Right | Direct |  | Reserved: `CRY` |
-|27 | Right | Direct |  | Reserved: ALU `S0` |
-|28 | Right | Direct |  | Reserved: ALU `S1` |
-|29 | Right | Direct |  | Reserved: ALU `S2` |
-|30 | Right | Direct |  | Reserved: ALU `S3` (1 for Shift, Rotate, etc; 0 for ALU) |
-|31 | Right | Direct |  | |
-|32 | Right | Direct |  | Reserved: `INTi` (load interupt status) |
-|33 | Right | Direct |  | Reserved: `INTr` (reset interupt status) |
-|34 | Right | Direct | `ABo` | |
+|12 | Left | High | `Ai` | Read data bus value into `A` register |
+|13 | Left | High | `Ti` | Read data bus value into temp register (attached to ALU) |
+|14 | Left | High |  | **Reserved:** `Bi` |
+|15 | Left | High | `Ii` | Read data bus value into `I` register |
+|16 | Left | High | `Ji` | Read data bus value into `J` register |
+|17 | Left | High | `ARi` | Read data bus value into single memory address register byte indicated by `HILO` |
+|18 | Left | Low | `PCe` | Activate program counter increment |
+|19 | Left | Low | `ARe` | Activate memory address register increment |
+|20 | Left | Low |  | **Reserved:** `SPe` |
+|21 | Left | Low | `Ie` | Activate register `I` increment, or decrement when `SUB` is active  |
+|22 | Left | Low | `Je` | Activate register `J` increment, or decrement when `SUB` is active |
+|23 | Left | Low |  | *unused* |
+|24 | Left | Low |  | *unused* |
+|25 | Right | Direct | `SUB` | Indicates whether the addition operation should instead be a subtraction operation |
+|26 | Right | Direct |  | **Reserved:** `CRY` |
+|27 | Right | Direct |  | **Reserved:** ALU `S0` |
+|28 | Right | Direct |  | **Reserved:** ALU `S1` |
+|29 | Right | Direct |  | **Reserved:** ALU `S2` |
+|30 | Right | Direct |  | **Reserved:** ALU `S3` (1 for Shift, Rotate, etc; 0 for ALU) |
+|31 | Right | Direct |  | *unused* |
+|32 | Right | Direct |  | **Reserved:** `INTi` (load interrupt status) |
+|33 | Right | Direct |  | **Reserved:** `INTr` (reset interrupt status) |
+|34 | Right | Direct | `ABo` | Write the byte indicated by `HILO` of the address bus to the data bus |
 |35 | Right | High | `MDo` | Memory device output to data bus |
-|36 | Right | High | `Ao`	 |  |
+|36 | Right | High | `Ao`	 | Write contents of `A` register to data bus |
 |37 | Right | High | `To` | Temp register (attached to ALU) |
-|38 | Right | High |  | Reserved: `Bo` |
-|39 | Right | High | `Io` |  |
-|40 | Right | High | `Jo` | |
-|41 | Right | High | `∑o` | |
+|38 | Right | High |  | **Reserved:** `Bo` |
+|39 | Right | High | `Io` | Write contents of `I` register to data bus |
+|40 | Right | High | `Jo` | Write contents of `J` register to data bus |
+|41 | Right | High | `∑o` | Write the results of the ALU operation to data bus |
 |42 | Right | Low | `SCr` | Resets both the step counter, the offset register,  the extended instruction bit. A step counter overflow needs to do the same thing. |
-|43 | Right | Low |  | Reserved: `SPr` (Stack Pointer reset) |
-|44 | Right | Low |  | Reserved: `AOr` (Address Offset register reset) |
-|45 | Right | Low | `∑f` |  |
-|46 | Right | Low | `If` |  |
-|47 | Right | Low | `Jf` | |
-|48 | Right | Low | `HLT` | | 
+|43 | Right | Low |  | **Reserved:** `SPr` (Stack Pointer reset) |
+|44 | Right | Low |  | **Reserved:** `AOr` (Address Offset register reset) |
+|45 | Right | Low | `∑f` |  Write the ALU flags status to the flags register |
+|46 | Right | Low | `If` |  Write register `I` flags status to the flags register |
+|47 | Right | Low | `Jf` | Write register `J` flags status to the flags register |
+|48 | Right | Low | `HLT` | Halt the system clock | 
 
-### Microcode
 
-## Memory Map Controller
+## Memory Map
+As I point out above, if I plan out where I would like to take this breadboard TTL CPU, there is a growing need for control lines. I could certainly add more control lines by adding more EPROMs in the control logic, but at some point that approach becomes cumbersome.  Another approach to handing the need for more control lines is to do something called memory mapping. I won't go into into a detailed description of memory mapping, as there are plenty of [resources](https://en.wikipedia.org/wiki/Memory-mapped_I/O) [online](https://en.wikipedia.org/wiki/Memory-mapped_file) for that. But at a high level, what memory mapping does is cause a certain device or module to be activated when a certain address or range of addresses are accessed for reading or writing. This has the effect of not needing to complicate you control logic and microcode of the CPU. Instead, if you want to write a value to a memory mapped module, all you do is write that value to a specific memory address that is mapped to that module and instead of write the value to RAM, the value is written to that module.
 
+
+### Memory Mapped I/O
+The implementation of this is rather straight forward, but it does require you to specify what address range is going to be dedicated to memory mapped devices, as it will be unusable by the RAM or ROM. I decided to make a 2K memory map range at the top of my current ROM address space. This means any access to address values between `0x7800` and `0x7FFF` means you are actually accessing a memory mapped device and not the ROM. This also means the amount of usable ROM has been reduced to 30K. More sophisticated memory map schemes could be developed that leverage the full contents of the ROM or RAM chips, but that would require the usage of more address lines than 16. 
+
+This design would lead to a memory map that looks like this:
+```
+    0xFFFF  +-----+
+            |     |
+            | RAM | <-- Variables, programs
+            |     |
+    0x8000  +-----+
+            | MAP | <-- Memory Mapped I/O
+    0x7800  +-----+
+            |     | 
+            | ROM | <-- Boot code, programs
+            |     |
+    0x0000  +-----+
+```
+It's useful to plan forward a bit more to understand what other things I might be doing that would impact my CPU's memory map. A notable item is the (future) addition of a stack pointer. This will point to a range of memory at the top of the RAM. Strictly speaking, a stack pointed is not the same thing as memory mapped I/O, but it is a specialized access to the memory and thus worth considering. Another item is the fact that at least in the design I am currently using, my RAM chip, the [UM61512A](../ram-rom-upgrade/datasheets/UM61512A.pdf), contains a total of 64K of addressing 8 bit words, and we are currently only using 32K of those words. It should be possible to make that additional 32K of RAM accessible in some manner to the CPU. With these considerations, a hypothetical memory map could look like: 
 
 ```
    0x17FFF  +-----+
@@ -191,4 +210,17 @@ My schematic for the control logic change does not indicate which control line b
 
 ```
 
+In this project, the first memory show above is what will be implemented. However, I will also lay the groundwork to later enable something closer to the hypothetical memory map. 
 ### Separate RAM and ROM Modules
+As I designed the implementation of the memory mapped I/O described above, one thing that stood out is that design approach I took in [my last project to implement the 16 bit memory addressing](../ram-rom-upgrade/) is not flexible enough to easily implement a memory mapping controller. The core issue is that as I implemented it, the RAM and ROM are basically implemented as a single module, making opaque to the rest of the computer whether an address pertains to RAM or ROM. While this them to look like one device to the rest of the CPU, it make things a bit more complicated to wedge in the concept of memory mapped I/O.
+
+Ideally we want the address being written to the address bus to indicate what memory device should be active pert the defined memory map, and generate a control line that tells that memory device to be active or not.  In some ways I did implement this in my last design as address line `A15` was effectively the control signal indicating whether RAM or ROM should be active. Once you have a way to active specific modules based on the memory address, then the only control lines needed to emanate from the microcode are `MDo` (memory device out) and `MDi` (memory device in). In some other CPU design they refer to these control lines of `MEM_READ` and `MEM_WRITE`.  
+
+This approach just became easily to implement if the RAM and ROM functions of the CPU we more cleanly separated from each out there being an unambiguous enable line for each of the RAM and ROM modules. So with this project I redo the RAM and ROM module to turn it into separate RAM and ROM modules. 
+
+### Memory Map Controller 
+
+### Converting Display Register to Memory Mapped Device
+
+## Microcode
+
