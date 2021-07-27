@@ -210,17 +210,17 @@ It's useful to plan forward a bit more to understand what other things I might b
 
 ```
 
-In this project, the first memory show above is what will be implemented. However, I will also lay the groundwork to later enable something closer to the hypothetical memory map. 
+In this project, the first memory map shown above is what will be implemented. However, I will also lay the groundwork to later enable something closer to the hypothetical memory map. 
 ### Separate RAM and ROM Modules
 As I designed the implementation of the memory mapped I/O described above, one thing that stood out is that design approach I took in [my last project to implement the 16 bit memory addressing](../ram-rom-upgrade/) is not flexible enough to easily implement a memory mapping controller. The core issue is that as I implemented it, the RAM and ROM are basically implemented as a single module, making opaque to the rest of the computer whether an address pertains to RAM or ROM. While this them to look like one device to the rest of the CPU, it make things a bit more complicated to wedge in the concept of memory mapped I/O.
 
 Ideally we want the address being written to the address bus to indicate what memory device should be active pert the defined memory map, and generate a control line that tells that memory device to be active or not.  In some ways I did implement this in my last design as address line `A15` was effectively the control signal indicating whether RAM or ROM should be active. Once you have a way to active specific modules based on the memory address, then the only control lines needed to emanate from the microcode are `MDo` (memory device out) and `MDi` (memory device in). In some other CPU design they refer to these control lines of `MEM_READ` and `MEM_WRITE`.  
 
-This approach just became easily to implement if the RAM and ROM functions of the CPU we more cleanly separated from each out there being an unambiguous enable line for each of the RAM and ROM modules. So with this project I redo the RAM and ROM module to turn it into separate RAM and ROM modules. 
+This approach just became easier to implement if the RAM and ROM functions of the CPU we more cleanly separated from each out there being an unambiguous enable line for each of the RAM and ROM modules. So with this project I redo the RAM and ROM module to turn it into separate RAM and ROM modules. 
 
 ### Memory Map Controller 
 
-### Converting Display Register to Memory Mapped Device
+#### Converting Display Register to Memory Mapped Device
 
 ## Microcode
 
