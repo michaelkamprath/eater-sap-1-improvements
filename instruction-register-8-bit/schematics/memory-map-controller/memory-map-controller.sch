@@ -114,13 +114,13 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 3050 1850 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74LS04 U2
-U 1 1 610A4EC8
+U 3 1 610A4EC8
 P 3950 1650
 F 0 "U2" H 4050 1525 50  0000 C CNN
 F 1 "74LS04" H 4100 1775 50  0000 C CNN
 F 2 "" H 3950 1650 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 3950 1650 50  0001 C CNN
-	1    3950 1650
+	3    3950 1650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -163,9 +163,9 @@ L common-symbols:74HCT238 U4
 U 1 1 610C819E
 P 4950 4550
 F 0 "U4" H 5150 5125 50  0000 C CNN
-F 1 "74HCT238" V 4950 4525 50  0000 C CNN
+F 1 "74LS32" V 4950 4525 50  0000 C CNN
 F 2 "" H 4800 4375 50  0001 C CNN
-F 3 "" H 4800 4375 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4800 4375 50  0001 C CNN
 	1    4950 4550
 	1    0    0    -1  
 $EndComp
@@ -300,13 +300,13 @@ Wire Wire Line
 	6225 4900 5300 4900
 $Comp
 L 74xx:74LS08 U3
-U 1 1 6124CEFE
+U 2 1 6124CEFE
 P 4675 1750
 F 0 "U3" H 4925 1650 50  0000 C CNN
 F 1 "74LS08" H 4950 1875 50  0000 C CNN
 F 2 "" H 4675 1750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 4675 1750 50  0001 C CNN
-	1    4675 1750
+	2    4675 1750
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -407,13 +407,13 @@ Wire Wire Line
 	3650 1650 3550 1650
 $Comp
 L 74xx:74LS32 U4
-U 1 1 60ED1285
+U 4 1 60ED1285
 P 5900 900
 F 0 "U4" H 6075 775 50  0000 C CNN
 F 1 "74LS32" H 6150 1025 50  0000 C CNN
 F 2 "" H 5900 900 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 5900 900 50  0001 C CNN
-	1    5900 900 
+	4    5900 900 
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -443,13 +443,13 @@ Wire Wire Line
 	1475 1050 1475 1525
 $Comp
 L 74xx:74LS32 U4
-U 2 1 60FC6A93
+U 3 1 60FC6A93
 P 3150 1425
 F 0 "U4" H 3350 1325 50  0000 C CNN
 F 1 "74LS32" H 3400 1550 50  0000 C CNN
 F 2 "" H 3150 1425 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 3150 1425 50  0001 C CNN
-	2    3150 1425
+	3    3150 1425
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -464,13 +464,13 @@ Wire Wire Line
 	1400 1325 1400 7150
 $Comp
 L 74xx:74LS08 U3
-U 2 1 60FD347A
+U 3 1 60FD347A
 P 3175 1000
 F 0 "U3" H 3400 900 50  0000 C CNN
 F 1 "74LS08" H 3450 1125 50  0000 C CNN
 F 2 "" H 3175 1000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 3175 1000 50  0001 C CNN
-	2    3175 1000
+	3    3175 1000
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -489,25 +489,25 @@ Wire Wire Line
 	2725 1325 1400 1325
 $Comp
 L 74xx:74LS04 U2
-U 3 1 60FDE6A9
+U 4 1 60FDE6A9
 P 3850 1000
 F 0 "U2" H 3950 875 50  0000 C CNN
 F 1 "74LS04" H 4000 1125 50  0000 C CNN
 F 2 "" H 3850 1000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 3850 1000 50  0001 C CNN
-	3    3850 1000
+	4    3850 1000
 	1    0    0    -1  
 $EndComp
 $Comp
 L 74xx:74LS08 U3
-U 2 1 60FE27D8
+U 4 1 60FE27D8
 P 4575 1325
 F 0 "U3" H 4800 1225 50  0000 C CNN
 F 1 "74LS08" H 4850 1450 50  0000 C CNN
 F 2 "" H 4575 1325 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 4575 1325 50  0001 C CNN
-	2    4575 1325
-	1    0    0    -1  
+	4    4575 1325
+	1    0    0    1   
 $EndComp
 Wire Wire Line
 	3450 1425 3550 1425
