@@ -188,13 +188,13 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 2050 2525 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74LS32 U1
-U 1 1 60D2EF1E
+U 2 1 60D2EF1E
 P 3575 2625
 F 0 "U1" H 3575 2950 50  0000 C CNN
 F 1 "74LS32" H 3575 2859 50  0000 C CNN
 F 2 "" H 3575 2625 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 3575 2625 50  0001 C CNN
-	1    3575 2625
+	2    3575 2625
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -226,26 +226,26 @@ NoConn ~ 4925 3600
 NoConn ~ 4525 4600
 $Comp
 L 74xx:74LS32 U1
-U 2 1 60D49D1D
+U 3 1 60D49D1D
 P 4425 2525
 F 0 "U1" H 4425 2850 50  0000 C CNN
 F 1 "74LS32" H 4425 2759 50  0000 C CNN
 F 2 "" H 4425 2525 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4425 2525 50  0001 C CNN
-	2    4425 2525
+	3    4425 2525
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	3875 2625 4125 2625
 $Comp
 L 74xx:74LS04 U2
-U 3 1 60D4E826
+U 4 1 60D4E826
 P 5150 2525
 F 0 "U2" H 5150 2842 50  0000 C CNN
 F 1 "74LS04" H 5150 2751 50  0000 C CNN
 F 2 "" H 5150 2525 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 5150 2525 50  0001 C CNN
-	3    5150 2525
+	4    5150 2525
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -569,13 +569,13 @@ Connection ~ 3175 1525
 Connection ~ 6425 3250
 $Comp
 L 74xx:74LS04 U2
-U 4 1 60EAE619
+U 5 1 60EAE619
 P 9400 1750
 F 0 "U2" H 9400 1433 50  0000 C CNN
 F 1 "74LS04" H 9400 1524 50  0000 C CNN
 F 2 "" H 9400 1750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9400 1750 50  0001 C CNN
-	4    9400 1750
+	5    9400 1750
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
@@ -680,13 +680,13 @@ F 3 "" H 9850 4100 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74LS32 U1
-U 3 1 60F2D71D
+U 1 1 60F2D71D
 P 1450 2525
 F 0 "U1" H 1450 2850 50  0000 C CNN
 F 1 "74LS32" H 1450 2759 50  0000 C CNN
 F 2 "" H 1450 2525 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 1450 2525 50  0001 C CNN
-	3    1450 2525
+	1    1450 2525
 	1    0    0    -1  
 $EndComp
 $Comp

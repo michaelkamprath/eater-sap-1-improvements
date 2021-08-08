@@ -159,10 +159,10 @@ F 3 "" H 5500 2825 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L common-symbols:74HCT238 U4
+L common-symbols:74HCT238 U6
 U 1 1 610C819E
 P 4950 4550
-F 0 "U4" H 5150 5125 50  0000 C CNN
+F 0 "U6" H 5150 5125 50  0000 C CNN
 F 1 "74LS32" V 4950 4525 50  0000 C CNN
 F 2 "" H 4800 4375 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4800 4375 50  0001 C CNN
@@ -172,8 +172,6 @@ $EndComp
 Wire Wire Line
 	4600 4800 1850 4800
 Connection ~ 1850 4800
-Wire Wire Line
-	1850 4800 1850 5525
 Wire Wire Line
 	4600 4450 1925 4450
 Connection ~ 1925 4450
@@ -374,11 +372,6 @@ Wire Wire Line
 	1925 1050 1925 4450
 Wire Wire Line
 	1850 1050 1850 4800
-Wire Wire Line
-	1850 5525 6225 5525
-Connection ~ 1850 5525
-Wire Wire Line
-	1850 5525 1850 7150
 Text HLabel 6225 5525 2    50   Output ~ 0
 MMAP_15
 Wire Notes Line
@@ -533,4 +526,27 @@ Wire Wire Line
 Connection ~ 5050 1325
 Wire Wire Line
 	5050 1325 6250 1325
+Wire Wire Line
+	4000 5525 6225 5525
+Wire Wire Line
+	1850 4800 1850 5625
+Wire Wire Line
+	3400 5625 1850 5625
+Connection ~ 1850 5625
+Wire Wire Line
+	1850 5625 1850 7150
+Wire Wire Line
+	3400 5000 3400 5425
+Connection ~ 3400 5000
+$Comp
+L 74xx:74LS08 U3
+U 1 1 611259B0
+P 3700 5525
+F 0 "U3" H 3700 5850 50  0000 C CNN
+F 1 "74LS08" H 3700 5759 50  0000 C CNN
+F 2 "" H 3700 5525 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 3700 5525 50  0001 C CNN
+	1    3700 5525
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

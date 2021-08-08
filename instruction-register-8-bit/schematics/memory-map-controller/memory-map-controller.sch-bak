@@ -114,13 +114,13 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS21" H 3050 1850 50  0001 C CNN
 $EndComp
 $Comp
 L 74xx:74LS04 U2
-U 1 1 610A4EC8
+U 3 1 610A4EC8
 P 3950 1650
 F 0 "U2" H 4050 1525 50  0000 C CNN
 F 1 "74LS04" H 4100 1775 50  0000 C CNN
 F 2 "" H 3950 1650 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 3950 1650 50  0001 C CNN
-	1    3950 1650
+	3    3950 1650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
