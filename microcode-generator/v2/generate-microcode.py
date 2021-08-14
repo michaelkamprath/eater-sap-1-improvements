@@ -21,25 +21,30 @@ class Microcode:
             instruction['value'] for instruction in config_dict['instructions'].values()
         ]
 
-        for step_num, step_config_list in enumerate(config_dict['instruction_prefix_steps']):
+        for step_num, step_config_list in config_dict['instruction_prefix_steps'].items():
             for step_config in step_config_list:
                 for instruction_val in instruction_values:
                     self._insert_step_config(step_config, step_num, instruction_val, microbits)
 
         # set the instruction specific steps microbits
-        step_offset = len(config_dict['instruction_prefix_steps'])
         for instruction in config_dict['instructions']:
             instruction_config = config_dict['instructions'][instruction]
-            instruction_steps = instruction_config['steps']
-            for step_num, step_config_list in enumerate(instruction_steps):
+            # instruction_steps = instruction_config['steps']
+            # for step_num, step_config_list in enumerate(instruction_steps):
+            #     for step_config in step_config_list:
+            #         self._insert_step_config(step_config, step_num+step_offset, instruction_config['value'], microbits)
+            for step_num, step_config_list in instruction_config['steps'].items():
                 for step_config in step_config_list:
-                    self._insert_step_config(step_config, step_num+step_offset, instruction_config['value'], microbits)
-
+                    self._insert_step_config(step_config, step_num, instruction_config['value'], microbits)
         # and thats it
         return
 
     def _insert_step_config(self, step_config, step_num, instr_val, microbits):
         mb = self._generate_final_microbits(step_config['control_lines'], microbits)
+        # the extended flag should always be 0 unless explicitly stated otherwise.
+        extended_flag=(step_config['flags'].get('extended', 0) if 'flags' in step_config else 0)
+
+        print(f'Generated microbits for instruction {instr_val}, step {step_num}, extended {extended_flag}: {mb}')
         self._setBits(
             mb,
             instruction=instr_val,
@@ -48,7 +53,8 @@ class Microcode:
             zero_flag=(step_config['flags'].get('zero', 'X') if 'flags' in step_config else 'X'),
             negative_flag=(step_config['flags'].get('negative', 'X') if 'flags' in step_config else 'X'),
             overflow_flag=(step_config['flags'].get('overflow', 'X') if 'flags' in step_config else 'X'),
-            extended_flag=(step_config['flags'].get('extended', 0) if 'flags' in step_config else 0),
+            # the extended flag should always be 0 unless explicitly stated otherwise.
+            extended_flag=extended_flag,
         )
 
     def _generate_final_microbits(self, control_line_list, microbits):
@@ -132,6 +138,7 @@ class Microcode:
             return 0
 
         bits = Microcode._get_with_defaulting(negative_dict, overflow_flag)
+
         if bits is None:
             return 0
         else:
