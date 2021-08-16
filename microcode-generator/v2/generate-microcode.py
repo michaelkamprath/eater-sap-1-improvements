@@ -96,7 +96,12 @@ class Microcode:
         carry_flag = (address&int('000010000000000000',2)) >> 13
         negative_flag = (address&int('000100000000000000',2)) >> 14
         overflow_flag = (address&int('001000000000000000',2)) >> 15
+        interupt_flag = (address&int('010000000000000000',2)) >> 16
         eeprom_select = (address&int('100000000000000000',2)) >> 17
+
+        # Not implementing anything for interupts yet. If interupt flag is 1, return 0
+        if interupt_flag:
+            return 0
 
         # the order or precedence for searching for a value return is:
         #   1. extended
