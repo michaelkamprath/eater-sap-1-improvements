@@ -65,16 +65,26 @@ For the breadboard computer I intend to build, the types of operands sets I will
 
 A future iteration of this CPU could add 16-bit ValueSource/Destination type operands. 
 
-Then, the definition ofo the instruction set begins to look like this:
+These concepts of types of value sources and destinations requires us to be more rigorous about the concept of "addressing modes". Loosely speaking, an addressing mode is a method for accessing data on the CPU. With this iteration of the CPU, the following addressing modes are used:
+
+* **Immediate** - A constant value that is encoded into the instruction machine code. 
+* **Indirect** - A value that resides at a memory address indicated by a constant value encoded int the instruction machine code.
+* **Register** - A value that resides in a register, such as register `A`.
+* **Register Indirect** - A value that resides at a memory address contain in a register.
+
+The addressing modes can all be used to create. For example, the set of all "8-bit value sources" consists of the `A`, `I`, and `J` register; values that reside at a given memory address with that memory address being either an immediate value or a value residing in a register (such as the `MAR`), or a constant (immediate) value incorporated into the instruction machine code. Each addressing mode leverages it's own microcode pattern to be able to mode data around the CPU.
+
+Then, the definition of the instruction set begins to look like this:
 
 | Instruction | Instruction Bit Prefix | Operand 1 Type | Operand 2 Type | Description |
 |:-:|:--|:-:|:-:|:--|
+| `nop` | `b00000000` | - | - | No operations |
 | `hlt` | `b00000001` | - | - | Stop the system clock |
-| `out` | `b00000011` | - | - | Copy value in register `A` to display register |
 | `jmp X` | `b001011xx` | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` |
 | `jc X` | `b001100xx` | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if carry flag is set |
 | `jz X` | `b001101xx` | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if zero flag is set |
-| `mov X,Y` | `b01xxxyyy`| 8-bit Value Destination | 8-bit Value Source | Copy 8 bit value at source `Y` into destination `X` |
+| `jeq X,Y` | `b010xxyyy`| 16-bit Address Source | 8-bit Value Source | Set program counter to 16-bit value found at `X` if value in register `A` is equal to 8-bit value found at `Y` |
+| `mov X,Y` | `b10xxxyyy`| 8-bit Value Destination | 8-bit Value Source | Copy 8 bit value at source `Y` into destination `X` |
 | `add X` | `b10111xxx` | 8-bit Value Source | - | Add value found at `X` to value in Register `A` |
 | `sub X` | `b11001xxx` | 8-bit Value Source | - | Subtract value found at `X` from value in Register `A` |
 | `inc X` | `b110110xx` | Incrementable Destination | - | Increment the value currently found n `X` |
@@ -87,6 +97,9 @@ Of course, this is just a starting point and does not represent the full instruc
 One thing that I realized when I was developing the full instruction set design is that 256 instructions is not really that much when you start to factor in combinatorics of all registers, indirect addresses, and direct values, the instruction set and fill up rather quick. So, I wanted to introduce the concept of extended instructions. These would be instructions that take two bytes to identify rather than just one. The benefit here is that the instruction set has more bits to allow for instructions with high cardinality operand sets. For example, the `mov` instruction takes up 25% of the 8-bit instruction space to enable all the possible combinations of operands. To create a similar type instruction, such as a `swap` instruction that allows the wapping of values between any register and/or memory location, there is likely not enough remaining instruction space to account for all the possible operand combinations after other instructions, such as jumps and ALU operations, are implemented. An extended instruction space could enable the creation of more such high cardinality instructions.
 
 What I developed isn't very sophisticated. In the approach I developed, the first byte is an `XTD`, which is in the "normal" instruction set only flags that the next byte is an instruction from the extended set. To make this work, the instruction register needs to maintain an extended flag that indicates to the microcode whether the instruction is a "normal" or "extended" instruction.  This flag is implemented as a flip flop that gets set by a control line activated by the `XTD` instruction. This flip flop drives an address line into the microcode ROMs. Then from this point the next byte is loaded  is treated as a new instruction, but since the `XTD` bit is set on the microcode ROM address lines, the next byte can be a completely different instruction even if its bit pattern matches a "normal" instruction. The flip flop gets reset at the end of every instruction when the `SCr` (Step Counter Reset) control line is activated. 
+
+### Assembler
+The sister project to this breadboard CPU is my customizable assembler, [BespokeASM](https://github.com/michaelkamprath/bespokeasm). I have updated the assembler to support the [addressing modes](https://github.com/michaelkamprath/bespokeasm/wiki/Assembly-Language-Syntax#addressing-modes) and [instruction configuration](https://github.com/michaelkamprath/bespokeasm/wiki/Instruction-Set-Configuration-File#machine-code-compilation) required by this change to my breadboard CPU's instruction set. 
 
 ## Instruction Register
 The instruction register design is simply two 74LS173 4-bit flip flops with the addition of a single flip flop for the `XTD` bit using a 74LS74. Collectively these drive nine address lines of the microcode ROMs. 
@@ -187,7 +200,7 @@ This design would lead to a memory map that looks like this:
             |     |
     0x0000  +-----+
 ```
-It's useful to plan forward a bit more to understand what other things I might be doing that would impact my CPU's memory map. A notable item is the (future) addition of a stack pointer. This will point to a range of memory at the top of the RAM. Strictly speaking, a stack pointed is not the same thing as memory mapped I/O, but it is a specialized access to the memory and thus worth considering. Another item is the fact that at least in the design I am currently using, my RAM chip, the [UM61512A](../ram-rom-upgrade/datasheets/UM61512A.pdf), contains a total of 64K of addressing 8 bit words, and we are currently only using 32K of those words. It should be possible to make that additional 32K of RAM accessible in some manner to the CPU. With these considerations, a hypothetical memory map could look like: 
+It's useful to plan forward a bit more to understand what other things I might be doing that would impact my CPU's memory map. A notable item is the (future) addition of a stack pointer. This will point to a range of memory at the top of the RAM. Strictly speaking, a stack pointer is not the same thing as memory mapped I/O, but it is a specialized access to the memory and thus worth considering. Another item is the fact that at least in the design I am currently using, my RAM chip, the [UM61512A](../ram-rom-upgrade/datasheets/UM61512A.pdf), contains a total of 64K of addressing 8 bit words, and we are currently only using 32K of those words. It should be possible to make that additional 32K of RAM accessible in some manner to the CPU. With these considerations, a hypothetical memory map could look like: 
 
 ```
    0x17FFF  +-----+
@@ -210,11 +223,12 @@ It's useful to plan forward a bit more to understand what other things I might b
 
 ```
 
-In this project, the first memory map shown above is what will be implemented. However, I will also lay the groundwork to later enable something closer to the hypothetical memory map. 
+In this project, the first memory map shown above is what will be implemented. However, I will also lay the groundwork to later enable something closer to the hypothetical memory map.
+
 ### Separate RAM and ROM Modules
 As I designed the implementation of the memory mapped I/O described above, one thing that stood out is that design approach I took in [my last project to implement the 16 bit memory addressing](../ram-rom-upgrade/) is not flexible enough to easily implement a memory mapping controller. The core issue is that as I implemented it, the RAM and ROM are basically implemented as a single module, making opaque to the rest of the computer whether an address pertains to RAM or ROM. While this them to look like one device to the rest of the CPU, it make things a bit more complicated to wedge in the concept of memory mapped I/O.
 
-Ideally we want the address being written to the address bus to indicate what memory device should be active pert the defined memory map, and generate a control line that tells that memory device to be active or not.  In some ways I did implement this in my last design as address line `A15` was effectively the control signal indicating whether RAM or ROM should be active. Once you have a way to active specific modules based on the memory address, then the only control lines needed to emanate from the microcode are `MDo` (memory device out) and `MDi` (memory device in). In some other CPU design they refer to these control lines of `MEM_READ` and `MEM_WRITE`.  
+Ideally we want the address being written to the address bus to indicate what memory device should be active per the defined memory map, and generate a control line that tells that memory device to be active or not.  In some ways I did implement this in my last design as address line `A15` was effectively the control signal indicating whether RAM or ROM should be active. Once you have a way to active specific modules based on the memory address, then the only control lines needed to emanate from the microcode are `MDo` (memory device out) and `MDi` (memory device in). In some other CPU design they refer to these control lines of `MEM_READ` and `MEM_WRITE`.  
 
 This approach just became easier to implement if the RAM and ROM functions of the CPU we more cleanly separated from each out there being an unambiguous enable line for each of the RAM and ROM modules. So with this project I redo the RAM and ROM module to turn it into separate RAM and ROM modules. 
 
