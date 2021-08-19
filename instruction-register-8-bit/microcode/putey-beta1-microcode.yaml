@@ -314,6 +314,402 @@ instructions:
             zero: 1
           control_lines:
             SCr
+  JEQ_iaddr_i:
+    value: 82
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Io
+      2:
+        - control_lines:
+            SUB
+            SUMf
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            ARa
+            PCi
+            ARe
+            MDo
+      6:
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            ARa
+            PCi
+            MDo
+      7:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
+  JEQ_iaddr_j:
+    value: 83
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Jo
+      2:
+        - control_lines:
+            SUB
+            SUMf
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            ARa
+            PCi
+            ARe
+            MDo
+      6:
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            ARa
+            PCi
+            MDo
+      7:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
+  JEQ_iaddr_const:
+    value: 87
+    steps:
+      1:
+        - control_lines:
+            PCa
+            Ti
+            MDo
+            PCe
+      2:
+        - control_lines:
+            SUB
+            SUMf
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            ARa
+            PCi
+            ARe
+            MDo
+      6:
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            ARa
+            PCi
+            MDo
+      7:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
+  JEQ_addr_i:
+    value: 90
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Io
+      2:
+        - control_lines:
+            SUB
+            SUMf
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            PCi
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            PCi
+            To
+      6:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
+  JEQ_addr_j:
+    value: 91
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Jo
+      2:
+        - control_lines:
+            SUB
+            SUMf
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            PCi
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            PCi
+            To
+      6:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
+  JEQ_addr1_iaddr2:
+    value: 94
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      3:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            SUB
+            SUMf
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      6:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            PCi
+            MDo
+      7:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            PCi
+            To
+  JEQ_addr_const:
+    value: 95
+    steps:
+      1:
+        - control_lines:
+            PCa
+            Ti
+            MDo
+            PCe
+      2:
+        - control_lines:
+            SUB
+            SUMf
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            PCi
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            PCi
+            To
+      6:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
   MOV_a_i:
     value: 130
     steps:
@@ -872,399 +1268,294 @@ instructions:
       3:
         - control_lines:
             SCr
-  JEQ_iaddr_i:
-    value: 82
+  SWAP_a_i:
+    value: 2
     steps:
-      1:
-        - control_lines:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
             Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ai
             Io
-      2:
-        - control_lines:
-            SUB
-            SUMf
-      3:
-        - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
       4:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            PCe
+            Ii
+            To
+      4:
         - flags:
-            zero: 1
-          control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      5:
-        - flags:
-            zero: 0
+            extended: 1
           control_lines:
             SCr
-        - flags:
-            zero: 1
-          control_lines:
-            ARa
-            PCi
-            ARe
-            MDo
-      6:
-        - flags:
-            zero: 1
-          control_lines:
-            HILO
-            ARa
-            PCi
-            MDo
-      7:
-        - flags:
-            zero: 1
-          control_lines:
-            SCr
-  JEQ_iaddr_j:
-    value: 83
+  SWAP_a_j:
+    value: 3
     steps:
-      1:
-        - control_lines:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
             Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ai
             Jo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Ji
+            To
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  SWAP_a_iaddr:
+    value: 2
+    steps:
       2:
+        - flags:
+            extended: 1
         - control_lines:
-            SUB
-            SUMf
+            PCa
+            ARi
+            PCe
+            MDo
       3:
         - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
+            extended: 1
+        - control_lines:
+            HILO
             PCa
             ARi
             PCe
             MDo
       4:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
+            ARa
             MDo
+            Ti
       5:
         - flags:
-            zero: 0
-          control_lines:
-            SCr
-        - flags:
-            zero: 1
+            extended: 1
           control_lines:
             ARa
-            PCi
-            ARe
-            MDo
+            MDi
+            Ao
       6:
         - flags:
-            zero: 1
+            extended: 1
           control_lines:
-            HILO
-            ARa
-            PCi
-            MDo
+            Ai
+            To
       7:
         - flags:
-            zero: 1
+            extended: 1
           control_lines:
             SCr
-  JEQ_iaddr_const:
-    value: 87
+  SWAP_i_a:
+    value: 2
     steps:
-      1:
-        - control_lines:
-            PCa
-            Ti
-            MDo
-            PCe
       2:
-        - control_lines:
-            SUB
-            SUMf
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            Ti
       3:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
-      4:
-        - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      5:
-        - flags:
-            zero: 0
-          control_lines:
-            SCr
-        - flags:
-            zero: 1
-          control_lines:
-            ARa
-            PCi
-            ARe
-            MDo
-      6:
-        - flags:
-            zero: 1
-          control_lines:
-            HILO
-            ARa
-            PCi
-            MDo
-      7:
-        - flags:
-            zero: 1
-          control_lines:
-            SCr
-  JEQ_addr_i:
-    value: 90
-    steps:
-      1:
-        - control_lines:
-            Ti
+            Ai
             Io
-      2:
-        - control_lines:
-            SUB
-            SUMf
-      3:
-        - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
       4:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            HILO
-            PCa
-            PCi
-            MDo
-      5:
-        - flags:
-            zero: 0
-          control_lines:
-            SCr
-        - flags:
-            zero: 1
-          control_lines:
-            PCi
+            Ii
             To
-      6:
+      4:
         - flags:
-            zero: 1
+            extended: 1
           control_lines:
             SCr
-  JEQ_addr_j:
-    value: 91
+  SWAP_i_j:
+    value: 3
     steps:
-      1:
-        - control_lines:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
             Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ii
             Jo
-      2:
-        - control_lines:
-            SUB
-            SUMf
-      3:
-        - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
       4:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            HILO
-            PCa
-            PCi
-            MDo
-      5:
-        - flags:
-            zero: 0
-          control_lines:
-            SCr
-        - flags:
-            zero: 1
-          control_lines:
-            PCi
+            Ji
             To
-      6:
+      4:
         - flags:
-            zero: 1
+            extended: 1
           control_lines:
             SCr
-  JEQ_addr1_iaddr2:
-    value: 94
+  SWAP_i_iaddr:
+    value: 2
     steps:
-      1:
-        - control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
       2:
+        - flags:
+            extended: 1
         - control_lines:
-            HILO
             PCa
             ARi
             PCe
             MDo
       3:
+        - flags:
+            extended: 1
         - control_lines:
-            ARa
-            Ti
-            MDo
-      4:
-        - control_lines:
-            SUB
-            SUMf
-      5:
-        - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
-      6:
-        - flags:
-            zero: 0
-          control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
             HILO
             PCa
-            PCi
+            ARi
+            PCe
             MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            Io
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            Ii
+            To
       7:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
             SCr
-        - flags:
-            zero: 1
-          control_lines:
-            PCi
-            To
-  JEQ_addr_const:
-    value: 95
+  SWAP_j_a:
+    value: 2
     steps:
-      1:
-        - control_lines:
-            PCa
-            Ti
-            MDo
-            PCe
       2:
-        - control_lines:
-            SUB
-            SUMf
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            Ti
       3:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            PCe
+            Ai
+            Jo
+      4:
         - flags:
-            zero: 1
+            extended: 1
           control_lines:
-            PCa
+            Ji
+            To
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  SWAP_j_i:
+    value: 3
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
             Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ii
+            Jo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Ji
+            To
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  SWAP_j_iaddr:
+    value: 2
+    steps:
+      2:
+        - flags:
+            extended: 1
+        - control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+        - control_lines:
+            HILO
+            PCa
+            ARi
             PCe
             MDo
       4:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            PCe
-        - flags:
-            zero: 1
-          control_lines:
-            HILO
-            PCa
-            PCi
+            ARa
             MDo
+            Ti
       5:
         - flags:
-            zero: 0
+            extended: 1
           control_lines:
-            SCr
-        - flags:
-            zero: 1
-          control_lines:
-            PCi
-            To
+            ARa
+            MDi
+            Jo
       6:
         - flags:
-            zero: 1
+            extended: 1
+          control_lines:
+            Ji
+            To
+      7:
+        - flags:
+            extended: 1
           control_lines:
             SCr

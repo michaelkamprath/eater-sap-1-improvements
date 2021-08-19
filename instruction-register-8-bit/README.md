@@ -4,13 +4,13 @@
 The goal of this project was to do the natural next step of the previous 64K RAM/ROM upgrade and now extend the instruction register to use the full 8 bits, thus enabling at least 256 distinct instructions. To prepare for that, I went ahead and designed an 8-bit instruction set, and in that process, I realized that there were some shortcomings of my breadboard TTL CPU to date, and that I needed to iterate on some of my previous changes. So this project will not only update on the instruction register, but iterate on both the control lines architecture and the memory architecture. 
 
 ## Design Goals
-1. The primary design goal for this change is to enable 8-bit instructions in my breadboard CPU. Furthermore, I would like to enable the ability to do extended instructions at least once, thus bringing the total possible instructions to 511. It's doubtful I'd ever use that main distinct instruction, but it's be nice to enable.
+1. The primary design goal for this change is to enable 8-bit instructions in my breadboard CPU. Furthermore, I would like to enable the ability to implemented extended instructions at least once, thus bringing the total possible instructions to 511. It's doubtful I'd ever use that full scope allowed by extended instruction, but it's be nice to enable.
  * The motivation for using the full 8-bit instruction space is that the instruction can be "parameterize". The idea here is that the first few bits in the instruction byte indicate the actual operation, while the subsequent bits pertain to specific operands. Constructing instruction values in this way will make it easier to enable an assembler for my breadboard CPU's instruction set.
-2. Update the control logic to enable full 8-bit instructions. Furthermore, In preparation for projects yet to come, rework the control logic to also enable more control lines.
- * My prior expansion of the control lic was not forward looking enough and was only sized for 6-bit instructions. As a result, the EEPROMs selected do not have enough address lines to enable 8-bit instruction, and 4 flag lines, and 3 bit steps, and and a few other inputs to the control logic I am thinking about. 
-3. Iterate on the memory module to enable memory mapped I/O. While this project will not yet use the memory mapped I/O, I wanted to put the components for it in while I was restructuring things to address the needed changes in control logic. 
- * If I didn't introduce memory mapped I/O into the design, I would need to add more control logic and customize the microcode for every peripheral I would like to add. This will get out of hand rather soon, if it hasn't already. 
-4. When designing the implementation of the goals above, before forward thinking about the eventual need to add a stack pointer, upgrade the ALU, add a more sophisticated output display, and add several other capabilities to the system.
+2. Update the control logic to enable the full 8-bit instructions. Furthermore, In preparation for projects yet to come, rework the control logic to also enable more control lines.
+ * My prior expansion of the control lines was not forward looking enough and was only sized for 6-bit instructions. As a result, the EEPROMs selected do not have enough address lines to enable 8-bit instruction, and 4 flag lines, and 3 bit steps, and and a few other inputs to the control logic I am thinking about. 
+3. Iterate on the memory module to enable memory mapped I/O. While this project will not yet fully use the memory mapped I/O, I wanted to put the components for it in while I was restructuring things to address the needed changes in control logic. 
+ * If I didn't introduce memory mapped I/O into the design, I would need to add more control logic and customize the microcode for every peripheral I would like to add, and a corresponding instruction to use that peripheral. This approach will get out of hand rather soon, if it hasn't already. 
+4. When designing the implementation of the goals above, be forward thinking about the eventual need to add a stack pointer, upgrade the ALU, add a more sophisticated output display, and add several other capabilities to the system.
  
 # Design
 
@@ -76,19 +76,20 @@ The addressing modes can all be used to create. For example, the set of all "8-b
 
 Then, the definition of the instruction set begins to look like this:
 
-| Instruction | Instruction Bit Prefix | Operand 1 Type | Operand 2 Type | Description |
-|:-:|:--|:-:|:-:|:--|
-| `nop` | `b00000000` | - | - | No operations |
-| `hlt` | `b00000001` | - | - | Stop the system clock |
-| `jmp X` | `b001011xx` | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` |
-| `jc X` | `b001100xx` | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if carry flag is set |
-| `jz X` | `b001101xx` | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if zero flag is set |
-| `jeq X,Y` | `b010xxyyy`| 16-bit Address Source | 8-bit Value Source | Set program counter to 16-bit value found at `X` if value in register `A` is equal to 8-bit value found at `Y` |
-| `mov X,Y` | `b10xxxyyy`| 8-bit Value Destination | 8-bit Value Source | Copy 8 bit value at source `Y` into destination `X` |
-| `add X` | `b10111xxx` | 8-bit Value Source | - | Add value found at `X` to value in Register `A` |
-| `sub X` | `b11001xxx` | 8-bit Value Source | - | Subtract value found at `X` from value in Register `A` |
-| `inc X` | `b110110xx` | Incrementable Destination | - | Increment the value currently found n `X` |
-| `dec X` | `b110110xx` | Incrementable Destination | - | Decrement the value currently found n `X` |
+| Instruction | Instruction Bit Prefix | Extended? | Operand 1 Type | Operand 2 Type | Description |
+|:-:|:--|:-:|:-:|:-:|:--|
+| `nop` | `b00000000` | No | - | - | No operations |
+| `hlt` | `b00000001` | No | - | - | Stop the system clock |
+| `jmp X` | `b001011xx` | No | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` |
+| `jc X` | `b001100xx` | No | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if carry flag is set |
+| `jz X` | `b001101xx` | No | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if zero flag is set |
+| `jeq X,Y` | `b010xxyyy`| No | 16-bit Address Source | 8-bit Value Source | Set program counter to 16-bit value found at `X` if value in register `A` is equal to 8-bit value found at `Y` |
+| `mov X,Y` | `b10xxxyyy`| No | 8-bit Value Destination | 8-bit Value Source | Copy 8 bit value at source `Y` into destination `X` |
+| `add X` | `b10111xxx` | No | 8-bit Value Source | - | Add value found at `X` to value in Register `A` |
+| `sub X` | `b11001xxx` | No | 8-bit Value Source | - | Subtract value found at `X` from value in Register `A` |
+| `inc X` | `b110110xx` | No | Incrementable Destination | - | Increment the value currently found n `X` |
+| `dec X` | `b110111xx` | No | Incrementable Destination | - | Decrement the value currently found n `X` |
+| `swap X,Y` | `b00xxxyyy` | **Yes** | 8-bit Value Destination | 8-bit Value Destination | Swap the value found at each 8-bit value source, `X` and `Y`. Only unequal register, register indirect, and indirect addressing modes can be used as operands. |
 
 Of course, this is just a starting point and does not represent the full instruction set, but it already enables a much richer set of instructions than the original 4-bit instruction codes previously used. One thing I intend to do is not define meaningless instructions, such as `mov a,a`, and instead use the bit code that would have been used to construct the meaningless instruction for something else. 
 
@@ -233,8 +234,16 @@ Ideally we want the address being written to the address bus to indicate what me
 This approach just became easier to implement if the RAM and ROM functions of the CPU we more cleanly separated from each out there being an unambiguous enable line for each of the RAM and ROM modules. So with this project I redo the RAM and ROM module to turn it into separate RAM and ROM modules. 
 
 ### Memory Map Controller 
+The basic idea behind a memory map controller is to activate a specific component when the address value on the address bus is at a specific value or range of values. This is accomplished by combination logic. Given the memory map design I specify above where the addresses in the range `0x7800` to `0x7FFF` would be mapped to a memory map device, detecting this state is each accomplished by ensure addressing line A15 is low and all of address lines A11 through A14 are high. Detecting when these 4 address lines are high is easily done with a 74LS21 quad-input AND gate. However, the the purpose of the memory map controller is not just to detect when the address is in the memory mapped I/O range, but to generally indicate what memory device should be active for any given address, including the RAM and ROM. 
+
+The design I ultimately went with generate a number of control signals to activate various memory mapped components. The most prominent one are `ROMe`, indicating the the memory address pertains to the ROM, and `RAMe`, which indicates RAM should be active. For the memory mapped I/O range, I spit the memory addresses up into several smaller segments, and have a control signal for each of those segments. Altogether, the `0x7800` to `0x7FFF` range is split up into 16 different segments. Eight of the segments, `MMAP_0` through `MMAP_7`, are each 16 bytes in size. Another seven segments,`MMAP_8` to `MMAP_14`, are 128 bytes in size. And the final segment, `MMAP_15`, is 1024 bytes in size. The size of a segment indicates how many distinct address values are available when that segment is active. These addresses are always contiguous. For the 16-byte segments, the various address values are indicated by address lines A0 through A3. 
+
+The segment activation is enabled by two cascaded 74HCT238 demultiplexers wired up to address lines A4 through A10. Address line A11 controls whether the 74HCT238 are active or not. When A11 is low and the address value in the memory map I/O range, the 74HCT238 are active and emitting one MMAP control line. When A11 is high and the address value in the memory map I/O range, then the 1024 byte memory map segment is active. 
+
+When a given memory map control line is active, then the component associated in that line should respond to the `MDo` and `MDi` control lines as appropriate for that component. The component may use the address lines to further differentiate the data interaction or action taken. 
 
 #### Converting Display Register to Memory Mapped Device
+In this project, I will get rid of the `OUT` control line. Instead, I will use a memory map control line to manage the original Eater SAP display register. I will assign the display register to `MMAP_0` memory map segment, and so the display register should read in the data bus value when the `MMAP_0` segment line and the `MDi` control line are both high. This would require the addition of an AND gate to the display register to detect when these control signals are both high.
 
 ## Microcode
 
