@@ -710,6 +710,17 @@ instructions:
             zero: 1
           control_lines:
             SCr
+  MOV_a_indirect_mar:
+    value: 128
+    steps:
+      1:
+        - control_lines:
+            ARa
+            Ai
+            MDo
+      2:
+        - control_lines:
+            SCr
   MOV_a_i:
     value: 130
     steps:
@@ -1289,7 +1300,7 @@ instructions:
           control_lines:
             Ii
             To
-      4:
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -1315,18 +1326,18 @@ instructions:
           control_lines:
             Ji
             To
-      4:
+      5:
         - flags:
             extended: 1
           control_lines:
             SCr
   SWAP_a_iaddr:
-    value: 2
+    value: 6
     steps:
       2:
         - flags:
             extended: 1
-        - control_lines:
+          control_lines:
             PCa
             ARi
             PCe
@@ -1334,7 +1345,7 @@ instructions:
       3:
         - flags:
             extended: 1
-        - control_lines:
+          control_lines:
             HILO
             PCa
             ARi
@@ -1366,7 +1377,7 @@ instructions:
           control_lines:
             SCr
   SWAP_i_a:
-    value: 2
+    value: 16
     steps:
       2:
         - flags:
@@ -1392,7 +1403,7 @@ instructions:
           control_lines:
             SCr
   SWAP_i_j:
-    value: 3
+    value: 319
     steps:
       2:
         - flags:
@@ -1418,12 +1429,12 @@ instructions:
           control_lines:
             SCr
   SWAP_i_iaddr:
-    value: 2
+    value: 22
     steps:
       2:
         - flags:
             extended: 1
-        - control_lines:
+          control_lines:
             PCa
             ARi
             PCe
@@ -1431,7 +1442,7 @@ instructions:
       3:
         - flags:
             extended: 1
-        - control_lines:
+          control_lines:
             HILO
             PCa
             ARi
@@ -1463,7 +1474,7 @@ instructions:
           control_lines:
             SCr
   SWAP_j_a:
-    value: 2
+    value: 24
     steps:
       2:
         - flags:
@@ -1489,7 +1500,7 @@ instructions:
           control_lines:
             SCr
   SWAP_j_i:
-    value: 3
+    value: 26
     steps:
       2:
         - flags:
@@ -1515,12 +1526,12 @@ instructions:
           control_lines:
             SCr
   SWAP_j_iaddr:
-    value: 2
+    value: 30
     steps:
       2:
         - flags:
             extended: 1
-        - control_lines:
+          control_lines:
             PCa
             ARi
             PCe
@@ -1528,7 +1539,7 @@ instructions:
       3:
         - flags:
             extended: 1
-        - control_lines:
+          control_lines:
             HILO
             PCa
             ARi
@@ -1559,3 +1570,167 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  MOV2_mar_const:
+    value: 87
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV2_mar_iaddr:
+    value: 86
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+            ARe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HILO
+            ARa
+            MDo
+            ARi
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            To
+            ARi
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV2_indirect_mar_const:
+    value: 95
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            ARe
+            To
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            ARe
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV2_iaddr_const:
+    value: 119
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            ARe
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            ARe
+            To
