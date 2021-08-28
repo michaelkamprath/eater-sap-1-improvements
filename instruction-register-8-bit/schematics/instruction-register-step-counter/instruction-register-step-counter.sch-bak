@@ -233,7 +233,7 @@ F 1 "74LS32" H 4425 2759 50  0000 C CNN
 F 2 "" H 4425 2525 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4425 2525 50  0001 C CNN
 	3    4425 2525
-	1    0    0    -1  
+	1    0    0    1   
 $EndComp
 Wire Wire Line
 	3875 2625 4125 2625

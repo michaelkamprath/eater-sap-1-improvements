@@ -780,14 +780,11 @@ Wire Wire Line
 	5725 1350 7175 1350
 Connection ~ 5725 2525
 Wire Wire Line
-	7475 1050 7475 2300
-Wire Wire Line
-	7475 2300 8550 2300
-Connection ~ 8550 2300
+	7475 1050 7475 1400
 Wire Wire Line
 	8550 2300 9825 2300
 Wire Wire Line
-	7475 950  9850 950 
+	7475 950  8075 950 
 Text HLabel 9850 950  2    50   Input ~ 0
 XTD
 NoConn ~ 6875 1150
@@ -828,4 +825,25 @@ Wire Wire Line
 	4775 2525 4850 2525
 Text HLabel 1475 1225 0    50   Output ~ 0
 INSTR_RESET
+$Comp
+L 74xx:74LS08 U8
+U 1 1 612B04C7
+P 7775 1400
+F 0 "U8" H 7775 1083 50  0000 C CNN
+F 1 "74LS08" H 7775 1174 50  0000 C CNN
+F 2 "" H 7775 1400 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS08" H 7775 1400 50  0001 C CNN
+	1    7775 1400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	8550 2300 8075 2300
+Wire Wire Line
+	8075 2300 8075 1500
+Connection ~ 8550 2300
+Wire Wire Line
+	8075 950  8075 1300
+Connection ~ 8075 950 
+Wire Wire Line
+	8075 950  9850 950 
 $EndSCHEMATC
