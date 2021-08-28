@@ -59,31 +59,31 @@ What came from this is an approach of defining "operand sets" that indicate the 
 For the breadboard computer I intend to build, the types of operands sets I will need the following operand sets:
 
 * **8-bit Value Source** - Represents a location from where an 8-bit value could be copied from. Examples include registers, immediate values, and values at specified memory locations. In this build, the values are:
- * `A` register
- * `I` register
- * `J` register
- * Value at specific memory address
- * Value at the memory address contained in the `MAR`
- * Immediate value
+    * `A` register
+    * `I` register
+    * `J` register
+    * Value at specific memory address
+    * Value at the memory address contained in the `MAR`
+    * Immediate value
 * **8-bit Value Destination** - Represents a location to where an 8-bit value could be copied to. Similar to the set of 8-bit Value Sources, but would not include an immediate value destination. In this build, the values are:
- * `A` register
- * `I` register
- * `J` register
- * Value at specific memory address
- * Value at the memory address contained in the `MAR`
+    * `A` register
+    * `I` register
+    * `J` register
+    * Value at specific memory address
+    * Value at the memory address contained in the `MAR`
 * **16-bit Address Source** - These are sources where a 16-bit memory address value can be found. The most common one will be immediate values and 2-byte values that start at an indicated address. In this build, the values are:
- * `MAR` memory address register
- * Value at the memory address contained in the `MAR`
- * Two byte value starting at specific memory address
- * Immediate value
+    * `MAR` memory address register
+    * Value at the memory address contained in the `MAR`
+    * Two byte value starting at specific memory address
+    * Immediate value
 * **16-bit Address Destination** - These are locations where a 16-bit memory address value can be placed. In this build, the values are:
- * `MAR` memory address register
- * Value at the memory address contained in the `MAR`
- * Value at specific memory address
+    * `MAR` memory address register
+    * Value at the memory address contained in the `MAR`
+    * Value at specific memory address
 * **Incrementable Destination** - The set of destinations that can be directly incremented or decremented. Examples include [the increment registers I added to the CPU a few projects back](../increment-registers/). In this build, the values are:
- * `I` register
- * `J` register
- * `MAR` memory address register
+    * `I` register
+    * `J` register
+    * `MAR` memory address register
 
 A future iteration of this CPU could add 16-bit ValueSource/Destination type operands.
 
