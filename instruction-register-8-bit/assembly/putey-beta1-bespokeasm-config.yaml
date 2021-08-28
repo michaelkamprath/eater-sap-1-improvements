@@ -204,6 +204,7 @@ instructions:
       size: 3
     operands:
       count: 2
+      reverse_argument_order: true
       operand_sets:
         list:
           - address_source

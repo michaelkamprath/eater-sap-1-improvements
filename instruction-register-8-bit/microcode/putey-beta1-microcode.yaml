@@ -1009,20 +1009,20 @@ instructions:
       1:
         - control_lines:
             PCa
-            Ti
+            ARi
             PCe
             MDo
       2:
         - control_lines:
+            HILO
             PCa
             ARi
             PCe
             MDo
       3:
         - control_lines:
-            HILO
             PCa
-            ARi
+            Ti
             PCe
             MDo
       4:
