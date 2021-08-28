@@ -1,0 +1,1 @@
+This directory contains the [BespokeASM](https://github.com/michaelkamprath/bespokeasm) configuration file necessary to assemble machine code that will run this project's breadboard computer. 
