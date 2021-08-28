@@ -285,15 +285,15 @@ instructions:
       endian: big
     operands:
       count: 2
-    operand_sets:
-      list:
-        - 16_bit_destination
-        - 16_bit_source
-      disallowed_pairs:
-        - [mar_register, mar_register]
-        - [indirect_mar_register, mar_register]
-        - [indirect_mar_register, indirect_mar_register]
-        - [indirect_mar_register, indirect_addr]
-        - [indirect_addr, mar]
-        - [indirect_addr, indirect_mar_register]
-        - [indirect_addr, indirect_addr]
+      operand_sets:
+        list:
+          - 16_bit_destination
+          - 16_bit_source
+        disallowed_pairs:
+          - [mar_register, mar_register]
+          - [indirect_mar_register, mar_register]
+          - [indirect_mar_register, indirect_mar_register]
+          - [indirect_mar_register, indirect_addr]
+          - [indirect_addr, mar]
+          - [indirect_addr, indirect_mar_register]
+          - [indirect_addr, indirect_addr]
