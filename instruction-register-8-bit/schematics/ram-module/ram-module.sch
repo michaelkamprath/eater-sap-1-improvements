@@ -515,51 +515,6 @@ Wire Wire Line
 Wire Wire Line
 	8275 2975 8275 2475
 $Comp
-L Device:C C1
-U 1 1 61152FA1
-P 9225 3350
-F 0 "C1" V 9375 3350 50  0000 C CNN
-F 1 "0.01 µF" V 9075 3350 50  0000 C CNN
-F 2 "" H 9263 3200 50  0001 C CNN
-F 3 "~" H 9225 3350 50  0001 C CNN
-	1    9225 3350
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:D_Schottky D1
-U 1 1 61153DF2
-P 9675 3350
-F 0 "D1" H 9675 3500 50  0000 C CNN
-F 1 "BAT43" H 9675 3200 50  0000 C CNN
-F 2 "" H 9675 3350 50  0001 C CNN
-F 3 "~" H 9675 3350 50  0001 C CNN
-	1    9675 3350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8800 3350 8900 3350
-$Comp
-L Device:R R2
-U 1 1 6115B441
-P 8700 2975
-F 0 "R2" V 8600 2975 50  0000 C CNN
-F 1 "1K" V 8700 2975 50  0000 C CNN
-F 2 "" V 8630 2975 50  0001 C CNN
-F 3 "~" H 8700 2975 50  0001 C CNN
-	1    8700 2975
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	8900 3350 8900 2975
-Wire Wire Line
-	8900 2975 8850 2975
-Connection ~ 8900 3350
-Wire Wire Line
-	8900 3350 9075 3350
-Wire Wire Line
-	8550 2975 8275 2975
-Connection ~ 8275 2975
-$Comp
 L power:GND #PWR011
 U 1 1 61168423
 P 8425 2475
@@ -635,10 +590,6 @@ F 3 "" H 7675 2975 50  0001 C CNN
 	1    7675 2975
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	9375 3350 9525 3350
-Wire Wire Line
-	9825 3350 10375 3350
 Text HLabel 10375 3350 2    50   Input ~ 0
 CLK
 $Comp
@@ -883,4 +834,6 @@ Wire Wire Line
 	6675 3450 8200 3450
 Wire Wire Line
 	6675 1975 6675 1550
+Wire Wire Line
+	8800 3350 10375 3350
 $EndSCHEMATC
