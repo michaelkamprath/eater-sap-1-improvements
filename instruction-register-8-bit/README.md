@@ -94,7 +94,7 @@ These concepts of types of value sources and destinations requires us to be more
 * **Register** - A value that resides in a register, such as register `A`.
 * **Register Indirect** - A value that resides at a memory address contain in a register.
 
-The addressing modes can all be used to create. For example, the set of all "8-bit value sources" consists of the `A`, `I`, and `J` register; values that reside at a given memory address with that memory address being either an immediate value or a value residing in a register (such as the `MAR`), or a constant (immediate) value incorporated into the instruction machine code. Each addressing mode leverages it's own microcode pattern to be able to mode data around the CPU.
+The addressing modes can all be used to create an operand set. For example, the set of all "8-bit value sources" consists of the `A`, `I`, and `J` registers; values that reside at a given memory address with that memory address being either an immediate value or a value residing in a register (such as the `MAR`), or a constant (immediate) value incorporated into the instruction machine code. Each addressing mode leverages its own microcode pattern to be able to mode data around the CPU.
 
 Then, the definition of the instruction set begins to look like this:
 
@@ -253,7 +253,7 @@ Ideally we want the address being written to the address bus to indicate what me
 
 This approach just became easier to implement if the RAM and ROM functions of the CPU we more cleanly separated from each out there being an unambiguous enable line for each of the RAM and ROM modules. So with this project I redo the RAM and ROM module to turn it into separate RAM and ROM modules.
 
-### Memory Map Controller 
+### Memory Map Controller
 The basic idea behind a memory map controller is to activate a specific component when the address value on the address bus is at a specific value or range of values. This is accomplished by combination logic. Given the memory map design I specify above where the addresses in the range `0x7800` to `0x7FFF` would be mapped to a memory map device, detecting this state is each accomplished by ensure addressing line A15 is low and all of address lines A11 through A14 are high. Detecting when these 4 address lines are high is easily done with a 74LS21 quad-input AND gate. However, the the purpose of the memory map controller is not just to detect when the address is in the memory mapped I/O range, but to generally indicate what memory device should be active for any given address, including the RAM and ROM.
 
 The design I ultimately went with generate a number of control signals to activate various memory mapped components. The most prominent one are `ROMe`, indicating the the memory address pertains to the ROM, and `RAMe`, which indicates RAM should be active. For the memory mapped I/O range, I spit the memory addresses up into several smaller segments, and have a control signal for each of those segments. Altogether, the `0x7800` to `0x7FFF` range is split up into 16 different segments. Eight of the segments, `MMAP_0` through `MMAP_7`, are each 16 bytes in size. Another seven segments,`MMAP_8` to `MMAP_14`, are 128 bytes in size. And the final segment, `MMAP_15`, is 1024 bytes in size. The size of a segment indicates how many distinct address values are available when that segment is active. These addresses are always contiguous. For the 16-byte segments, the various address values are indicated by address lines A0 through A3.
@@ -270,23 +270,44 @@ The `MMAP_0` segment pertains to addresses `0x7800` through `0x780F`. Since the 
 OUTPUT = $7800
 mov [OUTPUT], a
 ```
-This instruction will take the current value in the register `A` and write it to the display register. 
+This instruction will take the current value in the register `A` and write it to the display register.
 
 ## Microcode
 In order to generate the microcode image for the `27C4096` EEPROMs, I created a new microcode generation program (click here) that accounts for the new layout of this design. I also change the format of the configuration file slightly, notably changing the instruction steps configuration to be a dictionary where the key is the step number and the value is a list of step configuration options based on varying flags. This was done primarily to improve the clarity as the configuration file gets larger, but also make things easier when dealing with extended instructions which skip a step that is actually handled by the `XTD` byte.
 
-The "Beta 1" microcode configuration for this project is available [here](./microcode/). 
+The "Beta 1" microcode configuration for this project is available [here](./microcode/). I have also visualized the microcode in [a spreadsheet here](https://docs.google.com/spreadsheets/d/1dE303KofFNmr9R2AhJyg4c5JZepmx5lBA1MQLOz1rY8/edit?usp=sharing). 
 
 ## Assembly Code
-The sister project to this breadboard CPU is my customizable assembler, [BespokeASM](https://github.com/michaelkamprath/bespokeasm). I have updated the assembler to support the [addressing modes](https://github.com/michaelkamprath/bespokeasm/wiki/Assembly-Language-Syntax#addressing-modes) and [instruction configuration](https://github.com/michaelkamprath/bespokeasm/wiki/Instruction-Set-Configuration-File#machine-code-compilation) required by this change to my breadboard CPU's instruction set, plus generally improved it's functionality. BespokeASM requires a configuration file to generate machine code for any particular instruction set. The configuration file for this project's build can be found [here](./assembly/). 
+The sister project to this breadboard CPU is my customizable assembler, [BespokeASM](https://github.com/michaelkamprath/bespokeasm). I have updated the assembler to support the [addressing modes](https://github.com/michaelkamprath/bespokeasm/wiki/Assembly-Language-Syntax#addressing-modes) and [instruction configuration](https://github.com/michaelkamprath/bespokeasm/wiki/Instruction-Set-Configuration-File#machine-code-compilation) required by this change to my breadboard CPU's instruction set, plus generally improved it's functionality. BespokeASM requires a configuration file to generate machine code for any particular instruction set. The configuration file for this project's build can be found [here](./assembly/).
 
 To compile assembly code in a file name `my_code.asm` for this CPU using BespokeASM, the following command is used:
 ```
 bespokeasm compile -e 32767 -c /path/to/putey-beta1-bespokeasm-config.yaml my_code.asm
 ```
 
-This will generate a binary image file named `my_code.bin` that can be burned to the `28C256` ROM used for this computer. Note that the `-e` option indicates the ending address of the binary image, and Bespoke ASM will pad the image with 0's if the compiled code does not fill all addresses. The `--pretty-print` option can be added if a human readable output is additionally desired. 
+This will generate a binary image file named `my_code.bin` that can be burned to the `28C256` ROM used for this computer. Note that the `-e` option indicates the ending address of the binary image, and Bespoke ASM will pad the image with 0's if the compiled code does not fill all addresses. The `--pretty-print` option can be added if a human readable output is additionally desired.
 
 Examples of assembly programs that can be run on this version of the breadboard CPU can be found [here](./examples/).
 
+## Project Notes
+### Data Sheets
+The key ICs used in this project are:
+
+* [`AT27C4096`](./datasheets/AT27C4096.pdf) - The 256K x 16 bit EPROM used for the microcode in this build. Note that the [`M27C4002`](./datasheets/M27C4002.pdf) is an equivalent chip from a different manufacturer and can be used instead of the  `AT27C4096`.
+* [`UM61512A`](./datasheets/UM61512A.pdf) - 64K x 8 bit static RAM used for the system RAM.
+* [`AT28C256`](./datasheets/AT28C256.pdf) - 32K x 8 bit EEPROM used for the system ROM in the memory module.
+* [`74LS257`](./datasheets/sn74ls257b.pdf) - Quadruple 2-to-1 line data selector with 3-state output.
+* [`74HCT238`](./datasheets/cd74hct238.pdf) - 3-to-8 line decoder with active high output.
+* [`74LS74`](./datasheets/sn74ls74a.pdf) - Duel D-type positive edge triggered flip-flops.
+
+There are other, more common ICs used too, but the above are the key new chips in this project.
+
+### Building Tips
+#### Upgrading from Previous Project
+When I constructed this project. I had already accomplished my previous [16-bit memory] and [extended control lines] projects. While they were certainly steps forward, they were not the right steps forward for when I want to go with this TTL CPU. As already indicated, this project replaces them, though it keeps the memory address register, program counter, and run mode selector from the 16-bit memory project. The rest of things had to be removed.
+
+I found it to be easier to simply remove all of the control lines, regardless of whether they go to a component that is staying in place. However, when doing so, I tagged each destination with the control line name so that it would be easier to know where each control line goes later.
+
+#### Chip Consolidation
+Many of the modules in this design use logic gate chips but not all the gates in each cheap. With careful preplanning, you can reduce chip usage by sharing the same logic gate chips amongst modules. Most notable targets are the `74LS04` inverters, `74LS08` AND gates, and the `74LS32` OR gates.
 
