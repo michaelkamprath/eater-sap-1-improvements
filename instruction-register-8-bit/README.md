@@ -156,8 +156,8 @@ My schematic for the control logic change does not indicate which control line b
 |1 | Left | Direct | `HILO` | Indicates which byte of a 16-bit register is being operated on |
 |2 | Left | Direct | `PCa` | Write program counter value to address bus |
 |3 | Left | Direct | `ARa` | Write memory address register value to address bus |
-|4 | Left | Direct | | **Reserved:** `SPa` (stack pointer address activate) |
-|5 | Left | Direct | | *unused* |
+|4 | Left | Direct | | **Reserved:** `SPa`: stack pointer address activate |
+|5 | Left | Direct | | **Reserved:** `NXa`: `NX` register address activate |
 |6 | Left | Direct | | *unused* |
 |7 | Left | Direct | `XTD` | Activate extended instruction bit |
 |8 | Left | Direct | | **Reserved:** `AOi` (Address Offset In) |
@@ -166,19 +166,19 @@ My schematic for the control logic change does not indicate which control line b
 |11 | Left | High | `MDi` | Memory device read from data bus |
 |12 | Left | High | `Ai` | Read data bus value into `A` register |
 |13 | Left | High | `Ti` | Read data bus value into temp register (attached to ALU) |
-|14 | Left | High |  | **Reserved:** `Bi` |
+|14 | Left | High |  | **Reserved:** `NXi`: Read data bus value into single `NX` register byte indicated by `HILO` |
 |15 | Left | High | `Ii` | Read data bus value into `I` register |
 |16 | Left | High | `Ji` | Read data bus value into `J` register |
 |17 | Left | High | `ARi` | Read data bus value into single memory address register byte indicated by `HILO` |
 |18 | Left | Low | `PCe` | Activate program counter increment |
 |19 | Left | Low | `ARe` | Activate memory address register increment |
-|20 | Left | Low |  | **Reserved:** `SPe` |
+|20 | Left | Low |  | **Reserved:** `SPe`: Stack pointer increment enable |
 |21 | Left | Low | `Ie` | Activate register `I` increment, or decrement when `SUB` is active  |
 |22 | Left | Low | `Je` | Activate register `J` increment, or decrement when `SUB` is active |
-|23 | Left | Low |  | *unused* |
+|23 | Left | Low |  | **Reserved:** `NXe`: `NX` register increment enable |
 |24 | Left | Low |  | *unused* |
 |25 | Right | Direct | `SUB` | Indicates whether the addition operation should instead be a subtraction operation |
-|26 | Right | Direct |  | **Reserved:** `CRY` |
+|26 | Right | Direct |  | **Reserved:** `CRY`: input carry flag to ALU operation |
 |27 | Right | Direct |  | **Reserved:** ALU `S0` |
 |28 | Right | Direct |  | **Reserved:** ALU `S1` |
 |29 | Right | Direct |  | **Reserved:** ALU `S2` |
@@ -190,13 +190,13 @@ My schematic for the control logic change does not indicate which control line b
 |35 | Right | High | `MDo` | Memory device output to data bus |
 |36 | Right | High | `Ao`	 | Write contents of `A` register to data bus |
 |37 | Right | High | `To` | Temp register (attached to ALU) |
-|38 | Right | High |  | **Reserved:** `Bo` |
+|38 | Right | High |  | **Reserved:** `NXo`: Write the byte indicated by `HILO` of the `NX` register value to data bus |
 |39 | Right | High | `Io` | Write contents of `I` register to data bus |
 |40 | Right | High | `Jo` | Write contents of `J` register to data bus |
 |41 | Right | High | `∑o` | Write the results of the ALU operation to data bus |
 |42 | Right | Low | `SCr` | Resets both the step counter, the offset register,  the extended instruction bit. A step counter overflow needs to do the same thing. |
-|43 | Right | Low |  | **Reserved:** `SPr` (Stack Pointer reset) |
-|44 | Right | Low |  | **Reserved:** `AOr` (Address Offset register reset) |
+|43 | Right | Low |  | **Reserved:** `SPr`: Stack Pointer reset |
+|44 | Right | Low |  | **Reserved:** `AOr`: Address Offset register reset |
 |45 | Right | Low | `∑f` |  Write the ALU flags status to the flags register |
 |46 | Right | Low | `If` |  Write register `I` flags status to the flags register |
 |47 | Right | Low | `Jf` | Write register `J` flags status to the flags register |
