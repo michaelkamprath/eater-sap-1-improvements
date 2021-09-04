@@ -71,12 +71,12 @@ For the breadboard computer I intend to build, the types of operands sets I will
     * `J` register
     * Value at specific memory address
     * Value at the memory address contained in the `MAR`
-* **16-bit Address Source** - These are sources where a 16-bit memory address value can be found. The most common one will be immediate values and 2-byte values that start at an indicated address. In this build, the values are:
+* **16-bit Value Source** - These are sources where a 16-bit memory address value can be found. The most common one will be immediate values and 2-byte values that start at an indicated address. In this build, the values are:
     * `MAR` memory address register
     * Value at the memory address contained in the `MAR`
     * Two byte value starting at specific memory address
     * Immediate value
-* **16-bit Address Destination** - These are locations where a 16-bit memory address value can be placed. In this build, the values are:
+* **16-bit Value Destination** - These are locations where a 16-bit memory address value can be placed. In this build, the values are:
     * `MAR` memory address register
     * Value at the memory address contained in the `MAR`
     * Value at specific memory address
@@ -84,6 +84,9 @@ For the breadboard computer I intend to build, the types of operands sets I will
     * `I` register
     * `J` register
     * `MAR` memory address register
+* **Address Source** -  A subset of 16-bit value sources that can be used to indicate a memory location and have their value written to the address bus.
+    * Two byte value starting at specific memory address
+    * Immediate value
 
 A future iteration of this CPU could add 16-bit ValueSource/Destination type operands.
 
@@ -102,17 +105,17 @@ Then, the definition of the instruction set begins to look like this:
 |:-:|:--|:-:|:-:|:-:|:--|
 | `nop` | `b00000000` | No | - | - | No operations |
 | `hlt` | `b00000001` | No | - | - | Stop the system clock |
-| `jmp X` | `b001011xx` | No | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` |
-| `jc X` | `b001100xx` | No | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if carry flag is set |
-| `jz X` | `b001101xx` | No | 16-bit Address Source | - | Set program counter to 16-bit value found at `X` if zero flag is set |
-| `jeq X,Y` | `b010xxyyy`| No | 16-bit Address Source | 8-bit Value Source | Set program counter to 16-bit value found at `X` if value in register `A` is equal to 8-bit value found at `Y` |
+| `jmp X` | `b001011xx` | No | Address Source | - | Set program counter to 16-bit value found at `X` |
+| `jc X` | `b001100xx` | No | Address Source | - | Set program counter to 16-bit value found at `X` if carry flag is set |
+| `jz X` | `b001101xx` | No | Address Source | - | Set program counter to 16-bit value found at `X` if zero flag is set |
+| `jeq X,Y` | `b010xxyyy`| No | Address Source | 8-bit Value Source | Set program counter to 16-bit value found at `X` if value in register `A` is equal to 8-bit value found at `Y` |
 | `mov X,Y` | `b10xxxyyy`| No | 8-bit Value Destination | 8-bit Value Source | Copy 8 bit value at source `Y` into destination `X` |
 | `add X` | `b10111xxx` | No | 8-bit Value Source | - | Add value found at `X` to value in Register `A` |
 | `sub X` | `b11001xxx` | No | 8-bit Value Source | - | Subtract value found at `X` from value in Register `A` |
 | `inc X` | `b110110xx` | No | Incrementable Destination | - | Increment the value currently found n `X` |
 | `dec X` | `b110111xx` | No | Incrementable Destination | - | Decrement the value currently found n `X` |
 | `swap X,Y` | `b00xxxyyy` | **Yes** | 8-bit Value Destination | 8-bit Value Destination | Swap the value found at each 8-bit value source, `X` and `Y`. Only unequal register, register indirect, and indirect addressing modes can be used as operands. |
-| `mov2 X,Y` | `b01xxxyyy | **Yes** | 16-bit Address Destination | 16-bit Address Source | Copy 16 bit value at source `Y` into destination `X`.
+| `mov2 X,Y` | `b01xxxyyy | **Yes** | 16-bit Value Destination | 16-bit Value Source | Copy 16 bit value at source `Y` into destination `X`.
 
 Of course, this is just a starting point and does not represent the full instruction set, but it already enables a much richer set of instructions than the original 4-bit instruction codes previously used. One thing I intend to do is not define meaningless instructions, such as `mov a,a`, and instead use the bit code that would have been used to construct the meaningless instruction for something else.
 
