@@ -115,7 +115,7 @@ Then, the definition of the instruction set begins to look like this:
 | `inc X` | `b110110xx` | No | Incrementable Destination | - | Increment the value currently found n `X` |
 | `dec X` | `b110111xx` | No | Incrementable Destination | - | Decrement the value currently found n `X` |
 | `swap X,Y` | `b00xxxyyy` | **Yes** | 8-bit Value Destination | 8-bit Value Destination | Swap the value found at each 8-bit value source, `X` and `Y`. Only unequal register, register indirect, and indirect addressing modes can be used as operands. |
-| `mov2 X,Y` | `b01xxxyyy | **Yes** | 16-bit Value Destination | 16-bit Value Source | Copy 16 bit value at source `Y` into destination `X`.
+| `mov2 X,Y` | `b01xxxyyy` | **Yes** | 16-bit Value Destination | 16-bit Value Source | Copy 16 bit value at source `Y` into destination `X`.
 
 Of course, this is just a starting point and does not represent the full instruction set, but it already enables a much richer set of instructions than the original 4-bit instruction codes previously used. One thing I intend to do is not define meaningless instructions, such as `mov a,a`, and instead use the bit code that would have been used to construct the meaningless instruction for something else.
 
