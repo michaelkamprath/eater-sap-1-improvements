@@ -137,3 +137,6 @@ dmypy.json
 
 .vscode/
 
+
+# built binary images
+*.bin
