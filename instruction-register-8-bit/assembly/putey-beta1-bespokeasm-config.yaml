@@ -1,5 +1,6 @@
 description: Putey Beta 1 Breadboard Computer
 general:
+  min_version: 0.1.3
   address_size: 16
   endian: little
   registers:
@@ -227,6 +228,46 @@ instructions:
           - [a_register, a_register]
           - [i_register, i_register]
           - [j_register, j_register]
+      specific_operands:
+        a_mar:
+            a:
+              type: register
+              register: a
+              bytecode:
+                value: 0
+                size: 3
+            mar:
+              type: indirect_register
+              register: mar
+              bytecode:
+                value: 0
+                size: 3
+        i_mar:
+            a:
+              type: register
+              register: i
+              bytecode:
+                value: 0b010
+                size: 3
+            mar:
+              type: indirect_register
+              register: mar
+              bytecode:
+                value: 0b010
+                size: 3
+        j_mar:
+            a:
+              type: register
+              register: j
+              bytecode:
+                value: 0b011
+                size: 3
+            mar:
+              type: indirect_register
+              register: mar
+              bytecode:
+                value: 0b011
+                size: 3
   add:
     byte_code:
       value: 23
