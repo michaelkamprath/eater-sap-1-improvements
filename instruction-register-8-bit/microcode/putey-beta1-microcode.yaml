@@ -787,6 +787,17 @@ instructions:
       2:
         - control_lines:
             SCr
+  MOV_i_indirect_mar:
+    value: 146
+    steps:
+      1:
+        - control_lines:
+            ARa
+            Ii
+            MDo
+      2:
+        - control_lines:
+            SCr
   MOV_i_j:
     value: 147
     steps:
@@ -850,6 +861,17 @@ instructions:
         - control_lines:
             Ji
             Io
+      2:
+        - control_lines:
+            SCr
+  MOV_j_indirect_mar:
+    value: 155
+    steps:
+      1:
+        - control_lines:
+            ARa
+            Ji
+            MDo
       2:
         - control_lines:
             SCr
