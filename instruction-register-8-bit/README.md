@@ -164,7 +164,7 @@ My schematic for the control logic change does not indicate which control line b
 |3 | Left | Direct | `ARa` | Write memory address register value to address bus |
 |4 | Left | Direct | | **Reserved:** `SPa`: stack pointer address activate |
 |5 | Left | Direct | | **Reserved:** `NXa`: `NX` register address activate |
-|6 | Left | Direct | | *unused* |
+|6 | Left | Direct | | **Reserved:** `AOa` (write Address Offset results to address bus) |
 |7 | Left | Direct | `XTD` | Activate extended instruction bit |
 |8 | Left | Direct | | **Reserved:** `AOi` (Address Offset In) |
 |9 | Left | Direct | `PCi` | Read data bus value into single program counter byte indicated by `HILO` |
@@ -189,9 +189,9 @@ My schematic for the control logic change does not indicate which control line b
 |28 | Right | Direct |  | **Reserved:** ALU `S1` |
 |29 | Right | Direct |  | **Reserved:** ALU `S2` |
 |30 | Right | Direct |  | **Reserved:** ALU `S3` (1 for Shift, Rotate, etc; 0 for ALU) |
-|31 | Right | Direct |  | *unused* |
+|31 | Right | Direct |  | **Reserved:** `INTr` (reset interrupt status) |
 |32 | Right | Direct |  | **Reserved:** `INTi` (load interrupt status) |
-|33 | Right | Direct |  | **Reserved:** `INTr` (reset interrupt status) |
+|33 | Right | Direct |  | *unused* |
 |34 | Right | Direct | `ABo` | Write the byte indicated by `HILO` of the address bus to the data bus |
 |35 | Right | High | `MDo` | Memory device output to data bus |
 |36 | Right | High | `Ao`	 | Write contents of `A` register to data bus |
