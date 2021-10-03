@@ -1,7 +1,7 @@
 # Eater SAP-1 Improvements
 Ben Eater released [a YouTube video series](https://eater.net/8bit) that works you through the process of building a simple 8-bit computer on a breadboard made with simple logic gates. It's a great learning experience if you are so interested.
 
-Captured in this repository are various projects to extend and improve on the original SAP-1. The goal of these project is to build upon and reinforce what was learned with Ben Eater's original series. 
+Captured in this repository are various projects that extend and improve on the original SAP-1. The goal of these project is to build upon and reinforce what was learned with Ben Eater's original series. 
 
 # Projects
 Multiple independent projects are described in this repository. It is recommended that you do them in the following order:
@@ -11,7 +11,7 @@ Multiple independent projects are described in this repository. It is recommende
 3. ~~**[Expanding the SAP-1 Control Logic](./expanded-control-logic/)**~~ - **It is recommended that this project be skipped in instead implement the control lines expansion describe in the Instruction Register project below**. The original SAP-1 can control at most 16 control lines in the computer. This project add more control lines that and sets the SAP-1 up for other future expansions. 
 4. **[Adding Two General Purpose Increment Registers to the SAP-1](./increment-registers/)** - This project adds to the SAP-1 two general purpose registers that have the ability to increment or decrement the value they contain.
 5. **[Calculating Factorial](./calculating-factorial/)** - This project builds on everything done up to this point to enable the SAP-1 to calculating the _n!_ math algorithm. 
-6. ~~**[Adding 64K of RAM and ROM](./ram-rom-upgrade/)**~~ - **It is recommended that this project be partially skipped. The program counter, memory address register, and run mode selector from this project should be completed, but is recommended to skip the rest and implement the 16 bit memory architecture describe in the Instruction Register project below**. This project changes the SAP-1's memory address space to 16 bit, and then splits the address space between ROM and RAM.Still maintains the original 4-bit instructions, as this will be changed in a later project. This project also introduces an assembler to help build the ROM code. 
+6. ~~**[Adding 64K of RAM and ROM](./ram-rom-upgrade/)**~~ - **It is recommended that this project be partially skipped. The program counter, memory address register, and run mode selector from this project should be completed, but is recommended to skip the rest and implement the 16 bit memory architecture describe in the Instruction Register project below**. This project changes the SAP-1's memory address space to 16 bit, and then splits the address space between ROM and RAM. The original 4-bit instructions are still maintained, as that will be changed in a later project. This project also introduces an assembler to help build the ROM code. 
 7. **[Instruction Register and Memory Map Update](./instruction-register-8-bit/)** - In this project I upgrade the instruction register to use the full 8-bits. I also realized that I once again needed to upgrade my control logic, so I expanded the instruction-based control logic plus added a memory map mechanism. 
 
 

@@ -303,54 +303,27 @@ F 3 "" H 5150 2725 50  0001 C CNN
 	1    5150 2725
 	1    0    0    -1  
 $EndComp
-$Comp
-L common-symbols:BarGraphLED_8P BAR?
-U 1 1 615D5CEB
-P 10350 3675
-F 0 "BAR?" H 10350 4342 50  0000 C CNN
-F 1 "BarGraphLED_8P" H 10350 4251 50  0000 C CNN
-F 2 "" H 10350 3675 50  0001 C CNN
-F 3 "" H 10350 3675 50  0001 C CNN
-	1    10350 3675
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	10150 3975 10050 3975
 Connection ~ 8625 3975
 Wire Wire Line
 	8625 3975 8625 4150
-Wire Wire Line
-	10150 3875 9950 3875
 Connection ~ 8525 3875
 Wire Wire Line
 	8525 3875 8525 3225
-Wire Wire Line
-	10150 3775 9850 3775
 Connection ~ 8425 3775
 Wire Wire Line
 	8425 3775 8425 4150
-Wire Wire Line
-	10150 3675 9750 3675
 Connection ~ 8325 3675
 Wire Wire Line
 	8325 3675 8325 3225
-Wire Wire Line
-	10150 3575 9650 3575
 Connection ~ 6650 3575
 Wire Wire Line
 	6650 3575 6650 3225
-Wire Wire Line
-	10150 3475 9550 3475
 Connection ~ 6550 3475
 Wire Wire Line
 	6550 3475 6550 3225
-Wire Wire Line
-	10150 3375 9450 3375
 Connection ~ 6450 3375
 Wire Wire Line
 	6450 3375 6450 3225
-Wire Wire Line
-	10150 3275 9350 3275
 Connection ~ 6350 3275
 Wire Wire Line
 	6350 3275 6350 3225
@@ -745,77 +718,8 @@ Connection ~ 6150 2200
 Connection ~ 8025 2200
 Text HLabel 9450 2200 2    50   Input ~ 0
 AOa
-$Comp
-L Device:R_Network08_US RN?
-U 1 1 615A0052
-P 9650 4275
-F 0 "RN?" V 9150 4275 50  0000 C CNN
-F 1 "10K" V 10075 4275 50  0000 C CNN
-F 2 "Resistor_THT:R_Array_SIP9" V 10125 4275 50  0001 C CNN
-F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 9650 4275 50  0001 C CNN
-	1    9650 4275
-	-1   0    0    1   
-$EndComp
-Wire Wire Line
-	10050 4075 10050 3975
-Connection ~ 10050 3975
-Wire Wire Line
-	10050 3975 8625 3975
-Wire Wire Line
-	9950 4075 9950 3875
-Connection ~ 9950 3875
-Wire Wire Line
-	9950 3875 8525 3875
-Wire Wire Line
-	9850 4075 9850 3775
-Connection ~ 9850 3775
-Wire Wire Line
-	9850 3775 8425 3775
-Wire Wire Line
-	9750 4075 9750 3675
-Connection ~ 9750 3675
-Wire Wire Line
-	9750 3675 8325 3675
-Wire Wire Line
-	9650 4075 9650 3575
-Connection ~ 9650 3575
-Wire Wire Line
-	9650 3575 6650 3575
-Wire Wire Line
-	9550 4075 9550 3475
-Connection ~ 9550 3475
-Wire Wire Line
-	9550 3475 6550 3475
-Wire Wire Line
-	9450 4075 9450 3375
-Connection ~ 9450 3375
-Wire Wire Line
-	9450 3375 6450 3375
-Wire Wire Line
-	9350 4075 9350 3275
-Connection ~ 9350 3275
-Wire Wire Line
-	9350 3275 6350 3275
-$Comp
-L power:GND #PWR?
-U 1 1 61603AA0
-P 10050 4475
-F 0 "#PWR?" H 10050 4225 50  0001 C CNN
-F 1 "GND" H 10055 4302 50  0000 C CNN
-F 2 "" H 10050 4475 50  0001 C CNN
-F 3 "" H 10050 4475 50  0001 C CNN
-	1    10050 4475
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	7825 3675 7825 4150
-Wire Wire Line
-	8825 4150 8825 4075
-Wire Wire Line
-	8825 4075 7525 4075
-Wire Wire Line
-	7525 4075 7525 4650
-Connection ~ 7525 4650
 Wire Wire Line
 	9350 2200 9450 2200
 Wire Wire Line
@@ -837,4 +741,99 @@ Wire Wire Line
 	5975 5575 5975 6150
 Wire Wire Line
 	5875 5500 5875 6150
+$Comp
+L power:GND #PWR?
+U 1 1 61603AA0
+P 10050 4475
+F 0 "#PWR?" H 10050 4225 50  0001 C CNN
+F 1 "GND" H 10055 4302 50  0000 C CNN
+F 2 "" H 10050 4475 50  0001 C CNN
+F 3 "" H 10050 4475 50  0001 C CNN
+	1    10050 4475
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10050 3975 8625 3975
+Wire Wire Line
+	10150 3975 10050 3975
+Connection ~ 10050 3975
+Wire Wire Line
+	10050 4075 10050 3975
+Wire Wire Line
+	9950 3875 8525 3875
+Wire Wire Line
+	10150 3875 9950 3875
+Connection ~ 9950 3875
+Wire Wire Line
+	9950 4075 9950 3875
+Wire Wire Line
+	9850 3775 8425 3775
+Wire Wire Line
+	10150 3775 9850 3775
+Connection ~ 9850 3775
+Wire Wire Line
+	9850 4075 9850 3775
+Wire Wire Line
+	9750 3675 8325 3675
+Wire Wire Line
+	10150 3675 9750 3675
+Connection ~ 9750 3675
+Wire Wire Line
+	9750 4075 9750 3675
+Wire Wire Line
+	9650 3575 6650 3575
+Wire Wire Line
+	10150 3575 9650 3575
+Connection ~ 9650 3575
+Wire Wire Line
+	9650 4075 9650 3575
+Wire Wire Line
+	9550 3475 6550 3475
+Wire Wire Line
+	10150 3475 9550 3475
+Connection ~ 9550 3475
+Wire Wire Line
+	9550 4075 9550 3475
+Wire Wire Line
+	9450 3375 6450 3375
+Wire Wire Line
+	10150 3375 9450 3375
+Connection ~ 9450 3375
+Wire Wire Line
+	9450 4075 9450 3375
+Wire Wire Line
+	9350 3275 6350 3275
+Wire Wire Line
+	10150 3275 9350 3275
+Connection ~ 9350 3275
+Wire Wire Line
+	9350 4075 9350 3275
+$Comp
+L common-symbols:BarGraphLED_8P BAR?
+U 1 1 615D5CEB
+P 10350 3675
+F 0 "BAR?" H 10350 4342 50  0000 C CNN
+F 1 "BarGraphLED_8P" H 10350 4251 50  0000 C CNN
+F 2 "" H 10350 3675 50  0001 C CNN
+F 3 "" H 10350 3675 50  0001 C CNN
+	1    10350 3675
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Network08_US RN?
+U 1 1 615A0052
+P 9650 4275
+F 0 "RN?" V 9150 4275 50  0000 C CNN
+F 1 "10K" V 10075 4275 50  0000 C CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 10125 4275 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 9650 4275 50  0001 C CNN
+	1    9650 4275
+	-1   0    0    1   
+$EndComp
+Text HLabel 9450 2875 2    50   Input ~ 0
+AP1
+Wire Wire Line
+	8825 2875 9450 2875
+Wire Wire Line
+	8825 2875 8825 4150
 $EndSCHEMATC
