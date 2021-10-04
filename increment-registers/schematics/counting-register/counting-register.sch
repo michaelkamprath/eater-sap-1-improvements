@@ -131,9 +131,9 @@ Wire Wire Line
 Connection ~ 3750 3950
 Wire Wire Line
 	3750 3950 2750 3950
-Text HLabel 8775 2225 0    50   Input ~ 0
-IZF
 Text HLabel 8775 2325 0    50   Input ~ 0
+IZF
+Text HLabel 8775 2225 0    50   Input ~ 0
 ICF
 $Comp
 L Device:LED_Small D1
