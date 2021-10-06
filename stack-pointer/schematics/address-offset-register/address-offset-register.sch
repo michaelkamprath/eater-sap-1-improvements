@@ -162,37 +162,37 @@ Wire Wire Line
 Wire Wire Line
 	6350 1350 6350 2225
 Text HLabel 6575 6150 3    50   Output ~ 0
-ADDR_BUS_0
+ADDR_0
 Text HLabel 6475 6150 3    50   Output ~ 0
-ADDR_BUS_1
+ADDR_1
 Text HLabel 6375 6150 3    50   Output ~ 0
-ADDR_BUS_2
+ADDR_2
 Text HLabel 6275 6150 3    50   Output ~ 0
-ADDR_BUS_3
+ADDR_3
 Text HLabel 6175 6150 3    50   Output ~ 0
-ADDR_BUS_4
+ADDR_4
 Text HLabel 6075 6150 3    50   Output ~ 0
-ADDR_BUS_5
+ADDR_5
 Text HLabel 5975 6150 3    50   Output ~ 0
-ADDR_BUS_6
+ADDR_6
 Text HLabel 5875 6150 3    50   Output ~ 0
-ADDR_BUS_7
+ADDR_7
 Text HLabel 4350 6125 3    50   Output ~ 0
-ADDR_BUS_8
+ADDR_8
 Text HLabel 4250 6125 3    50   Output ~ 0
-ADDR_BUS_9
+ADDR_9
 Text HLabel 4150 6125 3    50   Output ~ 0
-ADDR_BUS_10
+ADDR_10
 Text HLabel 4050 6125 3    50   Output ~ 0
-ADDR_BUS_11
+ADDR_11
 Text HLabel 3950 6125 3    50   Output ~ 0
-ADDR_BUS_12
+ADDR_12
 Text HLabel 3850 6125 3    50   Output ~ 0
-ADDR_BUS_13
+ADDR_13
 Text HLabel 3750 6125 3    50   Output ~ 0
-ADDR_BUS_14
+ADDR_14
 Text HLabel 3650 6125 3    50   Output ~ 0
-ADDR_BUS_15
+ADDR_15
 Wire Wire Line
 	4375 4150 4375 4100
 Wire Wire Line
@@ -372,7 +372,7 @@ ADDR_BUS_0
 Text HLabel 1150 3875 0    50   Input ~ 0
 ADDR_BUS_1
 Wire Wire Line
-	1150 3875 8025 3875
+	1150 3875 3525 3875
 Wire Wire Line
 	8025 3875 8025 4150
 Text HLabel 1150 3775 0    50   Input ~ 0
@@ -388,29 +388,29 @@ ADDR_BUS_6
 Text HLabel 1150 3275 0    50   Input ~ 0
 ADDR_BUS_7
 Wire Wire Line
-	1150 3975 8125 3975
+	1150 3975 3625 3975
 Wire Wire Line
 	8125 3975 8125 4150
 Wire Wire Line
-	1150 3775 7925 3775
+	1150 3775 3425 3775
 Wire Wire Line
 	7925 3775 7925 4150
 Wire Wire Line
-	1150 3675 7825 3675
+	1150 3675 3325 3675
 Wire Wire Line
-	1150 3575 6150 3575
+	1150 3575 3225 3575
 Wire Wire Line
 	6150 3575 6150 4150
 Wire Wire Line
-	1150 3475 6050 3475
+	1150 3475 3125 3475
 Wire Wire Line
 	6050 3475 6050 4150
 Wire Wire Line
-	1150 3375 5950 3375
+	1150 3375 3025 3375
 Wire Wire Line
 	5950 3375 5950 4150
 Wire Wire Line
-	1150 3275 5850 3275
+	1150 3275 2925 3275
 Wire Wire Line
 	5850 3275 5850 4150
 Text HLabel 1150 3175 0    50   Input ~ 0
@@ -430,19 +430,19 @@ ADDR_BUS_14
 Text HLabel 1150 2475 0    50   Input ~ 0
 ADDR_BUS_15
 Wire Wire Line
-	1150 3175 4175 3175
+	1150 3175 2600 3175
 Wire Wire Line
 	4175 3175 4175 4150
 Wire Wire Line
-	1150 3075 4075 3075
+	1150 3075 2500 3075
 Wire Wire Line
 	4075 3075 4075 4150
 Wire Wire Line
-	1150 2975 3975 2975
+	1150 2975 2400 2975
 Wire Wire Line
 	3975 2975 3975 4150
 Wire Wire Line
-	1150 2875 3875 2875
+	1150 2875 2300 2875
 Wire Wire Line
 	3875 2875 3875 4150
 Wire Wire Line
@@ -836,4 +836,114 @@ Wire Wire Line
 	8825 2875 9450 2875
 Wire Wire Line
 	8825 2875 8825 4150
+$Comp
+L Device:R_Network08_US RN?
+U 1 1 6161A5EE
+P 2300 2025
+F 0 "RN?" H 2688 2071 50  0000 L CNN
+F 1 "1K" H 2688 1980 50  0000 L CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 2775 2025 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 2300 2025 50  0001 C CNN
+	1    2300 2025
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Network08_US RN?
+U 1 1 6161C78B
+P 3325 2025
+F 0 "RN?" H 3713 2071 50  0000 L CNN
+F 1 "1K" H 3713 1980 50  0000 L CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 3800 2025 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 3325 2025 50  0001 C CNN
+	1    3325 2025
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1900 2225 1900 2475
+Connection ~ 1900 2475
+Wire Wire Line
+	2000 2575 2000 2225
+Connection ~ 2000 2575
+Wire Wire Line
+	2100 2225 2100 2675
+Connection ~ 2100 2675
+Wire Wire Line
+	2200 2225 2200 2775
+Connection ~ 2200 2775
+Wire Wire Line
+	2300 2225 2300 2875
+Connection ~ 2300 2875
+Wire Wire Line
+	2300 2875 3875 2875
+Wire Wire Line
+	2400 2225 2400 2975
+Connection ~ 2400 2975
+Wire Wire Line
+	2400 2975 3975 2975
+Wire Wire Line
+	2500 2225 2500 3075
+Connection ~ 2500 3075
+Wire Wire Line
+	2500 3075 4075 3075
+Wire Wire Line
+	2600 2225 2600 3175
+Connection ~ 2600 3175
+Wire Wire Line
+	2600 3175 4175 3175
+Wire Wire Line
+	2925 2225 2925 3275
+Connection ~ 2925 3275
+Wire Wire Line
+	2925 3275 5850 3275
+Wire Wire Line
+	3025 2225 3025 3375
+Connection ~ 3025 3375
+Wire Wire Line
+	3025 3375 5950 3375
+Wire Wire Line
+	3125 2225 3125 3475
+Connection ~ 3125 3475
+Wire Wire Line
+	3125 3475 6050 3475
+Wire Wire Line
+	3225 2225 3225 3575
+Connection ~ 3225 3575
+Wire Wire Line
+	3225 3575 6150 3575
+Wire Wire Line
+	3325 2225 3325 3675
+Connection ~ 3325 3675
+Wire Wire Line
+	3325 3675 7825 3675
+Wire Wire Line
+	3425 2225 3425 3775
+Connection ~ 3425 3775
+Wire Wire Line
+	3425 3775 7925 3775
+Wire Wire Line
+	3525 2225 3525 3875
+Connection ~ 3525 3875
+Wire Wire Line
+	3525 3875 8025 3875
+Wire Wire Line
+	3625 2225 3625 3975
+Connection ~ 3625 3975
+Wire Wire Line
+	3625 3975 8125 3975
+Wire Wire Line
+	2925 1825 1900 1825
+$Comp
+L power:GND #PWR?
+U 1 1 6170BD34
+P 1700 1825
+F 0 "#PWR?" H 1700 1575 50  0001 C CNN
+F 1 "GND" H 1705 1652 50  0000 C CNN
+F 2 "" H 1700 1825 50  0001 C CNN
+F 3 "" H 1700 1825 50  0001 C CNN
+	1    1700 1825
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 1825 1900 1825
+Connection ~ 1900 1825
 $EndSCHEMATC

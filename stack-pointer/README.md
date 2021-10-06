@@ -1,9 +1,15 @@
 # Stack Pointer
 
 
-## Setting Program Counter With Address Bus Value
+### Setting Program Counter With Address Bus Value
 The `call` instruction has a lot happening. Load immediate address, push value of program counter to stack, set program counter to the address. This sequence of control lines needed 9 total steps (including prefix) to make that instruction work, but the step counter only allows for 8. I could have changed the control logic to allow a step counter with 16 steps, but that didn't seem like the best approach. So I ended updating the design of the program counter to be able to read in a value either from the data bus or the address bus. 
 
+### Halt on Error
+I have implemented a few error conditions into the design. these error conditions represent states for which there is no clear "next step" for the hardware. I would consider it to be a programming error if the states were ever achieved, however, the CPU wouldn't be able to gracefully recover without an undesirable amount of additional hardware. So I turn these error states into control signals that will cause the system clock to halt. At that point the only possible recovery is to manually reset the CPU.
+
+The error states implemented in this project are:
+* `ERR_AOC` - The address bus and the address offset value sum up that causes a carry to occur. 
+* `ERR_SPO` - The stack pointer was incremented or decremented beyond its valid 32K range.
 
 ### Control Line Assignment
 
