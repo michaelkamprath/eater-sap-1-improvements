@@ -443,6 +443,71 @@ instructions:
             zero: 1
           control_lines:
             SCr
+  JEQ_iaddr_sp_offset:
+    value: 85
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            SUB
+            SUMf
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      6:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            ARa
+            PCi
+            ARe
+            MDo
+      7:
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            ARa
+            PCi
+            MDo
+# jeq [addr],[mar]
   JEQ_iaddr_const:
     value: 87
     steps:
@@ -606,6 +671,7 @@ instructions:
             zero: 1
           control_lines:
             SCr
+# jeq addr, [sp+offset]
   JEQ_addr1_iaddr2:
     value: 94
     steps:
@@ -972,7 +1038,7 @@ instructions:
       2:
         - control_lines:
             SCr
-  # Insert mov [sp+offset],* here
+# Insert mov [sp+offset],* here
   MOV_iaddr_a:
     value: 176
     steps:
@@ -1162,6 +1228,29 @@ instructions:
       3:
         - control_lines:
             SCr
+  ADD_sp_offset:
+    value: 189
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      4:
+        - control_lines:
+            SCr
   ADD_iaddr:
     value: 190
     steps:
@@ -1254,6 +1343,30 @@ instructions:
             SUMo
             SUMf
       3:
+        - control_lines:
+            SCr
+  SUB_sp_offset:
+    value: 205
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            SUB
+            Ai
+            SUMo
+            SUMf
+      4:
         - control_lines:
             SCr
   SUB_iaddr:
@@ -1415,6 +1528,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+# swap a, [sp+offset]
   SWAP_a_iaddr:
     value: 6
     steps:
@@ -1512,6 +1626,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+# swap i, [sp+offset]
   SWAP_i_iaddr:
     value: 22
     steps:
@@ -1609,6 +1724,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+# swap j, [sp+offset]
   SWAP_j_iaddr:
     value: 30
     steps:
@@ -1654,6 +1770,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+# swap [sp+offset1], [sp+offset2]
   MOV2_mar_const:
     value: 87
     steps:
@@ -1679,6 +1796,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+# mov2 mar,[sp+offset]
   MOV2_mar_iaddr:
     value: 86
     steps:
@@ -1726,6 +1844,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+# mov2 [mar], [sp+offset]
   MOV2_indirect_mar_const:
     value: 95
     steps:
@@ -1766,6 +1885,9 @@ instructions:
             extended: 1
           control_lines:
             SCr
+# mov2 [sp+offset], mar
+# mov2 [sp+offset], [mar]
+# mov2 [sp+offset], const
   MOV2_iaddr_const:
     value: 119
     steps:
@@ -1818,3 +1940,4 @@ instructions:
             MDi
             ARe
             To
+
