@@ -314,7 +314,7 @@ Wire Wire Line
 Wire Wire Line
 	6925 6325 6600 6325
 Text HLabel 2100 7000 0    50   Input ~ 0
-PCo
+PCa
 $Comp
 L 74xx:74LS04 U?
 U 2 1 606D80AD

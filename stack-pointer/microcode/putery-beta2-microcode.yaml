@@ -507,7 +507,68 @@ instructions:
             ARa
             PCi
             MDo
-# jeq [addr],[mar]
+  JEQ_iaddr_indirect_mar:
+    value: 86
+    steps:
+      1:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+      2:
+        - control_lines:
+            SUB
+            SUMf
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            ARa
+            PCi
+            ARe
+            MDo
+      6:
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            ARa
+            PCi
+            MDo
+      7:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
   JEQ_iaddr_const:
     value: 87
     steps:
@@ -671,7 +732,64 @@ instructions:
             zero: 1
           control_lines:
             SCr
-# jeq addr, [sp+offset]
+  JEQ_addr_sp_offset:
+    value: 93
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            SUB
+            SUMf
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            PCe
+        - flags:
+            zero: 1
+          control_lines:
+            HILO
+            PCa
+            PCi
+            MDo
+      6:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            PCi
+            To
+      7:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
   JEQ_addr1_iaddr2:
     value: 94
     steps:
@@ -1038,7 +1156,86 @@ instructions:
       2:
         - control_lines:
             SCr
-# Insert mov [sp+offset],* here
+  MOV_sp_offset_a:
+    value: 168
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            Ao
+      3:
+        - control_lines:
+            SCr
+  MOV_sp_offset_i:
+    value: 170
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            Io
+      3:
+        - control_lines:
+            SCr
+  MOV_sp_offset_j:
+    value: 171
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            Jo
+      3:
+        - control_lines:
+            SCr
+# mov [sp+offset1],[sp+offset2] - needs instruction specific operand reverse ordering in bespokeasm
+# mov [sp+offset], [addr] - needs instruction specific operand reverse ordering in bespokeasm
+  MOV_sp_offset_const:
+    value: 175
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      3:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      4:
+        - control_lines:
+            SCr
   MOV_iaddr_a:
     value: 176
     steps:
@@ -1528,7 +1725,47 @@ instructions:
             extended: 1
           control_lines:
             SCr
-# swap a, [sp+offset]
+  SWAP_a_sp_offset:
+    value: 5
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            Ti
+            MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            MDi
+            Ao
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            Ai
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  SWAP_a_iaddr:
+    value: 6
+    steps:
   SWAP_a_iaddr:
     value: 6
     steps:
@@ -1626,7 +1863,44 @@ instructions:
             extended: 1
           control_lines:
             SCr
-# swap i, [sp+offset]
+  SWAP_i_sp_offset:
+    value: 21
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            Ti
+            MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            MDi
+            Io
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            Ii
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
   SWAP_i_iaddr:
     value: 22
     steps:
@@ -1724,7 +1998,44 @@ instructions:
             extended: 1
           control_lines:
             SCr
-# swap j, [sp+offset]
+  SWAP_j_sp_offset:
+    value: 29
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            Ti
+            MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            MDi
+            Jo
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            Ji
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
   SWAP_j_iaddr:
     value: 30
     steps:
@@ -1770,7 +2081,6 @@ instructions:
             extended: 1
           control_lines:
             SCr
-# swap [sp+offset1], [sp+offset2]
   MOV2_mar_const:
     value: 87
     steps:
