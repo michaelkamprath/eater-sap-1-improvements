@@ -81,6 +81,9 @@ instructions:
             IRi
             PCe
             MDo
+  #
+  # Jump & Conditional Jump
+  #
   JMP_iaddr:
     value: 46
     steps:
@@ -901,6 +904,9 @@ instructions:
             zero: 1
           control_lines:
             SCr
+  #
+  # MOV
+  #
   MOV_a_indirect_mar:
     value: 128
     steps:
@@ -1380,6 +1386,9 @@ instructions:
       5:
         - control_lines:
             SCr
+  #
+  # ALU & Math
+  #
   ADD_a:
     value: 184
     steps:
@@ -1673,6 +1682,9 @@ instructions:
       3:
         - control_lines:
             SCr
+  #
+  # Extended Instructions
+  #
   SWAP_a_i:
     value: 2
     steps:
@@ -2081,32 +2093,40 @@ instructions:
             extended: 1
           control_lines:
             SCr
-  MOV2_mar_const:
-    value: 87
+  MOV2_mar_sp_offset:
+    value: 85
     steps:
       2:
         - flags:
             extended: 1
           control_lines:
             PCa
-            ARi
-            MDo
+            AOi
             PCe
+            MDo
       3:
         - flags:
             extended: 1
           control_lines:
-            HILO
-            PCa
+            SPa
+            AOa
             ARi
             MDo
-            PCe
       4:
         - flags:
             extended: 1
           control_lines:
+            HILO
+            SPa
+            AOa
+            ARi
+            AP1
+            MDo
+      5:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-# mov2 mar,[sp+offset]
   MOV2_mar_iaddr:
     value: 86
     steps:
@@ -2154,7 +2174,79 @@ instructions:
             extended: 1
           control_lines:
             SCr
-# mov2 [mar], [sp+offset]
+  MOV2_mar_const:
+    value: 87
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV2_indirect_mar_sp_pffset:
+    value: 93
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            MDo
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            To
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+            AP1
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            To
+            AP1
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
   MOV2_indirect_mar_const:
     value: 95
     steps:
@@ -2195,9 +2287,151 @@ instructions:
             extended: 1
           control_lines:
             SCr
-# mov2 [sp+offset], mar
-# mov2 [sp+offset], [mar]
-# mov2 [sp+offset], const
+  MOV2_sp_offset_mar:
+    value: 106
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            Ti
+            ABo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HILO
+            ARa
+            Ti
+            ABo
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+            AP1
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV2_sp_offset_indirect_mar:
+    value: 107
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            Ti
+            MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            Ti
+            MDo
+            AP1
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+            AP1
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV2_sp_offset_const:
+    value: 111
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+            AP1
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
   MOV2_iaddr_const:
     value: 119
     steps:
@@ -2250,4 +2484,614 @@ instructions:
             MDi
             ARe
             To
-
+  #
+  # stack operations
+  #
+  RSP:
+    value: 7
+    steps:
+      1:
+        - control_lines:
+            SPr
+      2:
+        - control_lines:
+            SCr
+  PUSH_a:
+    value: 8
+    steps:
+      1:
+        - control_lines:
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            Ao
+      3:
+        - control_lines:
+            SCr
+  PUSH_i:
+    value: 10
+    steps:
+      1:
+        - control_lines:
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            Io
+      3:
+        - control_lines:
+            SCr
+  PUSH_j:
+    value: 11
+    steps:
+      1:
+        - control_lines:
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            Jo
+      3:
+        - control_lines:
+            SCr
+  PUSH_sp_offset:
+    value: 13
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  PUSH_iaddr:
+    value: 14
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      3:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  PUSH_const:
+    value: 15
+    steps:
+      1:
+        - control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPe
+            SUB
+      3:
+        - control_lines:
+            SPa
+            MDi
+            To
+      4:
+        - control_lines:
+            SCr
+  PUSH2_mar:
+    value: 18
+    steps:
+      1:
+        - control_lines:
+            HILO
+            ARa
+            Ti
+            ABo
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            To
+      3:
+        - control_lines:
+            ARa
+            Ti
+            ABo
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  PUSH2_indirect_mar:
+    value: 19
+    steps:
+      1:
+        - control_lines:
+            ARa
+            AP1
+            Ti
+            MDo
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            To
+      3:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  PUSH2_sp_offset:
+    value: 21
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            AP1
+            Ti
+            MDo
+            SPe
+            SUB
+      3:
+        - control_lines:
+            SPa
+            MDi
+            To
+      4:
+        - control_lines:
+            SPa
+            AOa
+            AP1
+            Ti
+            MDo
+            SPe
+            SUB
+      5:
+        - control_lines:
+            SPa
+            MDi
+            To
+      6:
+        - control_lines:
+            SCr
+  PUSH2_iaddr:
+    value: 22
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - control_lines:
+            ARa
+            AP1
+            Ti
+            MDo
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+      5:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+            SPe
+            SUB
+      6:
+        - control_lines:
+            SPa
+            MDi
+            To
+      7:
+        - control_lines:
+            SCr
+  PUSH2_const:
+    value: 23
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AP1
+            Ti
+            MDo
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            To
+      3:
+        - control_lines:
+            PCa
+            Ti
+            MDo
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+            PCe
+      5:
+        - control_lines:
+            PCe
+      6:
+        - control_lines:
+            SCr
+  POP_a:
+    value: 24
+    steps:
+      1:
+        - control_lines:
+            SPa
+            Ai
+            MDo
+            SPe
+      2:
+        - control_lines:
+            SCr
+  POP_i:
+    value: 26
+    steps:
+      1:
+        - control_lines:
+            SPa
+            Ii
+            MDo
+            SPe
+      2:
+        - control_lines:
+            SCr
+  POP_j:
+    value: 27
+    steps:
+      1:
+        - control_lines:
+            SPa
+            Ji
+            MDo
+            SPe
+      2:
+        - control_lines:
+            SCr
+  POP_iaddr:
+    value: 30
+    steps:
+      1:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+            SPe
+      2:
+        - control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      4:
+        - control_lines:
+            ARa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  POP_no_operand:
+    value: 31
+    steps:
+      1:
+        - control_lines:
+            SPe
+      2:
+        - control_lines:
+            SCr
+  POP2_mar:
+    value: 34
+    steps:
+      1:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      2:
+        - control_lines:
+            ARi
+            To
+            SPe
+      3:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            HILO
+            ARi
+            To
+            SPe
+      5:
+        - control_lines:
+            SCr
+  POP2_indirect_mar:
+    value: 35
+    steps:
+      1:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      2:
+        - control_lines:
+            ARa
+            MDi
+            To
+            SPe
+      3:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            ARa
+            AP1
+            MDi
+            To
+            SPe
+      5:
+        - control_lines:
+            SCr
+  POP2_iaddr:
+    value: 38
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            ARa
+            MDi
+            To
+            SPe
+      5:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      6:
+        - control_lines:
+            ARa
+            AP1
+            MDi
+            To
+            SPe
+      7:
+        - control_lines:
+            SCr
+  POP2_no_operands:
+    value: 39
+    steps:
+      1:
+        - control_lines:
+            SPe
+      2:
+        - control_lines:
+            SPe
+      3:
+        - control_lines:
+            SCr
+  CALL_const:
+    value: 3
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - control_lines:
+            HILO
+            PCa
+            Ti
+            ABo
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+      5:
+        - control_lines:
+            PCa
+            Ti
+            ABo
+            SPe
+            SUB
+      6:
+        - control_lines:
+            SPa
+            MDi
+            To
+      7:
+        - control_lines:
+            ARa
+            PCi
+            DSs
+  CALL_mar:
+    value: 4
+    steps:
+      1:
+        - control_lines:
+            HILO
+            PCa
+            Ti
+            ABo
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            To
+      3:
+        - control_lines:
+            PCa
+            Ti
+            ABo
+            SPe
+            SUB
+      4:
+        - control_lines:
+            SPa
+            MDi
+            To
+      5:
+        - control_lines:
+            ARa
+            PCi
+            DSs
+      6:
+        - control_lines:
+            SCr
+  RET:
+    value: 6
+    steps:
+      1:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      2:
+        - control_lines:
+            PCi
+            To
+            SPe
+      3:
+        - control_lines:
+            SPa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            HILO
+            PCi
+            To
+            SPe
+      5:
+        - control_lines:
+            SCr
