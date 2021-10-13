@@ -1,6 +1,6 @@
 description: Putey Beta 1 Breadboard Computer
 general:
-  min_version: 0.1.3
+  min_version: 0.1.4
   address_size: 16
   endian: little
   registers:
@@ -205,8 +205,8 @@ instructions:
       size: 3
     operands:
       count: 2
-      reverse_argument_order: true
       operand_sets:
+        reverse_argument_order: true
         list:
           - address_source
           - 8_bit_source
@@ -230,6 +230,7 @@ instructions:
           - [j_register, j_register]
       specific_operands:
         a_mar:
+          list:
             a:
               type: register
               register: a
@@ -243,6 +244,7 @@ instructions:
                 value: 0
                 size: 3
         i_mar:
+          list:
             a:
               type: register
               register: i
@@ -256,6 +258,7 @@ instructions:
                 value: 0b010
                 size: 3
         j_mar:
+          list:
             a:
               type: register
               register: j
