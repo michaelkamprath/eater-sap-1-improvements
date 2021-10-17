@@ -1216,8 +1216,72 @@ instructions:
       3:
         - control_lines:
             SCr
-# mov [sp+offset1],[sp+offset2] - needs instruction specific operand reverse ordering in bespokeasm
-# mov [sp+offset], [addr] - needs instruction specific operand reverse ordering in bespokeasm
+  MOV_sp1_offset_sp2_offset:
+    value: 173
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            MDo
+            PCe
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            PCa
+            AOi
+            MDo
+            PCe
+      4:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  MOV_sp_offset_iaddr:
+    value: 174
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            PCa
+            AOi
+            MDo
+            PCe
+      5:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      6:
+        - control_lines:
+            SCr
   MOV_sp_offset_const:
     value: 175
     steps:
@@ -1312,6 +1376,43 @@ instructions:
             MDi
             Jo
       4:
+        - control_lines:
+            SCr
+  # mov [addr], [sp+offset]
+  MOV_iaddr_sp_offset:
+    value: 182
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            MDo
+            PCe
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+            PCe
+      3:
+        - control_lines:
+            PCa
+            AOi
+            MDo
+            PCe
+      4:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      5:
+        - control_lines:
+            ARa
+            MDi
+            To
+      6:
         - control_lines:
             SCr
   MOV_iaddr1_iaddr2:
