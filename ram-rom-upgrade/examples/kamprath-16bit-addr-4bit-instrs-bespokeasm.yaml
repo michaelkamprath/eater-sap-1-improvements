@@ -1,5 +1,6 @@
 description: Kamprath 16-Bit Addressing Breadboard CPU
 general:
+  min_version: 0.1.4
   address_size: 16
   endian: little
   registers:
@@ -121,10 +122,10 @@ instructions:
       value: 13
       size: 4
   out:
-     byte_code:
+    byte_code:
       value: 14
       size: 4
   hlt:
-     byte_code:
+    byte_code:
       value: 15
       size: 4
