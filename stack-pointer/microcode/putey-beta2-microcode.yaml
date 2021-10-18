@@ -1378,7 +1378,6 @@ instructions:
       4:
         - control_lines:
             SCr
-  # mov [addr], [sp+offset]
   MOV_iaddr_sp_offset:
     value: 182
     steps:

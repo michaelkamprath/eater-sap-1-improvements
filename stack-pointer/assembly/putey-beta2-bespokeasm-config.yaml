@@ -275,7 +275,14 @@ instructions:
           - 8_bit_destination
         disallowed_pairs:
           - [stack_pointer]
-      # add specific operand of "no operand" here for the pop with no destination
+      specific_operands:
+        no_operand:
+          list:
+             empty_op:
+              type: empty
+              bytecode:
+                value: 0b111
+                size: 3
   pop2:
     byte_code:
       value: b00100
@@ -287,7 +294,14 @@ instructions:
           - 16_bit_destination
         disallowed_pairs:
           - [stack_pointer]
-      # add specific operand of "no operand" here for the pop2 with no destination
+      specific_operands:
+        no_operand:
+          list:
+             empty_op:
+              type: empty
+              bytecode:
+                value: 0b111
+                size: 3
   # branching
   jmp:
     byte_code:
