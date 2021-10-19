@@ -31,7 +31,7 @@ operand_sets:
           value: 3
           size: 3
       stack_pointer:
-        type: register
+        type: indirect_register
         register: sp
         bytecode:
           value: 5
@@ -226,18 +226,23 @@ instructions:
       count: 1
       specific_operands:
         immediate_addr:
-          addr:
-            type: numeric
-            bytecode:
-              value: 3
-              size: 3
+          list:
+            addr:
+              type: numeric
+              bytecode:
+                value: 3
+                size: 3
+              argument:
+                size: 16
+                byte_align: true
         direct_mar:
-          mar:
-            type: register
-            register: mar
-            bytecode:
-              value: 4
-              size: 3
+          list:
+            mar:
+              type: register
+              register: mar
+              bytecode:
+                value: 4
+                size: 3
   ret:
     byte_code:
       value: 6
@@ -248,7 +253,7 @@ instructions:
       size: 8
   push:
     byte_code:
-      value: b00001
+      value: 1
       size: 5
     operands:
       count: 1
@@ -266,7 +271,7 @@ instructions:
           - 16_bit_source
   pop:
     byte_code:
-      value: b00011
+      value: 3
       size: 5
     operands:
       count: 1
@@ -278,10 +283,10 @@ instructions:
       specific_operands:
         no_operand:
           list:
-             empty_op:
+            empty_op:
               type: empty
               bytecode:
-                value: 0b111
+                value: 7
                 size: 3
   pop2:
     byte_code:
@@ -297,7 +302,7 @@ instructions:
       specific_operands:
         no_operand:
           list:
-             empty_op:
+            empty_op:
               type: empty
               bytecode:
                 value: 0b111
