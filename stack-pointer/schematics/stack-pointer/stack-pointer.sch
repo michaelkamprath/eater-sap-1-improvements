@@ -163,12 +163,12 @@ Wire Wire Line
 Connection ~ 2075 2025
 Wire Wire Line
 	2075 2025 3975 2025
-Text HLabel 10450 1900 2    50   Input ~ 0
+Text HLabel 10450 2150 2    50   Input ~ 0
 CLK
 Wire Wire Line
 	8000 2250 8000 1800
 Wire Wire Line
-	8000 1800 10450 1800
+	8000 1800 9675 1800
 Wire Wire Line
 	5775 2250 5775 1800
 Wire Wire Line
@@ -257,9 +257,6 @@ Wire Wire Line
 	3075 1900 5275 1900
 Wire Wire Line
 	7500 2250 7500 1900
-Connection ~ 7500 1900
-Wire Wire Line
-	7500 1900 10450 1900
 $Comp
 L 74xx:74LS32 U?
 U 1 1 61733C03
@@ -839,4 +836,24 @@ F 3 "" H 4975 2750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 NoConn ~ 1475 3250
+$Comp
+L 74xx:74LS04 U?
+U 3 1 6192DA09
+P 9975 1800
+F 0 "U?" H 10050 1925 50  0000 C CNN
+F 1 "74LS04" H 10100 1675 50  0000 C CNN
+F 2 "" H 9975 1800 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9975 1800 50  0001 C CNN
+	3    9975 1800
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	10275 1800 10450 1800
+Wire Wire Line
+	7500 1900 9150 1900
+Wire Wire Line
+	9150 1900 9150 2150
+Wire Wire Line
+	9150 2150 10450 2150
+Connection ~ 7500 1900
 $EndSCHEMATC
