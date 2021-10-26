@@ -34,7 +34,7 @@ calc_loop:
 ;
 calc_factorial:
     mov a, [sp+2]                   ; move N value in A
-    jeq _factorial_finish, 1        ; if N value is 1 jump to end of function (recursion stopping condition)
+    jeq .finish, 1                  ; if N value is 1 jump to end of function (recursion stopping condition)
     sub 1                           ; subtract 1 from N
     push a                          ; push N-1 onto stack
     call calc_factorial             ; recurse into factoral function
@@ -44,7 +44,7 @@ calc_factorial:
     call multiply                   ; multiply
     pop                             ; return stack to pre-call state
     pop                             ; return stack to pre-call state
-_factorial_finish:
+.finish:
     ret                             ; return. result is in A
 
 
@@ -61,16 +61,16 @@ _factorial_finish:
 ; registers used: A, I
 multiply:
     mov a,[sp+2]                    ; move first multiplicand into A
-    jeq _multiply_finish, 0         ; if first multiplicand is 0, just return (A contains 0)
+    jeq .finish, 0                  ; if first multiplicand is 0, just return (A contains 0)
     mov i, a                        ; move first multiplicand in I to be the loop variable
     mov a,[sp+3]                    ; move second multiplicand into A
-    jeq _multiply_finish, 0         ; if second multiplicand is 0, just return (A contains 0)
+    jeq .finish, 0                  ; if second multiplicand is 0, just return (A contains 0)
     dec i                           ; decrement the first multiplicand
-    jz _multiply_finish             ; if first multiplicand was 1, just return (A contains second ultiplicand)
-_multiply_loop:
+    jz .finish                      ; if first multiplicand was 1, just return (A contains second ultiplicand)
+.loop:
     add [sp+3]                      ; add second multiplicand to running sum in A
     dec i                           ; decrement first multiplicand
-    jz _multiply_finish             ; if we reach 0, multiply loop is done
-    jmp _multiply_loop              ; next multiply loop iteration
-_multiply_finish:
+    jz .finish                      ; if we reach 0, multiply loop is done
+    jmp .loop                       ; next multiply loop iteration
+.finish:
     ret                             ; return. result in A
