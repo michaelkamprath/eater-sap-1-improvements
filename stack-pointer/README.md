@@ -1,31 +1,48 @@
 # Stack Pointer
 
 ## Overview
-I'm finally at the point where I can add what I feel is the key upgrade to my SAP-1 based TTL computer: a stack pointer. A stack pointer enables general purpose programming in a computer, specifically the ability to call and return from subroutines and the ability to effectively make temporary variables in memory. 
+I'm finally at the point where I can add what I feel is the key upgrade to my SAP-1 based TTL computer: a stack pointer. A stack pointer enables general purpose programming in a computer, specifically the ability to call and return from subroutines and the ability to effectively make temporary variables in memory.
 
 
 
 # Design
 
 ## Stack Operations
+There are plenty of resources that describe stack pointers online, so I am not going to try to replicate them here.
+
+- Stack pointer should point to the start of a multibyte value. This means that for a multibyte value, the second byte is at an address value of +1 over the stack pointer value. This in turn implies that the stack should "grow down" from the largest stack address value to small address values as values are pushed onto the stack. When pushing multibyte values onto the stack, the most significant byte should be pushed first and the least significant byte pushed last.
+- Stack pointer points at the last value pushed on the stack. This means it needs to be decremented before something is pushed onto the stack.
+
 
 ### Subroutine Calling
 
-### Address Offset
+### Address Offset Register
+Having a stack pointer is great, but with a stack pointer alone you can only fetch what ever is on top of the stack. It would be desirable to be able to read (or write) a stack value that is any number of positions into the stack. A usage paradigm for this would be to push a subroutine's argument values on to the stack, and then within the subroutine be able to read (or even alter) the argument values push onto the stack. You wouldn't want to pop values off the stack to get to the subroutine's arguments because in doing so you would pop the return address off the stack since it was the last thing pushed onto the stack before jumping to the subroutine. So being able to read or write to stack memory at specific offsets from the current stack pointer would be useful.
 
+To accomplish this, I introduce an address offset register to the design. This register is actually more than just a register, as it includes a adder that adds the value of the register to the current value on the address bus. The address offset register sits between the address bus that the various address registers (step counter, MAR, etc) write to and the address bus that the memory devices use to idenitfy what memory address to read or write. In this way, the address offset register can alter the address emitted by more than just the stack pointer, however the stack pointer is the impetus for adding it. For clarity, I will refer to the address bus connected to memory devices as the memory address bus.
+
+In order to keep things simple, the address offset register in my design is only 8 bits, assumed to always be positive. The register itself is implemented with two `74LS173` 4-bit registers, and the adder consists of four `74LS283` 4-bit adders. The address ofset register is only connected to the lower 8 bits of the adders, with the equivalent inputs for the upper 8 bits of the adders tied to zero. The address offset register's input is connected to the data bus so that its value can be set. The address bus is the other input to the adders, and the adders output goes to the memory address bus.
+
+#### Address Plus One Control Line
+When dealing with 16-bit values in 8-bit memory systems, one freqent operation needed is to increment a address value by 1 in order to get the second byte of the 2 byte value. To make this easier, I fed a control line into the carry in of the address offset register `74LS283` adder that represents the least signficant 4-bits. I called this the "address plus one" control line, notated `AP1` in my design. This allows the address value used to be incremented for an instruction step by simply asserting the `AP` control line and without needing to change the address value in the register it resides.
 
 ### Setting Program Counter With Address Bus Value
-The `call` instruction has a lot happening. Load immediate address, push value of program counter to stack, set program counter to the address. This sequence of control lines needed 9 total steps (including prefix) to make that instruction work, but the step counter only allows for 8. I could have changed the control logic to allow a step counter with 16 steps, but that didn't seem like the best approach. So I ended updating the design of the program counter to be able to read in a value either from the data bus or the address bus.
+The `call` instruction has a lot happening. Load immediate address, push value of program counter to stack, set program counter to the address. This sequence of control lines needed 9 total steps (including prefix) to make that instruction work, but the step counter only allows for 8. I could have changed the control logic to allow a step counter with 16 steps, but that didn't seem like the best  and would require me to change the instruction register I just built. So I ended updating the design of the program counter to be able to read in a value either from the data bus or the address bus. To do this, `74LS157` 2-to-1 multiplexers were used to enable the selection of input to the program counter.
 
-### Halt on Error
+## Index Register
+
+
+## Halt on Error
 I have implemented a few error conditions into the design. these error conditions represent states for which there is no clear "next step" for the hardware. I would consider it to be a programming error if the states were ever achieved, however, the CPU wouldn't be able to gracefully recover without an undesirable amount of additional hardware. So I turn these error states into control signals that will cause the system clock to halt. At that point the only possible recovery is to manually reset the CPU.
 
 The error states implemented in this project are:
 * `ERR_AOC` - The address bus and the address offset value sum up that causes a carry to occur.
 * `ERR_SPO` - The stack pointer was incremented or decremented beyond its valid 32K range.
+* `ERR_NXO` - The index register was incremented or decremented beyond its valid 32K range.
 
-### Control Line Assignment
-
+# Implementation
+## Control Line Assignment
+This project continues to use the control logic design introduced in the [8-Bit Instruction Register project](../instruction-register-8-bit/). The control line assignments are:
 
 | Control Line Position | Bank | Group | Symbol | Notes |
 |:-:|:--|:--|:-:|:--|
@@ -72,7 +89,7 @@ The error states implemented in this project are:
 |41 | Right | High | `∑o` | Write the results of the ALU operation to data bus |
 |42 | Right | Low | `SCr` | Resets both the step counter, the offset register,  the extended instruction bit. A step counter overflow needs to do the same thing. |
 |43 | Right | Low |  `SPr` | Reset stack pointer to "empty stack" value |
-|44 | Right | Low |  `DSs` | Data source input select for registers that can load from either address or data bus. LOW is data bus, HIGH is address bus. |
+|44 | Right | Low |  `DSs` | Data source input select for 16-bit registers that can load from either address or data bus. LOW is data bus, HIGH is address bus. |
 |45 | Right | Low | `∑f` |  Write the ALU flags status to the flags register |
 |46 | Right | Low | `If` |  Write register `I` flags status to the flags register |
 |47 | Right | Low | `Jf` | Write register `J` flags status to the flags register |
