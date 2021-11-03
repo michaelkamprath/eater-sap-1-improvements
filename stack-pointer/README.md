@@ -8,13 +8,16 @@ I'm finally at the point where I can add what I feel is the key upgrade to my SA
 # Design
 
 ## Stack Operations
-There are plenty of resources that describe stack pointers online, so I am not going to go in detail here. But at a high level, you can think of the stack as a "pile" of memory that can place values on to the top of the pile or take values from the top of the pile. A stack point points to where the top of the pile of memory is. For the PUTEY-1, here are the behavioral conditions of the stack pointer:
+There are plenty of resources that describe stack pointers online, so I am not going to go in detail here. But at a high level, you can think of the stack as a "pile" of memory that can place values on to the top of the pile or take values from the top of the pile. A stack pointer points to where the top of the pile of memory is. For the PUTEY-1, here are the behavioral requirements of the stack pointer:
 
 * Given that the PUTEY-1 is an 8-bit system, multibyte values get pushed on to the stack one byte at a time.
 * The stack pointer should point to the start of a multibyte value. This means that for a multibyte value, the second byte is at an address value of one greater than stack pointer value. This in turn implies that the stack should "grow down" from the largest stack address value to smaller address values as values are pushed onto the stack. When pushing multibyte values onto the stack, the most significant byte should be pushed first and the least significant byte pushed last.
 * Stack pointer points at the last value pushed on the stack. This means it needs to be decremented before something is pushed onto the stack.
 
 ### `push` and `pop`
+The basic stack related instructions is to place data onto the stack and to take data off of the stack.
+
+The instruction to place data onto the stack is called `push`, which takes one operand indicating the 8 but value source. The microcode for this instruction first decrements the stack pointer, then copies the 8-bit value from the source indicated by the operand to the memory address now pointed to by the stack pointer. I also implemented a `push2` instruction that pushes 2 bytes on onto the step in the proper order to maintain the endieness of the 16-bit value.
 
 ### Subroutine Calling
 The concept of a subroutine is a secont of code that you can jump to from anywhere in the overall codebase, and then when that subroutine's code is complete, the program's execution will automatically jump back to the instruction after the jump to the subroutine. To make this happen, before jumping to the subroutine the address after the jump instruction is pushed onto the stack, and the jump to the subroutine occurs. When the sumroutine is done, the address that was pushed ontothte stack is removed (popped) from the stack and placed into the program counter to effect a jump back to instruction after the jump to the subroutine.
@@ -22,10 +25,10 @@ The concept of a subroutine is a secont of code that you can jump to from anywhe
 The indivudual steps to make all this happen can be consolidated into two instructions:
 
 * `call X` - The `call` instruction takes one operand which is the address of the subroutine to jump to. Before jumping to that address, the address after the `call` instruction is pushed onto the stack.
-* `rts` - The `rts` instruction will pop an address value from the stack and place it in the program counter,thus effecting a jump to that address.
+* `rts` - The `rts` (return from subroutine) instruction will pop an address value from the stack and place it in the program counter,thus effecting a jump to that address.
 
 #### Setting Program Counter With Address Bus Value
-The `call` instruction has a lot happening. Load immediate address, push value of program counter to stack, set program counter to the address. This sequence of control lines needed 9 total steps (including prefix) to make that instruction work, but the step counter only allows for 8. I could have changed the control logic to allow a step counter with 16 steps, but that didn't seem like the best  and would require me to change the instruction register I just built. So I ended updating the design of the program counter to be able to read in a value either from the data bus or the address bus. To do this, `74LS157` 2-to-1 multiplexers were used to enable the selection of input to the program counter.
+The `call` instruction has a lot happening. Load immediate address, push value of program counter to stack, set program counter to the address. This sequence of control lines needed 9 total steps (including prefix) to make that instruction work given the current hardware design, but the step counter only allows for 8. I could have changed the control logic to allow a step counter with 16 steps, but that didn't seem like the best  and would require me to change the instruction register I just built. So I ended updating the design of the program counter to be able to read in a value either from the data bus or the address bus. To do this, `74LS157` 2-to-1 multiplexers were used to enable the selection of input to the program counter. When reading from the data bus, the `HILO` control line is used to moderate which program counter byte the data bus is being read into.
 
 ### Address Offset Register
 Having a stack pointer is great, but with a stack pointer alone you can only fetch what ever is on top of the stack. It would be desirable to be able to read (or write) a stack value that is any number of positions into the stack. A usage paradigm for this would be to push a subroutine's argument values on to the stack, and then within the subroutine be able to read (or even alter) the argument values push onto the stack. You wouldn't want to pop values off the stack to get to the subroutine's arguments because in doing so you would pop the return address off the stack since it was the last thing pushed onto the stack before jumping to the subroutine. So being able to read or write to stack memory at specific offsets from the current stack pointer would be useful.
