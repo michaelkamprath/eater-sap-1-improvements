@@ -469,29 +469,8 @@ Wire Wire Line
 	2400 5350 1150 5350
 Text HLabel 9450 1075 2    50   Input ~ 0
 AOi
-Text HLabel 9450 1000 2    50   Input ~ 0
-AOr
 Text HLabel 9450 925  2    50   Input ~ 0
 CLR
-$Comp
-L 74xx:74LS32 U?
-U 1 1 61681F6C
-P 5450 1300
-F 0 "U?" V 5400 975 50  0000 L CNN
-F 1 "74LS32" V 5500 850 50  0000 L CNN
-F 2 "" H 5450 1300 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 5450 1300 50  0001 C CNN
-	1    5450 1300
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	5550 1000 9450 1000
-Wire Wire Line
-	9450 925  5350 925 
-Wire Wire Line
-	5350 925  5350 1000
-Wire Wire Line
-	5450 1600 5450 2125
 Wire Wire Line
 	7425 2225 7425 2125
 Wire Wire Line
@@ -946,4 +925,8 @@ $EndComp
 Wire Wire Line
 	1700 1825 1900 1825
 Connection ~ 1900 1825
+Wire Wire Line
+	9450 925  5450 925 
+Wire Wire Line
+	5450 925  5450 2125
 $EndSCHEMATC
