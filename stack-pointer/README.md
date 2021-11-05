@@ -3,45 +3,49 @@
 ## Overview
 I'm finally at the point where I can add what I feel is the key upgrade to my SAP-1 based TTL computer: a stack pointer. A stack pointer enables general purpose programming in a computer, specifically the ability to call and return from subroutines and the ability to effectively make temporary variables in memory.
 
-
-
 # Design
 
-## Stack Operations
+## Stack Pointer
 There are plenty of resources that describe stack pointers online, so I am not going to go in detail here. But at a high level, you can think of the stack as a "pile" of memory that can place values on to the top of the pile or take values from the top of the pile. A stack pointer points to where the top of the pile of memory is. For the PUTEY-1, here are the behavioral requirements of the stack pointer:
 
 * Given that the PUTEY-1 is an 8-bit system, multibyte values get pushed on to the stack one byte at a time.
 * The stack pointer should point to the start of a multibyte value. This means that for a multibyte value, the second byte is at an address value of one greater than stack pointer value. This in turn implies that the stack should "grow down" from the largest stack address value to smaller address values as values are pushed onto the stack. When pushing multibyte values onto the stack, the most significant byte should be pushed first and the least significant byte pushed last.
 * Stack pointer points at the last value pushed on the stack. This means it needs to be decremented before something is pushed onto the stack.
 
+Given these goals, the design used for the stack pointer is to leverage four `74LS169` up/down counters. The stack pointer will have the concept of being "reset" to its starting value of `$FFFF`. This is done by tying high all of the `74LS169` inputs, and routing the `SPr` (stack pointer reset) control line to the load pins on the up/down counters.
+
 ### `push` and `pop`
 The basic stack related instructions is to place data onto the stack and to take data off of the stack.
 
-The instruction to place data onto the stack is called `push`, which takes one operand indicating the 8 but value source. The microcode for this instruction first decrements the stack pointer, then copies the 8-bit value from the source indicated by the operand to the memory address now pointed to by the stack pointer. I also implemented a `push2` instruction that pushes 2 bytes on onto the step in the proper order to maintain the endieness of the 16-bit value.
+The instruction to place data onto the stack is called `push`, which takes one operand indicating the 8 bit value source. The microcode for this instruction first decrements the stack pointer, then copies the 8-bit value from the source indicated by the operand to the memory address now pointed to by the stack pointer. I also implemented a `push2` instruction that pushes 2 bytes on onto the step in the proper order to maintain the endieness of the 16-bit value.
+
+The instruction to take values from the stack is called `pop`, which takes one operand indicating the 8 bit value destination for the value that is currently on the "top" of the stack. The microcode for this instruction first copies the value at the memory address that the stack pointer current points at to the destination specifried in the operand, then it increments the stack pointer. I also implemented a version of `pop` with no operand, which can be used to remove a value from the stack (increment the stack pointer) without copying the value anywhere. Similar to `push`, a two-byte version of `pop` called `pop2` exists, and it writes the two byte value that starts at the top of the current stack to the specified 16-bit destination.
 
 ### Subroutine Calling
 The concept of a subroutine is a secont of code that you can jump to from anywhere in the overall codebase, and then when that subroutine's code is complete, the program's execution will automatically jump back to the instruction after the jump to the subroutine. To make this happen, before jumping to the subroutine the address after the jump instruction is pushed onto the stack, and the jump to the subroutine occurs. When the sumroutine is done, the address that was pushed ontothte stack is removed (popped) from the stack and placed into the program counter to effect a jump back to instruction after the jump to the subroutine.
 
 The indivudual steps to make all this happen can be consolidated into two instructions:
 
-* `call X` - The `call` instruction takes one operand which is the address of the subroutine to jump to. Before jumping to that address, the address after the `call` instruction is pushed onto the stack.
+* `call X` - The `call` instruction takes one operand which is the address of the subroutine to jump to. Before jumping to that address, the address after the `call` instruction and its argument is pushed onto the stack.
 * `rts` - The `rts` (return from subroutine) instruction will pop an address value from the stack and place it in the program counter,thus effecting a jump to that address.
 
-#### Setting Program Counter With Address Bus Value
+#### Setting Program Counter with Address Bus Value
 The `call` instruction has a lot happening. Load immediate address, push value of program counter to stack, set program counter to the address. This sequence of control lines needed 9 total steps (including prefix) to make that instruction work given the current hardware design, but the step counter only allows for 8. I could have changed the control logic to allow a step counter with 16 steps, but that didn't seem like the best  and would require me to change the instruction register I just built. So I ended updating the design of the program counter to be able to read in a value either from the data bus or the address bus. To do this, `74LS157` 2-to-1 multiplexers were used to enable the selection of input to the program counter. When reading from the data bus, the `HILO` control line is used to moderate which program counter byte the data bus is being read into.
 
-### Address Offset Register
+## Address Offset Register
 Having a stack pointer is great, but with a stack pointer alone you can only fetch what ever is on top of the stack. It would be desirable to be able to read (or write) a stack value that is any number of positions into the stack. A usage paradigm for this would be to push a subroutine's argument values on to the stack, and then within the subroutine be able to read (or even alter) the argument values push onto the stack. You wouldn't want to pop values off the stack to get to the subroutine's arguments because in doing so you would pop the return address off the stack since it was the last thing pushed onto the stack before jumping to the subroutine. So being able to read or write to stack memory at specific offsets from the current stack pointer would be useful.
 
 To accomplish this, I introduce an address offset register to the design. This register is actually more than just a register, as it includes a adder that adds the value of the register to the current value on the address bus. The address offset register sits between the address bus that the various address registers (step counter, MAR, etc) write to and the address bus that the memory devices use to idenitfy what memory address to read or write. In this way, the address offset register can alter the address emitted by more than just the stack pointer, however the stack pointer is the impetus for adding it. For clarity, I will refer to the address bus connected to memory devices as the memory address bus.
 
-In order to keep things simple, the address offset register in my design is only 8 bits, assumed to always be positive. The register itself is implemented with two `74LS173` 4-bit registers, and the adder consists of four `74LS283` 4-bit adders. The address ofset register is only connected to the lower 8 bits of the adders, with the equivalent inputs for the upper 8 bits of the adders tied to zero. The address offset register's input is connected to the data bus so that its value can be set. The address bus is the other input to the adders, and the adders output goes to the memory address bus.
+In order to keep things simple, the address offset register in my design is only 8 bits, assumed to always be positive. The register itself is implemented with two `74LS173` 4-bit registers, and the adder consists of four `74LS283` 4-bit adders. The address ofset register is only connected to the lower 8 bits of the adders, with the equivalent inputs for the upper 8 bits of the adders tied to zero. The address offset register's input is connected to the data bus so that its value can be set. The address bus is the other input to the adders, and the adders output goes to the memory address bus. Given this configuration, the address offset can be applied to to any address register source, however, I will only be enabling it in the microcode for the stack pointer, memory address register, and the [index register](#index-register).
 
-#### Address Plus One Control Line
+### Address Plus One Control Line
 When dealing with 16-bit values in 8-bit memory systems, one freqent operation needed is to increment a address value by 1 in order to get the second byte of the 2 byte value. To make this easier, I fed a control line into the carry in of the address offset register `74LS283` adder that represents the least signficant 4-bits. I called this the "address plus one" control line, notated `AP1` in my design. This allows the address value used to be incremented for an instruction step by simply asserting the `AP` control line and without needing to change the address value in the register it resides.
 
 ## Index Register
+The stack pointer cannot have its value directly set from either the address or databus. However, we can create a 16-bit register that can have its value set from the data bus and write its value to the address bus to set the active memory address or the the data bus for general computations. Furthermore, like the stack pointer, this register can be made to tbe able to increment and decrement its value. The index register can be thought of as another memory address register, but in complete control of the assebled byte code and not ever being used implicitly by the microcode like the memory address register is.
 
+The design used leverages the `74LS169` up/down counters in much the same way as the [increment registers](../increment-registers/) do, but set up for a 16-bit register. Unlike the increment registers, I did not add any carry or zero value flag detection circuitry, but I may change this in the future. The register reads from the address bus 8 bits at a time using the `NXi` control line and the `HILO` control line to control which byte is being read. The register can write its value to the address bus using the `NXa` control line. To write the index register value to the data bus, the `NXa` control line is usedin combination with teh `ABo` control line which in conjustion with the `HILO` control line will transfer one of the address bus's bytes to the data bus.
 
 ## Halt on Error
 I have implemented a few error conditions into the design. these error conditions represent states for which there is no clear "next step" for the hardware. I would consider it to be a programming error if the states were ever achieved, however, the CPU wouldn't be able to gracefully recover without an undesirable amount of additional hardware. So I turn these error states into control signals that will cause the system clock to halt. At that point the only possible recovery is to manually reset the CPU.
@@ -51,7 +55,6 @@ The error states implemented in this project are:
 * `ERR_SPO` - The stack pointer was incremented or decremented beyond its valid 32K range.
 * `ERR_NXO` - The index register was incremented or decremented beyond its valid 32K range.
 
-# Implementation
 ## Control Line Assignment
 This project continues to use the control logic design introduced in the [8-Bit Instruction Register project](../instruction-register-8-bit/). The control line assignments are:
 
@@ -108,3 +111,13 @@ This project continues to use the control logic design introduced in the [8-Bit 
 
 ## Microcode
 The "Beta 2" microcode configuration for this project is available [here](./microcode/). I have also visualized the microcode in [a spreadsheet here](https://docs.google.com/spreadsheets/d/18CuuxS1goGVBhtNIjpiRaWfcekohQJE2gV_eJJca56g/edit?usp=sharing).
+
+## Assembly Code
+The sister project to this breadboard CPU is my customizable assembler, [BespokeASM](https://github.com/michaelkamprath/bespokeasm). For this update to PUTEY-1 Beta, I've added the concept of "local labels" to the assembly language syntax supported. A local label is a label that is only valid for a limitted scope, typical only within a subroutine. This allows you to reuse common label names within subroutines, such as `.loop` and `.end`, without there being a name collision in a broader scope. See [the BespokeASM Wiki](https://github.com/michaelkamprath/bespokeasm/wiki/Assembly-Language-Syntax#label-scope) for more information. 
+
+## Project Notes
+### Data Sheets
+The key ICs used in this project are:
+
+* [74LS169](./datasheets/74LS169.pdf) - Up/down counter used as the basis for both the stack pointer and index register.
+* [74LS283](./datasheets/74LS283.pdf) - The 4-bit addres used to add the address offset register value to the address bus value.
