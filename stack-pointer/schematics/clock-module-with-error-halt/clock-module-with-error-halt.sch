@@ -821,7 +821,7 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 2075 6650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text HLabel 1450 6750 0    50   Input ~ 0
-ERR_NXO
+ERR_HLO
 Wire Wire Line
 	1450 6750 1775 6750
 Wire Wire Line

@@ -45,9 +45,11 @@ In order to keep things simple, the address offset register in my design is only
 When dealing with 16-bit values in 8-bit memory systems, one frequent operation needed is to increment an address value by 1 in order to get the second byte of the 2 byte value. To make this easier, I fed a control line into the carry in of the address offset register `74LS283` adder that represents the least significant 4-bits. I called this the "address plus one" control line, notated `AP1` in my design. This allows the address value used to be incremented for an instruction step by simply asserting the `AP` control line and without needing to change the address value in the register it resides.
 
 ## Index Register
-The stack pointer cannot have its value directly set from either the address or databus. However, we can create a 16-bit register that can have its value set from the data bus and write its value to the address bus to set the active memory address or the the data bus for general computations. Furthermore, like the stack pointer, this register can be made to increment and decrement its value. The index register can be thought of as another memory address register, but in complete control of the assembled byte code and not ever being used implicitly by the microcode like the memory address register is.
+The stack pointer cannot have its value directly set from either the address or data bus. However, we can create a 16-bit register that can have its value set from the data bus and write its value to the address bus to set the active memory address or the the data bus for general computations. Furthermore, like the stack pointer, this register can be made to increment and decrement its value. The index register can be thought of as another memory address register, but in complete control of the assembled byte code and not ever being used implicitly by the microcode like the memory address register is.
 
-The design used leverages the `74LS169` up/down counters in much the same way as the [increment registers](../increment-registers/) do, but set up for a 16-bit register. Unlike the increment registers, I did not add any carry or zero value flag detection circuitry, but I may change this in the future. The register reads from the address bus 8 bits at a time using the `NXi` control line and the `HILO` control line to control which byte is being read. The register can write its value to the address bus using the `NXa` control line. To write the index register value to the data bus, the `NXa` control line is used in combination with the `ABo` control line which in combination with the `HILO` control line will transfer one of the address bus's bytes to the data bus.
+The design used leverages the `74LS169` up/down counters in much the same way as the [increment registers](../increment-registers/) do, but set up for a 16-bit register. Unlike the increment registers, I did not add any carry or zero value flag detection circuitry, but I may change this in the future. The register reads from the address bus 8 bits at a time using the `HLi` control line and the `HILO` control line to control which byte is being read. The register can write its value to the address bus using the `HLa` control line. To write the index register value to the data bus, the `HLa` control line is used in combination with the `ABo` control line which in combination with the `HILO` control line will transfer one of the address bus's bytes to the data bus.
+
+The microcode will be set up such the `HL` register's individual bytes can be accessed as if they were 8-bit registers, `H` and `L`. Here `H` stands for the high byte of the `HL` register and `L` stands for the low byte. Accessing the individual byte of the `HL` register can be a convenience when constructing 16-bit values from 8-bit values. The 8-bit sub-registers of the `HL` registers can be accessed most anywhere in the machine code and microcode most anywhere that other 8-bit registers can be used.
 
 ## Halt on Error
 I have implemented a few error conditions into the design. These error conditions represent states for which there is no clear "next step" for the hardware. I would consider it to be a programming error if the states were ever achieved, however, the CPU wouldn't be able to gracefully recover without an undesirable amount of additional hardware. So I turn these error states into control signals that will cause the system clock to halt. At that point the only possible recovery is to manually reset the CPU.
@@ -55,7 +57,7 @@ I have implemented a few error conditions into the design. These error condition
 The error states implemented in this project are:
 * `ERR_AOC` - The address bus and the address offset value sum up that causes a carry to occur.
 * `ERR_SPO` - The stack pointer was incremented or decremented beyond its valid 32K range.
-* `ERR_NXO` - The index register was incremented or decremented beyond its valid 32K range.
+* `ERR_HLO` - The index register was incremented or decremented beyond its valid 32K range.
 
 ## Control Line Assignment
 This project continues to use the control logic design introduced in the [8-Bit Instruction Register project](../instruction-register-8-bit/). The control line assignments are:
@@ -66,7 +68,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |2 | Left | Direct | `PCa` | Write program counter value to address bus |
 |3 | Left | Direct | `ARa` | Write memory address register value to address bus |
 |4 | Left | Direct | `SPa` | Stack pointer address activate |
-|5 | Left | Direct | `NXa` | `NX` register address activate |
+|5 | Left | Direct | `HLa` | `HL` register address activate |
 |6 | Left | Direct | `AOa` | Write Address Offset results to address bus adder |
 |7 | Left | Direct | `XTD` | Activate extended instruction bit |
 |8 | Left | Direct | `AOi` | Address Offset register in from data bus |
@@ -75,7 +77,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |11 | Left | High | `MDi` | Memory device read from data bus |
 |12 | Left | High | `Ai` | Read data bus value into `A` register |
 |13 | Left | High | `Ti` | Read data bus value into temp register (attached to ALU) |
-|14 | Left | High | `NXi` | Read data bus value into single `NX` register byte indicated by `HILO` |
+|14 | Left | High | `HLi` | Read data bus value into single `HL` register byte indicated by `HILO` |
 |15 | Left | High | `Ii` | Read data bus value into `I` register |
 |16 | Left | High | `Ji` | Read data bus value into `J` register |
 |17 | Left | High | `ARi` | Read data bus value into single memory address register byte indicated by `HILO` |
@@ -84,7 +86,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |20 | Left | Low |  `SPe` | Iincrements stack pointer value,  or decrements when `SUB` is active |
 |21 | Left | Low | `Ie` | Activate register `I` increment, or decrement when `SUB` is active  |
 |22 | Left | Low | `Je` | Activate register `J` increment, or decrement when `SUB` is active |
-|23 | Left | Low |  `NXe` | `NX` register increment enable |
+|23 | Left | Low |  `HLe` | `HL` register increment enable |
 |24 | Left | Low |  | *unused* |
 |25 | Right | Direct | `SUB` | Indicates whether the addition operation should instead be a subtraction operation |
 |26 | Right | Direct |  | **Reserved:** `CRY`: input carry flag to ALU operation |
