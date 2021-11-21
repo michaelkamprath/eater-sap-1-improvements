@@ -110,8 +110,13 @@ operand_sets:
         bytecode:
           value: 3
           size: 3
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true
       stack_pointer:
-        type: register
+        type: indirect_register
         register: sp
         bytecode:
           value: 5
@@ -151,8 +156,13 @@ operand_sets:
         bytecode:
           value: 3
           size: 3
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true
       stack_pointer:
-        type: register
+        type: indirect_register
         register: sp
         bytecode:
           value: 5
@@ -350,6 +360,28 @@ instructions:
           - [indirect_addr, a_register]
           - [immediate_value, a_register]
           - [indirect_addr, indirect_addr]
+      specific_operands:
+        iaddr_mar_offset:
+          reverse_argument_order: true
+          list:
+            iaddr:
+              type: indirect_numeric
+              bytecode:
+                value: 6
+                size: 3
+              argument:
+                size: 16
+                byte_align: true
+            mar:
+              type: indirect_register
+              register: mar
+              bytecode:
+                value: 6
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
   # data movement
   mov:
     byte_code:
@@ -382,6 +414,10 @@ instructions:
               bytecode:
                 value: 0
                 size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
         i_mar:
           list:
             a:
@@ -396,6 +432,10 @@ instructions:
               bytecode:
                 value: 0b010
                 size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
         j_mar:
           list:
             a:
@@ -410,6 +450,10 @@ instructions:
               bytecode:
                 value: 0b011
                 size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
         sp1_sp2:
           reverse_argument_order: true
           list:
@@ -488,6 +532,7 @@ instructions:
           - [mar_register, mar_register]
           - [indirect_mar_register, mar_register]
           - [indirect_mar_register, indirect_mar_register]
+          - [indirect_mar_register, stack_pointer]
           - [indirect_mar_register, indirect_addr]
           - [indirect_addr, mar]
           - [indirect_addr, indirect_mar_register]

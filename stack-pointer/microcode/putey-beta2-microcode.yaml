@@ -515,14 +515,21 @@ instructions:
     steps:
       1:
         - control_lines:
-            ARa
-            Ti
+            PCa
+            AOi
+            PCe
             MDo
       2:
         - control_lines:
+            ARa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
             SUB
             SUMf
-      3:
+      4:
         - flags:
             zero: 0
           control_lines:
@@ -534,7 +541,7 @@ instructions:
             ARi
             PCe
             MDo
-      4:
+      5:
         - flags:
             zero: 0
           control_lines:
@@ -547,7 +554,7 @@ instructions:
             ARi
             PCe
             MDo
-      5:
+      6:
         - flags:
             zero: 0
           control_lines:
@@ -559,7 +566,7 @@ instructions:
             PCi
             ARe
             MDo
-      6:
+      7:
         - flags:
             zero: 1
           control_lines:
@@ -567,11 +574,6 @@ instructions:
             ARa
             PCi
             MDo
-      7:
-        - flags:
-            zero: 1
-          control_lines:
-            SCr
   JEQ_iaddr_const:
     value: 87
     steps:
@@ -912,10 +914,17 @@ instructions:
     steps:
       1:
         - control_lines:
-            ARa
-            Ai
+            PCa
+            AOi
             MDo
       2:
+        - control_lines:
+            ARa
+            AOa
+            MDo
+            Ai
+            PCe
+      3:
         - control_lines:
             SCr
   MOV_a_i:
@@ -1007,10 +1016,17 @@ instructions:
     steps:
       1:
         - control_lines:
-            ARa
-            Ii
+            PCa
+            AOi
             MDo
       2:
+        - control_lines:
+            ARa
+            AOa
+            MDo
+            Ii
+            PCe
+      3:
         - control_lines:
             SCr
   MOV_i_j:
@@ -1120,10 +1136,17 @@ instructions:
     steps:
       1:
         - control_lines:
-            ARa
-            Ji
+            PCa
+            AOi
             MDo
       2:
+        - control_lines:
+            ARa
+            AOa
+            MDo
+            Ji
+            PCe
+      3:
         - control_lines:
             SCr
   MOV_j_iaddr:
@@ -2193,6 +2216,46 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  MOV2_mar_indirect_mar:
+    value: 83
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AOi
+            MDo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            MDo
+            Ti
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            AP1
+            MDo
+            HILO
+            ARi
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
   MOV2_mar_sp_offset:
     value: 85
     steps:
@@ -2299,54 +2362,6 @@ instructions:
             extended: 1
           control_lines:
             SCr
-  MOV2_indirect_mar_sp_pffset:
-    value: 93
-    steps:
-      2:
-        - flags:
-            extended: 1
-          control_lines:
-            PCa
-            AOi
-            MDo
-            PCe
-      3:
-        - flags:
-            extended: 1
-          control_lines:
-            SPa
-            AOa
-            Ti
-            MDo
-      4:
-        - flags:
-            extended: 1
-          control_lines:
-            ARa
-            MDi
-            To
-      5:
-        - flags:
-            extended: 1
-          control_lines:
-            SPa
-            AOa
-            Ti
-            MDo
-            AP1
-      6:
-        - flags:
-            extended: 1
-          control_lines:
-            ARa
-            MDi
-            To
-            AP1
-      7:
-        - flags:
-            extended: 1
-          control_lines:
-            SCr
   MOV2_indirect_mar_const:
     value: 95
     steps:
@@ -2355,34 +2370,43 @@ instructions:
             extended: 1
           control_lines:
             PCa
-            Ti
-            PCe
             MDo
+            AOi
+            PCe
       3:
         - flags:
             extended: 1
           control_lines:
-            ARa
-            MDi
-            ARe
-            To
+            PCa
+            MDo
+            Ti
+            PCe
       4:
         - flags:
             extended: 1
           control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
+            ARa
+            AOa
+            MDi
+            To
       5:
         - flags:
             extended: 1
           control_lines:
-            ARa
-            MDi
-            ARe
-            To
+            PCa
+            MDo
+            Ti
+            PCe
       6:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            AP1
+            MDi
+            To
+      7:
         - flags:
             extended: 1
           control_lines:
@@ -2756,30 +2780,38 @@ instructions:
     steps:
       1:
         - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
             ARa
+            AOa
             AP1
             Ti
             MDo
             SPe
             SUB
-      2:
+      3:
         - control_lines:
             SPa
             MDi
             To
-      3:
+      4:
         - control_lines:
             ARa
+            AOa
             Ti
             MDo
             SPe
             SUB
-      4:
+      5:
         - control_lines:
             SPa
             MDi
             To
-      5:
+      6:
         - control_lines:
             SCr
   PUSH2_sp_offset:
@@ -3008,28 +3040,36 @@ instructions:
     steps:
       1:
         - control_lines:
+            PCa
+            AOi
+            MDo
+            PCe
+      2:
+        - control_lines:
             SPa
             Ti
             MDo
-      2:
+      3:
         - control_lines:
             ARa
+            AOa
             MDi
             To
             SPe
-      3:
+      4:
         - control_lines:
             SPa
             Ti
             MDo
-      4:
+      5:
         - control_lines:
             ARa
+            AOa
             AP1
             MDi
             To
             SPe
-      5:
+      6:
         - control_lines:
             SCr
   POP2_iaddr:
