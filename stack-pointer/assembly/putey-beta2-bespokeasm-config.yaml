@@ -78,7 +78,7 @@ operand_sets:
           value: 3
           size: 3
       stack_pointer:
-        type: register
+        type: indirect_register
         register: sp
         bytecode:
           value: 5
