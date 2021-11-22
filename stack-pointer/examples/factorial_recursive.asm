@@ -5,8 +5,8 @@
 ; Uses a recursive approach enabled by a stack pointer.
 
 OUTPUT = $7800          ; The display register is found at address $7800
-MAX_N = 5               ; The maximum N value factorial will be calculated for
-
+MAX_N = 6               ; The first N value factorial cannot be calculated for
+WAIT_COUNT = 16
 
 ; code
 .org 0
@@ -22,6 +22,12 @@ calc_loop:
     call calc_factorial
     pop
     mov [OUTPUT], a
+    mov i, WAIT_COUNT
+.wait_loop:
+    dec i
+    jz .end_calc_loop
+    jmp .wait_loop
+.end_calc_loop:
     jmp calc_loop
 
 ; calc_factorial
