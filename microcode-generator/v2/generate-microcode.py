@@ -26,13 +26,19 @@ class Microcode:
                 for instruction_val in instruction_values:
                     self._insert_step_config(step_config, step_num, instruction_val, microbits)
 
+        instr_values = {}
         # set the instruction specific steps microbits
         for instruction in config_dict['instructions']:
             instruction_config = config_dict['instructions'][instruction]
-            # instruction_steps = instruction_config['steps']
-            # for step_num, step_config_list in enumerate(instruction_steps):
-            #     for step_config in step_config_list:
-            #         self._insert_step_config(step_config, step_num+step_offset, instruction_config['value'], microbits)
+            # check to see if intruction value has been used.
+            if instruction_config['value'] in instr_values:
+                other_instr = instr_values[instruction_config['value']]
+                sys.exit(
+                    f"ERROR - multiple instructions have the same value {instruction_config['value']}: {other_instr} and {instruction}"
+                )
+            else:
+                instr_values[instruction_config['value']] = instruction
+
             for step_num, step_config_list in instruction_config['steps'].items():
                 for step_config in step_config_list:
                     self._insert_step_config(step_config, step_num, instruction_config['value'], microbits)
