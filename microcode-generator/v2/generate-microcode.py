@@ -1,9 +1,19 @@
 #!/usr/bin/python3
 import copy
+import inspect
 import sys
 import yaml
 
 from microbits import MicroBits_27c4096 as MicroBits
+
+def get_kwargs():
+    frame = inspect.currentframe().f_back
+    keys, _, _, values = inspect.getargvalues(frame)
+    kwargs = {}
+    for key in keys:
+        if key != 'self':
+            kwargs[key] = values[key]
+    return kwargs
 
 class Microcode:
     # the general format of the microcode dict is:
@@ -23,21 +33,12 @@ class Microcode:
 
         for step_num, step_config_list in config_dict['instruction_prefix_steps'].items():
             for step_config in step_config_list:
-                for instruction_val in instruction_values:
+                for instruction_val in set(instruction_values):
                     self._insert_step_config(step_config, step_num, instruction_val, microbits)
 
-        instr_values = {}
         # set the instruction specific steps microbits
         for instruction in config_dict['instructions']:
             instruction_config = config_dict['instructions'][instruction]
-            # check to see if intruction value has been used.
-            if instruction_config['value'] in instr_values:
-                other_instr = instr_values[instruction_config['value']]
-                sys.exit(
-                    f"ERROR - multiple instructions have the same value {instruction_config['value']}: {other_instr} and {instruction}"
-                )
-            else:
-                instr_values[instruction_config['value']] = instruction
 
             for step_num, step_config_list in instruction_config['steps'].items():
                 for step_config in step_config_list:
@@ -84,6 +85,15 @@ class Microcode:
         overflow_flag='X',
         extended_flag=0,
     ):
+        # first check if key already exists
+        if extended_flag in self.microcode \
+                and instruction in self.microcode[extended_flag] \
+                and step in self.microcode[extended_flag][instruction] \
+                and carrry_flag in self.microcode[extended_flag][instruction][step] \
+                and zero_flag in self.microcode[extended_flag][instruction][step][carrry_flag] \
+                and negative_flag in self.microcode[extended_flag][instruction][step][carrry_flag][zero_flag] \
+                and overflow_flag in self.microcode[extended_flag][instruction][step][carrry_flag][zero_flag][negative_flag]:
+            sys.exit(f"ERROR - multiple sets to keys: {get_kwargs()}")
         (
             self.microcode
             .setdefault(extended_flag, dict())
