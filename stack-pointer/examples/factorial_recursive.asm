@@ -45,8 +45,8 @@ calc_factorial:
     push a                          ; push N-1 onto stack
     call calc_factorial             ; recurse into factoral function
     pop                             ; return stack to pre-call state
-    push [sp+2]                     ; push N value onto stack again for call to multiply
     push a                          ; push result of factorial N-1 onto stack for multiply
+    push [sp+3]                     ; push N value onto stack again for call to multiply (now at sp+3 given prior push)
     call multiply                   ; multiply
     pop                             ; return stack to pre-call state
     pop                             ; return stack to pre-call state
@@ -59,7 +59,7 @@ calc_factorial:
 ;
 ; arguments passed on stack:
 ;   sp+2 : multiplicand A
-;   sp+3 : multiplicand B
+;   sp+3 : multiplicand B, ideally the smaller value
 ;
 ; returns:
 ;   register A : the mulitplication results
