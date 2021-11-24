@@ -27,8 +27,8 @@ loop:
 ;   sp+2 : the argument passed ont the stack is modified in place
 ;
 test_func:
-    mov a, [sp+2]
-    add 1
-    mov [sp+2], a
+    mov a, [sp+2]                   ; move value into A
+    add 1                           ; add one to A
+    mov [sp+2], a                   ; move results back onto stack for return value
     ret
 
