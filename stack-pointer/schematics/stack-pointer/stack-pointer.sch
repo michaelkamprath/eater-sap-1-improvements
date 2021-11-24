@@ -258,25 +258,14 @@ Wire Wire Line
 Wire Wire Line
 	7500 2250 7500 1900
 $Comp
-L 74xx:74LS32 U?
-U 1 1 61733C03
-P 9975 1075
-F 0 "U?" H 9975 758 50  0000 C CNN
-F 1 "74LS32" H 9975 849 50  0000 C CNN
-F 2 "" H 9975 1075 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 9975 1075 50  0001 C CNN
-	1    9975 1075
-	-1   0    0    1   
-$EndComp
-$Comp
 L 74xx:74LS04 U?
 U 1 1 617377D7
-P 9375 1075
-F 0 "U?" H 9450 1200 50  0000 C CNN
-F 1 "74LS04" H 9500 950 50  0000 C CNN
-F 2 "" H 9375 1075 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9375 1075 50  0001 C CNN
-	1    9375 1075
+P 9975 1125
+F 0 "U?" H 10050 1250 50  0000 C CNN
+F 1 "74LS04" H 10100 1000 50  0000 C CNN
+F 2 "" H 9975 1125 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 9975 1125 50  0001 C CNN
+	1    9975 1125
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -295,33 +284,27 @@ Wire Wire Line
 Wire Wire Line
 	9675 1475 7800 1475
 Connection ~ 7800 1475
-Text HLabel 10450 1175 2    50   Input ~ 0
+Text HLabel 10450 1125 2    50   Input ~ 0
 SPr
-Text HLabel 10450 975  2    50   Input ~ 0
-CLR
 Wire Wire Line
-	10450 975  10275 975 
+	8200 1125 8200 2250
 Wire Wire Line
-	10450 1175 10275 1175
+	8200 1125 5975 1125
 Wire Wire Line
-	8200 1075 8200 2250
+	5975 1125 5975 2250
+Connection ~ 8200 1125
 Wire Wire Line
-	8200 1075 5975 1075
+	8200 1125 9675 1125
 Wire Wire Line
-	5975 1075 5975 2250
-Connection ~ 8200 1075
+	5975 1125 3775 1125
 Wire Wire Line
-	8200 1075 9075 1075
+	3775 1125 3775 2250
+Connection ~ 5975 1125
 Wire Wire Line
-	5975 1075 3775 1075
+	3775 1125 1575 1125
 Wire Wire Line
-	3775 1075 3775 2250
-Connection ~ 5975 1075
-Wire Wire Line
-	3775 1075 1575 1075
-Wire Wire Line
-	1575 1075 1575 2250
-Connection ~ 3775 1075
+	1575 1125 1575 2250
+Connection ~ 3775 1125
 $Comp
 L 74xx:74LS245 U?
 U 1 1 61761DC7
@@ -856,4 +839,6 @@ Wire Wire Line
 Wire Wire Line
 	9150 2150 10450 2150
 Connection ~ 7500 1900
+Wire Wire Line
+	10450 1125 10275 1125
 $EndSCHEMATC
