@@ -8,9 +8,9 @@ Title "Index Register"
 Date ""
 Rev ""
 Comp ""
-Comment1 ""
-Comment2 ""
-Comment3 ""
+Comment1 "HLi - read in from data bus to byte according to HI~LO~"
+Comment2 "HLe - increment or decrement according to SUB"
+Comment3 "HLa - write register value to address bus"
 Comment4 ""
 $EndDescr
 $Comp
@@ -383,7 +383,7 @@ L common-symbols:BarGraphLED_8P BAR2
 U 1 1 617F6AED
 P 9675 4675
 F 0 "BAR2" H 9675 5225 50  0000 C CNN
-F 1 "BarGraphLED_8P" H 9875 4200 50  0000 C CNN
+F 1 "BarGraphLED_8P" H 9675 4225 50  0001 C CNN
 F 2 "" H 9675 4675 50  0001 C CNN
 F 3 "" H 9675 4675 50  0001 C CNN
 	1    9675 4675
@@ -430,7 +430,7 @@ L common-symbols:BarGraphLED_8P BAR1
 U 1 1 6184FDFC
 P 4775 4675
 F 0 "BAR1" H 4775 5225 50  0000 C CNN
-F 1 "BarGraphLED_8P" H 4975 4225 50  0000 C CNN
+F 1 "BarGraphLED_8P" H 4975 4225 50  0001 C CNN
 F 2 "" H 4775 4675 50  0001 C CNN
 F 3 "" H 4775 4675 50  0001 C CNN
 	1    4775 4675
@@ -750,4 +750,46 @@ F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 9425 1025 50  0001 C CNN
 	2    9425 1025
 	-1   0    0    1   
 $EndComp
+Wire Wire Line
+	8025 3075 8025 2975
+Wire Wire Line
+	8025 2975 7525 2975
+Wire Wire Line
+	7525 2975 7525 3575
+Connection ~ 7525 3575
+$Comp
+L Device:R_Network08_US RN2
+U 1 1 619F200F
+P 10075 4675
+F 0 "RN2" V 9575 4675 50  0000 C CNN
+F 1 "330 Ω" V 10475 4675 50  0000 C CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 10550 4675 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 10075 4675 50  0001 C CNN
+	1    10075 4675
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_Network08_US RN1
+U 1 1 619F6D46
+P 5175 4675
+F 0 "RN1" V 4675 4675 50  0000 C CNN
+F 1 "330 Ω" V 5575 4675 50  0000 C CNN
+F 2 "Resistor_THT:R_Array_SIP9" V 5650 4675 50  0001 C CNN
+F 3 "http://www.vishay.com/docs/31509/csc.pdf" H 5175 4675 50  0001 C CNN
+	1    5175 4675
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR015
+U 1 1 619F978C
+P 5475 4275
+F 0 "#PWR015" H 5475 4025 50  0001 C CNN
+F 1 "GND" H 5480 4102 50  0000 C CNN
+F 2 "" H 5475 4275 50  0001 C CNN
+F 3 "" H 5475 4275 50  0001 C CNN
+	1    5475 4275
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5375 4275 5475 4275
 $EndSCHEMATC
