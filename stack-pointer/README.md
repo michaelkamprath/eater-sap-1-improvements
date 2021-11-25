@@ -51,13 +51,15 @@ The design used leverages the `74LS169` up/down counters in much the same way as
 
 The microcode will be set up such the `HL` register's individual bytes can be accessed as if they were 8-bit registers, `H` and `L`. Here `H` stands for the high byte of the `HL` register and `L` stands for the low byte. Accessing the individual byte of the `HL` register can be a convenience when constructing 16-bit values from 8-bit values. The 8-bit sub-registers of the `HL` registers can be accessed most anywhere in the machine code and microcode most anywhere that other 8-bit registers can be used.
 
+The index register I implemented is "incomplete" in some ways. Due to breadboard space, I was not able to add zero and carry flag detection for the increment and decrement operations.
+
 ## Halt on Error
 I have implemented a few error conditions into the design. These error conditions represent states for which there is no clear "next step" for the hardware. I would consider it to be a programming error if the states were ever achieved, however, the CPU wouldn't be able to gracefully recover without an undesirable amount of additional hardware. So I turn these error states into control signals that will cause the system clock to halt. At that point the only possible recovery is to manually reset the CPU.
 
 The error states implemented in this project are:
-* `ERR_AOC` - The address bus and the address offset value sum up that causes a carry to occur.
-* `ERR_SPO` - The stack pointer was incremented or decremented beyond its valid 32K range.
-* `ERR_HLO` - The index register was incremented or decremented beyond its valid 32K range.
+* `ERR_AOC` - The address bus and the address offset value sum up that causes a carry beyond 16 bits to occur.
+
+I wanted to add error for both the stack pointer and index register to capture when they roll over from `0xFFFF` to ` 0x0000`, or the other way too, but it turns out that would require more additioinal hardware than I have room for on the breadboards. So, for now, causing the stack pointer or index register to roll over in either direction will be considered a programming error.
 
 ## Control Line Assignment
 This project continues to use the control logic design introduced in the [8-Bit Instruction Register project](../instruction-register-8-bit/). The control line assignments are:
@@ -117,14 +119,14 @@ This project continues to use the control logic design introduced in the [8-Bit 
 The "Beta 2" microcode configuration for this project is available [here](./microcode/). I have also visualized the microcode in [a spreadsheet here](https://docs.google.com/spreadsheets/d/18CuuxS1goGVBhtNIjpiRaWfcekohQJE2gV_eJJca56g/edit?usp=sharing).
 
 ## Assembly Code
-The sister project to this breadboard CPU is my customizable assembler, [BespokeASM](https://github.com/michaelkamprath/bespokeasm). For this update to PUTEY-1 Beta, I've added the concept of "local labels" to the assembly language syntax supported. A local label is a label that is only valid for a limited scope, typical only within a subroutine. This allows you to reuse common label names within subroutines, such as `.loop` and `.end`, without there being a name collision in a broader scope. See [the BespokeASM Wiki](https://github.com/michaelkamprath/bespokeasm/wiki/Assembly-Language-Syntax#label-scope) for more information. 
+The sister project to this breadboard CPU is my customizable assembler, [BespokeASM](https://github.com/michaelkamprath/bespokeasm). For this update to PUTEY-1 Beta, I've added the concept of "local labels" to the assembly language syntax supported. A local label is a label that is only valid for a limited scope, typical only within a subroutine. This allows you to reuse common label names within subroutines, such as `.loop` and `.end`, without there being a name collision in a broader scope. See [the BespokeASM Wiki](https://github.com/michaelkamprath/bespokeasm/wiki/Assembly-Language-Syntax#label-scope) for more information.
 
 ## Project Notes
 ### Data Sheets
 The key ICs used in this project are:
 
 * [74LS169](./datasheets/74LS169.pdf) - Up/down counter used as the basis for both the stack pointer and index register.
-* [74LS283](./datasheets/74LS283.pdf) - The 4-bit addres used to add the address offset register value to the address bus value.
+* [74LS283](./datasheets/74LS283.pdf) - The 4-bit adders used to add the address offset register value to the address bus value.
 
 ### Custom LED Bar Graphs
-Given the density of ICs on the breadboard, using the dual inline bar graph LEDs wasn't a viable option in most places I wanted to place status LEDs for this project. So I used the same custom single inline bar graph LEDs I designed and used in my last project. In this project I used by 8P and 16P variants. The custom LED bar graph project [can be found here](https://github.com/michaelkamprath/breadboard-led-bar-graph). 
+Given the density of ICs on the breadboard, using the dual inline bar graph LEDs wasn't a viable option in most places I wanted to place status LEDs for this project. So I used the same custom single inline bar graph LEDs I designed and used in my last project. In this project I used by 8P and 16P variants. The custom LED bar graph project [can be found here](https://github.com/michaelkamprath/breadboard-led-bar-graph).

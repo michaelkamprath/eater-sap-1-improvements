@@ -493,23 +493,6 @@ Wire Wire Line
 	6775 6350 6775 6625
 Wire Wire Line
 	6875 6350 6875 6625
-$Comp
-L 74xx:74LS04 U?
-U 4 1 6184D6B7
-P 1775 4150
-F 0 "U?" V 1729 4330 50  0000 L CNN
-F 1 "74LS04" V 1820 4330 50  0000 L CNN
-F 2 "" H 1775 4150 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 1775 4150 50  0001 C CNN
-	4    1775 4150
-	0    1    1    0   
-$EndComp
-Text HLabel 1300 4450 0    50   Output ~ 0
-ERR_SPO
-Wire Wire Line
-	1300 4450 1775 4450
-Wire Wire Line
-	1775 3850 1775 3250
 Wire Wire Line
 	10275 5100 10325 5100
 Wire Wire Line
@@ -841,4 +824,5 @@ Wire Wire Line
 Connection ~ 7500 1900
 Wire Wire Line
 	10450 1125 10275 1125
+NoConn ~ 1775 3250
 $EndSCHEMATC

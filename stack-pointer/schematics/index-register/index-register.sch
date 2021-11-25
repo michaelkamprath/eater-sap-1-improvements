@@ -312,23 +312,6 @@ Wire Wire Line
 Wire Wire Line
 	1125 2975 1125 3075
 $Comp
-L 74xx:74LS04 U1
-U 4 1 617BFB3E
-P 1525 4775
-F 0 "U1" V 1475 4475 50  0000 L CNN
-F 1 "74LS04" V 1575 4350 50  0000 L CNN
-F 2 "" H 1525 4775 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 1525 4775 50  0001 C CNN
-	4    1525 4775
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	1525 4075 1525 4475
-Text HLabel 925  5075 0    50   Output ~ 0
-ERR_HLO
-Wire Wire Line
-	925  5075 1525 5075
-$Comp
 L 74xx:74LS245 U4
 U 1 1 617CC3A5
 P 3925 5475
@@ -792,4 +775,5 @@ F 3 "" H 5475 4275 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5375 4275 5475 4275
+NoConn ~ 1525 4075
 $EndSCHEMATC
