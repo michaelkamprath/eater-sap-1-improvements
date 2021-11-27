@@ -1,3 +1,4 @@
+---
 microcode_file_name: putey-beta2-microcode.bin
 control_lines:
   HILO: 1
@@ -1922,9 +1923,6 @@ instructions:
   SWAP_a_iaddr:
     value: 6
     steps:
-  SWAP_a_iaddr:
-    value: 6
-    steps:
       2:
         - flags:
             extended: 1
@@ -1988,7 +1986,7 @@ instructions:
           control_lines:
             Ii
             To
-      4:
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -2014,7 +2012,7 @@ instructions:
           control_lines:
             Ji
             To
-      4:
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -2123,7 +2121,7 @@ instructions:
           control_lines:
             Ji
             To
-      4:
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -2149,7 +2147,7 @@ instructions:
           control_lines:
             Ji
             To
-      4:
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -2502,7 +2500,7 @@ instructions:
             HLa
             ABo
             ARi
-      2:
+      3:
         - flags:
             extended: 1
           control_lines:
@@ -2510,7 +2508,7 @@ instructions:
             HLa
             ABo
             ARi
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -3534,3 +3532,4 @@ instructions:
       5:
         - control_lines:
             SCr
+...
