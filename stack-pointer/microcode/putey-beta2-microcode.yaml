@@ -2502,7 +2502,7 @@ instructions:
             HLa
             ABo
             ARi
-      2:
+      3:
         - flags:
             extended: 1
           control_lines:
@@ -2510,7 +2510,7 @@ instructions:
             HLa
             ABo
             ARi
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
