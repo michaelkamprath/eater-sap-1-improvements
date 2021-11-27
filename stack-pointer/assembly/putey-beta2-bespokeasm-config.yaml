@@ -9,6 +9,9 @@ general:
     - j
     - mar
     - sp
+    - hl
+    - h
+    - l
 operand_sets:
   8_bit_source:
     operand_values:
@@ -98,6 +101,23 @@ operand_sets:
           byte_align: true
   16_bit_source:
     operand_values:
+      hl_register:
+        type: register
+        register: hl
+        bytecode:
+          value: 0
+          size: 3
+      indirect_hl_register:
+        type: indirect_register
+        register: hl
+        bytecode:
+          value: 1
+          size: 3
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true
       mar_register:
         type: register
         register: mar
@@ -144,6 +164,23 @@ operand_sets:
           byte_align: true
   16_bit_destination:
     operand_values:
+      hl_register:
+        type: register
+        register: hl
+        bytecode:
+          value: 0
+          size: 3
+      indirect_hl_register:
+        type: indirect_register
+        register: hl
+        bytecode:
+          value: 1
+          size: 3
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true
       mar_register:
         type: register
         register: mar
@@ -211,6 +248,12 @@ operand_sets:
         register: j
         bytecode:
           value: 1
+          size: 2
+      hl_register:
+        type: register
+        register: hl
+        bytecode:
+          value: 2
           size: 2
       mar_register:
         type: register
@@ -529,11 +572,16 @@ instructions:
           - 16_bit_destination
           - 16_bit_source
         disallowed_pairs:
+          - [indirect_hl_register, indirect_hl_register]
+          - [indirect_hl_register, indirect_mar_register]
+          - [indirect_hl_register, indirect_addr]
           - [mar_register, mar_register]
           - [indirect_mar_register, mar_register]
           - [indirect_mar_register, indirect_mar_register]
           - [indirect_mar_register, stack_pointer]
           - [indirect_mar_register, indirect_addr]
+          - [stack_pointer, indirect_hl_register]
+          - [stack_pointer, indirect_addr]
           - [indirect_addr, mar]
           - [indirect_addr, indirect_mar_register]
           - [indirect_addr, stack_pointer]
