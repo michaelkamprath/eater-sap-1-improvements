@@ -10,30 +10,44 @@
 
 #include "math16.asm"
 
+DISPLAY = $7800          ; The display register is found at address $7800
+DELAY_COUNT = 32         ; Number of steps for delay counter
+MAX_N = 8
+
 ;
 ; RAM variables
 ;
 .org $8000
-value1:
+current_n:
     .2byte 0
-value2:
-    .2byte 0
-multiply_results:
-    .2byte  0
-multiply_counter:
-    .2byte  0
+
 ;
 ; Code
 ;
 .org 0
 init:
     rsp                                ; init the stack pointer
-
+    mov2 [current_n], 1                ; init N variable
 start:
-    push2 [value1]                     ; push the desired factorial N value onto the stack
+    mov [DISPLAY], [current_n]         ; copy low (first) byte of current_n to DISPLAY
+    push2 [current_n]                  ; push the desired factorial N value onto the stack
     call calc_factorial16              ; call the factorial function
     pop2 mar                           ; pop the factorual function results into the MAR for (kind of) display
-    hlt                                ; HALT
+    mov j, DELAY_COUNT                 ; init delay counter
+.delay_loop:
+    dec j
+    mov a,j
+    jeq .calc_loop, 0
+    jmp .delay_loop
+.calc_loop:
+    push2 1                            ; set up for an increment to N
+    push2 [current_n]                  ; place current N value on the stack
+    call add16                         ; add it up
+    pop2 [current_n]                   ; update current N
+    pop2                               ; clear stack
+    mov a, [current_n]                 ; check the low byte of current_n for value
+    jeq init, MAX_N+1
+    jmp start
 
 
 ; calc_factorial

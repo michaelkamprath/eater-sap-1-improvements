@@ -4,6 +4,8 @@
 ; It will increment the HL register and then copy the value to the MAR peridocically.
 ; Ideally the LEDs on HL and MAR will allow you to see what is happening.
 
+OUTPUT = $7800          ; The display register is found at address $7800
+
 .org 0
 init:
     rsp
@@ -16,6 +18,7 @@ init:
     jc .restart
     mov j, i
 .hlloop:
+    mov [OUTPUT], j
     inc hl
     dec j
     jz .iloop

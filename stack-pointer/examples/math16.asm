@@ -1,3 +1,10 @@
+; Math library variables
+.org $F000
+_multiply_results:
+    .2byte  0
+_multiply_counter:
+    .2byte  0
+
 ; Math library location
 .org $1000
 
@@ -20,24 +27,24 @@ multiply16:
     call checkzero16                        ; check to see if Y is 0
     pop2                                    ; clear stack
     jeq .return_zero, 1                     ; if checkzero16 was TRUE, return a zero value
-    mov2 [multiply_results], 0              ; init results variable to 0
-    mov [multiply_counter], [sp+2]          ; set multiply counter to multiplicand B. Must move bytes one at
-    mov [multiply_counter+1], [sp+3]        ; ... a time due to ISA limitations
+    mov2 [_multiply_results], 0              ; init results variable to 0
+    mov [_multiply_counter], [sp+2]          ; set multiply counter to multiplicand B. Must move bytes one at
+    mov [_multiply_counter+1], [sp+3]        ; ... a time due to ISA limitations
 .sum_loop:
     push2 [sp+4]                            ; push multiplicand Y
-    push2 [multiply_results]                ; push results value
+    push2 [_multiply_results]                ; push results value
     call add16                              ; add Y to running sum
-    pop2 [multiply_results]                 ; save addition results baclkinto results variable
+    pop2 [_multiply_results]                 ; save addition results baclkinto results variable
     pop2                                    ; clear stack (value Y)
-    push2 [multiply_counter]                ; push multiply counter on stack
+    push2 [_multiply_counter]                ; push multiply counter on stack
     call dec16                              ; decrement multiply counter
     call checkzero16                        ; check whether decremented multiply counter is 0
-    pop2 [multiply_counter]                 ; pop decremented multiply counter into multiply counter variable
+    pop2 [_multiply_counter]                 ; pop decremented multiply counter into multiply counter variable
     jeq .return_results, 1                  ; check register A to see if results are TRUE (multiply counter == 0)
     jmp .sum_loop                           ; continue with sum loop
 .return_results:                            ; done with sum loop. return results.
-    mov [sp+2],[multiply_results]           ; setting multiplicand A to results. need to do this 1 byte at
-    mov [sp+3],[multiply_results+1]         ; ... a time due to ISA limitation
+    mov [sp+2],[_multiply_results]           ; setting multiplicand A to results. need to do this 1 byte at
+    mov [sp+3],[_multiply_results+1]         ; ... a time due to ISA limitation
     ret
 .return_zero:
     mov2 [sp+2], 0                          ; results are 0. set 0 return value
