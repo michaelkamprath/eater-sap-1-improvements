@@ -545,6 +545,25 @@ instructions:
               argument:
                 size: 16
                 byte_align: true
+        iaddr1_iaddr2:
+          reverse_argument_order: true
+          list:
+            indirect_addr1:
+              type: indirect_numeric
+              bytecode:
+                value: 6
+                size: 3
+              argument:
+                size: 16
+                byte_align: true
+            indirect_addr2:
+              type: indirect_numeric
+              bytecode:
+                value: 6
+                size: 3
+              argument:
+                size: 16
+                byte_align: true
   swap:
     byte_code:
       value: 1020

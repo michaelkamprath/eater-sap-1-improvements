@@ -2887,7 +2887,6 @@ instructions:
           control_lines:
             ARa
             MDi
-            ARe
             To
       6:
         - flags:
@@ -2902,8 +2901,8 @@ instructions:
             extended: 1
           control_lines:
             ARa
+            AP1
             MDi
-            ARe
             To
   #
   # stack operations
