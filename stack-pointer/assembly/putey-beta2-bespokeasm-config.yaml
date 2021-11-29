@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 2 Breadboard Computer
 general:
-  min_version: 0.1.4
+  min_version: 0.1.5
   address_size: 16
   endian: little
   registers:
@@ -262,6 +262,20 @@ operand_sets:
         bytecode:
           value: 3
           size: 2
+  hl_subregisters:
+    operand_values:
+      subregister_h:
+        type: register
+        register: h
+        bytecode:
+          value: 1
+          size: 1
+      subregister_l:
+        type: register
+        register: l
+        bytecode:
+          value: 0
+          size: 1
 instructions:
   nop:
     byte_code:
@@ -564,6 +578,60 @@ instructions:
               argument:
                 size: 16
                 byte_align: true
+    variants:
+      - byte_code:
+          value: 6
+          size: 4
+        operands:
+          count: 2
+          operand_sets:
+            list:
+              - hl_subregisters
+              - 8_bit_source
+            disallowed_pairs:
+              - [subregister_l, indirect_hl_register]
+              - [subregister_h, indirect_hl_register]
+      - byte_code:
+          value: 7
+          size: 4
+        operands:
+          count: 2
+          operand_sets:
+            list:
+              - 8_bit_destination
+              - hl_subregisters
+            disallowed_pairs:
+              - [indirect_hl_register, subregister_l]
+              - [indirect_hl_register, subregister_h]
+          specific_operands:
+            l_h:
+              list:
+                subregister_l:
+                  type: register
+                  register: l
+                  bytecode:
+                    value: 7
+                    size: 3
+              subregister_h:
+                type: register
+                register: h
+                bytecode:
+                  value: 1
+                  size: 1
+            h_l:
+              list:
+                subregister_h:
+                  type: register
+                  register: h
+                  bytecode:
+                    value: 7
+                    size: 3
+                subregister_l:
+                  type: register
+                  register: l
+                  bytecode:
+                    value: 0
+                    size: 1
   swap:
     byte_code:
       value: 1020
