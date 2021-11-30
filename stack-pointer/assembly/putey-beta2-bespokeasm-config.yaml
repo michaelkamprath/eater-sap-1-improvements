@@ -34,6 +34,17 @@ operand_sets:
         bytecode:
           value: 3
           size: 3
+      indirect_hl_register:
+        type: indirect_register
+        register: hl
+        bytecode:
+          value: 4
+          size: 3
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true
       stack_pointer:
         type: indirect_register
         register: sp
@@ -81,6 +92,17 @@ operand_sets:
         bytecode:
           value: 3
           size: 3
+      indirect_hl_register:
+        type: indirect_register
+        register: hl
+        bytecode:
+          value: 4
+          size: 3
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true
       stack_pointer:
         type: indirect_register
         register: sp
@@ -512,6 +534,31 @@ instructions:
                 max: 255
                 min: 0
                 size: 8
+        sp_hl:
+          reverse_argument_order: true
+          list:
+            stack_pointer:
+              type: indirect_register
+              register: sp
+              bytecode:
+                value: 5
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
+            hl_register:
+              type: indirect_register
+              register: hl
+              bytecode:
+                value: 4
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
         sp1_sp2:
           reverse_argument_order: true
           list:
@@ -571,6 +618,78 @@ instructions:
                 size: 16
                 byte_align: true
             indirect_addr2:
+              type: indirect_numeric
+              bytecode:
+                value: 6
+                size: 3
+              argument:
+                size: 16
+                byte_align: true
+        indirect_hl_register1_indirect_hl_register2:
+          reverse_argument_order: true
+          list:
+            indirect_hl_register1:
+              type: indirect_register
+              register: hl
+              bytecode:
+                value: 4
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
+            indirect_hl_register2:
+              type: indirect_register
+              register: hl
+              bytecode:
+                value: 4
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
+        indirect_hl_register_sp:
+          reverse_argument_order: true
+          list:
+            indirect_hl_register:
+              type: indirect_register
+              register: hl
+              bytecode:
+                value: 4
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
+            stack_pointer:
+              type: indirect_register
+              register: sp
+              bytecode:
+                value: 5
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
+        indirect_hl_register_iaddr:
+          reverse_argument_order: true
+          list:
+            indirect_hl_register:
+              type: indirect_register
+              register: hl
+              bytecode:
+                value: 4
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
+            indirect_addr:
               type: indirect_numeric
               bytecode:
                 value: 6

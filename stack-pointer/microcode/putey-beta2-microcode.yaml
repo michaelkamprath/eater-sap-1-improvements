@@ -950,6 +950,24 @@ instructions:
       2:
         - control_lines:
             SCr
+  MOV_a_indirect_hl:
+    value: 132
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ai
+      3:
+        - control_lines:
+            SCr
   MOV_a_sp_offset:
     value: 133
     steps:
@@ -1065,6 +1083,24 @@ instructions:
       2:
         - control_lines:
             SCr
+  MOV_i_indirect_hl:
+    value: 148
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ii
+      3:
+        - control_lines:
+            SCr
   MOV_i_sp_offset:
     value: 149
     steps:
@@ -1162,6 +1198,24 @@ instructions:
       2:
         - control_lines:
             SCr
+  MOV_j_indirect_hl:
+    value: 156
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ji
+      3:
+        - control_lines:
+            SCr
   MOV_j_sp_offset:
     value: 157
     steps:
@@ -1257,6 +1311,180 @@ instructions:
       2:
         - control_lines:
             SCr
+  MOV_indirect_hl_a:
+    value: 160
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            Ao
+      3:
+        - control_lines:
+            SCr
+  MOV_indirect_hl_i:
+    value: 162
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            Io
+      3:
+        - control_lines:
+            SCr
+  MOV_indirect_hl_j:
+    value: 163
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            Jo
+      3:
+        - control_lines:
+            SCr
+  MOV_indirect_hl1_indirect_hl1:
+    value: 164
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  MOV_indirect_hl_sp_offset:
+    value: 165
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      5:
+        - control_lines:
+            SCr
+  MOV_indirect_hl_iaddr:
+    value: 166
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - control_lines:
+            ARa
+            MDo
+            Ti
+      5:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      6:
+        - control_lines:
+            SCr
+  MOV_indirect_hl_const:
+    value: 167
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      3:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      4:
+        - control_lines:
+            SCr
   MOV_sp_offset_a:
     value: 168
     steps:
@@ -1309,6 +1537,36 @@ instructions:
             MDi
             Jo
       3:
+        - control_lines:
+            SCr
+  MOV_sp_offset_indirect_hl:
+    value: 172
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      4:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      5:
         - control_lines:
             SCr
   MOV_sp1_offset_sp2_offset:
@@ -1518,6 +1776,42 @@ instructions:
             MDi
             Jo
       4:
+        - control_lines:
+            SCr
+  MOV_iaddr_indirect_hl:
+    value: 180
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - control_lines:
+            MILO
+            PCa
+            MDo
+            ARi
+            PCe
+      3:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      5:
+        - control_lines:
+            ARa
+            MDi
+            To
+      6:
         - control_lines:
             SCr
   MOV_iaddr_sp_offset:
@@ -1941,6 +2235,29 @@ instructions:
       3:
         - control_lines:
             SCr
+  ADD_indirect_hl:
+    value: 188
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      4:
+        - control_lines:
+            SCr
   ADD_sp_offset:
     value: 189
     steps:
@@ -2056,6 +2373,30 @@ instructions:
             SUMo
             SUMf
       3:
+        - control_lines:
+            SCr
+  SUB_indirect_hl:
+    value: 204
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            SUB
+            Ai
+            SUMo
+            SUMf
+      4:
         - control_lines:
             SCr
   SUB_sp_offset:
