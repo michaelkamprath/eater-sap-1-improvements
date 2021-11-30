@@ -47,7 +47,7 @@ class Microcode:
         return
 
     def _insert_step_config(self, step_config, step_num, instr_val, microbits):
-        mb = self._generate_final_microbits(step_config['control_lines'], microbits)
+        mb = self._generate_final_microbits(step_config['control_lines'], microbits, step_num, instr_val)
         # the extended flag should always be 0 unless explicitly stated otherwise.
         extended_flag=(step_config['flags'].get('extended', 0) if 'flags' in step_config else 0)
 
@@ -64,14 +64,17 @@ class Microcode:
             extended_flag=extended_flag,
         )
 
-    def _generate_final_microbits(self, control_line_list, microbits):
+    def _generate_final_microbits(self, control_line_list, microbits, step_num, instr_val):
         if control_line_list is None:
             control_line_list = []
         elif not isinstance(control_line_list, list):
             control_line_list = control_line_list.split(' ')
         microbit = MicroBits()
         for cl in control_line_list:
-            microbit |= microbits[cl]
+            if cl in microbits:
+                microbit |= microbits[cl]
+            else:
+                sys.exit(f'ERROR - unknown control line "{cl}" in step {step_num} of instruction {instr_val}')
         return microbit
 
     def _setBits(
