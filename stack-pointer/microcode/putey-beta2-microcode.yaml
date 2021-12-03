@@ -3683,6 +3683,31 @@ instructions:
       3:
         - control_lines:
             SCr
+  PUSH_indirect_hl:
+    value: 12
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+            SPe
+            SUB
+      3:
+        - control_lines:
+            SPa
+            MDi
+            To
+      4:
+        - control_lines:
+            SCr
   PUSH_sp_offset:
     value: 13
     steps:
@@ -3760,6 +3785,43 @@ instructions:
             MDi
             To
       4:
+        - control_lines:
+            SCr
+  PUSH_l:
+    value: 100
+    steps:
+      1:
+        - control_lines:
+            HLa
+            ABo
+            Ti
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            To
+      3:
+        - control_lines:
+            SCr
+  PUSH_h:
+    value: 108
+    steps:
+      1:
+        - control_lines:
+            HLa
+            HILO
+            ABo
+            Ti
+            SPe
+            SUB
+      2:
+        - control_lines:
+            SPa
+            MDi
+            To
+      3:
         - control_lines:
             SCr
   PUSH2_hl:
@@ -4057,6 +4119,30 @@ instructions:
       2:
         - control_lines:
             SCr
+  POP_indirect_hl:
+    value: 28
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            SPa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            To
+            SPe
+      4:
+        - control_lines:
+            SCr
   POP_iaddr:
     value: 30
     steps:
@@ -4092,6 +4178,31 @@ instructions:
     steps:
       1:
         - control_lines:
+            SPe
+      2:
+        - control_lines:
+            SCr
+  POP_l:
+    value: 120
+    steps:
+      1:
+        - control_lines:
+            SPa
+            MDo
+            HLi
+            SPe
+      2:
+        - control_lines:
+            SCr
+  POP_h:
+    value: 121
+    steps:
+      1:
+        - control_lines:
+            SPa
+            MDo
+            HILO
+            HLi
             SPe
       2:
         - control_lines:

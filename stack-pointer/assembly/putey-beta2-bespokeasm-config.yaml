@@ -299,6 +299,7 @@ operand_sets:
           value: 0
           size: 1
 instructions:
+  # general
   nop:
     byte_code:
       value: 0
@@ -350,6 +351,29 @@ instructions:
       operand_sets:
         list:
           - 8_bit_source
+    variants:
+      - byte_code:
+          value: 6
+          size: 4
+        operands:
+          count: 1
+          specific_operands:
+            register_l:
+              list:
+                l:
+                  type: register
+                  register: l
+                  bytecode:
+                    value: 4
+                    size: 4
+            register_h:
+              list:
+                h:
+                  type: register
+                  register: h
+                  bytecode:
+                    value: 12
+                    size: 4
   push2:
     byte_code:
       value: 0b00010
@@ -378,6 +402,29 @@ instructions:
               bytecode:
                 value: 7
                 size: 3
+    variants:
+      - byte_code:
+          value: 60
+          size: 7
+        operands:
+          count: 1
+          specific_operands:
+            register_l:
+              list:
+                l:
+                  type: register
+                  register: l
+                  bytecode:
+                    value: 0
+                    size: 1
+            register_h:
+              list:
+                h:
+                  type: register
+                  register: h
+                  bytecode:
+                    value: 1
+                    size: 1
   pop2:
     byte_code:
       value: 0b00100
