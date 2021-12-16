@@ -1,4 +1,4 @@
-update=Tuesday, May 25, 2021 at 09:35:06 PM
+update=Thursday, December 16, 2021 at 01:21:56 PM
 version=1
 last_client=kicad
 [general]
@@ -34,7 +34,7 @@ LibDir=
 [schematic_editor]
 version=1
 PageLayoutDescrFile=
-PlotDirectoryName=/Users/michael/Desktop/
+PlotDirectoryName=../../documentation/
 SubpartIdSeparator=0
 SubpartFirstId=65
 NetFmtName=
