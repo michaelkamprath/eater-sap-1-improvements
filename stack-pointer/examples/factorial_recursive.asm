@@ -1,34 +1,27 @@
 ; Factorial Sequence Display using Recursion
 ;
-; Calculates and displays the factorial values for N from 1 to 5,
-; which is the maximum factorial that can be calculated in 8-bit math.
+; Calculates and displays the factorial values for N value as set in RAM at $8000.
 ; Uses a recursive approach enabled by a stack pointer.
 
 OUTPUT = $7800          ; The display register is found at address $7800
 MAX_N = 6               ; The first N value factorial cannot be calculated for
 WAIT_COUNT = 16
 
+; RAM variables
+.org $8000
+n_value:
+    .byte 0
+
 ; code
 .org 0
 init:
     rsp                             ; init the stack pointer
-    mov j, 0                        ; init N value counter
     mov [OUTPUT], 0                 ; init output
-calc_loop:
-    inc j
-    mov a, j
-    jeq init, MAX_N
-    push a
-    call calc_factorial
-    pop
-    mov [OUTPUT], a
-    mov i, WAIT_COUNT
-.wait_loop:
-    dec i
-    jz .end_calc_loop
-    jmp .wait_loop
-.end_calc_loop:
-    jmp calc_loop
+    push [n_value]                  ; push N value on stack
+    call calc_factorial             ; call factorial function
+    pop                             ; remove N value from stack
+    mov [OUTPUT], a                 ; display result
+    hlt                             ; stop
 
 ; calc_factorial
 ;
