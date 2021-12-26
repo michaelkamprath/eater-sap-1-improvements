@@ -3,6 +3,8 @@
 ## Overview
 I'm finally at the point where I can add what I feel is the key upgrade to my SAP-1 based TTL computer: a stack pointer. A stack pointer enables general purpose programming in a computer, specifically the ability to call and return from subroutines and the ability to effectively make temporary variables in memory.
 
+[![Adding a Stack Pointer](https://img.youtube.com/vi/sUqvItfVIRc/maxresdefault.jpg)](https://youtu.be/sUqvItfVIRc)
+
 # Design
 
 ## Stack Pointer
