@@ -1,12 +1,11 @@
 ; 16 bit factorial demo for PUTEY-1 BETA-2
 ;
-; Calcualtings a 16 bit factorial and displays result in memory address
+; Calcualtings a 16 bit factorial and displays result in HL
 ; register LEDs. Not ideal, as a proper display is needed, but this
 ; works as a demo as to how to do higher but math on a 8 bit computer.
 ;
-; To use, set RAM value at $8000 to be the N a factorial is desired for.
-; This should be a two byte value in little endian order. Max value should
-; be 8 since 8! is the lagest factorial results that 16 bits can represent.
+; Will cycle through calculaintg factorial from N=1 to N=8 (max
+; calculatable factorial for 16 bit math). 
 
 #include "math16.asm"
 
@@ -32,12 +31,12 @@ start:
     mov [DISPLAY], [current_n]         ; copy low (first) byte of current_n to DISPLAY
     push2 [current_n]                  ; push the desired factorial N value onto the stack
     call calc_factorial16              ; call the factorial function
-    pop2 mar                           ; pop the factorual function results into the MAR for (kind of) display
+    pop2 mar                           ; pop the factorual function results into the MAR 
+    mov2 hl, mar
     mov j, DELAY_COUNT                 ; init delay counter
 .delay_loop:
     dec j
-    mov a,j
-    jeq .calc_loop, 0
+    jz .calc_loop
     jmp .delay_loop
 .calc_loop:
     push2 1                            ; set up for an increment to N
