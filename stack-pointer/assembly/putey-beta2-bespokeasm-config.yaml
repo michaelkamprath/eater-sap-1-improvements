@@ -778,12 +778,12 @@ instructions:
                   bytecode:
                     value: 7
                     size: 3
-              subregister_h:
-                type: register
-                register: h
-                bytecode:
-                  value: 1
-                  size: 1
+                subregister_h:
+                  type: register
+                  register: h
+                  bytecode:
+                    value: 1
+                    size: 1
             h_l:
               list:
                 subregister_h:
