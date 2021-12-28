@@ -1,0 +1,1 @@
+The microcode configuration file found here should be used with the [v2 microcode generator python program](../../microcode-generator/v2/). 

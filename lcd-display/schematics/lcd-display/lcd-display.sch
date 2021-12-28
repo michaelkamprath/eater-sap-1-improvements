@@ -128,7 +128,7 @@ Text HLabel 9925 1100 2    50   Input ~ 0
 MDo
 Wire Wire Line
 	9250 1475 6725 1475
-Text HLabel 9950 1825 2    50   Input ~ 0
+Text HLabel 9950 1925 2    50   Input ~ 0
 A0
 Text HLabel 9900 2500 2    50   Input ~ 0
 CLK
@@ -194,8 +194,6 @@ F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 4500 2400 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	8150 800  9925 800 
-Wire Wire Line
 	5675 2300 5675 1375
 Connection ~ 5675 1375
 Wire Wire Line
@@ -208,8 +206,6 @@ Wire Wire Line
 	3825 3075 2000 3075
 Wire Wire Line
 	3825 2400 4200 2400
-Wire Wire Line
-	9950 1825 3575 1825
 Wire Wire Line
 	3575 1825 3575 2875
 Wire Wire Line
@@ -397,7 +393,7 @@ Wire Wire Line
 Wire Wire Line
 	4675 4475 4800 4475
 Wire Wire Line
-	6725 900  3450 900 
+	6725 900  5350 900 
 Wire Wire Line
 	3450 900  3450 4475
 Wire Wire Line
@@ -407,4 +403,110 @@ Wire Wire Line
 	6125 4475 6450 4475
 Text Notes 4100 5000 0    50   ~ 0
 This gate delay sequence is to ensure that the enable\nsignal for the 74LS245 arrives about the same time\nthe LCD module is enabled.
+$Comp
+L Device:C C?
+U 1 1 61D87343
+P 2100 5825
+F 0 "C?" V 2250 5775 50  0000 L CNN
+F 1 "0.1 uF" V 1950 5725 50  0000 L CNN
+F 2 "" H 2138 5675 50  0001 C CNN
+F 3 "~" H 2100 5825 50  0001 C CNN
+	1    2100 5825
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61D87A90
+P 2100 6225
+F 0 "C?" V 2250 6175 50  0000 L CNN
+F 1 "0.1 uF" V 1950 6125 50  0000 L CNN
+F 2 "" H 2138 6075 50  0001 C CNN
+F 3 "~" H 2100 6225 50  0001 C CNN
+	1    2100 6225
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 61D8812F
+P 2100 6600
+F 0 "C?" V 2250 6550 50  0000 L CNN
+F 1 "0.1 uF" V 1950 6500 50  0000 L CNN
+F 2 "" H 2138 6450 50  0001 C CNN
+F 3 "~" H 2100 6600 50  0001 C CNN
+	1    2100 6600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1950 6600 1950 6225
+Wire Wire Line
+	1950 6225 1950 5825
+Connection ~ 1950 6225
+Wire Wire Line
+	2250 5825 2250 6225
+Wire Wire Line
+	2250 6225 2250 6600
+Connection ~ 2250 6225
+$Comp
+L power:GND #PWR?
+U 1 1 61D90BAC
+P 2250 6825
+F 0 "#PWR?" H 2250 6575 50  0001 C CNN
+F 1 "GND" H 2255 6652 50  0000 C CNN
+F 2 "" H 2250 6825 50  0001 C CNN
+F 3 "" H 2250 6825 50  0001 C CNN
+	1    2250 6825
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 61D91162
+P 1950 5550
+F 0 "#PWR?" H 1950 5400 50  0001 C CNN
+F 1 "+5V" H 1965 5723 50  0000 C CNN
+F 2 "" H 1950 5550 50  0001 C CNN
+F 3 "" H 1950 5550 50  0001 C CNN
+	1    1950 5550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1950 5825 1950 5550
+Connection ~ 1950 5825
+Wire Wire Line
+	2250 6600 2250 6825
+Connection ~ 2250 6600
+$Comp
+L 74xx:74LS00 U?
+U 4 1 61CB2133
+P 5050 1825
+F 0 "U?" H 5275 1950 50  0000 C CNN
+F 1 "74LS00" H 5350 1700 50  0000 C CNN
+F 2 "" H 5050 1825 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 5050 1825 50  0001 C CNN
+	4    5050 1825
+	-1   0    0    1   
+$EndComp
+$Comp
+L 74xx:74LS04 U?
+U 6 1 61CBA352
+P 4275 1825
+F 0 "U?" H 4350 1950 50  0000 C CNN
+F 1 "74LS04" H 4400 1700 50  0000 C CNN
+F 2 "" H 4275 1825 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 4275 1825 50  0001 C CNN
+	6    4275 1825
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3575 1825 3975 1825
+Wire Wire Line
+	4575 1825 4750 1825
+Wire Wire Line
+	5350 1925 9950 1925
+Wire Wire Line
+	8150 800  9925 800 
+Wire Wire Line
+	5350 1725 5350 900 
+Connection ~ 5350 900 
+Wire Wire Line
+	5350 900  3450 900 
 $EndSCHEMATC
