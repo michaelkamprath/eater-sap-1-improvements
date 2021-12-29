@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 3 Breadboard Computer
 general:
-  min_version: 0.1.5
+  min_version: 0.1.6
   address_size: 16
   endian: little
   registers:
@@ -509,6 +509,7 @@ instructions:
                 max: 255
                 min: 0
                 size: 8
+                byte_align: true
   # data movement
   mov:
     byte_code:
@@ -545,6 +546,7 @@ instructions:
                 max: 255
                 min: 0
                 size: 8
+                byte_align: true
         i_mar:
           list:
             a:
@@ -563,6 +565,7 @@ instructions:
                 max: 255
                 min: 0
                 size: 8
+                byte_align: true
         j_mar:
           list:
             a:
@@ -581,6 +584,7 @@ instructions:
                 max: 255
                 min: 0
                 size: 8
+                byte_align: true
         sp_hl:
           reverse_argument_order: true
           list:
@@ -778,12 +782,12 @@ instructions:
                   bytecode:
                     value: 7
                     size: 3
-              subregister_h:
-                type: register
-                register: h
-                bytecode:
-                  value: 1
-                  size: 1
+                subregister_h:
+                  type: register
+                  register: h
+                  bytecode:
+                    value: 1
+                    size: 1
             h_l:
               list:
                 subregister_h:
@@ -798,22 +802,6 @@ instructions:
                   bytecode:
                     value: 0
                     size: 1
-  swap:
-    byte_code:
-      value: 1020
-      size: 10
-      endian: big
-    operands:
-      count: 2
-      operand_sets:
-        list:
-          - 8_bit_destination
-          - 8_bit_destination
-        disallowed_pairs:
-          - [a_register, a_register]
-          - [i_register, i_register]
-          - [j_register, j_register]
-          - [indirect_addr, indirect_addr]
   mov2:
     byte_code:
       value: 1021
