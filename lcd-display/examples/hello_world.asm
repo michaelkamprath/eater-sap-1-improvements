@@ -21,12 +21,12 @@ _start:
     jmp _start
 
 hello_world_cstr:
-    .byte "Hello World!"
+    .cstr "Hello World!"
 line2_cstr:
-    .byte "..."
+    .cstr "..."
 line3_cstr:
-    .byte "Would you like to"
+    .cstr "Would you like to"
 line4_cstr:
-    .byte "play a game?"
+    .cstr "play a game?"
 line5_cstr:
-    .byte " "
+    .cstr " "

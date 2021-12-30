@@ -298,6 +298,44 @@ operand_sets:
         bytecode:
           value: 0
           size: 1
+  hl_indirect_indexed:
+    operand_values:
+      register_hl:
+        type: indirect_indexed_register
+        register: hl
+        bytecode:
+          value: 0
+          size: 0
+        index_operands:
+          register_a:
+            type: register
+            register: a
+            bytecode:
+              value: 0
+              size: 2
+          register_i:
+            type: register
+            register: i
+            bytecode:
+              value: 1
+              size: 2
+          register_j:
+            type: register
+            register: j
+            bytecode:
+              value: 2
+              size: 2
+          indirect_sp:
+            type: indirect_register
+            register: sp
+            bytecode:
+              value: 3
+              size: 2
+            offset:
+              max: 255
+              min: 0
+              size: 8
+              byte_align: true
 instructions:
   # general
   nop:
@@ -748,6 +786,31 @@ instructions:
               argument:
                 size: 16
                 byte_align: true
+        indirect_hl_register_mar:
+          reverse_argument_order: true
+          list:
+            indirect_hl_register:
+              type: indirect_register
+              register: hl
+              bytecode:
+                value: 1
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
+            indirect_mar:
+              type: indirect_register
+              register: mar
+              bytecode:
+                value: 1
+                size: 3
+              offset:
+                max: 255
+                min: 0
+                size: 8
+                byte_align: true
     variants:
       - byte_code:
           value: 6
@@ -802,6 +865,28 @@ instructions:
                   bytecode:
                     value: 0
                     size: 1
+      - byte_code:
+          value: 2040
+          size: 11
+          endian: big
+        operands:
+          count: 2
+          operand_sets:
+            reverse_argument_order: true
+            list:
+              - 8_bit_destination
+              - hl_indirect_indexed
+      - byte_code:
+          value: 2041
+          size: 11
+          endian: big
+        operands:
+          count: 2
+          operand_sets:
+            reverse_argument_order: true
+            list:
+              - hl_indirect_indexed
+              - 8_bit_source
   mov2:
     byte_code:
       value: 1021

@@ -61,9 +61,6 @@ _lcd_row3_ptr:
 ;   Returns
 ;       none
 ;
-;   Registers used
-;       a
-;       i
 ;
 _LCD_INIT_WAIT_COUNT = 4
 
@@ -152,11 +149,6 @@ lcd_cursor_home:
 ;   returns:
 ;       nothing
 ;
-;   registers used:
-;       a
-;       hl
-;       i
-;       mar
 ;
 lcd_write_row_cstr:
     mov a,[sp+4]                         ; put row number in a
@@ -206,10 +198,7 @@ lcd_write_row_cstr:
 ;   arguments:
 ;       sp+2    - row number (0-3)
 ;
-;   registers used
-;       a
-;       i
-;       hl
+
 lcd_send_buffer_row:
     mov a,[sp+2]                         ; put row number on stack
     jeq .row0, 0
@@ -252,8 +241,6 @@ lcd_send_buffer_row:
 ;   Returns
 ;       nothing
 ;
-;   Registers Used
-;       a
 ;
 lcd_set_cursor_at_row_start:
     mov a, [sp+2]
@@ -285,8 +272,6 @@ lcd_set_cursor_at_row_start:
 ;   Returns
 ;       nothing
 ;
-;   Registers Used
-;       a
 ;
 lcd_set_cursor_at_row_end:
     mov a, [sp+2]
@@ -318,10 +303,6 @@ lcd_set_cursor_at_row_end:
 ;   Returns
 ;       nothing
 ;
-;   Registers Used
-;       a
-;       hl
-;       i
 ;
 lcd_scroll_up:
     ; Rotate the row pointers - must use two mov's rather than 1 mov2 because
@@ -371,10 +352,6 @@ lcd_scroll_up:
 ;   Returns
 ;       nothing
 ;
-;   Registers Used
-;       a
-;       hl
-;       i
 ;
 lcd_print_cstr:
     push 0

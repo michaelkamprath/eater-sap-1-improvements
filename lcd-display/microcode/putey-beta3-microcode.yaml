@@ -910,7 +910,7 @@ instructions:
           control_lines:
             SCr
   #
-  # MOV
+  # Move
   #
   MOV_a_indirect_mar:
     value: 128
@@ -1483,6 +1483,36 @@ instructions:
             MDi
             To
       4:
+        - control_lines:
+            SCr
+  MOV_indirect_hl_mar:
+    value: 137
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            ARa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      5:
         - control_lines:
             SCr
   MOV_sp_offset_a:
@@ -2187,370 +2217,627 @@ instructions:
       3:
         - control_lines:
             SCr
-  #
-  # ALU & Math
-  #
-  ADD_a:
-    value: 184
+  MOV_a_hl_index_a:
+    value: 0
     steps:
-      1:
-        - control_lines:
-            Ti
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
             Ao
-      2:
-        - control_lines:
-            Ai
-            SUMo
-            SUMf
       3:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ai
+      4:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  ADD_i:
-    value: 186
+  MOV_a_hl_index_i:
+    value: 1
     steps:
-      1:
-        - control_lines:
-            Ti
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
             Io
-      2:
-        - control_lines:
-            Ai
-            SUMo
-            SUMf
       3:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ai
+      4:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  ADD_j:
-    value: 187
+  MOV_a_hl_index_j:
+    value: 2
     steps:
-      1:
-        - control_lines:
-            Ti
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
             Jo
-      2:
-        - control_lines:
-            Ai
-            SUMo
-            SUMf
       3:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ai
+      4:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  ADD_indirect_hl:
-    value: 188
+  MOV_a_hl_index_sp_offset:
+    value: 3
     steps:
-      1:
-        - control_lines:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
             PCa
             MDo
             AOi
             PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ai
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_i_hl_index_a:
+    value: 8
+    steps:
       2:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Ao
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ii
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_i_hl_index_i:
+    value: 9
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Io
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ii
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_i_hl_index_j:
+    value: 10
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Jo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ii
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_i_hl_index_sp_offset:
+    value: 11
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ii
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_j_hl_index_a:
+    value: 12
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Ao
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ji
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_j_hl_index_i:
+    value: 13
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Io
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ji
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_j_hl_index_j:
+    value: 14
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Jo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ji
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_j_hl_index_sp_offset:
+    value: 15
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ji
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_hl_immediate_offset_hl_index_a:
+    value: 16
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Ao
+      3:
+        - flags:
+            extended: 1
+          control_lines:
             HLa
             AOa
             MDo
             Ti
-      3:
-        - control_lines:
-            Ai
-            SUMo
-            SUMf
       4:
-        - control_lines:
-            SCr
-  ADD_sp_offset:
-    value: 189
-    steps:
-      1:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
             PCa
+            MDo
             AOi
             PCe
-            MDo
-      2:
-        - control_lines:
-            SPa
-            AOa
-            Ti
-            MDo
-      3:
-        - control_lines:
-            Ai
-            SUMo
-            SUMf
-      4:
-        - control_lines:
-            SCr
-  ADD_iaddr:
-    value: 190
-    steps:
-      1:
-        - control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
-      2:
-        - control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      3:
-        - control_lines:
-            ARa
-            Ti
-            MDo
-      4:
-        - control_lines:
-            Ai
-            SUMo
-            SUMf
       5:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  ADD_const:
-    value: 191
+  MOV_hl_immediate_offset_hl_index_i:
+    value: 17
     steps:
-      1:
-        - control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
       2:
-        - control_lines:
-            Ai
-            SUMo
-            SUMf
-      3:
-        - control_lines:
-            SCr
-  SUB_a:
-    value: 200
-    steps:
-      1:
-        - control_lines:
-            Ti
-            Ao
-      2:
-        - control_lines:
-            Ai
-            SUB
-            SUMo
-            SUMf
-      3:
-        - control_lines:
-            SCr
-  SUB_i:
-    value: 202
-    steps:
-      1:
-        - control_lines:
-            Ti
-            Io
-      2:
-        - control_lines:
-            Ai
-            SUB
-            SUMo
-            SUMf
-      3:
-        - control_lines:
-            SCr
-  SUB_j:
-    value: 203
-    steps:
-      1:
-        - control_lines:
-            Ti
-            Jo
-      2:
-        - control_lines:
-            Ai
-            SUB
-            SUMo
-            SUMf
-      3:
-        - control_lines:
-            SCr
-  SUB_indirect_hl:
-    value: 204
-    steps:
-      1:
-        - control_lines:
-            PCa
-            MDo
+        - flags:
+            extended: 1
+          control_lines:
             AOi
-            PCe
-      2:
-        - control_lines:
+            Io
+      3:
+        - flags:
+            extended: 1
+          control_lines:
             HLa
             AOa
             MDo
             Ti
-      3:
-        - control_lines:
-            SUB
-            Ai
-            SUMo
-            SUMf
       4:
-        - control_lines:
-            SCr
-  SUB_sp_offset:
-    value: 205
-    steps:
-      1:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
             PCa
-            AOi
             MDo
+            AOi
             PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_hl_immediate_offset_hl_index_j:
+    value: 18
+    steps:
       2:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Jo
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_hl_immediate_offset_hl_index_stack_pointer:
+    value: 19
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
             SPa
             AOa
-            Ti
             MDo
-      3:
-        - control_lines:
-            SUB
-            Ai
-            SUMo
-            SUMf
+            AOi
       4:
-        - control_lines:
-            SCr
-  SUB_iaddr:
-    value: 206
-    steps:
-      1:
-        - control_lines:
-            PCa
-            ARi
-            PCe
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
             MDo
-      2:
-        - control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      3:
-        - control_lines:
-            ARa
             Ti
-            MDo
-      4:
-        - control_lines:
-            Ai
-            SUB
-            SUMo
-            SUMf
       5:
-        - control_lines:
-            SCr
-  SUB_const:
-    value: 207
-    steps:
-      1:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
             PCa
-            Ti
-            PCe
             MDo
+            AOi
+            PCe
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV_sp_offset_hl_index_a:
+    value: 20
+    steps:
       2:
-        - control_lines:
-            Ai
-            SUB
-            SUMo
-            SUMf
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Ao
       3:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  INC_i:
-    value: 216
+  MOV_sp_offset_hl_index_i:
+    value: 21
     steps:
-      1:
-        - control_lines:
-            Ie
       2:
-        - control_lines:
-            If
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Io
       3:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  INC_j:
-    value: 217
+  MOV_sp_offset_hl_index_j:
+    value: 22
     steps:
-      1:
-        - control_lines:
-            Je
       2:
-        - control_lines:
-            Jf
+        - flags:
+            extended: 1
+          control_lines:
+            AOi
+            Jo
       3:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  INC_hl:
-    value: 218
+  MOV_sp_offset_hl_index_stack_pointer:
+    value: 23
     steps:
-      1:
-        - control_lines:
-            HLe
       2:
-        - control_lines:
-            SCr
-  INC_mar:
-    value: 219
-    steps:
-      1:
-        - control_lines:
-            ARe
-      2:
-        - control_lines:
-            SCr
-  DEC_i:
-    value: 220
-    steps:
-      1:
-        - control_lines:
-            Ie
-            SUB
-      2:
-        - control_lines:
-            If
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
       3:
-        - control_lines:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      7:
+        - flags:
+            extended: 1
+          control_lines:
             SCr
-  DEC_j:
-    value: 221
-    steps:
-      1:
-        - control_lines:
-            Je
-            SUB
-      2:
-        - control_lines:
-            Jf
-      3:
-        - control_lines:
-            SCr
-  DEC_hl:
-    value: 222
-    steps:
-      1:
-        - control_lines:
-            HLe
-            SUB
-      2:
-        - control_lines:
-            SCr
+
   #
-  # Extended Instructions
+  # Two-Byte Move
   #
 
   MOV2_hl_mar:
@@ -3222,6 +3509,370 @@ instructions:
             AP1
             MDi
             To
+
+  #
+  # ALU & Math
+  #
+  ADD_a:
+    value: 184
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Ao
+      2:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  ADD_i:
+    value: 186
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Io
+      2:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  ADD_j:
+    value: 187
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Jo
+      2:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  ADD_indirect_hl:
+    value: 188
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      4:
+        - control_lines:
+            SCr
+  ADD_sp_offset:
+    value: 189
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      4:
+        - control_lines:
+            SCr
+  ADD_iaddr:
+    value: 190
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      3:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      5:
+        - control_lines:
+            SCr
+  ADD_const:
+    value: 191
+    steps:
+      1:
+        - control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      2:
+        - control_lines:
+            Ai
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  SUB_a:
+    value: 200
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Ao
+      2:
+        - control_lines:
+            Ai
+            SUB
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  SUB_i:
+    value: 202
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Io
+      2:
+        - control_lines:
+            Ai
+            SUB
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  SUB_j:
+    value: 203
+    steps:
+      1:
+        - control_lines:
+            Ti
+            Jo
+      2:
+        - control_lines:
+            Ai
+            SUB
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  SUB_indirect_hl:
+    value: 204
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            SUB
+            Ai
+            SUMo
+            SUMf
+      4:
+        - control_lines:
+            SCr
+  SUB_sp_offset:
+    value: 205
+    steps:
+      1:
+        - control_lines:
+            PCa
+            AOi
+            MDo
+            PCe
+      2:
+        - control_lines:
+            SPa
+            AOa
+            Ti
+            MDo
+      3:
+        - control_lines:
+            SUB
+            Ai
+            SUMo
+            SUMf
+      4:
+        - control_lines:
+            SCr
+  SUB_iaddr:
+    value: 206
+    steps:
+      1:
+        - control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      2:
+        - control_lines:
+            HILO
+            PCa
+            ARi
+            PCe
+            MDo
+      3:
+        - control_lines:
+            ARa
+            Ti
+            MDo
+      4:
+        - control_lines:
+            Ai
+            SUB
+            SUMo
+            SUMf
+      5:
+        - control_lines:
+            SCr
+  SUB_const:
+    value: 207
+    steps:
+      1:
+        - control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      2:
+        - control_lines:
+            Ai
+            SUB
+            SUMo
+            SUMf
+      3:
+        - control_lines:
+            SCr
+  INC_i:
+    value: 216
+    steps:
+      1:
+        - control_lines:
+            Ie
+      2:
+        - control_lines:
+            If
+      3:
+        - control_lines:
+            SCr
+  INC_j:
+    value: 217
+    steps:
+      1:
+        - control_lines:
+            Je
+      2:
+        - control_lines:
+            Jf
+      3:
+        - control_lines:
+            SCr
+  INC_hl:
+    value: 218
+    steps:
+      1:
+        - control_lines:
+            HLe
+      2:
+        - control_lines:
+            SCr
+  INC_mar:
+    value: 219
+    steps:
+      1:
+        - control_lines:
+            ARe
+      2:
+        - control_lines:
+            SCr
+  DEC_i:
+    value: 220
+    steps:
+      1:
+        - control_lines:
+            Ie
+            SUB
+      2:
+        - control_lines:
+            If
+      3:
+        - control_lines:
+            SCr
+  DEC_j:
+    value: 221
+    steps:
+      1:
+        - control_lines:
+            Je
+            SUB
+      2:
+        - control_lines:
+            Jf
+      3:
+        - control_lines:
+            SCr
+  DEC_hl:
+    value: 222
+    steps:
+      1:
+        - control_lines:
+            HLe
+            SUB
+      2:
+        - control_lines:
+            SCr
+
   #
   # stack operations
   #

@@ -102,8 +102,7 @@ memcpy8:
     mov2 hl,[sp+2]              ; destination address in hl
     mov2 mar,[sp+4]             ; source in mar
 .loop:
-    mov a,[mar]                 ; copy 1 byte form source to a
-    mov [hl],a                  ;
+    mov [hl],[mar]              ; copy 1 byte form source to destination
     dec i                       ; decrement counter
     jz .end                     ; if counter at 0 we are done
     inc mar                     ; next address in source
