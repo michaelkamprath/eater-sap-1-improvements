@@ -60,7 +60,7 @@ _lcd_row3_ptr:
 ;
 ;   Returns
 ;       none
-;
+; 
 ;
 _LCD_INIT_WAIT_COUNT = 4
 
@@ -93,10 +93,10 @@ lcd_init:
     mov [LCD_INSTRUCTION_REG],(_CMD_ENTRY_MODE|_OPT_CURSOR_RIGHT)
     ; set cursour at home
     call lcd_cursor_home
-    ; turn on display
-    call lcd_on
     ; init the buffers
     call _lcd_init_buffers
+    ; turn on display
+    call lcd_on
     ret
 
 ; _lcd_init_buffers
@@ -151,23 +151,9 @@ lcd_cursor_home:
 ;
 ;
 lcd_write_row_cstr:
-    mov a,[sp+4]                         ; put row number in a
-    jeq .row0, 0
-    jeq .row1, 1
-    jeq .row2, 2
-    jeq .row3, 3
-    hlt                                  ; ERROR - invalid row
-.row0:
-    mov2 hl, [_lcd_row0_ptr]
-    jmp .copy_to_row
-.row1:
-    mov2 hl, [_lcd_row1_ptr]
-    jmp .copy_to_row
-.row2:
-    mov2 hl, [_lcd_row2_ptr]
-    jmp .copy_to_row
-.row3:
-    mov2 hl, [_lcd_row3_ptr]
+    push [sp+4]                         ; put row number on stack
+    call _lcd_set_hl_to_row_ptr
+    pop                                 ; restore stack
 .copy_to_row:
     mov i, _COLUMN_WIDTH
     mov2 mar, [sp+2]                     ; put the string address into mar for later dereferencing
@@ -200,23 +186,9 @@ lcd_write_row_cstr:
 ;
 
 lcd_send_buffer_row:
-    mov a,[sp+2]                         ; put row number on stack
-    jeq .row0, 0
-    jeq .row1, 1
-    jeq .row2, 2
-    jeq .row3, 3
-    hlt                                  ; ERROR invalid row num
-.row0:
-    mov2 hl, [_lcd_row0_ptr]
-    jmp .send_row
-.row1:
-    mov2 hl, [_lcd_row1_ptr]
-    jmp .send_row
-.row2:
-    mov2 hl, [_lcd_row2_ptr]
-    jmp .send_row
-.row3:
-    mov2 hl, [_lcd_row3_ptr]
+    push [sp+2]
+    call _lcd_set_hl_to_row_ptr
+    pop
 .send_row:
     push [sp+2]
     call lcd_set_cursor_at_row_start
@@ -231,6 +203,34 @@ lcd_send_buffer_row:
 .end:
     ret
 
+; _lcd_set_hl_to_row_ptr
+;   INTERNAL - set register HL to the buffer pointer for given row
+;
+;   Arguments
+;       sp+2 : row (0-3)
+;
+;   Returns
+;       hl : set to the current row pointer for desired row
+;
+_lcd_set_hl_to_row_ptr:
+    mov a,[sp+2]                         ; put row number on stack
+    jeq .row0, 0
+    jeq .row1, 1
+    jeq .row2, 2
+    jeq .row3, 3
+    hlt                                  ; ERROR invalid row num
+.row0:
+    mov2 hl, [_lcd_row0_ptr]
+    ret
+.row1:
+    mov2 hl, [_lcd_row1_ptr]
+    ret
+.row2:
+    mov2 hl, [_lcd_row2_ptr]
+    ret
+.row3:
+    mov2 hl, [_lcd_row3_ptr]
+    ret
 
 ; lcd_set_cursor_at_row_start
 ;       Sets the LCD DDRAM address to the start of the passed row
@@ -342,7 +342,7 @@ lcd_scroll_up:
     ret
 
 
-; lcd_print_cstr
+; lcd_print_line_cstr
 ;       Scrolls the rows of the LCD display updwards and then prints the cstr to the
 ;       bottom row, truncating it if it is too wide for the row.
 ;
@@ -353,13 +353,50 @@ lcd_scroll_up:
 ;       nothing
 ;
 ;
-lcd_print_cstr:
-    push 0
-    call lcd_scroll_up
+lcd_print_line_cstr:
+    push 0                          ; we do not want to erase the bottom row (FALSE)
+    call lcd_scroll_up              ; scroll the screen up
+    pop                             ; restore stack
+    push (_ROW_COUNT-1)             ; printing to last row
+    push2 [sp+3]                    ; push the cstr address (now 1 deeper)
+    call lcd_write_row_cstr         ; write cstr to last row
+    pop2                            ; restore stack
     pop
-    push (_ROW_COUNT-1)
-    push2 [sp+3]
-    call lcd_write_row_cstr
-    pop2
+    ret
+
+
+; lcd_write_cstr_at
+;   Writes a cstr at the given location, truncating it if it extends past the end of the row.
+;   only writes the passed string, and does not fill the remaining row with spaces.
+;
+;   Arguments
+;       sp+2 : the address of the cstr to print
+;       sp+4 : the column (x) position the cstr should start at (0-19)
+;       sp+5 : the row (y) position the cstr should start at (0-3)
+;
+;   Returns
+;       nothing
+;
+lcd_write_cstr_at:
+    push [sp+5]
+    call _lcd_set_hl_to_row_ptr
     pop
+    mov a, _COLUMN_WIDTH                ; setr a to max column width
+    sub [sp+4]                          ; subtract desired x position to get max cstr width
+    mov i, a                            ; move to i to be the counter
+    mov2 mar, [sp+2]                    ; put the string address into mar for later dereferencing
+.copy_loop:
+    mov a,[mar]                         ; copy cstr character to A
+    jeq .lcd_write, 0                   ; check to see it is 0, if so, end the write loop
+    mov [hl+[sp+4]], a                  ; move the the character to the desired location in the row buffer
+    dec i                               ; decrement size counter
+    jz .lcd_write                       ; if 0, we are done
+    inc mar                             ; increment source string to next character
+    inc hl                              ; increment destination to next address
+    jmp .copy_loop                      ; restart copy loop
+.lcd_write:
+    push [sp+5]                         ; push row number to stack
+    call lcd_send_buffer_row            ; send that row to LCD device
+    pop                                 ; restore stack
+.end:
     ret

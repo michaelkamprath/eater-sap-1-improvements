@@ -57,15 +57,17 @@ cstr_copy:
 ;   Returns
 ;       nothing, but does write to passed buffer
 uint8_to_hex_cstr:
-    mov2 hl, hex_table_upper_nibble         ; set HL to address of upper nibble look up table
+    mov2 hl, _hex_table_upper_nibble        ; set HL to address of upper nibble look up table
     mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
     mov2 hl, [sp+3]                         ; place buffer address into HL
     mov [hl+[sp+5]], a                      ; write first character to buffer
-    mov2 hl, hex_table_lower_nibble         ; set HL to address of lower nibble look up table
+    mov2 hl, _hex_table_lower_nibble        ; set HL to address of lower nibble look up table
     mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
     mov2 hl, [sp+3]                         ; place buffer address into HL
     inc hl                                  ; increment HL to get second character position
     mov [hl+[sp+5]], a                      ; write second character to buffer
+    inc hl
+    mov [hl+[sp+5]], 0                      ; put a null value at the end
     ret
 
 ; uint16_to_hex_cstr
@@ -100,7 +102,7 @@ uint16_to_hex_cstr:
 ; String Lib Data
 ;
 
-hex_table_upper_nibble:
+_hex_table_upper_nibble:
     .byte "0000000000000000"
     .byte "1111111111111111"
     .byte "2222222222222222"
@@ -118,7 +120,7 @@ hex_table_upper_nibble:
     .byte "EEEEEEEEEEEEEEEE"
     .byte "FFFFFFFFFFFFFFFF"
 
-hex_table_lower_nibble:
+_hex_table_lower_nibble:
     .byte "0123456789ABCDEF"
     .byte "0123456789ABCDEF"
     .byte "0123456789ABCDEF"
