@@ -11,12 +11,6 @@
 ;           * $F200 - $F2FF : LCD Display Module
 ;
 
-
-
-
-
-
-
 .org $3000
 #include "stringlib.asm"
 #include "memlib.asm"
