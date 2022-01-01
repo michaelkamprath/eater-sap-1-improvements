@@ -19,6 +19,17 @@ _init:
     rsp                             ; init stack pointer
     call lcd_init                   ; init device
     call lcd_on_cursor_blink        ; I want it to blink
+    ; install custom characters
+    push2 smilie_character_buffer   ; push character buffer address on stack
+    push 1                          ; custom character ID
+    call lcd_create_character       ; install custom character
+    pop                             ; restore stack
+    pop2
+    push2 heart_character_buffer    ; push character buffer address on stack
+    push 2                          ; custom character ID
+    call lcd_create_character       ; install custom character
+    pop                             ; restore stack
+    pop2
 _start:
     ; Print "Hello World"
     push2 hello_world_cstr          ; address of string to print
@@ -92,7 +103,7 @@ _start:
 hello_world_cstr:
     .cstr "Hello World!"
 line2_cstr:
-    .cstr ":-) :-) :-)"
+    .cstr " \x01 \x02 \x01 \x02 \x01"
 line3_cstr:
     .cstr "Would you like to"
 line4_cstr:
@@ -101,3 +112,23 @@ blank_line_cstr:
     .cstr " "
 magic_number_cstr:
     .cstr "Magic Number: $"
+
+smilie_character_buffer:
+    .byte %00000
+    .byte %11011
+    .byte %11011
+    .byte %00000
+    .byte %00100
+    .byte %10001
+    .byte %01110
+    .byte %00000
+
+heart_character_buffer:
+    .byte %00000
+    .byte %01010
+    .byte %11011
+    .byte %11111
+    .byte %11111
+    .byte %01110
+    .byte %00100
+    .byte %00000
