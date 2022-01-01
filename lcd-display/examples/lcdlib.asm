@@ -407,7 +407,7 @@ lcd_write_cstr_at:
 ;   Arguments
 ;       sp+2 : character ID. only 0 through 7 are allowed. Note that a null character (0-valued)
 ;              are used by cstr's to indicate the end fo the string, to the 0 character
-;              ID is effectively unusable when using cstr's. 
+;              ID is effectively unusable when using cstr's.
 ;       sp+3 : character data address. Must point to an 8-byte buffer
 ;
 ;   Returns
@@ -427,7 +427,7 @@ lcd_create_character:
     mov [LCD_DATA_REG],[hl]         ; copy buffer data to LCD module
     dec i                           ; decrement counter
     jz .end                         ; exit loop after all bytes transfered
-    inc hl                          ; incremetn HL to next buffer byte
+    inc hl                          ; increment HL to next buffer byte
     jmp .loop
 .end:
     ret
