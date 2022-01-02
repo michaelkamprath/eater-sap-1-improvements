@@ -38,7 +38,7 @@ _CMD_CGRAM_ADDR = %01000000
 _LCD_SCREEN_BUFFER_SIZE = 81
 
 _lcd_screen_buffer:
-    .zero _LCD_SCREEN_BUFFER_SIZE
+    .zero 81
 
 _lcd_row0_ptr:
     .2byte 0
