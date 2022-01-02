@@ -6,7 +6,7 @@
 ;       sp+2 : the address to the string to evaluate (2 bytes)
 ;
 ;   Returns
-;       sp+2 : the length of the cstr (overwrites address) (1 byte)
+;       register A: the length of the cstr (overwrites address) (1 byte)
 
 cstr_len8:
     mov2 hl, [sp+2]
@@ -20,12 +20,11 @@ cstr_len8:
 .too_long:
     mov i, 255
 .end:
-    mov [sp+2], i
-    mov [sp+3], 0
+    mov a, i
     ret
 
 ; cstr_copy
-;   copies cstr from source to destination. Can by any size, but source must end with null (0)
+;   copies cstr from source to destination. Can by any size, but source cstr must end with null (0)
 ;
 ;   Arguments
 ;       sp+2 : destination memory address (2 bytes)

@@ -4391,6 +4391,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  # MOV2_indirect_mar_hl
   MOV2_indirect_mar_const:
     value: 95
     steps:
@@ -4431,6 +4432,54 @@ instructions:
             extended: 1
           control_lines:
             ARa
+            AOa
+            AP1
+            MDi
+            To
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  MOV2_sp_offset_hl:
+    value: 104
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            ABo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            Ti
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
             AOa
             AP1
             MDi
@@ -4585,6 +4634,56 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  MOV2_iaddr_hl:
+    value: 112
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            ABo
+            Ti
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            Ti
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AP1
+            MDi
+            To
   MOV2_iaddr_const:
     value: 119
     steps:

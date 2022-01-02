@@ -15,6 +15,7 @@
 #include "stringlib.asm"
 #include "memlib.asm"
 #include "utilitylib.asm"
+#include "mathlib.asm"
 #include "lcdlib.asm"
 
 

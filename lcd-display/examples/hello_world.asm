@@ -57,7 +57,7 @@ _start:
     ; Print numeric value converted to text in code
     push2 magic_number_cstr     ; address of prefix
     call cstr_len8              ; determine length of prefix
-    mov [str_len_value], [sp]   ; save length to a variable
+    mov [str_len_value], a      ; save length to a variable
     pop2                        ; restore stack
     push 0                      ; place computed numeric string at begginging of buffer
     push2 string_buffer         ; the string buffer to place the numeric string
