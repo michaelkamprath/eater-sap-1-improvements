@@ -9,6 +9,9 @@
 ;
 ;   Returns
 ;       register A : 1 indicating equality, 0 if not
+;
+; Registers used:
+;    a
 is_equal16:
     mov a,[sp+2]            ; check low bytes first
     jeq .high_byte, [sp+4]  ; if low bytes are equal, check high byte
@@ -35,6 +38,8 @@ is_equal16:
 ; Return Value
 ;   sp+2 - replace the origin two byte value with the result
 ;
+; Registers used:
+;    a, hl
 multiply16:
     push2 [sp+2]                            ; place X on stack
     push2 0
@@ -65,19 +70,18 @@ multiply16:
     pop2                                    ; clear stack (value Y)
     push2 [sp+2]                            ; push multiply counter on stack
     call dec16                              ; decrement multiply counter
-    mov [sp+4],[sp]                         ; copy decremented multiply counter into multiply counter variable
-    mov [sp+5],[sp+1]                       ; two pushes due to ISA
-    push2 0
+    mov2 hl,[sp]                            ; copy decremented multiply counter into multiply counter variable ..,
+    mov2 [sp+4],hl                          ; ... through HL due to ISA limitation
+    push2 0                                 ; place 0 value on stack
     call is_equal16                         ; check whether decremented multiply counter is 0
     pop2                                    ; remove 0 from stack
-    pop2                                    ;
+    pop2                                    ; remove decremented multiply counter from stack
     jeq .return_results, 1                  ; check register A to see if results are TRUE (multiply counter == 0)
     jmp .sum_loop                           ; continue with sum loop
 .return_results:                            ; done with sum loop. return results.
-    mov [sp+6], [sp]                        ; copy results into return variable on stack
-    mov [sp+7], [sp+1]                      ; in two steps because of ISA
-    pop2                                    ; remove local results variable
+    pop2 hl                                 ; temprarily pop results into HL
     pop2                                    ; remove local loop counter variable
+    mov2 [sp+2], hl                         ; copy results to return value
     ret
 .return_zero:
     mov2 [sp+2], 0                          ; results are 0. set 0 return value
@@ -93,7 +97,8 @@ multiply16:
 ; Return Value
 ;   sp+2 - replace the original two byte value with the sum
 ;
-; uses register A
+; Registers used:
+;    a
 add16:
     mov a, [sp+2]                       ; move low byte of value X into register A
     add [sp+4]                          ; add low byte of value Y to alue in regsiter A
@@ -118,6 +123,8 @@ add16:
 ; Returns
 ;   sp+2 - replaces argument with incremented value
 ;
+; Registers used:
+;    hl
 inc16:
     mov2 hl, [sp+2]             ; move value to be incremented in hl
     inc hl                      ; increment it
@@ -133,6 +140,8 @@ inc16:
 ; Returns
 ;   sp+2 - replaces argument with decremented value
 ;
+; Registers used:
+;    hl
 dec16:
     mov2 hl, [sp+2]             ; move value to be decremented in hl
     dec hl                      ; decrement it

@@ -3,7 +3,9 @@
 ; Calcualtings a 16 bit factorial and displays result on LCD Module using hex
 ;
 ; Will cycle through calculaintg factorial from N=1 to N=8 (max
-; calculatable factorial for 16 bit math).
+; calculatable factorial for 16 bit math). The DELAY_COUNT is used to pause
+; display long enough for a human to see the results. It is tuned for a system
+; clock of about 4 KHz. 
 
 #include "system.asm"
 
@@ -142,12 +144,12 @@ calc_factorial16:
     call is_equal16                         ; check N value for base case
     pop2
     jeq .basecase, 1                        ; if N == 1, return as N value is return value
-    pop2 hl
-    dec hl
-    push2 hl
+    pop2 hl                                 ; pop the n value in to HL
+    dec hl                                  ; decrement HL to get N-1
+    push2 hl                                ; place N-1 on the stack
     call calc_factorial16                   ; recurse to calculate factorial(N-1)
     push2 [sp+4]                            ; push N value on stack
-    call multiply16                         ; multiply factorial(N-1)*N
+    call multiply16                         ; calculate factorial(N-1)*N
     pop2 mar                                ; place multiply results into 16-bit MAR
     pop2                                    ; stack is restored
     mov2 [sp+2], mar                        ; write results onto return position in stack

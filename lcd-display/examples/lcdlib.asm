@@ -34,8 +34,11 @@ _CMD_CGRAM_ADDR = %01000000
 ;
 ; LCD Module Library RAM variables
 ;
+
+_LCD_SCREEN_BUFFER_SIZE = 81
+
 _lcd_screen_buffer:
-    .zero 80
+    .zero _LCD_SCREEN_BUFFER_SIZE
 
 _lcd_row0_ptr:
     .2byte 0
@@ -60,17 +63,15 @@ _lcd_row3_ptr:
 ;
 ;   Returns
 ;       none
-; 
+;
 ;
 _LCD_INIT_WAIT_COUNT = 4
 
 lcd_init:
-    mov i, _LCD_INIT_WAIT_COUNT
-.wait_loop:
-    dec i
-    jz .start_lcd
-    jmp .wait_loop
-.start_lcd:
+    ; wait just a little for the LCD to boot
+    push _LCD_INIT_WAIT_COUNT
+    call delay8
+    pop
     ; first try
     mov [LCD_INSTRUCTION_REG],_CMD_FNCT_SET_8BIT_2LINE
     push 1
@@ -103,7 +104,7 @@ lcd_init:
 ;       Sets up library buffers
 _lcd_init_buffers:
     ; initialize  screen buffer
-    push 80
+    push _LCD_SCREEN_BUFFER_SIZE
     push $20
     push2 _lcd_screen_buffer
     call memset8
@@ -305,16 +306,16 @@ lcd_set_cursor_at_row_end:
 ;
 ;
 lcd_scroll_up:
-    ; Rotate the row pointers - must use two mov's rather than 1 mov2 because
+    ; Rotate the row pointers - must use HL to move rather than 1 mov2 because
     ; ISA does not support mov2 between indirect memory addresses
-    push2 [_lcd_row0_ptr]
-    mov [_lcd_row0_ptr],[_lcd_row1_ptr]
-    mov [_lcd_row0_ptr+1],[_lcd_row1_ptr+1]
-    mov [_lcd_row1_ptr],[_lcd_row2_ptr]
-    mov [_lcd_row1_ptr+1],[_lcd_row2_ptr+1]
-    mov [_lcd_row2_ptr],[_lcd_row3_ptr]
-    mov [_lcd_row2_ptr+1],[_lcd_row3_ptr+1]
-    pop2 [_lcd_row3_ptr]
+    push2 [_lcd_row0_ptr]                               ; save row 0 pointer to stack
+    mov2 hl,[_lcd_row1_ptr]                             ; copy row 1 pointer to row 0 through HL
+    mov2 [_lcd_row0_ptr],hl
+    mov2 hl,[_lcd_row2_ptr]                             ; copy row 2 pointer to row 1 through HL
+    mov2 [_lcd_row1_ptr],hl
+    mov2 hl,[_lcd_row3_ptr]                             ; copy row 3 pointer to row 2 through HL
+    mov2 [_lcd_row2_ptr],hl
+    pop2 [_lcd_row3_ptr]                                ; pop saved row 0 pointer into row 3
     ; set the bottom row to all zpaces
     push _COLUMN_WIDTH
     push $20
@@ -322,7 +323,7 @@ lcd_scroll_up:
     call memset8
     pop2
     pop
-    pop
+    pop                                                 ; stack is restored
     ; clear the screen
     call lcd_clear
     ; now send each row in turn to the LCD module
@@ -338,7 +339,7 @@ lcd_scroll_up:
     mov [sp],3
     call lcd_send_buffer_row
 .end:
-    pop
+    pop                                                 ; stack is restored
     ret
 
 
