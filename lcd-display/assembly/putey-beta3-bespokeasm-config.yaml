@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 3 Breadboard Computer
 general:
-  min_version: 0.1.6
+  min_version: 0.1.7
   address_size: 16
   endian: little
   registers:
@@ -13,6 +13,9 @@ general:
     - hl
     - h
     - l
+  identifier:
+    name: putey-1-beta
+    version: "0.3.0"
 operand_sets:
   8_bit_source:
     operand_values:
