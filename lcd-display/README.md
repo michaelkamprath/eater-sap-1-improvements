@@ -1,9 +1,12 @@
 # LCD Display Module
+## Overview
 
+# Design
 
+## Increasing Maximum Clock Speed
 
 ## Stability Issues
-While the basic of adding this LCD module to the breadboard CPU are pretty straightforward, there a rather significant stability issues I had to solve. The issue was a combination of the LCD Module's enable line being sensitive to triggering on the falling and and general signal integrity issues caused by the growing size of my breadboard CPU. Basically, noise in both the `CLK` and `MDi` lines would separately have noisy (enough) transitions between `LOW` and `HIGH` that the LCD module would see multiple falling edges. This noise is caused by the inductance of long wires in my large breadboard layout. In the case of `MDi`, I route it through the power rail bus in the middle of the breadboard layout along side the data bus. That's nearly a half meter of breadboard power rail. The falling edge of the `MDi` signal had a very distinct "second hump" as current from the collapse magnetic field around the `MDi` bus rails created a second voltage spike.  The LCD module would see this as a second trigger when reading in data. 
+While the basic concept of adding this LCD module to the breadboard CPU are pretty straightforward, there a rather significant stability issues I had to solve. The issue was a combination of the LCD Module's enable line being sensitive to triggering on the falling and and general signal integrity issues caused by the growing size of my breadboard CPU. Basically, noise in both the `CLK` and `MDi` lines would separately have noisy (enough) transitions between `LOW` and `HIGH` that the LCD module would see multiple falling edges. This noise is caused by the inductance of long wires in my large breadboard layout. In the case of `MDi`, I route it through the power rail bus in the middle of the breadboard layout along side the data bus. That's nearly a half meter of breadboard power rail. The falling edge of the `MDi` signal had a very distinct "second hump" as current from the collapsing magnetic field around the `MDi` bus rails created a second voltage spike.  The LCD module would see this as a second trigger when reading in data. 
 
 I took two approach to solve this. First, to solve the noise in the `CLK` line, I created a flip-flop of sorts that keeps the LCD modules `E` enable line `HIGH` at all times except when `MDi` is `HIGH` and `CLK` transitions from `LOW` to `HIGH`. This creates the falling edge trigger that the LCD module's `E` line needs. Then, while `MDi` is still high, any changes in the `CLK` line ostensibly from noise does not alter the `E` line's `LOW` state. `E` is then returned to a `HIGH` state when `MDi` returns `LOW`. This addresses noise in the `CLK` transition.
 

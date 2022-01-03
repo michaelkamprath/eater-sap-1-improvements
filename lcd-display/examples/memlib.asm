@@ -20,7 +20,7 @@ memset8:
     jeq .end,0                  ; check to see if 0 was passed for buffer size
     mov i,a                     ; put buffer size in i
     mov a,[sp+4]                ; put overwrite value in a
- .loop:
+.loop:
     mov [hl],a                  ; write a value to memory
     dec i                       ; decrement size counter
     jz .end                     ; if at zero we are done
