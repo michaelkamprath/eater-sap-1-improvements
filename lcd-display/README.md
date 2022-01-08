@@ -6,7 +6,9 @@ The work I did in a previous project to add memory mapped IO to the CPU really m
 
 # Design
 
-## LCD Module Overview
+## LCD Module
+
+### Overview
 The LCD module I went with is the LCD2004 module with 4 rows of 20 characters. [These are pretty cheap on eBay](https://ebay.us/opX5g1). You will find many different manufacturers of these modules, but their electrical characteristics are all the same (if they are using the Hitachi HD44780 controller). Your biggest choices are price and color. 
 
 The data sheets for these modules highlight the standard pin connections to the modules, which I list here:
@@ -30,7 +32,9 @@ The data sheets for these modules highlight the standard pin connections to the 
 | 15 | `LED+` | **+5V** - Power supply for the backlight. |
 | 16 | `LED-` | **Ground** - Power supply for the backlight. |
 
-The biggest challenge in using this module is dealing with the enable `E` behavior of acting on the falling edge of the clock for writes and the rising edge of the clock for reads. This would imply that we need an inverted clock driving the `E` signal, but care had to be taken in the design to deliver those edges *after* all the other control lines were configured. Since the the other control lines would be driven by the memory map IO logic, there is relatively significant gate delay before the `RS` and `R/W` signals arrive. I also found in practice the Hitachi HD44780 is extremely sensitive to noise on the `E` line. I discuss noise mitigation later in this document.  
+### Interface
+
+The biggest challenge in using this module is dealing with the enable `E` behavior of acting on the falling edge of the clock for writes and the rising edge of the clock for reads. This would imply that we need an inverted clock driving the `E` signal, but care had to be taken in the design to deliver both edges *after* all the other control lines were configured. Since the other control lines would be driven by the memory map IO logic, there is relatively significant gate delay before the `RS` and `R/W` signals arrive. To account for this, I gate the inverted clock sign with the logical combination of `MMAP_1 AND (MDi OR MDo)`, which will allow the clock to pass only if both the memory map IO controller has activated the LCD module and the is either a memory write or read operation happening. After that gate, I pass the clock signal through a double inverter to delay it a bit more to ensure these is some time in between when the LCD module is configured and when it sees a rising edge on `E`. I also found in practice the Hitachi HD44780 is extremely sensitive to noise on the `E` line. I discuss noise mitigation later in this document.  
 
 ## Memory Mapped IO
 
@@ -39,5 +43,5 @@ The biggest challenge in using this module is dealing with the enable `E` behavi
 ## Stability Issues
 While the basic concept of adding this LCD module to the breadboard CPU are pretty straightforward, there is a rather significant stability issues I had to solve. The issue was a combination of the LCD Module's enable line being sensitive to triggering on the falling and and general signal integrity issues caused by the growing size of my breadboard CPU. Basically, noise in both the `CLK` and `MDi` lines would separately have noisy (enough) transitions between `LOW` and `HIGH` that the LCD module would see multiple falling edges. This noise is caused by the inductance of long wires in my large breadboard layout. In the case of `MDi`, I route it through the power rail bus in the middle of the breadboard layout along side the data bus. That's nearly a half meter of breadboard power rail. The falling edge of the `MDi` signal had a very distinct "second hump" as current from the collapsing magnetic field around the `MDi` bus rails created a second voltage spike.  The LCD module would see this as a second trigger when reading in data. 
 
-To address the noise on the `MDi` trailing edge, I simply placed a 1 nF capacity between the `MDi` bus rail (where most the inductance is) and ground. This create a small [LC circuit](https://en.wikipedia.org/wiki/LC_circuit) that smooths out the transition from `HIGH` to `LOW` (and vice versa) in the `MDi` line, but it does have the effect of lengthening the transition time. I measured the transition with an oscilloscope and found it now takes about 140 nanoseconds. This means that my breadboard computer now has a maximum frequency of about 7 MHz. I'm currently running PUTEY-1 at about 4 KHz, so I find that margin acceptable.
+To address the noise on the `MDi` trailing edge, I simply placed a 1 nF capacity between the `MDi` bus rail (where most the inductance is) and ground. This create a small [LC circuit](https://en.wikipedia.org/wiki/LC_circuit) based on the inductance (`L`) of the bus rail and capacitance (`C`) of the added capacitor. Th `LC` circuit smooths out the transition from `HIGH` to `LOW` (and vice versa) in the `MDi` line, but it does have the effect of lengthening the transition time. I measured the transition with an oscilloscope and found it now takes about 140 nanoseconds. This means that my breadboard computer now has a maximum frequency of about 7 MHz. I'm currently running PUTEY-1 at about 4 KHz, so I find that margin acceptable.
 

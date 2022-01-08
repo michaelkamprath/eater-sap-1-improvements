@@ -6,7 +6,7 @@
 ; calculatable factorial for 16 bit math). The DELAY_COUNT is used to pause
 ; display long enough for a human to see the results. It is tuned for a system
 ; clock of about 4 KHz. 
-
+#require "putey-1-beta >= 0.3.0"
 #include "system.asm"
 
 DISPLAY = $7800          ; The display register is found at address $7800

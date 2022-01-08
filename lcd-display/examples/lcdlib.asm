@@ -4,6 +4,7 @@
 ; Dependencies:
 ;   general system utilities
 ;
+#require "putey-1-beta >= 0.3.0"
 
 LCD_DATA_REG = $7811                ; address for the LCD Module data register
 LCD_INSTRUCTION_REG = $7810         ; address for the LCD Module instruction register
@@ -38,7 +39,7 @@ _CMD_CGRAM_ADDR = %01000000
 _LCD_SCREEN_BUFFER_SIZE = 81
 
 _lcd_screen_buffer:
-    .zero 81
+    .zero _LCD_SCREEN_BUFFER_SIZE
 
 _lcd_row0_ptr:
     .2byte 0
@@ -85,17 +86,18 @@ lcd_init:
     ; third try
     mov [LCD_INSTRUCTION_REG],_CMD_FNCT_SET_8BIT_2LINE
     ; configure for 8 bit and 2 lines
+    call lcd_wait_busy
     mov [LCD_INSTRUCTION_REG],_CMD_FNCT_SET_8BIT_2LINE
     ; turn off display with no cursour yet
     call lcd_off
     ; clear display
+    call _lcd_init_buffers
     call lcd_clear
     ; set cursor to move right
+    call lcd_wait_busy
     mov [LCD_INSTRUCTION_REG],(_CMD_ENTRY_MODE|_OPT_CURSOR_RIGHT)
     ; set cursour at home
     call lcd_cursor_home
-    ; init the buffers
-    call _lcd_init_buffers
     ; turn on display
     call lcd_on
     ret
@@ -118,24 +120,92 @@ _lcd_init_buffers:
     mov2 [_lcd_row3_ptr],(_lcd_screen_buffer+(_COLUMN_WIDTH*3))
     ret
 
+; lcd_wait_busy
+;   Check the LCD module busy flag and waits until it is not busy
+;
+;   Arguments
+;       None
+;
+;   Returns
+;       None
+lcd_wait_busy:
+    mov a, [LCD_INSTRUCTION_REG]        ; read in instruction register value
+    add %10000000                       ; Add $80 to the instruction rregister value
+    jc lcd_wait_busy                    ; if there is a carry, that means BF was 1, or busy, so try again
+    ret                                 ; BF was 0, so not busy. Just return.
 
+; lcd_send_command
+;   sends a command to the LCD module
+; 
+;   Arguments:
+;       sp+2 : the command to send
+; 
+;   Returns:
+;       nothing
+; 
+lcd_send_command:
+    call lcd_wait_busy                  ; wai to module is ready
+    mov [LCD_INSTRUCTION_REG],[sp+2]    ; send the command on the stack
+    ret
+
+; lcd_off
+;   Turn off LCD display
+;
+;   Arguments
+;       None
+;
+;   Returns
+;       None
+; 
 lcd_off:
+    call lcd_wait_busy
     mov [LCD_INSTRUCTION_REG],_CMD_DISPLAY_CNTL
     ret
 
+; lcd_on
+;   Turn on LCD display with no cursor
+;
+;   Arguments
+;       None
+;
+;   Returns
+;       None
+; 
 lcd_on:
+    call lcd_wait_busy
     mov [LCD_INSTRUCTION_REG],(_CMD_DISPLAY_CNTL|_OPT_DISPLAY_ON)
     ret
 
+; lcd_on
+;   Turn on LCD display with a blinking cursor
+;
+;   Arguments
+;       None
+;
+;   Returns
+;       None
+; 
 lcd_on_cursor_blink:
+    call lcd_wait_busy
     mov [LCD_INSTRUCTION_REG],(_CMD_DISPLAY_CNTL|_OPT_DISPLAY_CNTL_ALL)
     ret
 
+; lcd_clear
+;   Clears the LCD sceen and screen buffer.
+;
+;   Arguments
+;       None
+;
+;   Returns
+;       None
+; 
 lcd_clear:
+    call lcd_wait_busy
     mov [LCD_INSTRUCTION_REG],_CMD_CLEAR_DISPLAY
     ret
 
 lcd_cursor_home:
+    call lcd_wait_busy
     mov [LCD_INSTRUCTION_REG],_CMD_CURSOR_HOME
     ret
 
@@ -185,7 +255,6 @@ lcd_write_row_cstr:
 ;   arguments:
 ;       sp+2    - row number (0-3)
 ;
-
 lcd_send_buffer_row:
     push [sp+2]
     call _lcd_set_hl_to_row_ptr
@@ -244,6 +313,7 @@ _lcd_set_hl_to_row_ptr:
 ;
 ;
 lcd_set_cursor_at_row_start:
+    call lcd_wait_busy
     mov a, [sp+2]
     jeq .row0, 0
     jeq .row1, 1
@@ -275,6 +345,7 @@ lcd_set_cursor_at_row_start:
 ;
 ;
 lcd_set_cursor_at_row_end:
+    call lcd_wait_busy
     mov a, [sp+2]
     jeq .row0, 0
     jeq .row1, 1
@@ -382,7 +453,7 @@ lcd_write_cstr_at:
     push [sp+5]
     call _lcd_set_hl_to_row_ptr
     pop
-    mov a, _COLUMN_WIDTH                ; setr a to max column width
+    mov a, _COLUMN_WIDTH                ; set a to max column width
     sub [sp+4]                          ; subtract desired x position to get max cstr width
     mov i, a                            ; move to i to be the counter
     mov2 mar, [sp+2]                    ; put the string address into mar for later dereferencing
@@ -413,7 +484,9 @@ lcd_write_cstr_at:
 ;
 ;   Returns
 ;       nothing
+; 
 lcd_create_character:
+    call lcd_wait_busy              ; wait on busy
     ; first thing is to convert character ID into an CGRAM address
     mov a, [sp+2]                   ; place charcter ID into A
     add a                           ; ISA doesn't have left shift (yet), so add A to itself

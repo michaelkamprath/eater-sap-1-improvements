@@ -4,6 +4,7 @@
 ;   PUTEY-1 TTL CPU. All delay timing is for aesthetic purposes and configured for a
 ;   system clock operating at about 4 KHz. Adjust accodringing for your system.
 ;
+#require "putey-1-beta >= 0.3.0"
 #include "system.asm"
 
 MAGIC_NUMBER = $BEEF
@@ -18,7 +19,7 @@ str_len_value:
 _init:
     rsp                             ; init stack pointer
     call lcd_init                   ; init device
-    call lcd_on_cursor_blink        ; I want it to blink
+    ; call lcd_on_cursor_blink        ; I want it to blink
     ; install custom characters
     push2 smilie_character_buffer   ; push character buffer address on stack
     push 1                          ; custom character ID

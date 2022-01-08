@@ -1,4 +1,4 @@
-
+#require "putey-1-beta >= 0.3.1"
 
 ; is_equal16
 ;   Checks whether two 16-bit values are equal
@@ -25,8 +25,6 @@ is_equal16:
 .equal:
     mov a,1
     ret
-
-
 
 ; multiply16
 ;   multiply two byte values X*Y
@@ -87,6 +85,63 @@ multiply16:
     mov2 [sp+2], 0                          ; results are 0. set 0 return value
     ret
 
+; divide16
+;   Divides X by Y
+; 
+;   Arguments:
+;       sp+2 : value X dividend (2 bytes)
+;       sp+4 : value Y divisor (2 bytes)
+; 
+;   Return Value:
+;       sp+2 : the quotient (replaces X)
+;       sp+4 : the remainder (replaces Y)
+; 
+;   Registers Used:
+;       hl
+;       a
+divide16:
+    push2 [sp+4]                            ; Place Y one stack
+    push2 0
+    call is_equal16                         ; see if Y is zero
+    pop2
+    pop2
+    jeq .divide_by_zero, 1                  ; handle divide by zero
+    push2 [sp+2]                            ; place X on stack
+    push2 0
+    call is_equal16                         ; see if X is zero
+    pop2
+    pop2
+    jeq .return_zero, 1                     ; X is zero, answer is zero
+    mov2 hl,0                               ; initialize quotient counter HL to 0
+                                            ; at this point, stack variable locations:
+                                            ;   [sp+2] : argument value X (2 bytes)
+                                            ;   [sp+4] : argument value Y (2 bytes)
+    push2 [sp+4]                            ; push Y onto stack (local Y)
+    push2 [sp+(2+2)]                        ; push X onto stack (local X)
+.sub_loop:
+    call subtract16                         ; subtract Y from X
+    jc .no_borrow                           ; determine if no borrow in subtraction
+    jmp .done                               ; there was a borrow, subtraction loop is done    
+.no_borrow:
+    inc hl                                  ; subtraction complete, increment quotient counter
+    push2 0                                 ; determine if result value is zero
+    call is_equal16
+    pop2                                    ; get rid of zero
+    jeq .done_no_add, 1                     ; if X value is now zero, we are done with subtraction loop
+    jmp .sub_loop                           ; subtract again. note stack has new X and original Y in place
+.done:
+    call add16                              ; subtraction loop went one too far, add Y back into X to get remainder
+.done_no_add:
+    mov2 [sp+(2+4)], hl                     ; copy final quotient counter to return position
+    pop2 [sp+(4+4)]                         ; pop remainder (local X) into return position
+    pop2                                    ; pop local Y. stack is restored.
+    ret
+.divide_by_zero:                            ; for now, just return 0
+    mov2 [sp+4],0                           ; set remainder to 0
+.return_zero:
+    mov2 [sp+2],0                           ; set quotient to 0
+    ret
+    
 ; add16
 ;   adds values X+Y
 ;
@@ -99,6 +154,10 @@ multiply16:
 ;
 ; Registers used:
 ;    a
+; 
+; Flags Set
+;   C if carry occured to 17th bit
+; 
 add16:
     mov a, [sp+2]                       ; move low byte of value X into register A
     add [sp+4]                          ; add low byte of value Y to alue in regsiter A
@@ -113,6 +172,39 @@ add16:
     mov [sp+3], a                       ; move the the high bye results to the stack
     ret
 
+; subtract16
+;   subtracts Y value from X
+;
+; Arguments
+;   sp+2 - value X, two byte value
+;   sp+4 - value Y, two byte value
+;
+; Return Value
+;   sp+2 - replace the original two byte value with the sum
+;
+; Registers used:
+;    a
+; 
+; Flags Set
+;   C if no borrow was needed from 17th bit
+; 
+subtract16:
+    mov a,[sp+2]                        ; move low bye of X to A
+    sub [sp+4]                          ; subtract low byte of Y from X
+    mov [sp+2], a                       ; move results to low byte of return value
+    mov a, [sp+3]                       ; move high byte of X to A
+    jc .no_borrow                       ; if carry is set, didn't have to borrow
+.borrowed:
+    ; if  borrowed, do the upper byte subtraction, then subtract 1 for the borrow
+    sub [sp+5]
+    sub 1
+    mov [sp+3],a 
+    ret
+.no_borrow:
+    ; if no borrow, do the upper byte sutraction straight
+    sub [sp+5]
+    mov [sp+3],a 
+    ret
 
 ; inc16
 ;   Increments a 16-bit interger by 1.

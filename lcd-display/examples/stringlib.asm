@@ -1,3 +1,4 @@
+#require "putey-1-beta >= 0.3.0"
 
 ; cstr_len8
 ;   Calculates the length of a cstr, up to 255
@@ -6,7 +7,7 @@
 ;       sp+2 : the address to the string to evaluate (2 bytes)
 ;
 ;   Returns
-;       register A: the length of the cstr (overwrites address) (1 byte)
+;       register A: the length of the cstr (1 byte)
 
 cstr_len8:
     mov2 hl, [sp+2]
@@ -42,6 +43,44 @@ cstr_copy:
     inc mar
     inc hl
     jmp .loop
+.end:
+    ret
+
+; cstr_concat
+;   Concatenates two cstr strings and places them into buffer
+; 
+;   Arguments
+;       sp+2 : Address to the first (left most) cstr (2 bytes). Can be results buffer.
+;       sp+4 : Address to the second (right most) cstr (2 bytes)
+;       sp+6 : Address to the buffer to place the results in. (2 bytes)
+;       sp+8 : Buffer size (1 byte)
+; 
+;   Returns
+;       Nothing
+cstr_concat:
+    mov2 hl,[sp+6]              ; place buffer address into HL
+    mov i,[sp+8]                ; place buffer size into I
+    mov2 mar,[sp+2]             ; place first string address into MAR
+.loop1:
+    mov a,[mar]
+    mov [hl],a
+    dec i
+    jz .end                     ; we are out of buffer. end it.
+    jeq .second_cstr, 0         ; see if char in A is 0
+    inc mar
+    inc hl
+    jmp .loop1
+.second_cstr:
+    mov2 mar,[sp+4]             ; place second string address into MAR
+.loop2:
+    mov a,[mar]
+    mov [hl],a
+    dec i
+    jz .end                     ; we are out of buffer. end it.
+    jeq .end, 0
+    inc mar
+    inc hl
+    jmp .loop2
 .end:
     ret
 
