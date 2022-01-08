@@ -4391,7 +4391,54 @@ instructions:
             extended: 1
           control_lines:
             SCr
-  # MOV2_indirect_mar_hl
+  MOV2_indirect_mar_hl:
+    value: 92
+    steps:
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            ABo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            MDi
+            To
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            Ti
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AOa
+            AP1
+            MDi
+            To
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
   MOV2_indirect_mar_const:
     value: 95
     steps:
@@ -5797,6 +5844,46 @@ instructions:
             To
             SPe
       6:
+        - control_lines:
+            SCr
+  POP2_sp_offset:
+    value: 37
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            SPa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      4:
+        - control_lines:
+            SPa
+            AP1
+            MDo
+            Ti
+      5:
+        - control_lines:
+            SPa
+            AOa
+            AP1
+            MDi
+            To
+            SPe
+      6:
+        - control_lines:
+            SPe
+      7:
         - control_lines:
             SCr
   POP2_iaddr:

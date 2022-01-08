@@ -15,7 +15,7 @@ general:
     - l
   identifier:
     name: putey-1-beta
-    version: "0.3.0"
+    version: "0.3.1"
 operand_sets:
   8_bit_source:
     operand_values:
@@ -475,8 +475,6 @@ instructions:
       operand_sets:
         list:
           - 16_bit_destination
-        disallowed_pairs:
-          - [stack_pointer]
       specific_operands:
         no_operand:
           list:
