@@ -71,6 +71,7 @@ cstr_concat:
     inc hl
     jmp .loop1
 .second_cstr:
+    inc i                       ; account for null value to be overwritten
     mov2 mar,[sp+4]             ; place second string address into MAR
 .loop2:
     mov a,[mar]

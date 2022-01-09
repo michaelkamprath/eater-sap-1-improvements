@@ -370,7 +370,7 @@ lcd_set_cursor_at_row_end:
 ;       Scrolls the LCD screen up one row, leaving row 4 blank
 ;
 ;   Arguments
-;       sp+1 : boolean (1 or 0) indicating whether to erase last row
+;       sp+2 : boolean (1 or 0) indicating whether to erase last row
 ;
 ;   Returns
 ;       nothing
