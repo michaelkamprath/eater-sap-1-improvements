@@ -477,8 +477,8 @@ lcd_write_cstr_at:
 ;   adds a customer character to the LCD module.
 ;
 ;   Arguments
-;       sp+2 : character ID. only 0 through 7 are allowed. Note that a null character (0-valued)
-;              are used by cstr's to indicate the end fo the string, to the 0 character
+;       sp+2 : character ID. only 0 through 7 are allowed. Note that the null character (0-valued)
+;              is used by cstr's to indicate the end of the string, so the 0 character
 ;              ID is effectively unusable when using cstr's.
 ;       sp+3 : character data address. Must point to an 8-byte buffer
 ;
