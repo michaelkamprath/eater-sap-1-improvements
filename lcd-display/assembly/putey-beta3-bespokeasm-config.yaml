@@ -415,6 +415,14 @@ instructions:
                   bytecode:
                     value: 12
                     size: 4
+      - byte_code:
+          value: 16327
+          size: 14
+        operands:
+          count: 1
+          operand_sets:
+            list:
+              - hl_indirect_indexed
   push2:
     byte_code:
       value: 0b00010
@@ -424,6 +432,15 @@ instructions:
       operand_sets:
         list:
           - 16_bit_source
+    variants:
+      - byte_code:
+          value: 16350
+          size: 14
+        operands:
+          count: 1
+          operand_sets:
+            list:
+              - hl_indirect_indexed
   pop:
     byte_code:
       value: 3
@@ -466,6 +483,14 @@ instructions:
                   bytecode:
                     value: 1
                     size: 1
+      - byte_code:
+          value: 16359
+          size: 14
+        operands:
+          count: 1
+          operand_sets:
+            list:
+              - hl_indirect_indexed
   pop2:
     byte_code:
       value: 0b00100
@@ -483,6 +508,15 @@ instructions:
               bytecode:
                 value: 0b111
                 size: 3
+    variants:
+      - byte_code:
+          value: 16351
+          size: 14
+        operands:
+          count: 1
+          operand_sets:
+            list:
+              - hl_indirect_indexed
   # branching
   jmp:
     byte_code:
