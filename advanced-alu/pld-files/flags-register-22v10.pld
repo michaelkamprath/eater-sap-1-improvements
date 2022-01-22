@@ -1,0 +1,22 @@
+GAL22V10
+flagsreg
+
+ACF SUMZF   SUMCF   SUMOF   CMPEF   CMPOF   BITZF   IZF ICF JZF JCF GND
+Af  SUMf    CMPf    BITf    If      Jf      REGEN   EF  OF  CF  ZF  VCC
+
+
+; Pin Logic
+
+/REGEN = Af + SUMf + CMPf + BITf + If + Jf
+
+EF = CMPf*CMPEF
+
+OF = SUMf*SUMOF
+
+CF = Af*ACF + SUMf*SUMCF + If*ICF + Jf*JCF
+
+ZF = SUMf*SUMZF + BITf*BITZF + If*IZF + Jf*JZF
+
+DESCRIPTION
+
+Combinational logic for flags register input.
