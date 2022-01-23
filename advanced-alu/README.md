@@ -10,12 +10,10 @@
 ## Control Logic
 ### Flags
 There are now four status flags on the system that provide input to the control logic. Some of these flags have slight different means depending on what unit set it. The flags and how they are set are:
-* `zero` - Set when the results of a math or logic operation results in a zero value, when the increment/decrement operation in the `I` or `J` register results in a zero value, or when the bit being tested is equal to zero.
-* `carry` - Set when the addition math operation results in a carry, the subtraction math operation does not require a borrow, when the increment operation in the `I` or `J` register results in a carry, or when the left or right shift operation in the A register shifts a one-valued bit out.
-* `overflow` - Set when the math operation of the `74LS382` results in an overflow or when the compare operation indicates that the left hand value (the value in the high byte of the temp register) is greater than the right hand value (the value being read from the data bus).
-* `equal` - Set when compare operation indicates both values are equal. 
-
-### Gate Array Logic
+* `ZF` - **zero** - Set when the results of a math or logic operation results in a zero value, when the increment/decrement operation in the `I` or `J` register results in a zero value, or when the bit being tested is equal to zero.
+* `CF` - **carry** - Set when the addition math operation results in a carry, the subtraction math operation does not require a borrow, when the increment operation in the `I` or `J` register results in a carry, or when the left or right shift operation in the A register shifts a one-valued bit out.
+* `OF`  - **overflow** - Set when the math operation of the `74LS382` results in an overflow or when the compare operation indicates that the left hand value (the value in the high byte of the temp register) is greater than the right hand value (the value being read from the data bus).
+* `EF` - **equal** - Set when compare operation indicates both values are equal. 
 
 ### Control Line Assignment
 This project continues to use the control logic design introduced in the [8-Bit Instruction Register project](../instruction-register-8-bit/), however the control line assignments are redone some. The control line assignments are:
@@ -46,7 +44,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |22 | Left | Low | `Je` | Activate register `J` increment, or decrement when `SUB` is active |
 |23 | Left | Low |  `HLe` | `HL` register increment enable |
 |24 | Left | Low |  | *unused* |
-|25 | Right | Direct | `SUB` | Indicates whether the addition operation should instead be a subtraction operation |
+|25 | Right | Direct | `SUB` | Indicates whether the increment operation should instead be a decrement operation |
 |26 | Right | Direct | `CRY` | Use carry flag to ALU operation |
 |27 | Right | Direct | `S0` | ALU control bit `S0` |
 |28 | Right | Direct | `S1` | ALU control bit `S1` |
@@ -77,4 +75,30 @@ The significant changes over the last project are:
 * Register `A` reading in from the data bus is now controlled by the ALU control bits rather than a dedicated control line `Ai`.
 * The `∑f` control line for controlling when the flag register reads in flags from the ALU is replaced by the ALU control bits.
 * The temp register is now 16-bit so `Ti` and `To` are moderated by the `HILO` control line.
+* The `SUB` signal is now relevant only to decrement operations in the `I`, `J`, and `HL` registers.
+
+### Gate Array Logic
+#### ALU Instruction Control Line Configurations
+The gate array logic for the ALU controller is configured such that the following control line configurations effect the indicated operation:
+
+| Operation | Description | `CRY` | `S0` | `S1` | `S2` | `S3` | Flags Set? |
+|:--|:--|:-:|:-:|:-:|:-:|:-:|:-:|
+| `Ai` | Copy data buss value into the `A` register. Replaces `Ai` control line. | X | 1 | 1 | 0 | 1 | - |
+|`add`| Add low temp value to `A` register | 0 | 1 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
+|`addc`| Add low temp value and carry flag to `A` register | 1 | 1 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
+|`sub`| Subtract low temp value from `A` register | 0 | 0 | 1 | 0 | 0 | `ZF`, `CF`, `OF` | 
+| `subb` | Subtract low temp value from `A` register with carry flag used to indicate whether borrow is taken from `A` when `CF` = 0. | 1 | 0 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
+| `and` | AND low temp value with register `A` | X | 0 | 1 | 1 | 0 | - |
+| `or` | OR low temp value with register `A` | X | 1 | 0 | 1| 0 | - |
+| `xor` | XOR low temp value with register `A` | X | 0 | 0 | 1 | 0 | - |
+| `lsr` | logical shift right register `A` | 0 | 1 | 0 | 0 | 1 | `CF` |
+| `lsrc` | logical shift right register `A` with carry flag filling in leftmost bit | 1 | 1 | 0 | 0 | 1 | `CF` |
+| `lsl` | logical shift left register `A` | 0 | 0 | 1 | 0 | 1 | `CF` |
+| `lslc` | logical shift left register `A` with carry flag filling in rightmost bit | 1 | 0 | 1 | 0 | 1 | `CF` |
+| `rotr` | rotate bits in register `A` right one | X | 1 | 0 | 1 | 1 | - |
+| `rotl` | rotate bits in register `A` left one | X | 0 | 1 | 1 | 1 | - |
+| `comp` | determine the equality or greater than of high temp with database value | X | 1 | 1 | 1 | 1 | `OF`, `EF` |
+| `tstb` | determine if a bit is zero for a value on the data bus  | X | 0 | 0 | 0 | 1 | `ZF` |
+
+
 
