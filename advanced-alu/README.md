@@ -15,6 +15,8 @@ There are now four status flags on the system that provide input to the control 
 * `OF`  - **overflow** - Set when the math operation of the `74LS382` results in an overflow or when the compare operation indicates that the left hand value (the value in the high byte of the temp register) is greater than the right hand value (the value being read from the data bus).
 * `EF` - **equal** - Set when compare operation indicates both values are equal. 
 
+One flag that is not present that one frequently sees in these sort of projects is the negative flag, set if bit 7 of a value it equal to 1. I did not implement it here because I don't yet see the use case and if I ever did need it, the bit testing functionality being implemented in this project would fully cover that use case (one would just test bit 7). 
+
 ### Control Line Assignment
 This project continues to use the control logic design introduced in the [8-Bit Instruction Register project](../instruction-register-8-bit/), however the control line assignments are redone some. The control line assignments are:
 
