@@ -108,3 +108,5 @@ While the basic concept of adding this LCD module to the breadboard CPU are pret
 
 To address the noise on the `MDi` trailing edge, I simply placed a 1 nF capacity between the `MDi` bus rail (where most the inductance is) and ground. This create a small [LC circuit](https://en.wikipedia.org/wiki/LC_circuit) based on the inductance (`L`) of the bus rail and capacitance (`C`) of the added capacitor. Th `LC` circuit smooths out the transition from `HIGH` to `LOW` (and vice versa) in the `MDi` line, but it does have the effect of lengthening the transition time. I measured the transition with an oscilloscope and found it now takes about 140 nanoseconds. This means that my breadboard computer now has a maximum frequency of about 7 MHz. I'm currently running PUTEY-1 at about 4 KHz, so I find that margin acceptable.
 
+I also found I needed to add a 1 pF capacitor to the `MDo` control line for all the same reasons. 
+
