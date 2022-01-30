@@ -15,7 +15,7 @@ general:
     - l
   identifier:
     name: putey-1-beta
-    version: "0.3.1"
+    version: "0.3.2"
 operand_sets:
   8_bit_source:
     operand_values:
@@ -539,6 +539,15 @@ instructions:
   jz:
     byte_code:
       value: 13
+      size: 6
+    operands:
+      count: 1
+      operand_sets:
+        list:
+          - address_source
+  jnz:
+    byte_code:
+      value: 14
       size: 6
     operands:
       count: 1
