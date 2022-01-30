@@ -90,7 +90,7 @@ The gate array logic for the ALU controller is configured such that the followin
 |`addc`| Add low temp value and carry flag to `A` register | 1 | 1 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
 |`sub`| Subtract low temp value from `A` register | 0 | 0 | 1 | 0 | 0 | `ZF`, `CF`, `OF` | 
 | `subb` | Subtract low temp value from `A` register with carry flag used to indicate whether borrow is taken from `A` when `CF` = 0. | 1 | 0 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
-| `and` | AND low temp value with register `A` | X | 0 | 1 | 1 | 0 | - |
+| `and` | AND low temp value with register `A` | X | 0 | 1 | 1 | 0 | `ZF` |
 | `or` | OR low temp value with register `A` | X | 1 | 0 | 1| 0 | - |
 | `xor` | XOR low temp value with register `A` | X | 0 | 0 | 1 | 0 | - |
 | `lsr` | logical shift right register `A` | 0 | 1 | 0 | 0 | 1 | `CF` |
