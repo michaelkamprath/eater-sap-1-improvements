@@ -329,6 +329,100 @@ instructions:
             zero: 1
           control_lines:
             SCr
+  JNZ_iaddr:
+    value: 58
+    steps:
+      1:
+        - flags:
+            zero: 1
+          control_lines:
+            PCe
+        - flags:
+            zero: 0
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      2:
+        - flags:
+            zero: 1
+          control_lines:
+            PCe
+        - flags:
+            zero: 0
+          control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+      3:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
+        - flags:
+            zero: 0
+          control_lines:
+            ARa
+            PCi
+            ARe
+            MDo
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            HILO
+            ARa
+            PCi
+            MDo
+      5:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+  JNZ_addr:
+    value: 59
+    steps:
+      1:
+        - flags:
+            zero: 1
+          control_lines:
+            PCe
+        - flags:
+            zero: 0
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      2:
+        - flags:
+            zero: 1
+          control_lines:
+            PCe
+        - flags:
+            zero: 0
+          control_lines:
+            HILO
+            PCa
+            PCi
+            MDo
+      3:
+        - flags:
+            zero: 1
+          control_lines:
+            SCr
+        - flags:
+            zero: 0
+          control_lines:
+            PCi
+            To
+      4:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
   JEQ_iaddr_i:
     value: 82
     steps:
