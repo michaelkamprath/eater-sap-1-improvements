@@ -2,7 +2,7 @@ GAL22V10
 alucntrl
 
 S0  S1      S2      S3      CRY     NC      NC      NC      NC      NC  NC  GND
-NC  BITf    CMPf    SUMf    Af      ROTATE  ALUS0   ALUS1   ALUS2   AS0 AS1 VCC
+NC  BITf    CMPf    Af      CMPi    ROTATE  ALUS0   ALUS1   ALUS2   AS0 AS1 VCC
 
 ; Pin Logic
 ;
@@ -16,9 +16,6 @@ NC  BITf    CMPf    SUMf    Af      ROTATE  ALUS0   ALUS1   ALUS2   AS0 AS1 VCC
 ALUS0 = /S3 * S0        
 ALUS1 = /S3 * S1
 ALUS2 = /S3 * S2
-SUMf =   /S3 * S0 * S1 * /S2        ; set flags for A ADD B
-       + /S3 * /S0 * S1 * /S2       ; set flags for A SUB B
-       + /S3 * S0 * /S1 * /S2       ; set flags for B SUB A
 
 ; Register A / Shift Instructions
 ;
@@ -32,13 +29,13 @@ SUMf =   /S3 * S0 * S1 * /S2        ; set flags for A ADD B
 ; 
 ; 
 
-AS0 =   S3 * S0 * S1 * /S2
-      + S3 * S0 * /S1
+AS0 =   S3 * /S2 * S1 * S0
+      + S3 * /S1 * S0 
 
-AS1 =   S3 * S1 * S0 * /S2
+AS1 =   S3 * /S2 * S1 * S0
       + S3 * S1 * /S0
 
-ROTATE =   S3 * S2 * S0 * /S1
+ROTATE =   S3 * S2 * /S1 * S0
          + S3 * S2 * S1 * /S0
 
 Af =   AS0 * /AS1 * /ROTATE
@@ -47,15 +44,18 @@ Af =   AS0 * /AS1 * /ROTATE
 
 ; Comparison unit
 ;
-;                 S0 | S1 | S2 | S3      CMPf   BITf
-;                +----+----+----+---- = ------+------
-; compare values |  1 |  1 |  1 |  1       1  |   0  
-; test bit       |  0 |  0 |  0 |  1       0  |   1  
+;                  S0 | S1 | S2 | S3      CMPf   BITf    CMPi
+;                 +----+----+----+---- = ------+------+-------
+; compare values  |  1 |  1 |  1 |  1       1  |   0  |   1
+; compare to zero |  0 |  0 |  1 |  1       1  |   0  |   0
+; test bit        |  0 |  0 |  0 |  1       0  |   1  |   1
 ;
 
-CMPf = S3 * S0 * S1 * S2
-BITf = S3 * /S0 * /S2 * /S2
-
+CMPf =   S3 * S2 * S1 * S0
+       + S3 * S2 * /S1 * /S0
+BITf =   S3 * /S2 * /S1 * /S0
+CMPi =   S3 * S2 * S1 * S0
+       + S3 * /S2 * /S1 * /S0
 DESCRIPTION
 
 Combinational logic for the ALU controller
