@@ -56,6 +56,8 @@ CMPf =   S3 * S2 * S1 * S0
 BITf =   S3 * /S2 * /S1 * /S0
 CMPi =   S3 * S2 * S1 * S0
        + S3 * /S2 * /S1 * /S0
+
+
 DESCRIPTION
 
 Combinational logic for the ALU controller
