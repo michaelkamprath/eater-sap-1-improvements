@@ -44,13 +44,13 @@ multiply16:
     call is_equal16                         ; check to see if X is 0
     pop2                                    ; clear stack
     pop2
-    jeq .return_zero, 1                     ; if checkzero16 was TRUE (1 in a), return a zero value
+    jeq .return_zero, 1                     ; if equal to zero (1 in a), return a zero value
     push2 [sp+4]                            ; place Y on stack
     push2 0
     call is_equal16                         ; check to see if Y is 0
     pop2                                    ; clear stack
     pop2
-    jeq .return_zero, 1                     ; if checkzero16 was TRUE, return a zero value
+    jeq .return_zero, 1                     ; if equal to zero, return a zero value
     push2 [sp+2]                            ; make room on stack for counter variable init to X
     push2 0                                 ; make room on stack for multiply results
                                             ; at this point, stack variable locations:
