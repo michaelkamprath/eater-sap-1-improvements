@@ -100,7 +100,7 @@ cstr_append:
     push2 [sp+2]            ; place destination buffer on stack
     call cstr_len8          ; get length of buffer string
     pop2
-    mov a,i                 ; copy beffer size to I regsiter
+    mov a,i                 ; copy buffer string size to I regsiter
     mov2 hl,[sp+2]          ; place destination buffer address in HL
     mov2 mar,[sp+4]         ; place string address to append in MAR
 .loop:
