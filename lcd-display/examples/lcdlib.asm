@@ -49,7 +49,8 @@ _lcd_row2_ptr:
     .2byte 0
 _lcd_row3_ptr:
     .2byte 0
-
+_temp_row_buffer:
+    .zero _COLUMN_WIDTH+1
 
 .org $4000
 ;
@@ -247,6 +248,38 @@ lcd_write_row_cstr:
     call lcd_send_buffer_row
     pop
 .end:
+    ret
+
+; lcd_center_cstr_on_row
+;       Writes the passed cstr on the indicated row, but centered horizontally. Will not
+;       overwrite positions where passed string would not print.
+;       NOTE - as currently implemented does not work with strings longer than a row's width.
+; 
+;   arguments:
+;       sp+2    - the address of the cstr to display (2 bytes)
+;       sp+4    - row number (0-3)
+;   returns:
+;       nothing
+lcd_center_cstr_on_row:
+    push2 [sp+2]
+    call cstr_len8
+    pop2
+    push a                  ; push the cstr length on the stack
+    mov a, _COLUMN_WIDTH    ; place column width in A
+    sub [sp]                ; subtract the string width
+    pop
+    push 2                  ; divisor
+    push a                  ; dividend
+    call divide8
+    pop a                   ; place the halved diffenrence in A
+    pop                     ; stack is restored
+    push [sp+4]             ; place target row on stack
+    push a                  ; place target column on stack
+    push2 [sp+(2+2)]        ; place cstr address on stack
+    call lcd_write_cstr_at  ; draw centered cstr
+    pop2
+    pop
+    pop                     ; stack is restored
     ret
 
 ; lcd_send_buffer_row

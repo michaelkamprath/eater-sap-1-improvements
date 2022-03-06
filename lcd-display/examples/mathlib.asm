@@ -85,6 +85,46 @@ multiply16:
     mov2 [sp+2], 0                          ; results are 0. set 0 return value
     ret
 
+; divide8
+;   Divides X by Y
+; 
+;   Arguments
+;       sp+2 : value X dividend (1 bytes)
+;       sp+3 : value Y divisor (1 bytes)
+;   Return Value:
+;       sp+2 : the quotient (replaces X)
+;       sp+3 : the remainder (replaces Y)
+; 
+;   Registers Used:
+;       i
+;       a
+; 
+divide8:
+    mov a,[sp+3]                            ; move Y into A
+    jeq .divide_by_zero, 0                  ; check for divide by zero
+    mov a,[sp+2]                            ; move X into A
+    jeq .return_zero, 0                     ; return zero if dividend is 0
+    mov i,0
+.sub_loop:
+    sub [sp+3]                              ; subtract divisor Y from dividend X
+    jc .no_borrow                           ; determine if no borrow in subvtraction
+    jmp .done                               ; there was a borrow, subtraction loop is done
+.no_borrow:
+    inc i                                   ; increment quotient counter
+    jeq .done_no_add, 0                     ; if value in A (X) is now zero, done with subtraction loop.
+    jmp .sub_loop                           ; next subtraction loop
+.done:
+    add [sp+3]                              ; add Y back to now negative X to get remainder
+.done_no_add:
+    mov [sp+3], a                           ; copy remainder value into sp+3
+    mov [sp+2], i                           ; copy quotient count into sp+2
+    ret
+.divide_by_zero:                            ; for now, just return 0
+    mov2 [sp+3],0                           ; set remainder to 0
+.return_zero:
+    mov2 [sp+2],0                           ; set quotient to 0
+    ret
+
 ; divide16
 ;   Divides X by Y
 ; 
@@ -100,7 +140,7 @@ multiply16:
 ;       hl
 ;       a
 divide16:
-    push2 [sp+4]                            ; Place Y one stack
+    push2 [sp+4]                            ; Place Y on stack
     push2 0
     call is_equal16                         ; see if Y is zero
     pop2
