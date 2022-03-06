@@ -1,7 +1,7 @@
 #require "putey-1-beta >= 0.3.2"
 
 ; cstr_len8
-;   Calculates the length of a cstr, up to 255
+;   Calculates the length of a cstr not including the null terminator character, up to 255.
 ;
 ;   Arguments
 ;       sp+2 : the address to the string to evaluate (2 bytes)

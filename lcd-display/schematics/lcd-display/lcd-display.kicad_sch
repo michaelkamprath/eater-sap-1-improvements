@@ -1680,6 +1680,10 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid a5cd8da1-8f7f-4f80-bb23-0317de562222)
   )
+  (wire (pts (xy 234.315 23.495) (xy 245.11 23.495))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid a699df50-4374-4714-8a1e-67355185b051)
+  )
   (wire (pts (xy 50.8 80.645) (xy 168.91 80.645))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid aca4de92-9c41-4c2b-9afa-540d02dafa1c)
@@ -2324,6 +2328,25 @@
     (pin "1" (uuid c65869bd-320e-4658-be01-b0c228d779c0))
   )
 
+  (symbol (lib_id "Device:C") (at 245.11 27.305 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 0e2270f1-03a5-4a80-b6d9-892401a77bc3)
+    (property "Reference" "C?" (id 0) (at 248.031 26.3965 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "22 pF" (id 1) (at 248.031 29.1716 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "" (id 2) (at 246.0752 31.115 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 245.11 27.305 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 4d3f2637-64fa-4be4-8917-121717d8b4da))
+    (pin "2" (uuid 283493fe-2322-461c-8263-ec661e77f688))
+  )
+
   (symbol (lib_id "Device:C") (at 234.315 46.355 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 9a7ade3c-a81d-4038-a57c-b220b9c3cd90)
@@ -2341,6 +2364,22 @@
     )
     (pin "1" (uuid 4b1dbc88-c8c5-476c-80ac-830e56684be9))
     (pin "2" (uuid f587f477-194d-41ae-8a6d-91fbd85f9d3f))
+  )
+
+  (symbol (lib_id "power:GND") (at 234.315 23.495 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid e7850ef5-b65a-428c-9e79-b5b3bf42d7ab)
+    (property "Reference" "#PWR?" (id 0) (at 234.315 29.845 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "GND" (id 1) (at 234.315 28.0575 0))
+    (property "Footprint" "" (id 2) (at 234.315 23.495 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (id 3) (at 234.315 23.495 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid b1fa6cb8-3d72-45aa-a3c3-5fde618340b3))
   )
 
   (sheet_instances
@@ -2375,6 +2414,9 @@
     (path "/00000000-0000-0000-0000-000061d0faec"
       (reference "#PWR09") (unit 1) (value "GND") (footprint "")
     )
+    (path "/e7850ef5-b65a-428c-9e79-b5b3bf42d7ab"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/00000000-0000-0000-0000-000061d87343"
       (reference "C1") (unit 1) (value "0.1 uF") (footprint "")
     )
@@ -2395,6 +2437,9 @@
     )
     (path "/00000000-0000-0000-0000-000061d0eeb6"
       (reference "C7") (unit 1) (value "1 pF") (footprint "")
+    )
+    (path "/0e2270f1-03a5-4a80-b6d9-892401a77bc3"
+      (reference "C?") (unit 1) (value "22 pF") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000061c95bc7"
       (reference "LCD1") (unit 1) (value "LCD2004") (footprint "")
