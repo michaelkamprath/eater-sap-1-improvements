@@ -75,6 +75,7 @@ _draw_hello_horld:
     call lcd_center_cstr_on_row     ; print it centered
     pop2                            ; restore stack
     pop
+    call lcd_redraw_screen
     push2 $0300                     ; set delay timer
     call delay16                    ; run delay
     pop2                            ; restore stack
@@ -84,6 +85,7 @@ _draw_hello_horld:
     call lcd_write_row_cstr
     pop2
     pop
+    call lcd_redraw_screen
     push2 $0080
     call delay16
     pop2
@@ -95,7 +97,7 @@ hello_world_cstr:
 top_line_cstr:
     .cstr "\x04\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x05"
 middle_line_cstr:
-    .cstr "\x04                  \x05"
+    .cstr "\x01                  \x02"
 bottom_line_cstr:
     .cstr "\x06\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03\x07"
 

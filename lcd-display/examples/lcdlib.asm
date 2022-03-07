@@ -293,8 +293,10 @@ lcd_send_buffer_row:
     call _lcd_set_hl_to_row_ptr
     pop
 .send_row:
-    push [sp+2]
-    call lcd_set_cursor_at_row_start
+    push 0                                  ; column 0
+    push [sp+2]                             ; pass row
+    call lcd_set_cursor_to_row_column
+    pop
     pop
     mov i, _COLUMN_WIDTH
 .loop:
@@ -335,17 +337,18 @@ _lcd_set_hl_to_row_ptr:
     mov2 hl, [_lcd_row3_ptr]
     ret
 
-; lcd_set_cursor_at_row_start
-;       Sets the LCD DDRAM address to the start of the passed row
+; lcd_set_cursor_to_row_column
+;       Sets the LCD DDRAM address to the columns of the passed row
 ;
 ;   Arguments
 ;       sp+2    - desired row, values 0, 1, 2, or 3. Nothing hapens if invalid row passed.
+;       sp+3    - desired column, values 0-19
 ;
 ;   Returns
 ;       nothing
 ;
 ;
-lcd_set_cursor_at_row_start:
+lcd_set_cursor_to_row_column:
     call lcd_wait_busy
     mov a, [sp+2]
     jeq .row0, 0
@@ -354,16 +357,19 @@ lcd_set_cursor_at_row_start:
     jeq .row3, 3
     hlt
 .row0:
-    mov [LCD_INSTRUCTION_REG], _CMD_DDRAM_ADDR
-    ret
+    mov a, _CMD_DDRAM_ADDR
+    jmp .set_cursor
 .row1:
-    mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|$40)
-    ret
+    mov a, (_CMD_DDRAM_ADDR|$40)
+    jmp .set_cursor
 .row2:
-    mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|$14)
-    ret
+    mov a, (_CMD_DDRAM_ADDR|$14)
+    jmp .set_cursor
 .row3:
-    mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|$54)
+    mov a, (_CMD_DDRAM_ADDR|$54)
+.set_cursor:
+    add [sp+3]
+    mov [LCD_INSTRUCTION_REG], a
     ret
 
 
@@ -505,6 +511,28 @@ lcd_write_cstr_at:
     pop                                 ; restore stack
 .end:
     ret
+
+; lcd_redraw_screen
+;       Redraws th entire LCD screen based on what's in screen buffer. Does not clear screen first.
+; 
+;   Arguments
+;       None
+; 
+;   Returns
+;       Nothing
+; 
+lcd_redraw_screen:
+    push 0
+    call lcd_send_buffer_row
+    mov [sp], 1
+    call lcd_send_buffer_row
+    mov [sp], 2
+    call lcd_send_buffer_row
+    mov [sp], 3
+    call lcd_send_buffer_row
+    pop
+    ret
+    nop                             
 
 ; lcd_create_character
 ;   adds a customer character to the LCD module.
