@@ -49,7 +49,8 @@ _lcd_row2_ptr:
     .2byte 0
 _lcd_row3_ptr:
     .2byte 0
-
+_temp_row_buffer:
+    .zero _COLUMN_WIDTH+1
 
 .org $4000
 ;
@@ -249,6 +250,38 @@ lcd_write_row_cstr:
 .end:
     ret
 
+; lcd_center_cstr_on_row
+;       Writes the passed cstr on the indicated row, but centered horizontally. Will not
+;       overwrite positions where passed string would not print.
+;       NOTE - as currently implemented does not work with strings longer than a row's width.
+; 
+;   arguments:
+;       sp+2    - the address of the cstr to display (2 bytes)
+;       sp+4    - row number (0-3)
+;   returns:
+;       nothing
+lcd_center_cstr_on_row:
+    push2 [sp+2]
+    call cstr_len8
+    pop2
+    push a                  ; push the cstr length on the stack
+    mov a, _COLUMN_WIDTH    ; place column width in A
+    sub [sp]                ; subtract the string width
+    pop
+    push 2                  ; divisor
+    push a                  ; dividend
+    call divide8
+    pop a                   ; place the halved diffenrence in A
+    pop                     ; stack is restored
+    push [sp+4]             ; place target row on stack
+    push a                  ; place target column on stack
+    push2 [sp+(2+2)]        ; place cstr address on stack
+    call lcd_write_cstr_at  ; draw centered cstr
+    pop2
+    pop
+    pop                     ; stack is restored
+    ret
+
 ; lcd_send_buffer_row
 ;       Sends specific row in buffer to LCD device
 ;
@@ -260,8 +293,10 @@ lcd_send_buffer_row:
     call _lcd_set_hl_to_row_ptr
     pop
 .send_row:
-    push [sp+2]
-    call lcd_set_cursor_at_row_start
+    push 0                                  ; column 0
+    push [sp+2]                             ; pass row
+    call lcd_set_cursor_to_row_column
+    pop
     pop
     mov i, _COLUMN_WIDTH
 .loop:
@@ -302,17 +337,18 @@ _lcd_set_hl_to_row_ptr:
     mov2 hl, [_lcd_row3_ptr]
     ret
 
-; lcd_set_cursor_at_row_start
-;       Sets the LCD DDRAM address to the start of the passed row
+; lcd_set_cursor_to_row_column
+;       Sets the LCD DDRAM address to the columns of the passed row
 ;
 ;   Arguments
 ;       sp+2    - desired row, values 0, 1, 2, or 3. Nothing hapens if invalid row passed.
+;       sp+3    - desired column, values 0-19
 ;
 ;   Returns
 ;       nothing
 ;
 ;
-lcd_set_cursor_at_row_start:
+lcd_set_cursor_to_row_column:
     call lcd_wait_busy
     mov a, [sp+2]
     jeq .row0, 0
@@ -321,16 +357,19 @@ lcd_set_cursor_at_row_start:
     jeq .row3, 3
     hlt
 .row0:
-    mov [LCD_INSTRUCTION_REG], _CMD_DDRAM_ADDR
-    ret
+    mov a, _CMD_DDRAM_ADDR
+    jmp .set_cursor
 .row1:
-    mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|$40)
-    ret
+    mov a, (_CMD_DDRAM_ADDR|$40)
+    jmp .set_cursor
 .row2:
-    mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|$14)
-    ret
+    mov a, (_CMD_DDRAM_ADDR|$14)
+    jmp .set_cursor
 .row3:
-    mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|$54)
+    mov a, (_CMD_DDRAM_ADDR|$54)
+.set_cursor:
+    add [sp+3]
+    mov [LCD_INSTRUCTION_REG], a
     ret
 
 
@@ -472,6 +511,28 @@ lcd_write_cstr_at:
     pop                                 ; restore stack
 .end:
     ret
+
+; lcd_redraw_screen
+;       Redraws th entire LCD screen based on what's in screen buffer. Does not clear screen first.
+; 
+;   Arguments
+;       None
+; 
+;   Returns
+;       Nothing
+; 
+lcd_redraw_screen:
+    push 0
+    call lcd_send_buffer_row
+    mov [sp], 1
+    call lcd_send_buffer_row
+    mov [sp], 2
+    call lcd_send_buffer_row
+    mov [sp], 3
+    call lcd_send_buffer_row
+    pop
+    ret
+    nop                             
 
 ; lcd_create_character
 ;   adds a customer character to the LCD module.

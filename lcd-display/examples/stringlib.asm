@@ -1,7 +1,7 @@
-#require "putey-1-beta >= 0.3.0"
+#require "putey-1-beta >= 0.3.2"
 
 ; cstr_len8
-;   Calculates the length of a cstr, up to 255
+;   Calculates the length of a cstr not including the null terminator character, up to 255.
 ;
 ;   Arguments
 ;       sp+2 : the address to the string to evaluate (2 bytes)
@@ -85,28 +85,35 @@ cstr_concat:
 .end:
     ret
 
-; uint8_to_hex_cstr
-;   converts the passed uint8 value to a hex formatted cstr. Does not prepend with 0x or $.
+; cstr_append
+;   appends one string to the other
 ;
 ;   Arguments
-;       sp+2 : the uint8 value (1 byte)
-;       sp+3 : buffer address (2 bytes)
-;       sp+5 : buffer index to write at (must have 2 bytes at this address) (1 byte)
-;
+;       sp+2 : address of destination buffer containing left string (2 bytes)
+;       sp+4 : address of string to to appended (2 bytes)
+;       sp+6 : size of destination buffer (1 byte)
+; 
 ;   Returns
-;       nothing, but does write to passed buffer
-uint8_to_hex_cstr:
-    mov2 hl, _hex_table_upper_nibble        ; set HL to address of upper nibble look up table
-    mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
-    mov2 hl, [sp+3]                         ; place buffer address into HL
-    mov [hl+[sp+5]], a                      ; write first character to buffer
-    mov2 hl, _hex_table_lower_nibble        ; set HL to address of lower nibble look up table
-    mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
-    mov2 hl, [sp+3]                         ; place buffer address into HL
-    inc hl                                  ; increment HL to get second character position
-    mov [hl+[sp+5]], a                      ; write second character to buffer
-    inc hl
-    mov [hl+[sp+5]], 0                      ; put a null value at the end
+;       nothing
+; 
+cstr_append:
+    push2 [sp+2]            ; place destination buffer on stack
+    call cstr_len8          ; get length of buffer string
+    pop2
+    mov a,i                 ; copy buffer string size to I regsiter
+    mov2 hl,[sp+2]          ; place destination buffer address in HL
+    mov2 mar,[sp+4]         ; place string address to append in MAR
+.loop:
+    mov a,i
+    jeq .end, [sp+6]        ; check to see of buffer is full
+    mov a,[mar]             ; copy string character
+    mov [hl+i],a            ; copy character to position in buffer
+    jeq .end,0              ; if we copied null character, we are done
+    inc mar                 ; next character in string
+    inc i                   ; increment position in buffer
+    jnz .loop               ; restart loop if I hasn't rolled over to 0
+    mov [hl+255], 0         ; make last character in buffer equal to 0
+.end:
     ret
 
 ; uint16_to_hex_cstr
@@ -136,6 +143,29 @@ uint16_to_hex_cstr:
     pop
     ret
 
+; uint8_to_hex_cstr
+;   converts the passed uint8 value to a hex formatted cstr. Does not prepend with 0x or $.
+;
+;   Arguments
+;       sp+2 : the uint8 value (1 byte)
+;       sp+3 : buffer address (2 bytes)
+;       sp+5 : buffer index to write at (must have 2 bytes at this address) (1 byte)
+;
+;   Returns
+;       nothing, but does write to passed buffer
+uint8_to_hex_cstr:
+    mov2 hl, _hex_table_upper_nibble        ; set HL to address of upper nibble look up table
+    mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
+    mov2 hl, [sp+3]                         ; place buffer address into HL
+    mov [hl+[sp+5]], a                      ; write first character to buffer
+    mov2 hl, _hex_table_lower_nibble        ; set HL to address of lower nibble look up table
+    mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
+    mov2 hl, [sp+3]                         ; place buffer address into HL
+    inc hl                                  ; increment HL to get second character position
+    mov [hl+[sp+5]], a                      ; write second character to buffer
+    inc hl
+    mov [hl+[sp+5]], 0                      ; put a null value at the end
+    ret
 
 ;
 ; String Lib Data
