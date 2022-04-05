@@ -59,14 +59,14 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |35 | Right | High | `MDo` | Memory device output to data bus |
 |36 | Right | High | `Ao`	 | Write contents of `A` register to data bus |
 |37 | Right | High | `To` | Write at the temp register byte indicated by `HILO` to the data bus |
-|38 | Right | High |  | *unused* |
+|38 | Right | High | `Fo` | Writes the Flags register to the data bus |
 |39 | Right | High | `Io` | Write contents of `I` register to data bus |
 |40 | Right | High | `Jo` | Write contents of `J` register to data bus |
 |41 | Right | High | `∑o` | Write the results of the ALU operation to data bus |
 |42 | Right | Low | `SCr` | Resets both the step counter, the offset register,  the extended instruction bit. A step counter overflow needs to do the same thing. |
 |43 | Right | Low |  `SPr` | Reset stack pointer to "empty stack" value |
 |44 | Right | Low |  `DSs` | Data source input select for 16-bit registers that can load from either address or data bus. LOW is data bus, HIGH is address bus. |
-|45 | Right | Low |  |  *unused* |
+|45 | Right | Low | `CMPi` | Write the High byte of the temp register to the comparison unit |
 |46 | Right | Low | `If` |  Write register `I` flags status to the flags register |
 |47 | Right | Low | `Jf` | Write register `J` flags status to the flags register |
 |48 | Right | Low | `HLT` | Halt the system clock |
