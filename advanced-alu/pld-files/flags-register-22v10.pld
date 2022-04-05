@@ -1,21 +1,21 @@
 GAL22V10
 flagsreg
 
-ACF SUMZF   SUMCF   SUMOF   CMPEF   CMPOF   BITZF   IZF ICF JZF JCF GND
-Af  SUMf    CMPf    BITf    If      Jf      REGEN   EF  OF  CF  ZF  VCC
+ACF SUMZF   SUMCF   SUMOF   CMPZF   CMPEF   CMPOF   BITZF   NC  NC  NC  GND
+NC  Af      SUMf    CMPf    BITf    NC      REGEN   EF      OF  CF  ZF  VCC
 
 
 ; Pin Logic
 
-/REGEN = Af + SUMf + CMPf + BITf + If + Jf
+/REGEN = Af + SUMf + CMPf + BITf
 
 EF = CMPf*CMPEF
 
 OF = SUMf*SUMOF
 
-CF = Af*ACF + SUMf*SUMCF + If*ICF + Jf*JCF
+CF = Af*ACF + SUMf*SUMCF 
 
-ZF = SUMf*SUMZF + BITf*BITZF + If*IZF + Jf*JZF
+ZF = SUMf*SUMZF + CMPf*CMPZF + BITf*BITZF
 
 DESCRIPTION
 

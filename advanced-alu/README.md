@@ -67,8 +67,8 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |43 | Right | Low |  `SPr` | Reset stack pointer to "empty stack" value |
 |44 | Right | Low |  `DSs` | Data source input select for 16-bit registers that can load from either address or data bus. LOW is data bus, HIGH is address bus. |
 |45 | Right | Low | `CMPi` | Write the High byte of the temp register to the comparison unit |
-|46 | Right | Low | `If` |  Write register `I` flags status to the flags register |
-|47 | Right | Low | `Jf` | Write register `J` flags status to the flags register |
+|46 | Right | Low | `Fo` | Write flags register to data bus |
+|47 | Right | Low |  | *unused* |
 |48 | Right | Low | `HLT` | Halt the system clock |
 
 The significant changes over the last project are:
@@ -76,6 +76,8 @@ The significant changes over the last project are:
 * `CRY`, `S0`, `S1`, `S2`, and `S3` control bits are added to manage the ALU through the gate array logic. 
 * Register `A` reading in from the data bus is now controlled by the ALU control bits rather than a dedicated control line `Ai`.
 * The `∑f` control line for controlling when the flag register reads in flags from the ALU is replaced by the ALU control bits.
+* `If` and `Jf` flags control lines removed. Now, microcode will use the comparison unit to test for zero in the `I`, `J`, and `HL` registers during increment and decrement operations.
+* `Fo` flags out control line added
 * The temp register is now 16-bit so `Ti` and `To` are moderated by the `HILO` control line.
 * The `SUB` signal is now relevant only to decrement operations in the `I`, `J`, and `HL` registers.
 
