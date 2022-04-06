@@ -10,8 +10,8 @@
 ## Control Logic
 ### Flags
 There are now four status flags on the system that provide input to the control logic. Some of these flags have slight different means depending on what unit set it. The flags and how they are set are:
-* `ZF` - **zero** - Set when the results of a math or logic operation results in a zero value, when the increment/decrement operation in the `I` or `J` register results in a zero value, or when the bit being tested is equal to zero.
-* `CF` - **carry** - Set when the addition math operation results in a carry, the subtraction math operation does not require a borrow, when the increment operation in the `I` or `J` register results in a carry, or when the left or right shift operation in the A register shifts a one-valued bit out.
+* `ZF` - **zero** - Set when the results of a math or logic operation results in a zero value, when data bus value being tested is zero, or when the bit being tested is equal to zero.
+* `CF` - **carry** - Set when the addition math operation results in a carry, the subtraction math operation does not require a borrow, or when the left or right shift operation in the A register shifts a one-valued bit out.
 * `OF`  - **overflow** - Set when the math operation of the `74LS382` results in an overflow or when the compare operation indicates that the left hand value (the value in the high byte of the temp register) is greater than the right hand value (the value being read from the data bus).
 * `EF` - **equal** - Set when compare operation indicates both values are equal. 
 
@@ -45,7 +45,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |21 | Left | Low | `Ie` | Activate register `I` increment, or decrement when `SUB` is active  |
 |22 | Left | Low | `Je` | Activate register `J` increment, or decrement when `SUB` is active |
 |23 | Left | Low |  `HLe` | `HL` register increment enable |
-|24 | Left | Low |  | *unused* |
+|24 | Left | Low | `Fo` | Write flags register to data bus |
 |25 | Right | Direct | `SUB` | Indicates whether the increment operation should instead be a decrement operation |
 |26 | Right | Direct | `CRY` | Use carry flag to ALU operation |
 |27 | Right | Direct | `S0` | ALU control bit `S0` |
@@ -67,7 +67,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |43 | Right | Low |  `SPr` | Reset stack pointer to "empty stack" value |
 |44 | Right | Low |  `DSs` | Data source input select for 16-bit registers that can load from either address or data bus. LOW is data bus, HIGH is address bus. |
 |45 | Right | Low | `CMPi` | Write the High byte of the temp register to the comparison unit |
-|46 | Right | Low | `Fo` | Write flags register to data bus |
+|46 | Right | Low |  | *unused* |
 |47 | Right | Low |  | *unused* |
 |48 | Right | Low | `HLT` | Halt the system clock |
 
@@ -104,5 +104,10 @@ The gate array logic for the ALU controller is configured such that the followin
 | `comp` | determine the equality or greater than of high temp with database value | X | 1 | 1 | 1 | 1 | `OF`, `EF` |
 | `tstb` | determine if a bit is zero for a value on the data bus  | X | 0 | 0 | 0 | 1 | `ZF` |
 
+### Updated Extended Instruction Logic
+One of the shortcomings of my 8-bit instruction register project was how I enabled the `XTD` bit. The `XTD` bit effectively made the instruction register a 9-bit instruction space, and this bit would be set by a control line. The unfortunate design element is that when the `XTD` bit got set, the step counter was not itself reset. So, if the `XTD` bit get set on step 2 of an instruction, the first step under the `XTD` bit space would be step 3. The primary issue with the design is that the `SCr` control line is what was used to reset both the step counter and the `XTD` bit.
 
+In this project I update the design slightly to allow the step counter to be reset without resetting the `XTD` bit, and then separately enabling reseting the `XTD` bit. Using this ability wisely would actually enable 14-step instructions. To reset only the step counter to step 0, the `SCr` control line should be activated. To set the `XTD` bit on the clock's rising edge, the `XTD` control line should be activated. To reset both the step counter and the `XTD` bit, the `SCr` and `XTD` control lines should be activated at the same time. One important detail here is that if the `XTD` bit is activated, the instruction must be ended with the `SCr` & `XTD` control line combination. Unlike normal instruction, extended instructions cannot use the step counter rollover behavior to end an instruction.
+
+### Updated Counting Registers `I` and `J`
 
