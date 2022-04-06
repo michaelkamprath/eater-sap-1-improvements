@@ -33,7 +33,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |9 | Left | Direct | `PCi` | Read data bus value into single program counter byte indicated by `HILO` |
 |10 | Left | Direct | `IRi` | Read data bus value into instruction register |
 |11 | Left | High | `MDi` | Memory device read from data bus |
-|12 | Left | High |  | *unused* |
+|12 | Left | High | `Ai` | Read data bus value into `A` register |
 |13 | Left | High | `Ti` | Read data bus value into singled byte of temp register indicated by `HILO` |
 |14 | Left | High | `HLi` | Read data bus value into single `HL` register byte indicated by `HILO` |
 |15 | Left | High | `Ii` | Read data bus value into `I` register |
@@ -45,7 +45,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |21 | Left | Low | `Ie` | Activate register `I` increment, or decrement when `SUB` is active  |
 |22 | Left | Low | `Je` | Activate register `J` increment, or decrement when `SUB` is active |
 |23 | Left | Low |  `HLe` | `HL` register increment enable |
-|24 | Left | Low | `Fo` | Write flags register to data bus |
+|24 | Left | Low |  | *unused* |
 |25 | Right | Direct | `SUB` | Indicates whether the increment operation should instead be a decrement operation |
 |26 | Right | Direct | `CRY` | Use carry flag to ALU operation |
 |27 | Right | Direct | `S0` | ALU control bit `S0` |
