@@ -7,7 +7,7 @@
 * A compare function
 
 
-## Control Logic
+## Design
 ### Flags
 There are now four status flags on the system that provide input to the control logic. Some of these flags have slight different means depending on what unit set it. The flags and how they are set are:
 * `ZF` - **zero** - Set when the results of a math or logic operation results in a zero value, when data bus value being tested is zero, or when the bit being tested is equal to zero.
@@ -73,8 +73,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 
 The significant changes over the last project are:
 
-* `CRY`, `S0`, `S1`, `S2`, and `S3` control bits are added to manage the ALU through the gate array logic. 
-* Register `A` reading in from the data bus is now controlled by the ALU control bits rather than a dedicated control line `Ai`.
+* `CRY`, `S0`, `S1`, `S2`, and `S3`, `CMPi` control bits are added to manage the ALU through the gate array logic. 
 * The `∑f` control line for controlling when the flag register reads in flags from the ALU is replaced by the ALU control bits.
 * `If` and `Jf` flags control lines removed. Now, microcode will use the comparison unit to test for zero in the `I`, `J`, and `HL` registers during increment and decrement operations.
 * `Fo` flags out control line added
@@ -85,29 +84,37 @@ The significant changes over the last project are:
 #### ALU Instruction Control Line Configurations
 The gate array logic for the ALU controller is configured such that the following control line configurations effect the indicated operation:
 
-| Operation | Description | `CRY` | `S0` | `S1` | `S2` | `S3` | Flags Set? |
-|:--|:--|:-:|:-:|:-:|:-:|:-:|:-:|
-| `Ai` | Copy data buss value into the `A` register. Replaces `Ai` control line. | X | 1 | 1 | 0 | 1 | - |
-|`add`| Add low temp value to `A` register | 0 | 1 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
-|`addc`| Add low temp value and carry flag to `A` register | 1 | 1 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
-|`sub`| Subtract low temp value from `A` register | 0 | 0 | 1 | 0 | 0 | `ZF`, `CF`, `OF` | 
-| `subb` | Subtract low temp value from `A` register with carry flag used to indicate whether borrow is taken from `A` when `CF` = 0. | 1 | 0 | 1 | 0 | 0 | `ZF`, `CF`, `OF` |
-| `and` | AND low temp value with register `A` | X | 0 | 1 | 1 | 0 | `ZF` |
-| `or` | OR low temp value with register `A` | X | 1 | 0 | 1| 0 | - |
-| `xor` | XOR low temp value with register `A` | X | 0 | 0 | 1 | 0 | - |
-| `lsr` | logical shift right register `A` | 0 | 1 | 0 | 0 | 1 | `CF` |
-| `lsrc` | logical shift right register `A` with carry flag filling in leftmost bit | 1 | 1 | 0 | 0 | 1 | `CF` |
-| `lsl` | logical shift left register `A` | 0 | 0 | 1 | 0 | 1 | `CF` |
-| `lslc` | logical shift left register `A` with carry flag filling in rightmost bit | 1 | 0 | 1 | 0 | 1 | `CF` |
-| `rotr` | rotate bits in register `A` right one | X | 1 | 0 | 1 | 1 | - |
-| `rotl` | rotate bits in register `A` left one | X | 0 | 1 | 1 | 1 | - |
-| `comp` | determine the equality or greater than of high temp with database value | X | 1 | 1 | 1 | 1 | `OF`, `EF` |
-| `tstb` | determine if a bit is zero for a value on the data bus  | X | 0 | 0 | 0 | 1 | `ZF` |
+| Operation | Description | `CRY` | `S0` | `S1` | `S2` | `S3` | `CMPi` | Flags Set? |
+|:--|:--|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|`add`| Add low temp value to `A` register | 0 | 1 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
+|`addc`| Add low temp value and carry flag to `A` register | 1 | 1 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
+|`sub`| Subtract low temp value from `A` register | 0 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` | 
+| `subb` | Subtract low temp value from `A` register with carry flag used to indicate whether borrow is taken from `A` when `CF` = 0. | 1 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
+| `and` | AND low temp value with register `A` | 0 | 0 | 1 | 1 | 0 || `ZF` |
+| `or` | OR low temp value with register `A` | 0 | 1 | 0 | 1| 0 || `ZF` |
+| `xor` | XOR low temp value with register `A` | 0 | 0 | 0 | 1 | 0 || `ZF` |
+| `lsr` | logical shift right register `A` | 0 | 1 | 0 | 0 | 1 || `CF` |
+| `lsrc` | logical shift right register `A` with carry flag filling in leftmost bit | 1 | 1 | 0 | 0 | 1 || `CF` |
+| `lsl` | logical shift left register `A` | 0 | 0 | 1 | 0 | 1 || `CF` |
+| `lslc` | logical shift left register `A` with carry flag filling in rightmost bit | 1 | 0 | 1 | 0 | 1 || `CF` |
+| `rotr` | rotate bits in register `A` right one | X | 1 | 0 | 1 | 1 || - |
+| `rotl` | rotate bits in register `A` left one | X | 0 | 1 | 1 | 1 || - |
+| `comp` | determine the equality or greater than of high temp with database value | X | 1 | 1 | 1 | 1 | 1 | `OF`, `EF` |
+| `tstz` | determine whether a data bus value is zero | X | 1 | 1 | 1 | 1 | 0 | `ZF` |
+| `tstb` | determine if a bit is zero for a value on the data bus  | X | 0 | 0 | 0 | 1 || `ZF` |
 
 ### Updated Extended Instruction Logic
 One of the shortcomings of my 8-bit instruction register project was how I enabled the `XTD` bit. The `XTD` bit effectively made the instruction register a 9-bit instruction space, and this bit would be set by a control line. The unfortunate design element is that when the `XTD` bit got set, the step counter was not itself reset. So, if the `XTD` bit get set on step 2 of an instruction, the first step under the `XTD` bit space would be step 3. The primary issue with the design is that the `SCr` control line is what was used to reset both the step counter and the `XTD` bit.
 
-In this project I update the design slightly to allow the step counter to be reset without resetting the `XTD` bit, and then separately enabling reseting the `XTD` bit. Using this ability wisely would actually enable 14-step instructions. To reset only the step counter to step 0, the `SCr` control line should be activated. To set the `XTD` bit on the clock's rising edge, the `XTD` control line should be activated. To reset both the step counter and the `XTD` bit, the `SCr` and `XTD` control lines should be activated at the same time. One important detail here is that if the `XTD` bit is activated, the instruction must be ended with the `SCr` & `XTD` control line combination. Unlike normal instruction, extended instructions cannot use the step counter rollover behavior to end an instruction.
+To address this issue, I updated what the `XTD` control line does. It now not only sets the `XTD` bit, but also reset the step counter. The step counter is reset near the falling edge of the clock after the `XTD` bit is set. That way, the first step with the `XTD` bit is set is step 0. Note that the `XTD` still gets reset on `SCr`, step counter overflow, and `CLR`. With carful usage, this mechanism can also be used to extend the steps of an instruction from a max usable of 7 steps to 14 steps. 
+
+### Comparison Unit
+#### Value Comparison
+
+#### Bit Testing
 
 ### Updated Counting Registers `I` and `J`
+While I was happy with the `I` and `J` counting registers when I built them, time and use has shown me that they were probably more complicated than they needed to be. Specifically the circuitry to detect zero and carry conditions. In this build, I decided to simplify these registers' implementation by removing the zero and carry detection, and then leverage the comparison unit to detect zero values on increment and decrement operations. This means there is no longer a carry flag generated by the `I` and `J` registers. This is OK, as the carry flag was detected when an increment operation resulted in a zero value. One can just detect the zero value directly.
+
+After removing the circuitry for flag detection, the `I` and `J` registers reduced down to each being two 74LS169 up/down counters and a 74LS245 bus transceiver.
 
