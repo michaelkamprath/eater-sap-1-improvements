@@ -4,6 +4,10 @@
 
   (paper "A4")
 
+  (title_block
+    (title "Advanced Arithmetic Logic Unit")
+  )
+
   (lib_symbols
     (symbol "74xx:74LS04" (in_bom yes) (on_board yes)
       (property "Reference" "U" (id 0) (at 0 1.27 0)
@@ -1470,7 +1474,7 @@
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid ab578312-e20d-4ad8-928f-718905e4b36d)
   )
-  (hierarchical_label "CMPi" (shape input) (at 272.415 77.47 0)
+  (hierarchical_label "CMPs" (shape input) (at 272.415 77.47 0)
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid b08a68db-68d4-47ac-960b-a38b209544a1)
   )
@@ -1824,7 +1828,7 @@
       (effects (font (size 1.27 1.27)) (justify right))
       (uuid 1eebfd84-80e5-4b88-85af-d619911441f4)
     )
-    (pin "CMPi" input (at 122.555 147.32 0)
+    (pin "CMPs" input (at 122.555 147.32 0)
       (effects (font (size 1.27 1.27)) (justify right))
       (uuid 373050cc-0265-4b6c-9094-9d8f071a108f)
     )
