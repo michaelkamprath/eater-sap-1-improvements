@@ -20,6 +20,8 @@ class Microcode:
     #
     #   microcode[extended][instruction][step][c-flag][z-flag][n-flag][o-flag]
     def __init__(self, config_dict):
+        self._allowed_flags = set(config_dict['flags'])
+
         self.microcode = {'X':{'X':{'X':{'X':{'X':{'X':{'X':MicroBits(0)}}}}}}}
         # first generate the microbits objects
         microbits = {
@@ -33,6 +35,12 @@ class Microcode:
 
         for step_num, step_config_list in config_dict['instruction_prefix_steps'].items():
             for step_config in step_config_list:
+                if (
+                    'flags' in step_config 
+                    and 
+                    len(set(step_config['flags'].keys()).difference(self._allowed_flags)) > 0
+                ):
+                    sys.exit(f'ERROR - Prefix set {step_num} has an invalid flag')
                 for instruction_val in set(instruction_values):
                     self._insert_step_config(step_config, step_num, instruction_val, microbits)
 
@@ -42,6 +50,12 @@ class Microcode:
 
             for step_num, step_config_list in instruction_config['steps'].items():
                 for step_config in step_config_list:
+                    if (
+                        'flags' in step_config 
+                        and 
+                        len(set(step_config['flags'].keys()).difference(self._allowed_flags)) > 0
+                    ):
+                        sys.exit(f'ERROR - Instruction "{instruction}" step {step_num} has an invalid flag')
                     self._insert_step_config(step_config, step_num, instruction_config['value'], microbits)
         # and thats it
         return
