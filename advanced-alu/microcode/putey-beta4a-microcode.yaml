@@ -4498,7 +4498,7 @@ instructions:
         - flags:
             extended: 1
           control_lines:
-              SCr
+            SCr
   MOV2_indirect_mar_hl:
     value: 92
     steps:
