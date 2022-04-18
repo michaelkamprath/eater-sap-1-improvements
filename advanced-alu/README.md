@@ -30,7 +30,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |6 | Left | Direct | `AOa` | Write Address Offset results to address bus adder |
 |7 | Left | Direct | `XTD` | Activate extended instruction bit |
 |8 | Left | Direct | `AOi` | Address Offset register in from data bus |
-|9 | Left | Direct | `PCi` | Read data bus value into single program counter byte indicated by `HILO` |
+|9 | Left | Direct | `PCi` | Read data bus value into single program counter byte indicated by `HILO`, or address bus value if `DSs` is selected |
 |10 | Left | Direct | `IRi` | Read data bus value into instruction register |
 |11 | Left | High | `MDi` | Memory device read from data bus |
 |12 | Left | High | `Ai` | Read data bus value into `A` register |
@@ -57,7 +57,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |33 | Right | Direct | `AP1` | Add 1 to value on address bus |
 |34 | Right | Direct | `ABo` | Write the byte indicated by `HILO` of the address bus to the data bus |
 |35 | Right | High | `MDo` | Memory device output to data bus |
-|36 | Right | High | `Ao`	 | Write contents of `A` register to data bus |
+|36 | Right | High | `Ao` | Write contents of `A` register to data bus |
 |37 | Right | High | `To` | Write at the temp register byte indicated by `HILO` to the data bus |
 |38 | Right | High | `Fo` | Writes the Flags register to the data bus |
 |39 | Right | High | `Io` | Write contents of `I` register to data bus |
@@ -78,6 +78,7 @@ The significant changes over the last project are:
 * `If` and `Jf` flags control lines removed. Now, microcode will use the comparison unit to test for zero in the `I`, `J`, and `HL` registers during increment and decrement operations.
 * `Fo` flags out control line added
 * The temp register is now 16-bit so `Ti` and `To` are moderated by the `HILO` control line.
+ * ERROR - The temp register being controled by `HILO` creates problems in microcode when using `ABo`.
 * The `SUB` signal is now relevant only to decrement operations in the `I`, `J`, and `HL` registers.
 
 ### Gate Array Logic
@@ -106,7 +107,7 @@ The gate array logic for the ALU controller is configured such that the followin
 ### Updated Extended Instruction Logic
 One of the shortcomings of my 8-bit instruction register project was how I enabled the `XTD` bit. The `XTD` bit effectively made the instruction register a 9-bit instruction space, and this bit would be set by a control line. The unfortunate design element is that when the `XTD` bit got set, the step counter was not itself reset. So, if the `XTD` bit get set on step 2 of an instruction, the first step under the `XTD` bit space would be step 3. The primary issue with the design is that the `SCr` control line is what was used to reset both the step counter and the `XTD` bit.
 
-To address this issue, I updated what the `XTD` control line does. It now not only sets the `XTD` bit, but also reset the step counter. The step counter is reset near the falling edge of the clock after the `XTD` bit is set. That way, the first step with the `XTD` bit is set is step 0. Note that the `XTD` bit still gets reset on `SCr`, step counter overflow, and `CLR`. With carful usage, this mechanism can also be used to extend the steps of an instruction from a max usable of 7 steps to 14 steps. 
+To address this issue, I updated what the `XTD` control line does. It now not only sets the `XTD` bit, but also reset the step counter. The step counter is reset near the falling edge of the clock after the `XTD` bit is set. That way, the first step with the `XTD` bit is set is step 0. Note that the `XTD` bit still gets reset on `SCr`, step counter overflow, and `CLR`.  To use the `XTD` control line properly in microcode, the XTD control line must be active on both the extended and non-extended version of the instruction step. Because of this, if a new instruction value is not loaded while in the extended steps, the `SCr` control line should be asserted before the extended step that contains the `XTD` control line. With careful usage, this mechanism can also be used to extend the steps of an instruction from a max usable of 7 useful steps to 12 useful steps.
 
 ### Comparison Unit
 The comparison unit is intended to provide general value comparison to the PUTEY-1. The basic design goal is to compare the value on the data bus to a reference value, and then set flags accordingly. There are two parts to the comparison unit implemented. The actual comparison operation is select by the ALU control lines as indicated above.

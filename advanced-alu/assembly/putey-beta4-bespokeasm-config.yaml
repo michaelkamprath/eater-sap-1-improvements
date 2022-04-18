@@ -957,7 +957,6 @@ instructions:
           - [indirect_mar_register, stack_pointer]
           - [indirect_mar_register, indirect_addr]
           - [stack_pointer, indirect_hl_register]
-          - [stack_pointer, indirect_addr]
           - [stack_pointer, stack_pointer]
           - [indirect_addr, indirect_hl_register]
           - [indirect_addr, mar]

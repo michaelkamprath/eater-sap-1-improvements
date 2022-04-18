@@ -4071,10 +4071,10 @@ instructions:
             extended: 1
           control_lines:
             SCr
+ 
   #
   # Two-Byte Move
   #
-
   MOV2_hl_mar:
     value: 66
     steps:
@@ -4749,7 +4749,7 @@ instructions:
           control_lines:
             PCa
             MDo
-            ARi
+            AOi
             PCe
       2:
         - flags:
@@ -4757,7 +4757,6 @@ instructions:
           control_lines:
             PCa
             MDo
-            HILO
             ARi
             PCe
       3:
@@ -4766,7 +4765,8 @@ instructions:
           control_lines:
             PCa
             MDo
-            AOi
+            ARi
+            HILO
             PCe
       4:
         - flags:
@@ -5323,8 +5323,6 @@ instructions:
       2:
         - control_lines:
             SCr
-
-
 
   #
   # stack operations
