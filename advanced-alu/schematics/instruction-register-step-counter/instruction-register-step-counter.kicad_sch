@@ -3353,7 +3353,7 @@
     (pin "7" (uuid d78b13f4-2b0a-4810-871c-f48040b9220f))
   )
 
-  (symbol (lib_id "74xx:74LS04") (at 134.112 66.294 0) (unit 2)
+  (symbol (lib_id "74xx:74LS04") (at 134.112 66.294 0) (unit 3)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-000060d4e826)
     (property "Reference" "U2" (id 0) (at 134.112 58.2422 0))
@@ -3819,7 +3819,7 @@
     (pin "7" (uuid 1eb42abd-1deb-463e-b751-41637bf1529b))
   )
 
-  (symbol (lib_id "74xx:74LS04") (at 123.952 23.622 180) (unit 6)
+  (symbol (lib_id "74xx:74LS04") (at 123.952 23.622 180) (unit 5)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 034761f7-89e6-4cfb-b6ff-bf1b84c7a5df)
     (property "Reference" "U7" (id 0) (at 123.952 16.1122 0))
@@ -3846,7 +3846,7 @@
     (pin "7" (uuid 37e027e0-c693-46fd-91b0-bc4f7a8a75a2))
   )
 
-  (symbol (lib_id "74xx:74LS04") (at 134.112 52.578 0) (unit 3)
+  (symbol (lib_id "74xx:74LS04") (at 134.112 52.578 0) (unit 4)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 316c4eb7-eb02-4aee-9908-ad637445fc51)
     (property "Reference" "U7" (id 0) (at 134.112 45.0682 0))
@@ -3873,7 +3873,7 @@
     (pin "7" (uuid fed3a2a3-f77b-4b53-b7c5-a3d43d67384a))
   )
 
-  (symbol (lib_id "74xx:74LS04") (at 141.732 23.622 180) (unit 5)
+  (symbol (lib_id "74xx:74LS04") (at 141.732 23.622 180) (unit 6)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 3c86424c-5cb5-43a6-9f0c-e11641cd17b6)
     (property "Reference" "U7" (id 0) (at 141.732 16.1122 0))
@@ -3904,7 +3904,7 @@
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 7f2909e2-02a6-43fe-89c8-6c62bb0441cb)
     (property "Reference" "U6" (id 0) (at 116.332 58.7842 0))
-    (property "Value" "" (id 1) (at 116.332 61.3211 0))
+    (property "Value" "74LS32" (id 1) (at 116.332 61.3211 0))
     (property "Footprint" "" (id 2) (at 116.332 66.294 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -3927,11 +3927,11 @@
     (pin "7" (uuid a534cb3c-3026-43e3-bd1b-6d61d20fb83f))
   )
 
-  (symbol (lib_id "74xx:74LS08") (at 106.68 26.162 180) (unit 1)
+  (symbol (lib_id "74xx:74LS08") (at 106.68 26.162 180) (unit 3)
     (in_bom yes) (on_board yes)
     (uuid c662e862-20c0-4648-89b3-1d6053bef953)
     (property "Reference" "U3" (id 0) (at 106.68 18.1102 0))
-    (property "Value" "74LS08" (id 1) (at 106.68 20.4216 0))
+    (property "Value" "" (id 1) (at 106.68 20.4216 0))
     (property "Footprint" "" (id 2) (at 106.68 26.162 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -3941,17 +3941,17 @@
     (pin "1" (uuid 67ecd177-1049-4082-9588-5b7c9cde9503))
     (pin "2" (uuid a3e8eee4-7bde-4c30-bd84-683c364fd651))
     (pin "3" (uuid f65be21c-b8bf-4e7c-bc7f-9fffb33d32ba))
-    (pin "4" (uuid 988758bf-9d3b-4782-82e0-2d41204f4051))
-    (pin "5" (uuid dfdede7d-8b78-4b16-994b-3af415cf5866))
-    (pin "6" (uuid 51910664-0c82-4c00-bb5c-c64c5f325b78))
-    (pin "10" (uuid 59cde1ca-d4c4-4553-ab6d-ac30af0b2b13))
-    (pin "8" (uuid 0b4bc92d-47bf-4db8-93c2-5b339fd65f97))
-    (pin "9" (uuid 2931709a-9157-440b-913a-682791df90c9))
-    (pin "11" (uuid 27ed34d8-a118-49fe-9a49-5f926b046bd2))
-    (pin "12" (uuid 045ae1be-ffc1-4cf6-82bd-fe9e4de71a1a))
-    (pin "13" (uuid e4015ad2-3e2f-419e-9a88-e59ab9c6e5c3))
-    (pin "14" (uuid bde8ecb6-8f54-4c81-a756-d3f5f8297c6e))
-    (pin "7" (uuid 1eb42abd-1deb-463e-b751-41637bf1529b))
+    (pin "4" (uuid 988758bf-9d3b-4782-82e0-2d41204f4052))
+    (pin "5" (uuid dfdede7d-8b78-4b16-994b-3af415cf5867))
+    (pin "6" (uuid 51910664-0c82-4c00-bb5c-c64c5f325b79))
+    (pin "10" (uuid 59cde1ca-d4c4-4553-ab6d-ac30af0b2b14))
+    (pin "8" (uuid 0b4bc92d-47bf-4db8-93c2-5b339fd65f98))
+    (pin "9" (uuid 2931709a-9157-440b-913a-682791df90ca))
+    (pin "11" (uuid 27ed34d8-a118-49fe-9a49-5f926b046bd3))
+    (pin "12" (uuid 045ae1be-ffc1-4cf6-82bd-fe9e4de71a1b))
+    (pin "13" (uuid e4015ad2-3e2f-419e-9a88-e59ab9c6e5c4))
+    (pin "14" (uuid bde8ecb6-8f54-4c81-a756-d3f5f8297c6f))
+    (pin "7" (uuid 1eb42abd-1deb-463e-b751-41637bf1529c))
   )
 
   (sheet_instances
@@ -4038,13 +4038,13 @@
       (reference "U2") (unit 1) (value "74LS04") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000060d4e826"
-      (reference "U2") (unit 2) (value "74LS04") (footprint "")
+      (reference "U2") (unit 3) (value "74LS04") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000060eae619"
       (reference "U2") (unit 4) (value "74LS04") (footprint "")
     )
     (path "/c662e862-20c0-4648-89b3-1d6053bef953"
-      (reference "U3") (unit 1) (value "74LS08") (footprint "")
+      (reference "U3") (unit 3) (value "74LS08") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000060d24130"
       (reference "U4") (unit 1) (value "74HCT238") (footprint "")
@@ -4056,12 +4056,12 @@
       (reference "U6") (unit 4) (value "74LS32") (footprint "")
     )
     (path "/316c4eb7-eb02-4aee-9908-ad637445fc51"
-      (reference "U7") (unit 3) (value "74LS04") (footprint "")
-    )
-    (path "/3c86424c-5cb5-43a6-9f0c-e11641cd17b6"
-      (reference "U7") (unit 5) (value "74LS04") (footprint "")
+      (reference "U7") (unit 4) (value "74LS04") (footprint "")
     )
     (path "/034761f7-89e6-4cfb-b6ff-bf1b84c7a5df"
+      (reference "U7") (unit 5) (value "74LS04") (footprint "")
+    )
+    (path "/3c86424c-5cb5-43a6-9f0c-e11641cd17b6"
       (reference "U7") (unit 6) (value "74LS04") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000060e0d0cc"
