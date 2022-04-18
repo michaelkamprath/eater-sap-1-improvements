@@ -969,6 +969,7 @@ instructions:
           value: 40
           size: 8
         operands:
+          count: 2
           specific_operands:
             iaddr1_iaddr2:
               reverse_argument_order: true
