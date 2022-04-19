@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.0dev"
+#require "putey-1-beta >= 0.4.dev"
 
 ; memset8
 ;   sets each byte in a block of memory to a particular value
