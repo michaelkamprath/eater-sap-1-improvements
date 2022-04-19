@@ -62,14 +62,12 @@ multiply16:
     push2 [sp+8]                            ; push multiplicand Y
     push2 [sp+2]                            ; push results value
     call add16                              ; add Y to running sum
-    mov [sp+4],[sp]                         ; save addition results baclkinto results variable
-    mov [sp+5],[sp+1]                       ; must do it 1 byte at a time due to ISA
+    mov2 [sp+(0+4)],[sp]                    ; save addition results baclkinto results variable
     pop2                                    ; pop2 results value
     pop2                                    ; clear stack (value Y)
-    push2 [sp+2]                            ; push multiply counter on stack
+    push2 [sp+2]                            ; push multiply loop counter on stack
     call dec16                              ; decrement multiply counter
-    mov2 hl,[sp]                            ; copy decremented multiply counter into multiply counter variable ..,
-    mov2 [sp+4],hl                          ; ... through HL due to ISA limitation
+    mov2 [sp+(2+2)],[sp]                    ; copy decremented multiply counter into multiply counter variable
     push2 0                                 ; place 0 value on stack
     call is_equal16                         ; check whether decremented multiply counter is 0
     pop2                                    ; remove 0 from stack

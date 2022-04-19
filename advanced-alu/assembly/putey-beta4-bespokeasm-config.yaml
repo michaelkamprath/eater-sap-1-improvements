@@ -949,7 +949,6 @@ instructions:
           - [indirect_hl_register, hl_register]
           - [indirect_hl_register, indirect_hl_register]
           - [indirect_hl_register, indirect_mar_register]
-          - [indirect_hl_register, indirect_addr]
           - [mar_register, mar_register]
           - [indirect_mar_register, indirect_hl_register]
           - [indirect_mar_register, mar_register]
@@ -989,7 +988,37 @@ instructions:
                   argument:
                     size: 16
                     byte_align: true
-
+      - byte_code:
+          value: 41
+          size: 8
+        operands:
+          count: 2
+          specific_operands:
+            stack_pointer1_stack_pointer2:
+              reverse_argument_order: true
+              list:
+                stack_pointer1:
+                  type: indirect_register
+                  register: sp
+                  bytecode:
+                    value: 0
+                    size: 0
+                  offset:
+                    max: 255
+                    min: 0
+                    size: 8
+                    byte_align: true
+                stack_pointer2:
+                  type: indirect_register
+                  register: sp
+                  bytecode:
+                    value: 0
+                    size: 0
+                  offset:
+                    max: 255
+                    min: 0
+                    size: 8
+                    byte_align: true
   # arithmetic operations
   add:
     byte_code:

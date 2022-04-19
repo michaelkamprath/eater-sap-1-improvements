@@ -4280,6 +4280,67 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  # MOV2_indirect_hl_sp_offset:
+  MOV2_indirect_hl_iaddr:
+    value: 78
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            HILO
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDi
+            To
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AP1
+            MDo
+            Ti
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            AP1
+            MDi
+            To
   MOV2_indirect_hl_const:
     value: 79
     steps:
@@ -4644,6 +4705,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  # MOV2_sp_offset_indirect_hl_offset:
   MOV2_sp_offset_mar:
     value: 106
     steps:
@@ -4740,6 +4802,89 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  MOV2_sp_offset1_sp_offset2:
+    value: 41
+    steps:
+      0:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            AP1
+            MDi
+            To
+      1:
+        - flags:
+            extended: 0
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            MDo
+            Ti
+            SPe
+      2:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            AOa
+            AP1
+            MDo
+            Ti
+            SPe
+            SUB
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            AP1
+            MDi
+            To
+      3:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDi
+            To
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+      4:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            AOa
+            AP1
+            MDo
+            Ti
+      5:
+        - flags:
+            extended: 0
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      6:
+        - flags:
+            extended: 0
+          control_lines:
+            XTD
+        - flags:
+            extended: 1
+          control_lines:
+            XTD
   MOV2_sp_offset_iaddr:
     value: 110
     steps:
