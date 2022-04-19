@@ -294,7 +294,7 @@ lcd_send_buffer_row:
     pop
 .send_row:
     push 0                                  ; column 0
-    push [sp+2]                             ; pass row
+    push [sp+(2+1)]                         ; pass row
     call lcd_set_cursor_to_row_column
     pop
     pop
@@ -416,15 +416,11 @@ lcd_set_cursor_at_row_end:
 ;
 ;
 lcd_scroll_up:
-    ; Rotate the row pointers - must use HL to move rather than 1 mov2 because
-    ; ISA does not support mov2 between indirect memory addresses
+    ; Rotate the row pointers 
     push2 [_lcd_row0_ptr]                               ; save row 0 pointer to stack
-    mov2 hl,[_lcd_row1_ptr]                             ; copy row 1 pointer to row 0 through HL
-    mov2 [_lcd_row0_ptr],hl
-    mov2 hl,[_lcd_row2_ptr]                             ; copy row 2 pointer to row 1 through HL
-    mov2 [_lcd_row1_ptr],hl
-    mov2 hl,[_lcd_row3_ptr]                             ; copy row 3 pointer to row 2 through HL
-    mov2 [_lcd_row2_ptr],hl
+    mov2 [_lcd_row0_ptr],[_lcd_row1_ptr]                ; copy row 1 pointer to row 0
+    mov2 [_lcd_row1_ptr],[_lcd_row2_ptr]                ; copy row 2 pointer to row 1
+    mov2 [_lcd_row2_ptr],[_lcd_row3_ptr]                ; copy row 3 pointer to row 2
     pop2 [_lcd_row3_ptr]                                ; pop saved row 0 pointer into row 3
     ; set the bottom row to all zpaces
     push _COLUMN_WIDTH

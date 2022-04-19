@@ -4904,6 +4904,99 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  MOV2_iaddr1_iaddr2:
+    value: 40
+    steps:
+      0:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe          
+      1:
+        - flags:
+            extended: 0
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe  
+      2:
+        - flags:
+            extended: 0
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDi
+            To
+      3:
+        - flags:
+            extended: 0
+          control_lines:
+            ARa
+            AP1
+            MDo
+            Ti
+            SPe
+            SUB
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDi
+            To
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            AP1
+            MDi
+            To
+            SPe
+      5:
+        - flags:
+            extended: 0
+          control_lines:
+            ARa
+            MDo
+            Ti
+        - flags:
+            extended: 1
+          control_lines:
+            SCr            
+      6:
+        - flags:
+            extended: 0
+          control_lines:
+            XTD
+        - flags:
+            extended: 1
+          control_lines:
+            XTD
   MOV2_iaddr_const:
     value: 119
     steps:

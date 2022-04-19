@@ -64,6 +64,13 @@ _start:
     push2 $08FF
     call delay16                    ; delay some
     pop2
+    ; scroll to clear screen
+    push2 blank_line_cstr           ; push black line one stack
+    call lcd_print_line_cstr        ; print it
+    call lcd_print_line_cstr        ; print it
+    call lcd_print_line_cstr        ; print it
+    call lcd_print_line_cstr        ; print it
+    pop2
     jmp _start                      ; loop again.
 
 hello_world_cstr:

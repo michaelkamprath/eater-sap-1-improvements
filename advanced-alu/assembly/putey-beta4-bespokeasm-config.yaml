@@ -963,32 +963,32 @@ instructions:
           - [indirect_addr, indirect_mar_register]
           - [indirect_addr, stack_pointer]
           - [indirect_addr, indirect_addr]
-    # variants:
-    #   - byte_code:
-    #       value: 40
-    #       size: 8
-    #     operands:
-    #       count: 2
-    #       specific_operands:
-    #         iaddr1_iaddr2:
-    #           reverse_argument_order: true
-    #           list:
-    #             indirect_addr1:
-    #               type: indirect_numeric
-    #               bytecode:
-    #                 value: 0
-    #                 size: 0
-    #               argument:
-    #                 size: 16
-    #                 byte_align: true
-    #             indirect_addr2:
-    #               type: indirect_numeric
-    #               bytecode:
-    #                 value: 0
-    #                 size: 0
-    #               argument:
-    #                 size: 16
-    #                 byte_align: true
+    variants:
+      - byte_code:
+          value: 40
+          size: 8
+        operands:
+          count: 2
+          specific_operands:
+            iaddr1_iaddr2:
+              reverse_argument_order: true
+              list:
+                indirect_addr1:
+                  type: indirect_numeric
+                  bytecode:
+                    value: 0
+                    size: 0
+                  argument:
+                    size: 16
+                    byte_align: true
+                indirect_addr2:
+                  type: indirect_numeric
+                  bytecode:
+                    value: 0
+                    size: 0
+                  argument:
+                    size: 16
+                    byte_align: true
 
   # arithmetic operations
   add:
