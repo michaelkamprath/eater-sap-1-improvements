@@ -26,6 +26,12 @@ operand_sets:
         bytecode:
           value: 0
           size: 3
+      flags_register:
+        type: register
+        register: f
+        bytecode:
+          value: 1
+          size: 3
       i_register:
         type: register
         register: i
