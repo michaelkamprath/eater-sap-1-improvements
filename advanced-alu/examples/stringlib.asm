@@ -39,7 +39,7 @@ cstr_copy:
 .loop:
     mov a,[mar]
     mov [hl],a
-    jeq .end,0
+    jeq .end,0                  ; check A register value
     inc mar
     inc hl
     jmp .loop
