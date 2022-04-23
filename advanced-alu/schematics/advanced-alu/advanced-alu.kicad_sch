@@ -2149,5 +2149,8 @@
     (path "/6bb6cbdf-975a-4739-8b7b-034f09023f98/d8dce0b1-682f-46ea-8461-111fcb18ea36"
       (reference "U27") (unit 1) (value "74LS245") (footprint "")
     )
+    (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/8baa8be6-970c-4067-9803-d664087bed34"
+      (reference "U?") (unit 4) (value "74LS04") (footprint "")
+    )
   )
 )

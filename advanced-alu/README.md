@@ -1,13 +1,27 @@
 
+# Advanced Arithmetic Logic Unit
+## Overview
+I have been building towards this for a while. Back when I started extending my Ben Eater SAP-1 and building my PUTEY-1 computer, I established a goad of doing 64-bit math reasonably efficiently on the 8-bit architecture. This project brings that goal to fruition. 
+
+So the big question is why is this project needed? Could I not do 64 -bit math with the 74LS283-based ALU of the original SAP-1? The answer is I could technically do 64-bit math, but multiplication and division would be extremely inefficient. The reason being is that both multiplication and division would have to be implemented as addition and subtraction loops (respectively) and for larger numbers, those loops will be slow. While there is a [clever tricks to squeeze some more performance out of the 74LS283s for multiplication](https://hackmd.io/@wmvanvliet/SJHhPqr4c), it doesn't address division and I also desired a more robust set of features.
+
+The complete set of features I desire to implement with this project:
 
 * Add and subtract instructions have a "with carry" version
-* The A register can shift and rotate values left or right.
-* A "test bit" instruction will test a 8-bit source and set the Z flag accordingly. Uses a 74ls151 8-to-1 selector, and a 74ls173 4-bit register to store bit selection. 
-* The test bit hardware can also add ability to check for a zero and negative value on the 8-bit value and set the flags accordingly. Would have to be its own instruction though.
-* A compare function
-
+* The AND, OR, and XOR logical operations
+* Be able to shift and rotate values left or right, optionally "with carry".
+* A "test bit" instruction will test a 8-bit source and set the Z flag accordingly. 
+* A general compare operation that can determine equality and magnitude differences.
+* Ability to write flags register to data bus and be read by other entities on data bus, notably pushing the value on the stack.
 
 ## Design
+### Chip Selection
+The core of this project centers around the 74LS382 arithmetic logic unit. One might ask why I didn't go with the redo-popular 74LS181. Honestly, I can't make heads or tails of all of its logic functions and how they map to my goals above. The 74LS382 very cleanly has an addition, subtraction, logical AND, logical OR, and logical XOR operation, making its use quite simple in the PUTEY-1 architecture. Another benefit of the 74LS382 is that in addition to having a carry flag, it has an overflow flag. 
+
+For bit shifting, I went with the 74LS194 bidirectional shift register. An attractive aspect of these chips is that they have separate input and output pins, plus loading the input is clocked. In this way they are much like the 74LS173 registers used widely in the PUTEY-1 already. Given that, I use that 74LS194 to back the `A` register too. This makes the `A` register central to the operations of the ALU. To enable both shifts and rotations, the left and right serial input pins are connected to the right-most and left-most output bits, respectively, or with the carry flag. Whether the opposite output bits or the carry Flagg is used to populate the serial inputs with a value is moderated by logic gates connected to various control lines.
+
+Finally, at the heart of the comparison operations is the 74LS682 magnitude and identity comparator. I use this chip twice, once with the 74LS382 logic units to be able to easily detect zero-valued results of a logic operation, and then once to provide a general capability to compare the value on the a data bus to either zero or another 8-bit value stored in the temp register. Using this chip to compare 8-it values to zero is much easier than the NOR/AND combination that I used previously. Also used in the comparison unit is a 74LS151 8-to-1 data selector. This chip makes it easy to test the value of a given bit on the data bus. The it number being test is selected by the least significant 3 bits of the temp register, and the zero flag gets set of the bit value is zero. I decided to go with setting the zero flag in order to keep the semantics of the zero flag consistent and keep the number of flags PUTEY-1 has to a minimum. In order to allow branching if the bit value is one, I just need to create a `jnz` "jump if not zero" instruction in the microcode.
+
 ### Flags
 There are now four status flags on the system that provide input to the control logic. Some of these flags have slight different means depending on what unit set it. The flags and how they are set are:
 * `ZF` - **zero** - Set when the results of a math or logic operation results in a zero value, when data bus value being tested is zero, or when the bit being tested is equal to zero.
