@@ -1,8 +1,8 @@
 GAL22V10
 flagsreg
 
-ACF SUMZF   SUMCF   SUMOF   CMPZF   CMPEF   CMPOF   BITZF   NC  NC  NC  GND
-NC  Af      SUMf    CMPf    BITf    NC      REGEN   EF      OF  CF  ZF  VCC
+ACF    SUMZF   SUMCF   SUMOF   CMPZF   CMPEF   CMPOF   BITZF   Af  SUMf  CMPf  GND
+BITf   NC      NC      NC      NC      NC      REGEN   EF      OF  CF    ZF    VCC
 
 
 ; Pin Logic
