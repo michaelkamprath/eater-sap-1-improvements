@@ -1,8 +1,8 @@
 GAL22V10
 alucntrl
 
-S0  S1      S2      S3      CRY   CMPi    Ai      NC      NC      NC  NC  GND
-NC  BITf    CMPf    ALUf    Af    ROTATE  ALUS0   ALUS1   ALUS2   AS0 AS1 VCC
+S0  S1      S2      S3      CRY   CMPs     Ai      ACF     CF      NC  NC  GND
+NC  BITf    CMPf    ALUf    Af    CARRYIN  ALUS0   ALUS1   ALUS2   AS0 AS1 VCC
 
 ; Pin Logic
 ;
@@ -14,23 +14,25 @@ NC  BITf    CMPf    ALUf    Af    ROTATE  ALUS0   ALUS1   ALUS2   AS0 AS1 VCC
 ;   Set the SUMf signal only for math operations. Also need to set the
 ;   ALUf control line to read ALU flags into the flag register.
 ;
-;                     S0 | S1 | S2 | S3 | CRY    ALUS0 | ALUS1 | ALUS2 | ALUf
-;                   +----+----+----+----+----- = ------+-------+-------+------
-; Nothing           |  0 |  0 |  0 |  0 |           0  |   0   |   0   |   0
-; TMP minus A       |  1 |  0 |  0 |  0 |  X        1  |   0   |   0   |   1
-; A minus TMP       |  0 |  1 |  0 |  0 |  X        0  |   1   |   0   |   1
-; A plus TMP        |  1 |  1 |  0 |  0 |  X        1  |   1   |   0   |   1
-; A XOR TMP         |  0 |  0 |  1 |  0 |  0        0  |   0   |   1   |   1
-; A OR TMP          |  1 |  0 |  1 |  0 |  0        1  |   0   |   1   |   1
-; A AND TMP         |  0 |  1 |  1 |  0 |  0        0  |   1   |   1   |   1
-; PRESET (unused)   |  1 |  1 |  1 |  0 |  X        0  |   0   |   0   |   0
+;                     S0 | S1 | S2 | S3 | CRY | CF    ALUS0 | ALUS1 | ALUS2 | ALUf | CARRYIN
+;                   +----+----+----+----+-----+---- = ------+-------+-------+------+---------
+; Nothing           |  0 |  0 |  0 |  0 |  X  | X        0  |   0   |   0   |   0  |   0
+; A minus TMP       |  0 |  1 |  0 |  0 |  0  | X        0  |   1   |   0   |   1  |   1
+; A minus TMP w/CRY |  0 |  1 |  0 |  0 |  1  | 0        0  |   1   |   0   |   1  |   0
+; A minus TMP w/CRY |  0 |  1 |  0 |  0 |  1  | 1        0  |   1   |   0   |   1  |   1
+; A plus TMP        |  1 |  1 |  0 |  0 |  0  | X        1  |   1   |   0   |   1  |   0
+; A plus TMP w/CRY  |  1 |  1 |  0 |  0 |  1  | 0        1  |   1   |   0   |   1  |   0
+; A plus TMP w/CRY  |  1 |  1 |  0 |  0 |  1  | 1        1  |   1   |   0   |   1  |   1
+; A XOR TMP         |  0 |  0 |  1 |  0 |  0  | X        0  |   0   |   1   |   1  |   0
+; A OR TMP          |  1 |  0 |  1 |  0 |  0  | X        1  |   0   |   1   |   1  |   0
+; A AND TMP         |  0 |  1 |  1 |  0 |  0  | X        0  |   1   |   1   |   1  |   0
+; PRESET (unused)   |  1 |  1 |  1 |  0 |  X  | X        0  |   0   |   0   |   0  |   0
 
 
-ALUS0 =   S0 * /S1 * /S2 * /S3
-        + S0 * S1 * /S2 * /S3
+ALUS0 =   S0 * S1 * /S2 * /S3
         + S0 * /S1 * S2 * /S3 * /CRY
 
-ALUS1 =   /S0 * S1 * /S2 * /S3
+ALUS1 =   /SO * S1 * /S2 * /S3
         + S0 * S1 * /S2 * /S3
         + /S0 * S1 * S2 * /S3 * /CRY
 
@@ -41,44 +43,58 @@ ALUS2 =   /S0 * /S1 * S2 * /S3 * /CRY
 ALUf = ALUS0 + ALUS1 + ALUS2
 
 
+CARRYIN =   /SO * S1 * /S2 * /S3 * /CRY
+          + /SO * S1 * /S2 * /S3 * CRY * CF
+          + S0 * S1 * /S2 * /S3 * CRY * CF
+          + /S0 * S1 * /S2 * S3 * CRY * /Ai * CF
+          + /S0 * S1 * S2 * S3 * /CRY * /Ai * ACF
+          + S0 * /S1 * /S2 * S3 * CRY * /Ai * CF
+          + S0 * /S1 * S2 * S3 * /CRY * /Ai * ACF
+          + /S0 * /S1 * S2 * S3 * /Ai 
+
 ; Register A / Shift Instructions
 ;
-;                 S0 | S1 | S2 | S3 | CRY | Ai      AS0 | AS1 | ROTATE | Af
-;               +----+----+----+----+-----+---- = -----+-----+--------+----
-; Ai            |  X |  X |  X |  X |  X  | 1       1  |  1  |    0   |  0
-; left shift    |  0 |  1 |  0 |  1 |  X  | 0       0  |  1  |    0   |  1
-; left rotate   |  0 |  1 |  1 |  1 |  0  | 0       0  |  1  |    1   |  0
-; right shift   |  1 |  0 |  0 |  1 |  X  | 0       1  |  0  |    0   |  1
-; right rotate  |  1 |  0 |  1 |  1 |  0  | 0       1  |  0  |    1   |  0
+;                          S0 | S1 | S2 | S3 | CRY | Ai | ACF | CF     AS0 | AS1 | Af | CARRYIN
+;                        +----+----+----+----+-----+----+-----+---- = -----+-----+----+---------
+; Ai                     |  X |  X |  X |  X |  X  | 1  |  X  |  X      1  |  1  |  0 |   0
+; left shift             |  0 |  1 |  0 |  1 |  0  | 0  |  X  |  X      0  |  1  |  1 |   0
+; left shift w/CRY 0     |  0 |  1 |  0 |  1 |  1  | 0  |  X  |  0      0  |  1  |  1 |   0
+; left shift w/CRY 1     |  0 |  1 |  0 |  1 |  1  | 0  |  X  |  1      0  |  1  |  1 |   1
+; left rotate MSB 0      |  0 |  1 |  1 |  1 |  0  | 0  |  0  |  X      0  |  1  |  0 |   0
+; left rotate MSB 1      |  0 |  1 |  1 |  1 |  0  | 0  |  1  |  X      0  |  1  |  0 |   1
+; right shift            |  1 |  0 |  0 |  1 |  0  | 0  |  X  |  X      1  |  0  |  1 |   0
+; right shift w/CRY 0    |  1 |  0 |  0 |  1 |  1  | 0  |  X  |  0      1  |  0  |  1 |   0
+; right shift w/CRY 1    |  1 |  0 |  0 |  1 |  1  | 0  |  X  |  1      1  |  0  |  1 |   1
+; right rotate LSB 0     |  1 |  0 |  1 |  1 |  0  | 0  |  0  |  X      1  |  0  |  0 |   0
+; right rotate LSB 1     |  1 |  0 |  1 |  1 |  0  | 0  |  1  |  X      1  |  0  |  0 |   1
+; arithmetic right shift |  0 |  0 |  1 |  1 |  X  | 0  |  X  |  X      1  |  0  |  1 |   1
 ; 
 ; 
 
 AS0 =   Ai
       + S0 * /S1 * /S2 * S3 * /Ai
       + S0 * /S1 * S2 * S3 * /CRY * /Ai
+      + /S0 * /S1 * S2 * S3 * /Ai
 
 AS1 =   Ai
       + /S0 * S1 * /S2 * S3 * /Ai
       + /S0 * S1 * S2 * S3 * /CRY * /Ai
 
-ROTATE =   /S0 * S1 * S2 * S3 * /CRY * /Ai
-         + S0 * /S1 * S2 * S3 * /CRY * /Ai
-
-Af =   /AS0 * AS1 * /ROTATE
-     + AS0 * /AS1 * /ROTATE
+Af =   /S0 * S1 * /S2 * S3 * /Ai
+     + S0 * /S1 * /S2 * S3 * /Ai
+     + /S0 * /S1 * S2 * S3 * /Ai
 
 
 ; Comparison unit
 ;
-;                   S0 | S1 | S2 | S3 | CMPi     CMPf   BITf 
+;                   S0 | S1 | S2 | S3 | CMPs     CMPf   BITf 
 ;                 +----+----+----+----+------ = ------+------
 ; compare values  |  1 |  1 |  1 |  1 |  1         1  |   0  
 ; compare to zero |  1 |  1 |  1 |  1 |  0         1  |   0  
 ; test bit        |  0 |  0 |  0 |  1 |  X         0  |   1  
 ;
 
-CMPf =   S3 * S2 * S1 * S0 * CMPi
-       + S3 * S2 * S1 * S0 * /CMPi
+CMPf =   S3 * S2 * S1 * S0
 
 BITf =   S3 * /S2 * /S1 * /S0 
 
@@ -87,9 +103,9 @@ BITf =   S3 * /S2 * /S1 * /S0
 ;
 ;   S0 | S1 | S2 | S3 | 
 ; +----+----+----+----+
+; |  1 |  0 |  0 |  0 | 
 ; |  1 |  1 |  1 |  0 |
-; |  1 |  1 |  0 |  1 |    
-; |  0 |  0 |  1 |  1 |   
+; |  1 |  1 |  0 |  1 |     
 ;
 
 
