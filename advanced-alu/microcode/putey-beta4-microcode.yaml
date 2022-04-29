@@ -7,7 +7,6 @@ control_lines:
   SPa: 4
   HLa: 5
   AOa: 6
-  XTD: 7
   AOi: 8
   PCi: 9
   IRi: 10
@@ -25,6 +24,11 @@ control_lines:
   Je: 22
   HLe: 23
   SUB: 25
+  CRY: 26
+  S0: 27
+  S1: 28
+  S2: 29
+  S3: 30
   AP1: 33
   ABo: 34
   MDo: 35
@@ -37,9 +41,8 @@ control_lines:
   SCr: 42
   SPr: 43
   DSs: 44
-  SUMf: 45
-  If: 46
-  Jf: 47
+  CMPs: 45
+  XTD: 47
   HLT: 48
 flags:
   - zero
@@ -5423,7 +5426,8 @@ instructions:
         - control_lines:
             Ai
             SUMo
-            SUMf
+            S0
+            S1
       3:
         - control_lines:
             SCr
@@ -5438,7 +5442,8 @@ instructions:
         - control_lines:
             Ai
             SUMo
-            SUMf
+            S0
+            S1
       3:
         - control_lines:
             SCr
@@ -5453,7 +5458,8 @@ instructions:
         - control_lines:
             Ai
             SUMo
-            SUMf
+            S0
+            S1
       3:
         - control_lines:
             SCr
@@ -5476,7 +5482,8 @@ instructions:
         - control_lines:
             Ai
             SUMo
-            SUMf
+            S0
+            S1
       4:
         - control_lines:
             SCr
@@ -5499,7 +5506,8 @@ instructions:
         - control_lines:
             Ai
             SUMo
-            SUMf
+            S0
+            S1
       4:
         - control_lines:
             SCr
@@ -5528,7 +5536,8 @@ instructions:
         - control_lines:
             Ai
             SUMo
-            SUMf
+            S0
+            S1
       5:
         - control_lines:
             SCr
@@ -5545,7 +5554,8 @@ instructions:
         - control_lines:
             Ai
             SUMo
-            SUMf
+            S0
+            S1
       3:
         - control_lines:
             SCr
@@ -5559,9 +5569,8 @@ instructions:
       2:
         - control_lines:
             Ai
-            SUB
             SUMo
-            SUMf
+            S1
       3:
         - control_lines:
             SCr
@@ -5575,9 +5584,8 @@ instructions:
       2:
         - control_lines:
             Ai
-            SUB
             SUMo
-            SUMf
+            S1
       3:
         - control_lines:
             SCr
@@ -5591,9 +5599,8 @@ instructions:
       2:
         - control_lines:
             Ai
-            SUB
             SUMo
-            SUMf
+            S1
       3:
         - control_lines:
             SCr
@@ -5614,10 +5621,9 @@ instructions:
             Ti
       3:
         - control_lines:
-            SUB
             Ai
             SUMo
-            SUMf
+            S1
       4:
         - control_lines:
             SCr
@@ -5638,10 +5644,9 @@ instructions:
             MDo
       3:
         - control_lines:
-            SUB
             Ai
             SUMo
-            SUMf
+            S1
       4:
         - control_lines:
             SCr
@@ -5669,9 +5674,8 @@ instructions:
       4:
         - control_lines:
             Ai
-            SUB
             SUMo
-            SUMf
+            S1
       5:
         - control_lines:
             SCr
@@ -5687,9 +5691,8 @@ instructions:
       2:
         - control_lines:
             Ai
-            SUB
             SUMo
-            SUMf
+            S1
       3:
         - control_lines:
             SCr
@@ -5701,7 +5704,11 @@ instructions:
             Ie
       2:
         - control_lines:
-            If
+            Io
+            S0
+            S1
+            S2
+            S3
       3:
         - control_lines:
             SCr
@@ -5713,7 +5720,11 @@ instructions:
             Je
       2:
         - control_lines:
-            Jf
+            Jo
+            S0
+            S1
+            S2
+            S3
       3:
         - control_lines:
             SCr
@@ -5724,6 +5735,29 @@ instructions:
         - control_lines:
             HLe
       2:
+        - control_lines:
+            HLa
+            ABo
+            S0
+            S1
+            S2
+            S3
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            S0
+            S1
+            S2
+            S3
+      4:
         - control_lines:
             SCr
   INC_mar:
@@ -5744,7 +5778,11 @@ instructions:
             SUB
       2:
         - control_lines:
-            If
+            Io
+            S0
+            S1
+            S2
+            S3
       3:
         - control_lines:
             SCr
@@ -5757,7 +5795,11 @@ instructions:
             SUB
       2:
         - control_lines:
-            Jf
+            Jo
+            S0
+            S1
+            S2
+            S3
       3:
         - control_lines:
             SCr
@@ -5769,6 +5811,29 @@ instructions:
             HLe
             SUB
       2:
+        - control_lines:
+            HLa
+            ABo
+            S0
+            S1
+            S2
+            S3
+      3:
+        - flags:
+            zero: 0
+          control_lines:
+            SCr
+        - flags:
+            zero: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            S0
+            S1
+            S2
+            S3
+      4:
         - control_lines:
             SCr
 

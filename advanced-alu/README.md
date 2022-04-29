@@ -20,7 +20,9 @@ The core of this project centers around the 74LS382 arithmetic logic unit. One m
 
 For bit shifting, I went with the 74LS194 bidirectional shift register. An attractive aspect of these chips is that they have separate input and output pins, plus loading the input is clocked. In this way they are much like the 74LS173 registers used widely in the PUTEY-1 already. Given that, I use that 74LS194 to back the `A` register too. This makes the `A` register central to the operations of the ALU. To enable both shifts and rotations, the left and right serial input pins are connected to the right-most and left-most output bits, respectively, or with the carry flag. Whether the opposite output bits or the carry Flagg is used to populate the serial inputs with a value is moderated by logic gates connected to various control lines.
 
-Finally, at the heart of the comparison operations is the 74LS682 magnitude and identity comparator. I use this chip twice, once with the 74LS382 logic units to be able to easily detect zero-valued results of a logic operation, and then once to provide a general capability to compare the value on the a data bus to either zero or another 8-bit value stored in the temp register. Using this chip to compare 8-it values to zero is much easier than the NOR/AND combination that I used previously. Also used in the comparison unit is a 74LS151 8-to-1 data selector. This chip makes it easy to test the value of a given bit on the data bus. The it number being test is selected by the least significant 3 bits of the temp register, and the zero flag gets set of the bit value is zero. I decided to go with setting the zero flag in order to keep the semantics of the zero flag consistent and keep the number of flags PUTEY-1 has to a minimum. In order to allow branching if the bit value is one, I just need to create a `jnz` "jump if not zero" instruction in the microcode.
+At the heart of the comparison operations is the 74LS682 magnitude and identity comparator. I use this chip twice, once with the 74LS382 logic units to be able to easily detect zero-valued results of a logic operation, and then once to provide a general capability to compare the value on the a data bus to either zero or another 8-bit value stored in the temp register. Using this chip to compare 8-it values to zero is much easier than the NOR/AND combination that I used previously. Also used in the comparison unit is a 74LS151 8-to-1 data selector. This chip makes it easy to test the value of a given bit on the data bus. The it number being test is selected by the least significant 3 bits of the temp register, and the zero flag gets set of the bit value is zero. I decided to go with setting the zero flag in order to keep the semantics of the zero flag consistent and keep the number of flags PUTEY-1 has to a minimum. In order to allow branching if the bit value is one, I just need to create a `jnz` "jump if not zero" instruction in the microcode.
+
+Finally, I make use of the ATF22V10C programable logic device in this build. In order to effective the logic of how the control lines would control the various aspects of this ALU, may discrete logic gates would be needed. While part of the charm of this project is to use discrete logic gates where possible, I just felt this project required too many. A programmable logic device allows you to program the logical relationship between a set of input pins and a set of output pins. You could think of these devices as something similar to an EPROM, but they are much faster and use logical relationships to describe the input-to-output relationships as opposed to data. Furthermore, a certain set of pins on these devices can be programmed to be with  input or output pins. In that sense, they are much better suited than EPROMS to consolidate discrete logic gates. I use two of these devices, one to manage the control lines going into the ALU, and one to arbitrate the various flags. These chips are programmed with `PLD` files [as described here](./pld-files/).
 
 ### Flags
 There are now four status flags on the system that provide input to the control logic. Some of these flags have slight different means depending on what unit set it. The flags and how they are set are:
@@ -42,7 +44,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |4 | Left | Direct | `SPa` | Stack pointer address activate |
 |5 | Left | Direct | `HLa` | `HL` register address activate |
 |6 | Left | Direct | `AOa` | Write Address Offset results to address bus adder |
-|7 | Left | Direct | `XTD` | Activate extended instruction bit |
+|7 | Left | Direct | | *unused* |
 |8 | Left | Direct | `AOi` | Address Offset register in from data bus |
 |9 | Left | Direct | `PCi` | Read data bus value into single program counter byte indicated by `HILO`, or address bus value if `DSs` is selected |
 |10 | Left | Direct | `IRi` | Read data bus value into instruction register |
@@ -59,7 +61,7 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |21 | Left | Low | `Ie` | Activate register `I` increment, or decrement when `SUB` is active  |
 |22 | Left | Low | `Je` | Activate register `J` increment, or decrement when `SUB` is active |
 |23 | Left | Low |  `HLe` | `HL` register increment enable |
-|24 | Left | Low |  | *unused* |
+|24 | Left | Low | |  *unused* |
 |25 | Right | Direct | `SUB` | Indicates whether the increment operation should instead be a decrement operation |
 |26 | Right | Direct | `CRY` | Use carry flag to ALU operation |
 |27 | Right | Direct | `S0` | ALU control bit `S0` |
@@ -81,8 +83,8 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |43 | Right | Low |  `SPr` | Reset stack pointer to "empty stack" value |
 |44 | Right | Low |  `DSs` | Data source input select for 16-bit registers that can load from either address or data bus. LOW is data bus, HIGH is address bus. |
 |45 | Right | Low | `CMPs` | Write the temp register to the comparison unit |
-|46 | Right | Low |  | *unused* |
-|47 | Right | Low |  | *unused* |
+|46 | Right | Low | | *unused* |
+|47 | Right | Low |  `XTD` | Activate extended instruction bit |
 |48 | Right | Low | `HLT` | Halt the system clock |
 
 The significant changes over the last project are:
@@ -92,6 +94,7 @@ The significant changes over the last project are:
 * `If` and `Jf` flags control lines removed. Now, microcode will use the comparison unit to test for zero in the `I`, `J`, and `HL` registers during increment and decrement operations.
 * `Fo` flags out control line added
 * The `SUB` signal is now relevant only to decrement operations in the `I`, `J`, and `HL` registers.
+* The `XTD` control line was moved to one of the 74HCT236 banks since in its currently implementation it will never need to be active when another control line is active.
 
 ### Gate Array Logic
 #### ALU Instruction Control Line Configurations
@@ -115,6 +118,8 @@ The gate array logic for the ALU controller is configured such that the followin
 | `comp` | determine the equality or greater than of temp with data bus value | X | 1 | 1 | 1 | 1 | 1 | `OF`, `EF` |
 | `tstz` | determine whether a data bus value is zero | X | 1 | 1 | 1 | 1 | 0 | `ZF` |
 | `tstb` | determine if a data bus bit indicate by lower 3 bits of temp is zero | X | 0 | 0 | 0 | 1 || `ZF` |
+
+#### Flag Arbitration
 
 ### Updated Extended Instruction Logic
 One of the shortcomings of my 8-bit instruction register project was how I enabled the `XTD` bit. The `XTD` bit effectively made the instruction register a 9-bit instruction space, and this bit would be set by a control line. The unfortunate design element is that when the `XTD` bit got set, the step counter was not itself reset. So, if the `XTD` bit get set on step 2 of an instruction, the first step under the `XTD` bit space would be step 3. The primary issue with the design is that the `SCr` control line is what was used to reset both the step counter and the `XTD` bit.
