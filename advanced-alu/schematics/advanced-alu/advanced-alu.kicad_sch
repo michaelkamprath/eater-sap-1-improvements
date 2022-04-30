@@ -1679,35 +1679,41 @@
     (path "/81d36f22-4986-4730-8521-7cec07d7e235/aec51b1f-8bde-4741-9f74-1f9c2d2471ae"
       (reference "U18") (unit 1) (value "74LS173") (footprint "")
     )
-    (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/86f84094-3751-45ac-bbc5-d8f885869273"
-      (reference "U19") (unit 1) (value "74LS245") (footprint "")
+    (path "/81d36f22-4986-4730-8521-7cec07d7e235/6055532a-24fb-434b-9bbc-cffd4eac4612"
+      (reference "U19") (unit 1) (value "74LS04") (footprint "")
     )
-    (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/9a359bd6-32a3-4f5f-b990-a5f6318447f4"
+    (path "/81d36f22-4986-4730-8521-7cec07d7e235/b2242582-8a2a-4dd7-9028-8eff339cc1b0"
+      (reference "U19") (unit 2) (value "74LS04") (footprint "")
+    )
+    (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/86f84094-3751-45ac-bbc5-d8f885869273"
       (reference "U20") (unit 1) (value "74LS245") (footprint "")
     )
+    (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/9a359bd6-32a3-4f5f-b990-a5f6318447f4"
+      (reference "U21") (unit 1) (value "74LS245") (footprint "")
+    )
     (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/0f3ef438-3c9b-4480-8e23-851569546e94"
-      (reference "U21") (unit 1) (value "74LS682") (footprint "")
+      (reference "U22") (unit 1) (value "74LS682") (footprint "")
     )
     (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/5fecc896-8f54-43d8-b47e-a58cda90ff26"
-      (reference "U22") (unit 1) (value "74LS151") (footprint "")
+      (reference "U23") (unit 1) (value "74LS151") (footprint "")
     )
     (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/55e70a67-55bb-4673-b4df-3291a0ecd244"
-      (reference "U23") (unit 1) (value "74LS04") (footprint "")
+      (reference "U24") (unit 1) (value "74LS04") (footprint "")
     )
     (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/1dcdb473-7f98-4824-b563-5b06102857b1"
-      (reference "U24") (unit 1) (value "74LS08") (footprint "")
+      (reference "U25") (unit 1) (value "74LS08") (footprint "")
     )
     (path "/6bb6cbdf-975a-4739-8b7b-034f09023f98/dfdae129-0166-4017-b3f9-9e25f7045973"
-      (reference "U25") (unit 1) (value "ATF22V10C") (footprint "")
+      (reference "U26") (unit 1) (value "ATF22V10C") (footprint "")
     )
     (path "/6bb6cbdf-975a-4739-8b7b-034f09023f98/a347c06e-f2d5-40e5-a6b4-1492125e1cf3"
-      (reference "U26") (unit 1) (value "74LS173") (footprint "")
+      (reference "U27") (unit 1) (value "74LS173") (footprint "")
     )
     (path "/6bb6cbdf-975a-4739-8b7b-034f09023f98/112cf8ee-55a4-4c10-8e94-0c0ddb340a8a"
-      (reference "U27") (unit 1) (value "74LS04") (footprint "")
+      (reference "U28") (unit 1) (value "74LS04") (footprint "")
     )
     (path "/6bb6cbdf-975a-4739-8b7b-034f09023f98/d8dce0b1-682f-46ea-8461-111fcb18ea36"
-      (reference "U28") (unit 1) (value "74LS245") (footprint "")
+      (reference "U29") (unit 1) (value "74LS245") (footprint "")
     )
   )
 )
