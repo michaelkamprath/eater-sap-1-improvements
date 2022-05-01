@@ -2158,7 +2158,7 @@
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 11a03c3a-a895-44b9-b743-ea43b26ee578)
     (property "Reference" "RN4" (id 0) (at 140.716 26.5135 90))
-    (property "Value" "10K Ω" (id 1) (at 140.716 29.2886 90))
+    (property "Value" "3K3 Ω" (id 1) (at 140.716 29.2886 90))
     (property "Footprint" "Resistor_THT:R_Array_SIP9" (id 2) (at 140.97 27.305 90)
       (effects (font (size 1.27 1.27)) hide)
     )

@@ -1608,7 +1608,7 @@
       (reference "RN3") (unit 1) (value "R_Network08_US") (footprint "Resistor_THT:R_Array_SIP9")
     )
     (path "/7ed46a40-8e99-4e35-8530-e12ba5a8816b/11a03c3a-a895-44b9-b743-ea43b26ee578"
-      (reference "RN4") (unit 1) (value "10K Ω") (footprint "Resistor_THT:R_Array_SIP9")
+      (reference "RN4") (unit 1) (value "3K3 Ω") (footprint "Resistor_THT:R_Array_SIP9")
     )
     (path "/5863a2ec-a18a-49d1-98fe-a9e00abbf4b1"
       (reference "U1") (unit 1) (value "74LS04") (footprint "")

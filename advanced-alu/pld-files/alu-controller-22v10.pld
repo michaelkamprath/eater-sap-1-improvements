@@ -32,7 +32,7 @@ NC  BITf    CMPf    ALUf    Af    CARRYIN  ALUS0   ALUS1   ALUS2   AS0 AS1 VCC
 ALUS0 =   S0 * S1 * /S2 * /S3
         + S0 * /S1 * S2 * /S3 * /CRY
 
-ALUS1 =   /SO * S1 * /S2 * /S3
+ALUS1 =   /S0 * S1 * /S2 * /S3
         + S0 * S1 * /S2 * /S3
         + /S0 * S1 * S2 * /S3 * /CRY
 
@@ -43,8 +43,8 @@ ALUS2 =   /S0 * /S1 * S2 * /S3 * /CRY
 ALUf = ALUS0 + ALUS1 + ALUS2
 
 
-CARRYIN =   /SO * S1 * /S2 * /S3 * /CRY
-          + /SO * S1 * /S2 * /S3 * CRY * CF
+CARRYIN =   /S0 * S1 * /S2 * /S3 * /CRY
+          + /S0 * S1 * /S2 * /S3 * CRY * CF
           + S0 * S1 * /S2 * /S3 * CRY * CF
           + /S0 * S1 * /S2 * S3 * CRY * /Ai * CF
           + /S0 * S1 * S2 * S3 * /CRY * /Ai * ACF
@@ -57,16 +57,16 @@ CARRYIN =   /SO * S1 * /S2 * /S3 * /CRY
 ;                          S0 | S1 | S2 | S3 | CRY | Ai | ACF | CF     AS0 | AS1 | Af | CARRYIN
 ;                        +----+----+----+----+-----+----+-----+---- = -----+-----+----+---------
 ; Ai                     |  X |  X |  X |  X |  X  | 1  |  X  |  X      1  |  1  |  0 |   0
-; left shift             |  0 |  1 |  0 |  1 |  0  | 0  |  X  |  X      0  |  1  |  1 |   0
-; left shift w/CRY 0     |  0 |  1 |  0 |  1 |  1  | 0  |  X  |  0      0  |  1  |  1 |   0
-; left shift w/CRY 1     |  0 |  1 |  0 |  1 |  1  | 0  |  X  |  1      0  |  1  |  1 |   1
-; left rotate MSB 0      |  0 |  1 |  1 |  1 |  0  | 0  |  0  |  X      0  |  1  |  0 |   0
-; left rotate MSB 1      |  0 |  1 |  1 |  1 |  0  | 0  |  1  |  X      0  |  1  |  0 |   1
-; right shift            |  1 |  0 |  0 |  1 |  0  | 0  |  X  |  X      1  |  0  |  1 |   0
-; right shift w/CRY 0    |  1 |  0 |  0 |  1 |  1  | 0  |  X  |  0      1  |  0  |  1 |   0
-; right shift w/CRY 1    |  1 |  0 |  0 |  1 |  1  | 0  |  X  |  1      1  |  0  |  1 |   1
-; right rotate LSB 0     |  1 |  0 |  1 |  1 |  0  | 0  |  0  |  X      1  |  0  |  0 |   0
-; right rotate LSB 1     |  1 |  0 |  1 |  1 |  0  | 0  |  1  |  X      1  |  0  |  0 |   1
+; right shift            |  0 |  1 |  0 |  1 |  0  | 0  |  X  |  X      0  |  1  |  1 |   0
+; right shift w/CRY 0    |  0 |  1 |  0 |  1 |  1  | 0  |  X  |  0      0  |  1  |  1 |   0
+; right shift w/CRY 1    |  0 |  1 |  0 |  1 |  1  | 0  |  X  |  1      0  |  1  |  1 |   1
+; right rotate MSB 0     |  0 |  1 |  1 |  1 |  0  | 0  |  0  |  X      0  |  1  |  0 |   0
+; right rotate MSB 1     |  0 |  1 |  1 |  1 |  0  | 0  |  1  |  X      0  |  1  |  0 |   1
+; left shift             |  1 |  0 |  0 |  1 |  0  | 0  |  X  |  X      1  |  0  |  1 |   0
+; left shift w/CRY 0     |  1 |  0 |  0 |  1 |  1  | 0  |  X  |  0      1  |  0  |  1 |   0
+; left shift w/CRY 1     |  1 |  0 |  0 |  1 |  1  | 0  |  X  |  1      1  |  0  |  1 |   1
+; left rotate LSB 0      |  1 |  0 |  1 |  1 |  0  | 0  |  0  |  X      1  |  0  |  0 |   0
+; left rotate LSB 1      |  1 |  0 |  1 |  1 |  0  | 0  |  1  |  X      1  |  0  |  0 |   1
 ; 
 ; 
 
