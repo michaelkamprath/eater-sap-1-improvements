@@ -4,7 +4,7 @@
 ; Dependencies:
 ;   general system utilities
 ;
-#require "putey-1-beta >= 0.4.dev"
+#require "putey-1-beta >= 0.4.dev2"
 
 LCD_DATA_REG = $7811                ; address for the LCD Module data register
 LCD_INSTRUCTION_REG = $7810         ; address for the LCD Module instruction register
@@ -130,9 +130,8 @@ _lcd_init_buffers:
 ;   Returns
 ;       None
 lcd_wait_busy:
-    mov a, [LCD_INSTRUCTION_REG]        ; read in instruction register value
-    add %10000000                       ; Add $80 to the instruction rregister value
-    jc lcd_wait_busy                    ; if there is a carry, that means BF was 1, or busy, so try again
+    tstb [LCD_INSTRUCTION_REG],7        ; test busy flag (BF) if 1 or 0
+    jz lcd_wait_busy                    ; BF was 0, so not busy. Just return.
     ret                                 ; BF was 0, so not busy. Just return.
 
 ; lcd_send_command
@@ -546,9 +545,9 @@ lcd_create_character:
     call lcd_wait_busy              ; wait on busy
     ; first thing is to convert character ID into an CGRAM address
     mov a, [sp+2]                   ; place charcter ID into A
-    add a                           ; ISA doesn't have left shift (yet), so add A to itself
-    add a                           ; and again
-    add a                           ; and again for a <<3
+    lsl
+    lsl
+    lsl                             ; three times for a <<3
     add _CMD_CGRAM_ADDR             ; add CGGRAM instruction prefix (would prefer OR but not in ISA yet)
     mov [LCD_INSTRUCTION_REG], a    ; send command to set the CGRAM address
     ; now copy the character buffer

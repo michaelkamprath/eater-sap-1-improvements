@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.dev"
+#require "putey-1-beta >= 0.4.dev2"
 
 ; cstr_len8
 ;   Calculates the length of a cstr not including the null terminator character, up to 255.
@@ -154,12 +154,16 @@ uint16_to_hex_cstr:
 ;   Returns
 ;       nothing, but does write to passed buffer
 uint8_to_hex_cstr:
-    mov2 hl, _hex_table_upper_nibble        ; set HL to address of upper nibble look up table
-    mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
+    mov2 hl, _numrical_digits_table         ; set HL to address of look up table
+    mov a, [sp+2]                           ; place uint8 value in A
+    lsr4                                    ; move upper nibble to lower nibble
+    mov a, [hl+a]                           ; copy character value into A
     mov2 hl, [sp+3]                         ; place buffer address into HL
     mov [hl+[sp+5]], a                      ; write first character to buffer
-    mov2 hl, _hex_table_lower_nibble        ; set HL to address of lower nibble look up table
-    mov a, [hl+[sp+2]]                      ; get the value at the index of the passed uint8
+    mov2 hl, _numrical_digits_table         ; set HL to address of look up table
+    mov a, [sp+2]                           ; place uint8 value in A
+    and %00001111                           ; mask out lower nibble
+    mov a, [hl+a]                           ; copy second character value into A
     mov2 hl, [sp+3]                         ; place buffer address into HL
     inc hl                                  ; increment HL to get second character position
     mov [hl+[sp+5]], a                      ; write second character to buffer
@@ -170,39 +174,5 @@ uint8_to_hex_cstr:
 ;
 ; String Lib Data
 ;
-
-_hex_table_upper_nibble:
-    .byte "0000000000000000"
-    .byte "1111111111111111"
-    .byte "2222222222222222"
-    .byte "3333333333333333"
-    .byte "4444444444444444"
-    .byte "5555555555555555"
-    .byte "6666666666666666"
-    .byte "7777777777777777"
-    .byte "8888888888888888"
-    .byte "9999999999999999"
-    .byte "AAAAAAAAAAAAAAAA"
-    .byte "BBBBBBBBBBBBBBBB"
-    .byte "CCCCCCCCCCCCCCCC"
-    .byte "DDDDDDDDDDDDDDDD"
-    .byte "EEEEEEEEEEEEEEEE"
-    .byte "FFFFFFFFFFFFFFFF"
-
-_hex_table_lower_nibble:
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
-    .byte "0123456789ABCDEF"
+_numrical_digits_table:
     .byte "0123456789ABCDEF"

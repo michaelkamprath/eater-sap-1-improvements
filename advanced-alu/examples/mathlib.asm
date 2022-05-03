@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.dev"
+#require "putey-1-beta >= 0.4.dev2"
 
 ; is_equal16
 ;   Checks whether two 16-bit values are equal
@@ -201,12 +201,7 @@ add16:
     add [sp+4]                          ; add low byte of value Y to alue in regsiter A
     mov [sp+2], a                       ; move addition results to low byte of return value
     mov a, [sp+3]                       ; move high byte of value X into register A
-    jc .add_one                         ; if the prior addition had a carry, we need to add 1 to high byte
-    jmp .second_byte                    ; no carry on prior addition
-.add_one:
-    add 1                               ; add 1 to the high byte
-.second_byte:
-    add [sp+5]                          ; add the high byte of value Y to register A
+    addc [sp+5] 
     mov [sp+3], a                       ; move the the high bye results to the stack
     ret
 
@@ -231,17 +226,8 @@ subtract16:
     sub [sp+4]                          ; subtract low byte of Y from X
     mov [sp+2], a                       ; move results to low byte of return value
     mov a, [sp+3]                       ; move high byte of X to A
-    jc .no_borrow                       ; if carry is set, didn't have to borrow
-.borrowed:
-    ; if  borrowed, do the upper byte subtraction, then subtract 1 for the borrow
-    sub [sp+5]
-    sub 1
-    mov [sp+3],a 
-    ret
-.no_borrow:
-    ; if no borrow, do the upper byte sutraction straight
-    sub [sp+5]
-    mov [sp+3],a 
+    subb [sp+5]                         ; subtract with borrow high byte
+    mov [sp+3],a                        ; save results
     ret
 
 ; inc16

@@ -29,7 +29,7 @@ There are now four status flags on the system that provide input to the control 
 * `ZF` - **zero** - Set when the results of a math or logic operation results in a zero value, when data bus value being tested is zero, or when the bit being tested is equal to zero.
 * `CF` - **carry** - Set when the addition math operation results in a carry, the subtraction math operation does not require a borrow, or when the left or right shift operation in the A register shifts a one-valued bit out.
 * `OF`  - **overflow** - Set when the math operation of the `74LS382` results in an overflow or when the compare operation indicates that the left hand value (the value in the temp register) is greater than the right hand value (the value being read from the data bus).
-* `EF` - **equal** - Set when compare operation indicates both values are equal. 
+* `EF` - **equal** - Set when compare operation indicates both values (temp register and value on data bus) are equal. 
 
 One flag that is not present that one frequently sees in these sort of projects is the negative flag, set if bit 7 of a value it equal to 1. I did not implement it here because I don't yet see the use case and if I ever did need it, the bit testing functionality being implemented in this project would fully cover that use case (one would just test bit 7). 
 
@@ -105,7 +105,7 @@ The gate array logic for the ALU controller is configured such that the followin
 |`add`| Add temp value to `A` register | 0 | 1 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
 |`addc`| Add temp value and carry flag to `A` register | 1 | 1 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
 |`sub`| Subtract temp value from `A` register | 0 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` | 
-| `subb` | Subtract temp value from `A` register with carry flag used to indicate whether borrow is taken from `A` when `CF` = 0. | 1 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
+| `subb` | Subtract temp value from `A` register with carry flag used to indicate whether borrow was taken from `A` when `CF` = 0. | 1 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
 | `and` | AND temp value with register `A` | 0 | 0 | 1 | 1 | 0 || `ZF` |
 | `or` | OR temp value with register `A` | 0 | 1 | 0 | 1| 0 || `ZF` |
 | `xor` | XOR temp value with register `A` | 0 | 0 | 0 | 1 | 0 || `ZF` |
