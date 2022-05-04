@@ -429,22 +429,10 @@ instructions:
             zero: 0
           control_lines:
             SCr
-  JEQ_iaddr_i:
-    value: 82
+  JE_iaddr:
+    value: 66
     steps:
       1:
-        - control_lines:
-            Ti
-            Io
-      2:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      3:
         - flags:
             equal: 0
           control_lines:
@@ -456,7 +444,7 @@ instructions:
             ARi
             PCe
             MDo
-      4:
+      2:
         - flags:
             equal: 0
           control_lines:
@@ -467,9 +455,8 @@ instructions:
             HILO
             PCa
             ARi
-            PCe
             MDo
-      5:
+      3:
         - flags:
             equal: 0
           control_lines:
@@ -481,7 +468,7 @@ instructions:
             PCi
             ARe
             MDo
-      6:
+      4:
         - flags:
             equal: 1
           control_lines:
@@ -489,27 +476,15 @@ instructions:
             ARa
             PCi
             MDo
-      7:
+      5:
         - flags:
             equal: 1
           control_lines:
             SCr
-  JEQ_iaddr_j:
-    value: 83
+  JE_addr:
+    value: 67
     steps:
       1:
-        - control_lines:
-            Ti
-            Jo
-      2:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      3:
         - flags:
             equal: 0
           control_lines:
@@ -518,10 +493,10 @@ instructions:
             equal: 1
           control_lines:
             PCa
-            ARi
+            Ti
             PCe
             MDo
-      4:
+      2:
         - flags:
             equal: 0
           control_lines:
@@ -531,274 +506,68 @@ instructions:
           control_lines:
             HILO
             PCa
-            ARi
-            PCe
+            PCi
             MDo
-      5:
+      3:
         - flags:
             equal: 0
           control_lines:
             SCr
         - flags:
             equal: 1
+          control_lines:
+            PCi
+            To
+      4:
+        - flags:
+            equal: 1
+          control_lines:
+            SCr
+  JNE_iaddr:
+    value: 70
+    steps:
+      1:
+        - flags:
+            equal: 1
+          control_lines:
+            PCe
+        - equal:
+            zero: 0
+          control_lines:
+            PCa
+            ARi
+            PCe
+            MDo
+      2:
+        - flags:
+            equal: 1
+          control_lines:
+            PCe
+        - flags:
+            equal: 0
+          control_lines:
+            HILO
+            PCa
+            ARi
+            MDo
+      3:
+        - flags:
+            equal: 1
+          control_lines:
+            SCr
+        - flags:
+            equal: 0
           control_lines:
             ARa
             PCi
             ARe
             MDo
-      6:
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            ARa
-            PCi
-            MDo
-      7:
-        - flags:
-            equal: 1
-          control_lines:
-            SCr
-  JEQ_iaddr_sp_offset:
-    value: 85
-    steps:
-      1:
-        - control_lines:
-            PCa
-            AOi
-            PCe
-            MDo
-      2:
-        - control_lines:
-            SPa
-            AOa
-            Ti
-            MDo
-      3:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
       4:
         - flags:
             equal: 0
           control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
-      5:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      6:
-        - flags:
-            equal: 0
-          control_lines:
-            SCr
-        - flags:
-            equal: 1
-          control_lines:
-            ARa
-            PCi
-            ARe
-            MDo
-      7:
-        - flags:
-            equal: 1
-          control_lines:
             HILO
             ARa
-            PCi
-            MDo
-  JEQ_iaddr_indirect_mar:
-    value: 86
-    steps:
-      1:
-        - control_lines:
-            PCa
-            AOi
-            PCe
-            MDo
-      2:
-        - control_lines:
-            ARa
-            AOa
-            Ti
-            MDo
-      3:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      4:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
-      5:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      6:
-        - flags:
-            equal: 0
-          control_lines:
-            SCr
-        - flags:
-            equal: 1
-          control_lines:
-            ARa
-            PCi
-            ARe
-            MDo
-      7:
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            ARa
-            PCi
-            MDo
-  JEQ_iaddr_const:
-    value: 87
-    steps:
-      1:
-        - control_lines:
-            PCa
-            Ti
-            MDo
-            PCe
-      2:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      3:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
-      4:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      5:
-        - flags:
-            equal: 0
-          control_lines:
-            SCr
-        - flags:
-            equal: 1
-          control_lines:
-            ARa
-            PCi
-            ARe
-            MDo
-      6:
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            ARa
-            PCi
-            MDo
-      7:
-        - flags:
-            equal: 1
-          control_lines:
-            SCr
-  JEQ_addr_i:
-    value: 90
-    steps:
-      1:
-        - control_lines:
-            Ti
-            Io
-      2:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      3:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
-      4:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
             PCi
             MDo
       5:
@@ -806,251 +575,49 @@ instructions:
             equal: 0
           control_lines:
             SCr
+  JNE_addr:
+    value: 71
+    steps:
+      1:
         - flags:
             equal: 1
+          control_lines:
+            PCe
+        - flags:
+            equal: 0
+          control_lines:
+            PCa
+            Ti
+            PCe
+            MDo
+      2:
+        - flags:
+            equal: 1
+          control_lines:
+            PCe
+        - flags:
+            equal: 0
+          control_lines:
+            HILO
+            PCa
+            PCi
+            MDo
+      3:
+        - flags:
+            equal: 1
+          control_lines:
+            SCr
+        - flags:
+            equal: 0
           control_lines:
             PCi
             To
-      6:
-        - flags:
-            equal: 1
-          control_lines:
-            SCr
-  JEQ_addr_j:
-    value: 91
-    steps:
-      1:
-        - control_lines:
-            Ti
-            Jo
-      2:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      3:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
       4:
         - flags:
             equal: 0
           control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
-            PCi
-            MDo
-      5:
-        - flags:
-            equal: 0
-          control_lines:
             SCr
-        - flags:
-            equal: 1
-          control_lines:
-            PCi
-            To
-      6:
-        - flags:
-            equal: 1
-          control_lines:
-            SCr
-  JEQ_addr_sp_offset:
-    value: 93
-    steps:
-      1:
-        - control_lines:
-            PCa
-            AOi
-            PCe
-            MDo
-      2:
-        - control_lines:
-            SPa
-            AOa
-            Ti
-            MDo
-      3:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      4:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
-      5:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
-            PCi
-            MDo
-      6:
-        - flags:
-            equal: 0
-          control_lines:
-            SCr
-        - flags:
-            equal: 1
-          control_lines:
-            PCi
-            To
-      7:
-        - flags:
-            equal: 1
-          control_lines:
-            SCr
-  JEQ_addr1_iaddr2:
-    value: 94
-    steps:
-      1:
-        - control_lines:
-            PCa
-            ARi
-            PCe
-            MDo
-      2:
-        - control_lines:
-            HILO
-            PCa
-            ARi
-            PCe
-            MDo
-      3:
-        - control_lines:
-            ARa
-            Ti
-            MDo
-      4:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      5:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
-      6:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
-            PCi
-            MDo
-      7:
-        - flags:
-            equal: 0
-          control_lines:
-            SCr
-        - flags:
-            equal: 1
-          control_lines:
-            PCi
-            To
-  JEQ_addr_const:
-    value: 95
-    steps:
-      1:
-        - control_lines:
-            PCa
-            Ti
-            MDo
-            PCe
-      2:
-        - control_lines:
-            Ao
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      3:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            PCa
-            Ti
-            PCe
-            MDo
-      4:
-        - flags:
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            equal: 1
-          control_lines:
-            HILO
-            PCa
-            PCi
-            MDo
-      5:
-        - flags:
-            equal: 0
-          control_lines:
-            SCr
-        - flags:
-            equal: 1
-          control_lines:
-            PCi
-            To
-      6:
-        - flags:
-            equal: 1
-          control_lines:
-            SCr
+
 
   #
   # Move
@@ -7737,7 +7304,7 @@ instructions:
         - control_lines:
             SCr
   POP_hl_index_a:
-    value: 156
+    value: 4
     steps:
       1:
         - flags:
@@ -7767,7 +7334,7 @@ instructions:
           control_lines:
             SCr
   POP_hl_index_i:
-    value: 157
+    value: 5
     steps:
       1:
         - flags:
@@ -7797,7 +7364,7 @@ instructions:
           control_lines:
             SCr
   POP_hl_index_j:
-    value: 158
+    value: 6
     steps:
       1:
         - flags:
@@ -7827,7 +7394,7 @@ instructions:
           control_lines:
             SCr
   POP_hl_index_stack_pointer_offset:
-    value: 159
+    value: 7
     steps:
       1:
         - flags:
@@ -8386,418 +7953,310 @@ instructions:
   # Comparison and Testing
   #
   TSTB_a:
-    value: 128
+    value: 80
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             Ao
             S3
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_f:
-    value: 129
+    value: 81
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             Fo
             S3
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_i:
-    value: 130
+    value: 82
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             Io
             S3
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_j:
-    value: 131
+    value: 83
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             Jo
             S3
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_hl_offset:
-    value: 132
+    value: 84
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             AOi
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             HLa
             AOa
             MDo
             S3
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_sp_offset:
-    value: 133
+    value: 85
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             AOi
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SPa
             AOa
             MDo
             S3
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_iaddr:
-    value: 134
+    value: 86
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             ARi
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             HILO
             ARi
             PCe
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             ARa
             MDo
             S3
       5:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_const:
-    value: 135
+    value: 87
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             SPe
             SUB
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SPa
             MDi
             To
             PCe
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SPa
             MDo
             S3
       5:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SPe
       6:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_hl_index_a:
-    value: 136
+    value: 88
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             Ao
             AOi
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             HLa
             AOa
             MDo
             S3
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_hl_index_i:
-    value: 137
+    value: 89
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             Io
             AOi
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             HLa
             AOa
             MDo
             S3
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_hl_index_j:
-    value: 138
+    value: 90
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             Jo
             AOi
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             HLa
             AOa
             MDo
             S3
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_hl_index_sp_offset:
-    value: 139
+    value: 91
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             AOi
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SPa
             AOa
             MDo
             AOi
       4:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             HLa
             AOa
             MDo
             S3
       5:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_l:
-    value: 140
+    value: 92
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             HLa
             ABo
             S3
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   TSTB_h:
-    value: 141
+    value: 93
     steps:
       1:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             PCa
             MDo
             Ti
             PCe
       2:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             HLa
             HILO
             ABo
             S3
       3:
-        - flags:
-            extended: 1
-          control_lines:
+        - control_lines:
             SCr
   CMP_a_f:
     value: 193
@@ -9147,7 +8606,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
-  CMP_F_iaddr:
+  CMP_f_iaddr:
     value: 206
     steps:
       1:
@@ -9627,6 +9086,630 @@ instructions:
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_offset_a:
+    value: 224
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_offset_f:
+    value: 225
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_offset_i:
+    value: 226
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_offset_j:
+    value: 227
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_offset1_hl_offset2:
+    value: 228
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe            
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_offset1_sp_offset2:
+    value: 229
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe            
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_offset_iaddr:
+    value: 230
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr      
+  CMP_hl_offset_const:
+    value: 231
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_sp_offset_a:
+    value: 232
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_sp_offset_f:
+    value: 233
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_sp_offset_i:
+    value: 234
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_sp_offset_j:
+    value: 235
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_sp_offset1_hl_offset2:
+    value: 236
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe            
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_sp_offset1_sp_offset2:
+    value: 237
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe            
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_sp_offset_iaddr:
+    value: 238
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr      
+  CMP_sp_offset_const:
+    value: 237
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:

@@ -13,10 +13,10 @@ cstr_len8:
     mov2 hl, [sp+2]
     mov i, 0
 .loop:
-    mov a, [hl+i]
-    jeq .end, 0
+    cmp [hl+i],0
+    je .end
     inc i
-    jc .too_long
+    jz .too_long
     jmp .loop
 .too_long:
     mov i, 255
@@ -39,7 +39,8 @@ cstr_copy:
 .loop:
     mov a,[mar]
     mov [hl],a
-    jeq .end,0                  ; check A register value
+    cmp a,0
+    je .end                     ; if at null character, end copy
     inc mar
     inc hl
     jmp .loop
@@ -66,7 +67,8 @@ cstr_concat:
     mov [hl],a
     dec i
     jz .end                     ; we are out of buffer. end it.
-    jeq .second_cstr, 0         ; see if char in A is 0
+    cmp a,0
+    je .second_cstr             ; see if char in A is 0
     inc mar
     inc hl
     jmp .loop1
@@ -78,7 +80,8 @@ cstr_concat:
     mov [hl],a
     dec i
     jz .end                     ; we are out of buffer. end it.
-    jeq .end, 0
+    cmp a,0
+    je .end
     inc mar
     inc hl
     jmp .loop2
@@ -104,11 +107,12 @@ cstr_append:
     mov2 hl,[sp+2]          ; place destination buffer address in HL
     mov2 mar,[sp+4]         ; place string address to append in MAR
 .loop:
-    mov a,i
-    jeq .end, [sp+6]        ; check to see of buffer is full
+    cmp i,[sp+6]
+    je .end                 ; check to see of buffer is full
     mov a,[mar]             ; copy string character
     mov [hl+i],a            ; copy character to position in buffer
-    jeq .end,0              ; if we copied null character, we are done
+    cmp a,0
+    je .end                 ; if we copied null character, we are done
     inc mar                 ; next character in string
     inc i                   ; increment position in buffer
     jnz .loop               ; restart loop if I hasn't rolled over to 0

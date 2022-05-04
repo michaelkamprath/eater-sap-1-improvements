@@ -6,6 +6,7 @@ general:
   endian: little
   registers:
     - a
+    - f
     - i
     - j
     - mar
@@ -13,7 +14,6 @@ general:
     - hl
     - h
     - l
-    - f
   identifier:
     name: putey-1-beta
     version: "0.4.dev2"
@@ -356,6 +356,22 @@ operand_sets:
               min: 0
               size: 8
               byte_align: true
+  bit_number:
+    operand_values:
+      bit_number:
+        type: numeric_enumeration
+        argument:
+          size: 8
+          byte_align: true
+          value_dict:
+            0: 0
+            1: 1
+            2: 2
+            3: 3
+            4: 4
+            5: 5
+            6: 6
+            7: 7
 instructions:
   # general
   nop:
@@ -501,7 +517,7 @@ instructions:
                     value: 1
                     size: 1
       - byte_code:
-          value: 16359
+          value: 16321
           size: 14
         operands:
           count: 1
@@ -571,44 +587,24 @@ instructions:
       operand_sets:
         list:
           - address_source
-  jeq:
+  je:
     byte_code:
-      value: 2
-      size: 3
+      value: 16
+      size: 6
     operands:
-      count: 2
+      count: 1
       operand_sets:
-        reverse_argument_order: true
         list:
           - address_source
-          - 8_bit_source
-        disallowed_pairs:
-          - [indirect_addr, a_register]
-          - [immediate_value, a_register]
-          - [indirect_addr, indirect_addr]
-      specific_operands:
-        iaddr_mar_offset:
-          reverse_argument_order: true
-          list:
-            iaddr:
-              type: indirect_numeric
-              bytecode:
-                value: 6
-                size: 3
-              argument:
-                size: 16
-                byte_align: true
-            mar:
-              type: indirect_register
-              register: mar
-              bytecode:
-                value: 6
-                size: 3
-              offset:
-                max: 255
-                min: 0
-                size: 8
-                byte_align: true
+  jne:
+    byte_code:
+      value: 17
+      size: 6
+    operands:
+      count: 1
+      operand_sets:
+        list:
+          - address_source
   # data movement
   mov:
     byte_code:
@@ -1162,30 +1158,33 @@ instructions:
   # test and comparison
   tstb:
     byte_code:
-      value: 8176
-      size: 13
+      value: 10
+      size: 5
     operands:
-      count: 1
+      count: 2
       operand_sets:
         list:
           - 8_bit_source
+          - bit_number
     variants:
       - byte_code:
-          value: 16354
-          size: 14
+          value: 22
+          size: 6
         operands:
-          count: 1
+          count: 2
           operand_sets:
             list:
               - hl_indirect_indexed
+              - bit_number
       - byte_code:
-          value: 32710
-          size: 15
+          value: 46
+          size: 7
         operands:
-          count: 1
+          count: 2
           operand_sets:
             list:
               - hl_subregisters
+              - bit_number
   cmp:
     byte_code:
       value: 1023
@@ -1201,4 +1200,15 @@ instructions:
           - [flags_register, flags_register]
           - [i_register, i_register]
           - [j_register, j_register]
+    variants:
+      - byte_code:
+          value: 2044
+          size: 11
+        operands:
+          count: 2
+          operand_sets:
+            list:
+              - hl_indirect_indexed
+              - 8_bit_source
+
 ...

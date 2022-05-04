@@ -17,10 +17,10 @@
 ;       i
 
 memset8:
-    mov2 hl,[sp+2]
-    mov a,[sp+5]
-    jeq .end,0                  ; check to see if 0 was passed for buffer size
-    mov i,a                     ; put buffer size in i
+    cmp [sp+5], 0
+    je .end                     ; check to see if 0 was passed for buffer size
+    mov2 hl,[sp+2]              ; place memory address in HL
+    mov i,[sp+5]                ; put buffer size in i
     mov a,[sp+4]                ; put overwrite value in a
 .loop:
     mov [hl],a                  ; write a value to memory
@@ -48,9 +48,9 @@ memset8:
 ;       a
 ;       i
 memcpy8:
-    mov a,[sp+6]                ; initially put block size in a
-    jeq .end,0                  ; check to see if 0 was passed for buffer size
-    mov i,a                     ; put buffer size in i
+    cmp [sp+6], 0
+    je .end                     ; check to see if 0 was passed for buffer size
+    mov i,[sp+6]                ; put buffer size in i
     mov2 hl,[sp+2]              ; destination address in hl
     mov2 mar,[sp+4]             ; source in mar
 .loop:

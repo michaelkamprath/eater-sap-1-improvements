@@ -19,12 +19,11 @@
 ;
 delay8:
     mov i, [sp+2]
-    mov a, i
-    jeq .end, 0
+    cmp i,0
+    je .end
 .loop:
     dec i
-    jz .end
-    jmp .loop
+    jnz .loop
 .end:
     ret
 
@@ -45,12 +44,6 @@ delay16:
     mov2 hl, [sp+2]
 .loop:
     dec hl
-    mov a,h
-    jeq .test_low, 0
-    jmp .loop
-.test_low:
-    mov a,l
-    jeq .end, 0
-    jmp .loop
+    jnz .loop
 .end:
     ret

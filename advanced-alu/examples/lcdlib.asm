@@ -230,7 +230,8 @@ lcd_write_row_cstr:
     mov2 mar, [sp+2]                     ; put the string address into mar for later dereferencing
 .copy_loop:
     mov a,[mar]
-    jeq .copy_fill, 0
+    cmp a,0
+    je .copy_fill
     mov [hl], a
     dec i
     jz .lcd_write
@@ -317,11 +318,14 @@ lcd_send_buffer_row:
 ;       hl : set to the current row pointer for desired row
 ;
 _lcd_set_hl_to_row_ptr:
-    mov a,[sp+2]                         ; put row number on stack
-    jeq .row0, 0
-    jeq .row1, 1
-    jeq .row2, 2
-    jeq .row3, 3
+    cmp [sp+2],0
+    je .row0
+    cmp [sp+2],1
+    je .row1
+    cmp [sp+2],2
+    je .row2
+    cmp [sp+2],3
+    je .row3
     hlt                                  ; ERROR invalid row num
 .row0:
     mov2 hl, [_lcd_row0_ptr]
@@ -349,11 +353,14 @@ _lcd_set_hl_to_row_ptr:
 ;
 lcd_set_cursor_to_row_column:
     call lcd_wait_busy
-    mov a, [sp+2]
-    jeq .row0, 0
-    jeq .row1, 1
-    jeq .row2, 2
-    jeq .row3, 3
+    cmp [sp+2],0
+    je .row0
+    cmp [sp+2],1
+    je .row1
+    cmp [sp+2],2
+    je .row2
+    cmp [sp+2],3
+    je .row3
     hlt
 .row0:
     mov a, _CMD_DDRAM_ADDR
@@ -371,7 +378,6 @@ lcd_set_cursor_to_row_column:
     mov [LCD_INSTRUCTION_REG], a
     ret
 
-
 ; lcd_set_cursor_at_row_end
 ;       Sets the LCD DDRAM address to the end (right side) of the passed row
 ;
@@ -384,11 +390,14 @@ lcd_set_cursor_to_row_column:
 ;
 lcd_set_cursor_at_row_end:
     call lcd_wait_busy
-    mov a, [sp+2]
-    jeq .row0, 0
-    jeq .row1, 1
-    jeq .row2, 2
-    jeq .row3, 3
+    cmp [sp+2],0
+    je .row0
+    cmp [sp+2],1
+    je .row1
+    cmp [sp+2],2
+    je .row2
+    cmp [sp+2],3
+    je .row3
     hlt
 .row0:
     mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|(_COLUMN_WIDTH-1))
@@ -439,8 +448,8 @@ lcd_scroll_up:
     mov [sp],2
     call lcd_send_buffer_row
     ; only send bottom row if requested
-    mov a,[sp+3]
-    jeq .end,0
+    cmp [sp+3],0
+    je .end
     mov [sp],3
     call lcd_send_buffer_row
 .end:
@@ -493,7 +502,8 @@ lcd_write_cstr_at:
     mov2 mar, [sp+2]                    ; put the string address into mar for later dereferencing
 .copy_loop:
     mov a,[mar]                         ; copy cstr character to A
-    jeq .lcd_write, 0                   ; check to see it is 0, if so, end the write loop
+    cmp a,0
+    je .lcd_write                       ; check to see it is 0, if so, end the write loop
     mov [hl+[sp+4]], a                  ; move the the character to the desired location in the row buffer
     dec i                               ; decrement size counter
     jz .lcd_write                       ; if 0, we are done

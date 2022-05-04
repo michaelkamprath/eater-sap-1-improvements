@@ -13,12 +13,11 @@
 ; Registers used:
 ;    a
 is_equal16:
-    mov a,[sp+2]            ; check low bytes first
-    jeq .high_byte, [sp+4]  ; if low bytes are equal, check high byte
-    jmp .not_equal          ; not zero, so not equal
+    cmp [sp+2],[sp+4]       ; check low bytes first
+    jne .not_equal
 .high_byte:
-    mov a,[sp+3]
-    jeq .equal, [sp+5]      ; if high bytes are equal, then return true
+    cmp [sp+3], [sp+5]      ; check high bytes
+    je .equal 
 .not_equal:
     mov a,0
     ret
@@ -26,62 +25,130 @@ is_equal16:
     mov a,1
     ret
 
+; lsr16
+;   Logical right shift for a 16 bit value
+; 
+;   Arguments
+;       sp+2 : the value to be shift right (2 bytes)
+; 
+;   Returns
+;       sp+2 : the right shifted value
+; 
+lsr16:
+    mov a,[sp+3]            ; start with most significant byte
+    lsr                     ; shift it right, setting CF if needed
+    mov [sp+3],a            ; place shifted value back
+    mov a,[sp+2]            ; now load least significant byte
+    lsrc                    ; shift it right with carry
+    mov [sp+2],a            ; place shifted value back
+    ret                     ; done
+
+; lsr32
+;   Logical right shift for a 32 bit value
+; 
+;   Arguments
+;       sp+2 : the value to be shift right (4 bytes)
+; 
+;   Returns
+;       sp+2 : the right shifted value
+; 
+lsr32:
+    mov a,[sp+5]            ; start with most significant byte
+    lsr                     ; shift it right, setting CF if needed
+    mov [sp+5],a            ; place shifted value back
+    mov a,[sp+4]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+4],a
+    mov a,[sp+3]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+3],a
+    mov a,[sp+2]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+2],a
+    ret                     ; done
+
+; lsr64
+;   Logical right shift for a 64 bit value
+; 
+;   Arguments
+;       sp+2 : the value to be shift right (8 bytes)
+; 
+;   Returns
+;       sp+2 : the right shifted value
+; 
+lsr64:
+    mov a,[sp+9]            ; start with most significant byte
+    lsr                     ; shift it right, setting CF if needed
+    mov [sp+7],a            ; place shifted value back
+    mov a,[sp+8]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+8],a
+    mov a,[sp+7]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+7],a
+    mov a,[sp+6]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+6],a
+    mov a,[sp+5]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+5],a
+    mov a,[sp+4]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+4],a
+    mov a,[sp+3]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+3],a
+    mov a,[sp+2]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+2],a
+    ret                     ; done
+
 ; multiply16
-;   multiply two byte values X*Y
+;   multiply two byte values X*Y, producing in a 4 byte results
 ;
 ; Arguments
-;   sp+2 - value X, two byte value, ideally the smaller value
-;   sp+4 - value Y, two byte value
+;   sp+2 - value X (multiplier) (2 bytes)
+;   sp+4 - value Y (multiplicand) (2 bytes)
 ;
 ; Return Value
-;   sp+2 - replace the origin two byte value with the result
-;
-; Registers used:
-;    a, hl
+;   sp+2 - results (4 bytes)
+; 
+; Registers used
+;   i
+; 
 multiply16:
-    push2 [sp+2]                            ; place X on stack
-    push2 0
-    call is_equal16                         ; check to see if X is 0
-    pop2                                    ; clear stack
+    ; set counter for 16 bits
+    mov i,16
+    ; set up 4 byte results memory block
+    push2 0                 ; high word inialized to 0
+    push2 [sp+(2+2)]        ; multiplier in low word
+    ; Stack state:
+    ;   sp+0 : 4 byte results memory
+    ;   sp+6 : original multiplier
+    ;   sp+8 : multiplicand
+.loop:
+    ; check to see if LSb of working memory is 1
+    tstb [sp+2],0
+    jz .continue
+    ; add high word of results to multiplicand
+    push2 [sp+(0+2)]
+    push2 [sp+(8+2)]
+    call add16
+    pop2 [sp+(0+2+4)]
     pop2
-    jeq .return_zero, 1                     ; if equal to zero (1 in a), return a zero value
-    push2 [sp+4]                            ; place Y on stack
-    push2 0
-    call is_equal16                         ; check to see if Y is 0
-    pop2                                    ; clear stack
-    pop2
-    jeq .return_zero, 1                     ; if equal to zero, return a zero value
-    push2 [sp+2]                            ; make room on stack for counter variable init to X
-    push2 0                                 ; make room on stack for multiply results
-                                            ; at this point, stack variable locations:
-                                            ;   [sp]   : results (initialized to 0)
-                                            ;   [sp+2] : loop counter (initialized to value X)
-                                            ;   [sp+6] : argument value X
-                                            ;   [sp+8] : argument value Y
-.sum_loop:
-    push2 [sp+8]                            ; push multiplicand Y
-    push2 [sp+2]                            ; push results value
-    call add16                              ; add Y to running sum
-    mov2 [sp+(0+4)],[sp]                    ; save addition results baclkinto results variable
-    pop2                                    ; pop2 results value
-    pop2                                    ; clear stack (value Y)
-    push2 [sp+2]                            ; push multiply loop counter on stack
-    call dec16                              ; decrement multiply counter
-    mov2 [sp+(2+2)],[sp]                    ; copy decremented multiply counter into multiply counter variable
-    push2 0                                 ; place 0 value on stack
-    call is_equal16                         ; check whether decremented multiply counter is 0
-    pop2                                    ; remove 0 from stack
-    pop2                                    ; remove decremented multiply counter from stack
-    jeq .return_results, 1                  ; check register A to see if results are TRUE (multiply counter == 0)
-    jmp .sum_loop                           ; continue with sum loop
-.return_results:                            ; done with sum loop. return results.
-    pop2 hl                                 ; temprarily pop results into HL
-    pop2                                    ; remove local loop counter variable
-    mov2 [sp+2], hl                         ; copy results to return value
+.continue:
+    ; shift results right one. alread at [sp] so just call
+    call lsr32
+    ; decrement counter and stop if 0
+    dec i
+    jz .done
+    jmp .loop
+.done:
+    ; pop results to return stack
+    pop2 [sp+6]
+    pop2 [sp+6]
     ret
-.return_zero:
-    mov2 [sp+2], 0                          ; results are 0. set 0 return value
-    ret
+
 
 ; divide8
 ;   Divides X by Y
@@ -98,10 +165,10 @@ multiply16:
 ;       a
 ; 
 divide8:
-    mov a,[sp+3]                            ; move Y into A
-    jeq .divide_by_zero, 0                  ; check for divide by zero
-    mov a,[sp+2]                            ; move X into A
-    jeq .return_zero, 0                     ; return zero if dividend is 0
+    cmp [sp+3], 0                           ; check for divide by zero
+    je .divide_by_zero
+    cmp [sp+2], 0                           ; return zero if dividend is 0
+    je .return_zero
     mov i,0
 .sub_loop:
     sub [sp+3]                              ; subtract divisor Y from dividend X
@@ -109,7 +176,8 @@ divide8:
     jmp .done                               ; there was a borrow, subtraction loop is done
 .no_borrow:
     inc i                                   ; increment quotient counter
-    jeq .done_no_add, 0                     ; if value in A (X) is now zero, done with subtraction loop.
+    cmp a, 0
+    je .done_no_add                         ; if value in A (X) is now zero, done with subtraction loop.
     jmp .sub_loop                           ; next subtraction loop
 .done:
     add [sp+3]                              ; add Y back to now negative X to get remainder
@@ -143,13 +211,15 @@ divide16:
     call is_equal16                         ; see if Y is zero
     pop2
     pop2
-    jeq .divide_by_zero, 1                  ; handle divide by zero
+    cmp a,1
+    je .divide_by_zero                      ; handle divide by zero
     push2 [sp+2]                            ; place X on stack
     push2 0
     call is_equal16                         ; see if X is zero
     pop2
     pop2
-    jeq .return_zero, 1                     ; X is zero, answer is zero
+    cmp a,1
+    je .return_zero                         ; X is zero, answer is zero
     mov2 hl,0                               ; initialize quotient counter HL to 0
                                             ; at this point, stack variable locations:
                                             ;   [sp+2] : argument value X (2 bytes)
@@ -165,7 +235,8 @@ divide16:
     push2 0                                 ; determine if result value is zero
     call is_equal16
     pop2                                    ; get rid of zero
-    jeq .done_no_add, 1                     ; if X value is now zero, we are done with subtraction loop
+    cmp a,1
+    je .done_no_add                         ; if X value is now zero, we are done with subtraction loop
     jmp .sub_loop                           ; subtract again. note stack has new X and original Y in place
 .done:
     call add16                              ; subtraction loop went one too far, add Y back into X to get remainder
@@ -203,6 +274,37 @@ add16:
     mov a, [sp+3]                       ; move high byte of value X into register A
     addc [sp+5] 
     mov [sp+3], a                       ; move the the high bye results to the stack
+    ret
+
+; add32
+;   adds values X+Y
+;
+; Arguments
+;   sp+2 - value X, 4 byte value
+;   sp+6 - value Y, 4 byte value
+;
+; Return Value
+;   sp+2 - replace the original two byte value with the sum
+;
+; Registers used:
+;    a
+; 
+; Flags Set
+;   C if carry occured to 33th bit
+; 
+add32:
+    mov a, [sp+2]                       ; move low byte of value X into register A
+    add [sp+6]                          ; add low byte of value Y to alue in regsiter A
+    mov [sp+2], a                       ; move addition results to low byte of return value
+    mov a, [sp+(2+1)]                   ; move next byte of value X into register A
+    addc [sp+(6+1)] 
+    mov [sp+(2+1)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+2)]                   ; move next byte of value X into register A
+    addc [sp+(6+2)] 
+    mov [sp+(2+2)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+3)]                   ; move next byte of value X into register A
+    addc [sp+(6+3)] 
+    mov [sp+(2+3)], a                   ; move the next bye results to the stack
     ret
 
 ; subtract16
