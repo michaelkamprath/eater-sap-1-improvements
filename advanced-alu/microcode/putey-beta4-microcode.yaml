@@ -58,7 +58,7 @@ instruction_prefix_steps:
         IRi
         PCa
         MDo
-        PCe 
+        PCe
 instructions:
   NOP:
     value: 0
@@ -82,7 +82,7 @@ instructions:
             IRi
             PCa
             MDo
-            PCe  
+            PCe
       1:
         - flags:
             extended: 0
@@ -3890,7 +3890,7 @@ instructions:
             extended: 1
           control_lines:
             SCr
- 
+
   #
   # Two-Byte Move
   #
@@ -4878,7 +4878,7 @@ instructions:
             PCa
             MDo
             ARi
-            PCe          
+            PCe
       1:
         - flags:
             extended: 0
@@ -4894,7 +4894,7 @@ instructions:
             MDo
             HILO
             ARi
-            PCe  
+            PCe
       2:
         - flags:
             extended: 0
@@ -4951,7 +4951,7 @@ instructions:
         - flags:
             extended: 1
           control_lines:
-            SCr            
+            SCr
       6:
         - flags:
             extended: 0
@@ -6235,7 +6235,7 @@ instructions:
             S3
       2:
         - control_lines:
-            SCr 
+            SCr
   LSRC:
     value: 249
     steps:
@@ -6246,7 +6246,7 @@ instructions:
             CRY
       2:
         - control_lines:
-            SCr 
+            SCr
   LSL:
     value: 250
     steps:
@@ -6256,7 +6256,7 @@ instructions:
             S3
       2:
         - control_lines:
-            SCr 
+            SCr
   LSLC:
     value: 251
     steps:
@@ -8359,7 +8359,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8393,7 +8393,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8567,7 +8567,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8601,7 +8601,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8775,7 +8775,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8809,7 +8809,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8949,7 +8949,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8983,7 +8983,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -9017,7 +9017,7 @@ instructions:
             S2
             S3
             CMPs
-      3:
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -9252,7 +9252,7 @@ instructions:
             PCa
             MDo
             AOi
-            PCe            
+            PCe
       4:
         - flags:
             extended: 1
@@ -9296,7 +9296,7 @@ instructions:
             PCa
             MDo
             AOi
-            PCe            
+            PCe
       4:
         - flags:
             extended: 1
@@ -9365,7 +9365,7 @@ instructions:
         - flags:
             extended: 1
           control_lines:
-            SCr      
+            SCr
   CMP_hl_offset_const:
     value: 231
     steps:
@@ -9564,7 +9564,7 @@ instructions:
             PCa
             MDo
             AOi
-            PCe            
+            PCe
       4:
         - flags:
             extended: 1
@@ -9608,7 +9608,7 @@ instructions:
             PCa
             MDo
             AOi
-            PCe            
+            PCe
       4:
         - flags:
             extended: 1
@@ -9677,9 +9677,9 @@ instructions:
         - flags:
             extended: 1
           control_lines:
-            SCr      
+            SCr
   CMP_sp_offset_const:
-    value: 237
+    value: 239
     steps:
       1:
         - flags:
@@ -9714,4 +9714,1893 @@ instructions:
             extended: 1
           control_lines:
             SCr
+  CMP_iaddr_a:
+    value: 240
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_iaddr_f:
+    value: 241
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_iaddr_i:
+    value: 242
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_iaddr_j:
+    value: 243
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_iaddr_hl_offset:
+    value: 244
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_iaddr_sp_offset:
+    value: 245
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_iaddr1_iadd2:
+    value: 246
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_iaddr_const:
+    value: 247
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const_a:
+    value: 248
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const_f:
+    value: 249
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const_i:
+    value: 250
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const_j:
+    value: 251
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const_hl_offset:
+    value: 252
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const_sp_offset:
+    value: 253
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const_iaddr:
+    value: 254
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_const1_const2:
+    value: 255
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_a:
+    value: 128
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_f:
+    value: 129
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_i:
+    value: 130
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_j:
+    value: 131
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_hl_offset:
+    value: 132
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_sp_offset:
+    value: 133
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_iaddr:
+    value: 134
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_a_const:
+    value: 135
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_a:
+    value: 136
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_f:
+    value: 137
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_i:
+    value: 138
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_j:
+    value: 139
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_hl_offset:
+    value: 140
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_sp_offset:
+    value: 141
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_iaddr:
+    value: 142
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_i_const:
+    value: 143
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_a:
+    value: 144
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_f:
+    value: 145
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_i:
+    value: 146
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_j:
+    value: 147
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_hl_offset:
+    value: 148
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_sp_offset:
+    value: 149
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_iaddr:
+    value: 150
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_j_const:
+    value: 151
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            Jo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o_a:
+    value: 152
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Ao
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o_f:
+    value: 153
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Fo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o_i:
+    value: 154
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o_j:
+    value: 155
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            Io
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o_hl_offset:
+    value: 156
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o1_sp_offset2:
+    value: 157
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o_iaddr:
+    value: 158
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+  CMP_hl_index_sp_o_const:
+    value: 159
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            AOa
+            MDo
+            Ti
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+
 ...
