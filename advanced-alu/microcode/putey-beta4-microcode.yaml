@@ -10310,34 +10310,6 @@ instructions:
             extended: 1
           control_lines:
             SCr
-  CMP_const1_const2:
-    value: 255
-    steps:
-      1:
-        - flags:
-            extended: 1
-          control_lines:
-            PCa
-            MDo
-            Ti
-            PCe
-      2:
-        - flags:
-            extended: 1
-          control_lines:
-            PCa
-            MDo
-            S0
-            S1
-            S2
-            S3
-            CMPs
-            PCe
-      3:
-        - flags:
-            extended: 1
-          control_lines:
-            SCr
   CMP_hl_index_a_a:
     value: 128
     steps:

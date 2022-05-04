@@ -1200,6 +1200,7 @@ instructions:
           - [flags_register, flags_register]
           - [i_register, i_register]
           - [j_register, j_register]
+          - [immediate_value, immediate_value]
     variants:
       - byte_code:
           value: 2044
