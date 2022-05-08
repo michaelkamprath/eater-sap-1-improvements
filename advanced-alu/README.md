@@ -79,12 +79,12 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |39 | Right | High | `Io` | Write contents of `I` register to data bus |
 |40 | Right | High | `Jo` | Write contents of `J` register to data bus |
 |41 | Right | High | `∑o` | Write the results of the ALU operation to data bus |
-|42 | Right | Low | `SCr` | Resets both the step counter, the offset register,  the extended instruction bit. A step counter overflow needs to do the same thing. |
+|42 | Right | Low | `SCr` | Resets both the step counter and the extended instruction bit. A step counter overflow needs to do the same thing. |
 |43 | Right | Low |  `SPr` | Reset stack pointer to "empty stack" value |
 |44 | Right | Low |  `DSs` | Data source input select for 16-bit registers that can load from either address or data bus. LOW is data bus, HIGH is address bus. |
 |45 | Right | Low | `CMPs` | Write the temp register to the comparison unit |
 |46 | Right | Low | | *unused* |
-|47 | Right | Low |  `XTD` | Activate extended instruction bit |
+|47 | Right | Low |  `XTD` | Activate extended instruction bit and resets the step counter. |
 |48 | Right | Low | `HLT` | Halt the system clock |
 
 The significant changes over the last project are:
@@ -105,17 +105,17 @@ The gate array logic for the ALU controller is configured such that the followin
 |`add`| Add temp value to `A` register | 0 | 1 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
 |`addc`| Add temp value and carry flag to `A` register | 1 | 1 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
 |`sub`| Subtract temp value from `A` register | 0 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` | 
-| `subb` | Subtract temp value from `A` register with carry flag used to indicate whether borrow was taken from `A` when `CF` = 0. | 1 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
+| `subb` | Subtract temp value from `A` register with carry flag used to indicate whether borrow was taken from `A` when `CF` = 0 | 1 | 0 | 1 | 0 | 0 || `ZF`, `CF`, `OF` |
 | `and` | AND temp value with register `A` | 0 | 0 | 1 | 1 | 0 || `ZF` |
 | `or` | OR temp value with register `A` | 0 | 1 | 0 | 1| 0 || `ZF` |
 | `xor` | XOR temp value with register `A` | 0 | 0 | 0 | 1 | 0 || `ZF` |
-| `lsr` | logical shift right register `A` | 0 | 1 | 0 | 0 | 1 || `CF` |
-| `lsrc` | logical shift right register `A` with carry flag filling in leftmost bit | 1 | 1 | 0 | 0 | 1 || `CF` |
-| `lsl` | logical shift left register `A` | 0 | 0 | 1 | 0 | 1 || `CF` |
-| `lslc` | logical shift left register `A` with carry flag filling in rightmost bit | 1 | 0 | 1 | 0 | 1 || `CF` |
-| `rotr` | rotate bits in register `A` right one | X | 1 | 0 | 1 | 1 || - |
-| `rotl` | rotate bits in register `A` left one | X | 0 | 1 | 1 | 1 || - |
-| `comp` | determine the equality or greater than of temp with data bus value | X | 1 | 1 | 1 | 1 | 1 | `OF`, `EF` |
+| `lsr` | logical shift right register `A` | 0 | 0 | 1 | 0 | 1 || `CF` |
+| `lsrc` | logical shift right register `A` with carry flag filling in leftmost bit | 1 | 0 | 1 | 0 | 1 || `CF` |
+| `lsl` | logical shift left register `A` | 0 | 1 | 0 | 0 | 1 || `CF` |
+| `lslc` | logical shift left register `A` with carry flag filling in rightmost bit | 1 | 1 | 0 | 0 | 1 || `CF` |
+| `rotr` | rotate bits in register `A` right one | X | 0 | 1 | 1 | 1 || - |
+| `rotl` | rotate bits in register `A` left one | X | 1 | 0 | 1 | 1 || - |
+| `cmp` | determine the equality or greater than of temp with data bus value | X | 1 | 1 | 1 | 1 | 1 | `OF`, `EF` |
 | `tstz` | determine whether a data bus value is zero | X | 1 | 1 | 1 | 1 | 0 | `ZF` |
 | `tstb` | determine if a data bus bit indicate by lower 3 bits of temp is zero | X | 0 | 0 | 0 | 1 || `ZF` |
 
