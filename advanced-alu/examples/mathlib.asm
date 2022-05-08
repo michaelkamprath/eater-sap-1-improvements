@@ -79,7 +79,7 @@ lsr32:
 lsr64:
     mov a,[sp+9]            ; start with most significant byte
     lsr                     ; shift it right, setting CF if needed
-    mov [sp+7],a            ; place shifted value back
+    mov [sp+9],a            ; place shifted value back
     mov a,[sp+8]            ; repeat on next byte with carry
     lsrc 
     mov [sp+8],a
@@ -127,14 +127,14 @@ multiply16:
     ;   sp+6 : original multiplier
     ;   sp+8 : multiplicand
 .loop:
-    ; check to see if LSb of working memory is 1
-    tstb [sp+2],0
+    ; check to see if LSb of working memory multiplier is 1
+    tstb [sp+0],0           ; right most (LSB) bit of multiplier 
     jz .continue
     ; add high word of results to multiplicand
     push2 [sp+(0+2)]
     push2 [sp+(8+2)]
     call add16
-    pop2 [sp+(0+2+4)]
+    pop2 [sp+(0+2+4)]       ; place sum results into high word of results memory
     pop2
 .continue:
     ; shift results right one. alread at [sp] so just call
@@ -149,6 +149,60 @@ multiply16:
     pop2 [sp+6]
     ret
 
+
+; multiply32
+;   multiply 4 byte values X*Y, producing in a 8 byte results
+;
+; Arguments
+;   sp+2 - value X (multiplier) (4 bytes)
+;   sp+6 - value Y (multiplicand) (4 bytes)
+;
+; Return Value
+;   sp+2 - results (8 bytes)
+; 
+; Registers used
+;   i
+; 
+multiply32:
+    ; set counter for 32 bits
+    mov i,32
+    ; set up 8 byte results memory block
+    push2 0                 ; high word inialized to 0
+    push2 0 
+    push2 [sp+(2+2+4)]      ; multiplier in low word
+    push2 [sp+(2+0+6)]
+    ; Stack state:
+    ;   sp+0  : 8 byte results memory (high word at sp+4)
+    ;   sp+10 : original multiplier (4 bytes)
+    ;   sp+14 : multiplicand (4 bytes)
+.loop:
+    ; check to see if LSb of working memory is 1
+    tstb [sp+0],0
+    jz .continue
+    ; add high word of results to multiplicand
+    push2 [sp+(4+2+0)]
+    push2 [sp+(4+0+2)]
+    push2 [sp+(10+2+4)]
+    push2 [sp+(10+0+6)]
+    call add32
+    pop2 [sp+(0+4+8)]       ; place sum results into high word of results memory
+    pop2 [sp+(2+4+6)]
+    pop2
+    pop2
+.continue:
+    ; shift results right one. alread at [sp] so just call
+    call lsr64
+    ; decrement counter and stop if 0
+    dec i
+    jz .done
+    jmp .loop
+.done:
+    ; pop results to return stack
+    pop2 [sp+(0+10)]
+    pop2 [sp+(2+8)]
+    pop2 [sp+(4+6)]
+    pop2 [sp+(6+4)]
+    ret
 
 ; divide8
 ;   Divides X by Y

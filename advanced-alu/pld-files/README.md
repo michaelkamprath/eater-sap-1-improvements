@@ -28,3 +28,9 @@ unrar xgproV1181_setup.rar
 ```
 minipro -F updateII.dat
 ```
+
+## More Information
+More information about programmable logic devices can be found at these links:
+* [Understanding Programmable Logic - The GAL22V10](https://retrobrewcomputers.org/n8vem-pbwiki-archive/0/82152589/Programmable%20logic%20devices%20-%20v1.6.pdf) - A good overviews of what programmable logic devices are.
+* [Galette](https://github.com/simon-frankau/galette) - an alternative GAL PLD assembler
+* [GAL-ASM-Starterkit](https://www.mikrocontroller.net/attachment/20953/GAL-ASM-Starterkit_Manual.pdf) - Documentation the PLD file syntax from another PLD assembler.

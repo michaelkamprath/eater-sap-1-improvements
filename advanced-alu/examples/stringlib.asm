@@ -120,8 +120,37 @@ cstr_append:
 .end:
     ret
 
+; uint32_to_hex_cstr
+;   converts the passed uint32 value to a hex formatted cstr. Does not prepend with 0x or $.
+;
+;   Arguments
+;       sp+2 : the uint32 value (4 byte)
+;       sp+6 : buffer address (2 bytes)
+;       sp+8 : buffer index to write at (must have 8 bytes at this address) (1 byte)
+;
+;   Returns
+;       nothing, but does write to passed buffer
+uint16_to_hex_cstr:
+    push [sp+8]             ; push buffer index
+    push2 [sp+(6+1)]        ; push buffer address (1 deeper)
+    push2 [sp+((2+2)+3)]    ; push upper word of value (3 deeper)
+    call uint16_to_hex_cstr ; convert upper word to cstr
+    pop2                    ; pop value upper word
+    pop2 hl                 ; pop buffer address into HL
+    inc hl                  ; increase HL by 4
+    inc hl
+    inc hl
+    inc hl
+    push2 hl                ; place modified buffer address on stack
+    push2 [sp+(2+3)]        ; push lower word of value (3 deeper)
+    call uint16_to_hex_cstr ; convert lower word to cstr
+    pop2                    ; restore stack
+    pop2
+    pop
+    ret
+
 ; uint16_to_hex_cstr
-;   converts the passed uint8 value to a hex formatted cstr. Does not prepend with 0x or $.
+;   converts the passed uint16 value to a hex formatted cstr. Does not prepend with 0x or $.
 ;
 ;   Arguments
 ;       sp+2 : the uint16 value (2 byte)
