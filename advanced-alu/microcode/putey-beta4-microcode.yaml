@@ -531,8 +531,8 @@ instructions:
             equal: 1
           control_lines:
             PCe
-        - equal:
-            zero: 0
+        - flags:
+            equal: 0
           control_lines:
             PCa
             ARi
