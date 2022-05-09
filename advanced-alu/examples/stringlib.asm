@@ -130,7 +130,7 @@ cstr_append:
 ;
 ;   Returns
 ;       nothing, but does write to passed buffer
-uint16_to_hex_cstr:
+uint32_to_hex_cstr:
     push [sp+8]             ; push buffer index
     push2 [sp+(6+1)]        ; push buffer address (1 deeper)
     push2 [sp+((2+2)+3)]    ; push upper word of value (3 deeper)

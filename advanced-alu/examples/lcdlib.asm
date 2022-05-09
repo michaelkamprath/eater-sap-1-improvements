@@ -131,7 +131,7 @@ _lcd_init_buffers:
 ;       None
 lcd_wait_busy:
     tstb [LCD_INSTRUCTION_REG],7        ; test busy flag (BF) if 1 or 0
-    jz lcd_wait_busy                    ; BF was 0, so not busy. Just return.
+    jnz lcd_wait_busy                   ; Check whether BF was 1, If som try again.
     ret                                 ; BF was 0, so not busy. Just return.
 
 ; lcd_send_command
