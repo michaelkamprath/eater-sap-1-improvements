@@ -204,6 +204,88 @@ uint8_to_hex_cstr:
     mov [hl+[sp+5]], 0                      ; put a null value at the end
     ret
 
+
+; uint16_to_binary_cstr
+;   converts the passed uint16 value to a binary formatted cstr. Does not prepend with b.
+;
+;   Arguments
+;       sp+2 : the uint16 value (2 byte)
+;       sp+4 : buffer address (2 bytes)
+;       sp+6 : buffer index to write at (must have 8 bytes at this address) (1 byte)
+;
+;   Returns
+;       nothing, but does write to passed buffer
+uint16_to_binary_cstr:
+    push [sp+(6+0)]             ; buffer index
+    push2 [sp+(4+1)]            ; push buffer on stack
+    push [sp+(2+1+3)]           ; place value high byte on stack
+    call uint8_to_binary_cstr
+    mov [sp],[sp+(2+0+4)]       ; copy value low byte to stack
+    call uint8_to_binary_cstr   ; buffer address updated in prior call
+    pop
+    pop2
+    pop
+    ret
+
+; uint8_to_binary_cstr
+;   converts the passed uint8 value to a binary formatted cstr. Does not prepend with b.
+;
+;   Arguments
+;       sp+2 : the uint8 value (1 byte)
+;       sp+3 : buffer address (2 bytes)
+;       sp+5 : buffer index to write at (must have 8 bytes at this address) (1 byte)
+;
+;   Returns
+;       writes binary string to buffer
+;       resets sp+3 to the buffer address (not including offset) that the null char was written to
+; 
+uint8_to_binary_cstr:
+    mov2 hl,[sp+3]
+    tstb [sp+2],7
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    tstb [sp+2],6
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    tstb [sp+2],5
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    tstb [sp+2],4
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    tstb [sp+2],3
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    tstb [sp+2],2
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    tstb [sp+2],1
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    tstb [sp+2],0
+    call _fetch_bit_char
+    mov [hl+[sp+5]],a
+    inc hl
+    mov [hl+[sp+5]],0
+    mov2 [sp+3],hl
+    ret
+; Set A to character 1 or 0 based on ZF flag
+_fetch_bit_char:
+    jz .zerochar
+    mov a,0x31
+    ret
+.zerochar:
+    mov a,0x30
+    ret
+
+
 ;
 ; String Lib Data
 ;
