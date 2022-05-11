@@ -587,6 +587,15 @@ instructions:
       operand_sets:
         list:
           - address_source
+  jo:
+    byte_code:
+      value: 15
+      size: 6
+    operands:
+      count: 1
+      operand_sets:
+        list:
+          - address_source
   je:
     byte_code:
       value: 16
