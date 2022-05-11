@@ -1,29 +1,72 @@
 #require "putey-1-beta >= 0.4.dev2"
 
-; is_equal16
-;   Checks whether two 16-bit values are equal
+; cmp16
+;   Compares two 16-bit values, and sets OF (left > right) or EF (left == right) flags
 ;
 ;   Arguments
-;       sp+2 : Value x (2 bytes)
-;       sp+4 : Value Y (2 bytes)
+;       sp+2 : left value (2 bytes)
+;       sp+4 : right value (2 bytes)
 ;
 ;   Returns
-;       register A : 1 indicating equality, 0 if not
+;       Nothing
 ;
 ; Registers used:
 ;    a
-is_equal16:
-    cmp [sp+2],[sp+4]       ; check low bytes first
-    jne .not_equal
-.high_byte:
-    cmp [sp+3], [sp+5]      ; check high bytes
-    je .equal 
-.not_equal:
-    mov a,0
+cmp16:
+    ; first check high bytes
+    cmp [sp+3],[sp+5]
+    je .check_low_byte
+    ; high bytes are not equal, so return with current flags
     ret
-.equal:
-    mov a,1
+.check_low_byte:
+    cmp [sp+2],[sp+5]
     ret
+
+; lsl16
+;   Logical left shift for a 16 bit value
+; 
+;   Arguments
+;       sp+2 : the value to be shift left (2 bytes)
+; 
+;   Returns
+;       sp+2 : the left shifted value
+; 
+;   Flags Set
+;       CF if carry occured to 17th bit
+lsl16:
+    mov a,[sp+2]            ; start with least significant byte
+    lsl                     ; shift it left, setting CF if needed
+    mov [sp+2],a            ; place shifted value back
+    mov a,[sp+3]            ; now load most significant byte
+    lslc                    ; shift it left with carry
+    mov [sp+3],a            ; place shifted value back
+    ret
+
+
+; lsl24
+;   Logical left shift for a 24 bit value
+; 
+;   Arguments
+;       sp+2 : the value to be shift left (3 bytes)
+; 
+;   Returns
+;       sp+2 : the left shifted value
+; 
+;   Flags Set
+;       CF if carry occured to 25th bit
+; 
+lsl24:
+    mov a,[sp+2]            ; start with least significant byte
+    lsl                     ; shift it left, setting CF if needed
+    mov [sp+2],a            ; place shifted value back
+    mov a,[sp+3]            ; next byte
+    lslc
+    mov [sp+3],a
+    mov a,[sp+4]            ; next byte
+    lslc
+    mov [sp+4],a
+    ret 
+
 
 ; lsr16
 ;   Logical right shift for a 16 bit value
@@ -33,6 +76,9 @@ is_equal16:
 ; 
 ;   Returns
 ;       sp+2 : the right shifted value
+; 
+;   Flags Set
+;       CF if carry occured past 0th bit
 ; 
 lsr16:
     mov a,[sp+3]            ; start with most significant byte
@@ -51,6 +97,9 @@ lsr16:
 ; 
 ;   Returns
 ;       sp+2 : the right shifted value
+; 
+;   Flags Set
+;       CF if carry occured past 0th bit
 ; 
 lsr32:
     mov a,[sp+5]            ; start with most significant byte
@@ -75,6 +124,9 @@ lsr32:
 ; 
 ;   Returns
 ;       sp+2 : the right shifted value
+; 
+;   Flags Set
+;       CF if carry occured past 0th bit
 ; 
 lsr64:
     mov a,[sp+9]            ; start with most significant byte
@@ -262,17 +314,15 @@ divide8:
 divide16:
     push2 [sp+4]                            ; Place Y on stack
     push2 0
-    call is_equal16                         ; see if Y is zero
+    call cmp16                              ; see if Y is zero
     pop2
     pop2
-    cmp a,1
     je .divide_by_zero                      ; handle divide by zero
     push2 [sp+2]                            ; place X on stack
     push2 0
-    call is_equal16                         ; see if X is zero
+    call cmp16                              ; see if X is zero
     pop2
     pop2
-    cmp a,1
     je .return_zero                         ; X is zero, answer is zero
     mov2 hl,0                               ; initialize quotient counter HL to 0
                                             ; at this point, stack variable locations:
@@ -287,9 +337,8 @@ divide16:
 .no_borrow:
     inc hl                                  ; subtraction complete, increment quotient counter
     push2 0                                 ; determine if result value is zero
-    call is_equal16
+    call cmp16
     pop2                                    ; get rid of zero
-    cmp a,1
     je .done_no_add                         ; if X value is now zero, we are done with subtraction loop
     jmp .sub_loop                           ; subtract again. note stack has new X and original Y in place
 .done:
@@ -319,7 +368,7 @@ divide16:
 ;    a
 ; 
 ; Flags Set
-;   C if carry occured to 17th bit
+;   CF if carry occured to 17th bit
 ; 
 add16:
     mov a, [sp+2]                       ; move low byte of value X into register A
@@ -344,7 +393,7 @@ add16:
 ;    a
 ; 
 ; Flags Set
-;   C if carry occured to 33th bit
+;   CF if carry occured to 33th bit
 ; 
 add32:
     mov a, [sp+2]                       ; move low byte of value X into register A
@@ -375,7 +424,7 @@ add32:
 ;    a
 ; 
 ; Flags Set
-;   C if no borrow was needed from 17th bit
+;   CF if no borrow was needed from 17th bit
 ; 
 subtract16:
     mov a,[sp+2]                        ; move low bye of X to A
