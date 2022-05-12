@@ -376,7 +376,7 @@ add16:
     mov [sp+2], a                       ; move addition results to low byte of return value
     mov a, [sp+3]                       ; move high byte of value X into register A
     addc [sp+5] 
-    mov [sp+3], a                       ; move the the high bye results to the stack
+    mov [sp+3], a                       ; move the high byte results to the stack
     ret
 
 ; add32
