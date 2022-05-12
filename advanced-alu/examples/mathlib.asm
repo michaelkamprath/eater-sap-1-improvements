@@ -19,7 +19,7 @@ cmp16:
     ; high bytes are not equal, so return with current flags
     ret
 .check_low_byte:
-    cmp [sp+2],[sp+5]
+    cmp [sp+2],[sp+4]
     ret
 
 ; lsl16
