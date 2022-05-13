@@ -7535,15 +7535,20 @@ instructions:
             SPa
             MDo
             HLi
-            SPe
       2:
         - control_lines:
             SPa
+            AP1
             MDo
             HILO
             HLi
-            SPe
       3:
+        - control_lines:
+            SPe
+      4:
+        - control_lines:
+            SPe
+      5:
         - control_lines:
             SCr
   POP2_indirect_hl:
@@ -7566,10 +7571,10 @@ instructions:
             AOa
             MDi
             To
-            SPe
       4:
         - control_lines:
             SPa
+            AP1
             MDo
             Ti
       5:
@@ -7578,10 +7583,12 @@ instructions:
             AOa
             MDi
             To
-            SPe
       6:
         - control_lines:
-            SCr
+            SPe
+      7:
+        - control_lines:
+            SPe
   POP2_mar:
     value: 34
     steps:
@@ -7594,19 +7601,24 @@ instructions:
         - control_lines:
             ARi
             To
-            SPe
       3:
         - control_lines:
             SPa
-            Ti
+            AP1
             MDo
+            Ti
       4:
         - control_lines:
             HILO
             ARi
             To
-            SPe
       5:
+        - control_lines:
+            SPe
+      6:
+        - control_lines:
+            SPe
+      7:
         - control_lines:
             SCr
   POP2_indirect_mar:
@@ -7629,12 +7641,12 @@ instructions:
             AOa
             MDi
             To
-            SPe
       4:
         - control_lines:
             SPa
-            Ti
+            AP1
             MDo
+            Ti
       5:
         - control_lines:
             ARa
@@ -7642,10 +7654,12 @@ instructions:
             AP1
             MDi
             To
-            SPe
       6:
         - control_lines:
-            SCr
+            SPe
+      7:
+        - control_lines:
+            SPe
   POP2_sp_offset:
     value: 37
     steps:
@@ -7679,13 +7693,12 @@ instructions:
             AP1
             MDi
             To
-            SPe
       6:
         - control_lines:
             SPe
       7:
         - control_lines:
-            SCr
+            SPe
   POP2_iaddr:
     value: 38
     steps:
@@ -7724,10 +7737,9 @@ instructions:
             AP1
             MDi
             To
-            SPe
       7:
         - control_lines:
-            SCr
+            SPe
   POP2_no_operands:
     value: 39
     steps:
