@@ -7070,8 +7070,6 @@ instructions:
           control_lines:
             Ao
             AOi
-            SPe
-            SUB
       2:
         - flags:
             extended: 1
@@ -7121,8 +7119,6 @@ instructions:
           control_lines:
             Io
             AOi
-            SPe
-            SUB
       2:
         - flags:
             extended: 1
@@ -7172,8 +7168,6 @@ instructions:
           control_lines:
             Jo
             AOi
-            SPe
-            SUB
       2:
         - flags:
             extended: 1
@@ -7581,6 +7575,7 @@ instructions:
         - control_lines:
             HLa
             AOa
+            AP1
             MDi
             To
       6:
@@ -7710,10 +7705,10 @@ instructions:
             PCe
       2:
         - control_lines:
-            HILO
             PCa
-            ARi
             MDo
+            HILO
+            ARi
             PCe
       3:
         - control_lines:
@@ -7729,8 +7724,8 @@ instructions:
       5:
         - control_lines:
             SPa
-            Ti
             MDo
+            Ti
       6:
         - control_lines:
             ARa
@@ -8561,13 +8556,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8769,13 +8768,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8977,13 +8980,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -9185,13 +9192,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -9502,8 +9513,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -9814,8 +9829,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -10190,8 +10209,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      6:
         - flags:
             extended: 1
           control_lines:
@@ -10706,8 +10729,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -11002,8 +11029,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -11298,8 +11329,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -11674,8 +11709,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      6:
         - flags:
             extended: 1
           control_lines:
