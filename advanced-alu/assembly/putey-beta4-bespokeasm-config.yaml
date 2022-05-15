@@ -451,6 +451,7 @@ instructions:
       - byte_code:
           value: 16327
           size: 14
+          endian: big
         operands:
           count: 1
           operand_sets:
@@ -469,6 +470,7 @@ instructions:
       - byte_code:
           value: 16350
           size: 14
+          endian: big
         operands:
           count: 1
           operand_sets:
@@ -519,6 +521,7 @@ instructions:
       - byte_code:
           value: 16321
           size: 14
+          endian: big
         operands:
           count: 1
           operand_sets:
@@ -545,6 +548,7 @@ instructions:
       - byte_code:
           value: 16351
           size: 14
+          endian: big
         operands:
           count: 1
           operand_sets:
