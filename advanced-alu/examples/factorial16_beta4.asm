@@ -11,6 +11,7 @@
 
 DELAY_COUNT = $0300      ; Number of steps for delay counter
 MAX_N = 8                ; max calculatable N value
+BUFFER_SIZE = 32
 
 ;
 ; RAM variables
@@ -20,7 +21,11 @@ current_n:
     .2byte 0
 
 string_buffer:
-    .zero 32
+    .zero BUFFER_SIZE
+
+decimal_buffer:
+    .zero BUFFER_SIZE
+
 ;
 ; Code
 ;
@@ -64,12 +69,20 @@ display_calculating:
     push2 string_buffer
     call cstr_copy                      ; copy prefix to buffer
     pop2
-    call cstr_len8                      ; get length of prefix. results in A
     pop2
-    push a                              ; prefix length is where index of where hex value should be written
-    push2 string_buffer                 ; the string buffer
+    push BUFFER_SIZE                    ; buffer size
+    push2 decimal_buffer                ; the decimal string buffer
     push2 [sp+5]                        ; push the N value
-    call uint16_to_hex_cstr
+    call uint16_to_decimal_cstr         ; cconver N value to decimal string
+    pop2
+    pop2
+    pop
+    push BUFFER_SIZE
+    push2 string_buffer
+    push2 decimal_buffer
+    push2 string_buffer
+    call cstr_concat
+    pop2
     pop2
     pop2
     pop
@@ -85,43 +98,42 @@ display_calculating:
 ;       sp+2 : the N value calculated (2 byte)
 ;       sp+4 : the results value (2 byte)
 display_results:
-    push2 factorial_results_prefix_cstr
-    push2 string_buffer
-    call cstr_copy                      ; copy prefix to buffer
+    push BUFFER_SIZE                    ; buffer size
+    push2 string_buffer                 ; the string buffer
+    push2 [sp+(2+3)]                        ; push the N value
+    call uint16_to_decimal_cstr         ; cconver N value to decimal string
     pop2
-    call cstr_len8                      ; get length of prefix. results in A
     pop2
-    push a                              ; prefix length is where index of where hex value should be written
+    pop
+    push BUFFER_SIZE
     push2 string_buffer
-    push2 [sp+5]                        ; push the N value
-    call uint16_to_hex_cstr
-    pop2                                ; pop the N value
-    call cstr_len8                      ; top of stack is string buffer. get current string length
-    pop2
-    pop                                 ; pop string length. stack is restored
-    push2 string_buffer
-    push 0                              ; push high byte of 2-byte value equal to A (for little endian ordering)
-    push a                              ; push low byte of 2-byte value equal to A
-    call add16
-    pop2 hl                             ; copy string_buffer incremented address to HL
-    pop2                                ; pop A converted to 16 bit value. stack is restored
- .copy_results:
     push2 factorial_results_mid_cstr
-    push2 hl                            ; HL is currently at the position in string_buffer to copy results
-    call cstr_copy
-    pop2
-    pop2
     push2 string_buffer
-    call cstr_len8                      ; get updated string buffer length
-    pop2                                ; stack is restored
-    push a                              ; sting length will be where the hex value will be placed.
-    push2 string_buffer                 ; push string buffer
-    push2 [sp+7]                        ; push the results value to be converted
-    call uint16_to_hex_cstr
-    pop2                                ; pop results value
+    call cstr_concat                    ; concat mid string
+    pop2
+    pop2
+    pop2
+    pop
+    push BUFFER_SIZE                    ; buffer size
+    push2 decimal_buffer                ; the string buffer
+    push2 [sp+(4+3)]                    ; push the results value
+    call uint16_to_decimal_cstr         ; cconver results value to decimal string
+    pop2
+    pop2
+    pop
+    push BUFFER_SIZE
+    push2 string_buffer
+    push2 decimal_buffer    
+    push2 string_buffer
+    call cstr_concat                    ; concat result decimal cstr
+    pop2
+    pop2
+    pop2
+    pop
+
+    push2 string_buffer
     call lcd_print_line_cstr            ; current top of stack is string buffer. print it.
     pop2                                ; pop string buffer
-    pop                                 ; pop string size. stack is restored.
     push2 blank_line_cstr               ; now print a blank line
     call lcd_print_line_cstr
     pop2                                ; stack is restored.
@@ -148,8 +160,8 @@ calc_factorial16:
     call calc_factorial16                   ; recurse to calculate factorial(N-1)
     push2 [sp+(2+2)]                        ; push N value on stack
     call multiply16                         ; calculate factorial(N-1)*N
-    pop2                                    ; discard first two bytes. Assume 16 bit solution
-    pop2 [sp+(2+2)]                         ; write multiplicaiton results into return value
+    pop2 [sp+(2+4)]                         ; discard first two bytes. Assume 16 bit solution
+    pop2                                    ; write multiplicaiton results into return value
     jmp .finish                             ; return
 .basecase:
     pop2                                    ; stack is restored
@@ -166,8 +178,6 @@ title_cstr:
 blank_line_cstr:
     .cstr " "
 calculating_prefix_cstr:
-    .cstr "Calculating: $"
-factorial_results_prefix_cstr:
-    .cstr "($"
+    .cstr "Calculating: "
 factorial_results_mid_cstr:
-    .cstr ")! = $"
+    .cstr "! = "
