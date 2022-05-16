@@ -66,7 +66,7 @@ class Microcode:
         extended_flag=(step_config['flags'].get('extended', 0) if 'flags' in step_config else 0)
 
         flags_str = step_config["flags"] if 'flags' in step_config else 'none'
-        print(f'Generated microbits for instruction {instr_val}, step {step_num}, flags {flags_str}: {mb}')
+        print(f'Generated microbits for instruction {instr_val}, step {step_num}, flags {flags_str}: {mb} --> 0x{mb.getLeftByteValue():04x}-0x{mb.getRightByteValue():04x}')
         self._setBits(
             mb,
             instruction=instr_val,

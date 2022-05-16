@@ -410,10 +410,10 @@ instructions:
         - flags:
             zero: 0
           control_lines:
-            HILO
             PCa
-            PCi
             MDo
+            HILO
+            PCi
       3:
         - flags:
             zero: 1
@@ -5187,13 +5187,13 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - control_lines:
             HLa
             AOa
             MDo
             Ti
+            PCe
       3:
         - control_lines:
             Ai
@@ -5210,7 +5210,6 @@ instructions:
         - control_lines:
             PCa
             AOi
-            PCe
             MDo
       2:
         - control_lines:
@@ -5218,6 +5217,7 @@ instructions:
             AOa
             Ti
             MDo
+            PCe
       3:
         - control_lines:
             Ai
@@ -5264,7 +5264,6 @@ instructions:
         - control_lines:
             PCa
             Ti
-            PCe
             MDo
       2:
         - control_lines:
@@ -5272,6 +5271,7 @@ instructions:
             SUMo
             S0
             S1
+            PCe
       3:
         - control_lines:
             SCr
@@ -5351,13 +5351,13 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - control_lines:
             HLa
             AOa
             MDo
             Ti
+            PCe
       3:
         - control_lines:
             Ai
@@ -5375,7 +5375,6 @@ instructions:
         - control_lines:
             PCa
             AOi
-            PCe
             MDo
       2:
         - control_lines:
@@ -5383,6 +5382,7 @@ instructions:
             AOa
             Ti
             MDo
+            PCe
       3:
         - control_lines:
             Ai
@@ -5431,7 +5431,6 @@ instructions:
         - control_lines:
             PCa
             Ti
-            PCe
             MDo
       2:
         - control_lines:
@@ -5440,6 +5439,7 @@ instructions:
             S0
             S1
             CRY
+            PCe
       3:
         - control_lines:
             SCr
@@ -5511,13 +5511,13 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - control_lines:
             HLa
             AOa
             MDo
             Ti
+            PCe
       3:
         - control_lines:
             Ai
@@ -5534,13 +5534,13 @@ instructions:
             PCa
             AOi
             MDo
-            PCe
       2:
         - control_lines:
             SPa
             AOa
             Ti
             MDo
+            PCe
       3:
         - control_lines:
             Ai
@@ -5585,13 +5585,13 @@ instructions:
         - control_lines:
             PCa
             Ti
-            PCe
             MDo
       2:
         - control_lines:
             Ai
             SUMo
             S1
+            PCe
       3:
         - control_lines:
             SCr
@@ -5667,13 +5667,13 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - control_lines:
             HLa
             AOa
             MDo
             Ti
+            PCe
       3:
         - control_lines:
             Ai
@@ -5691,13 +5691,13 @@ instructions:
             PCa
             AOi
             MDo
-            PCe
       2:
         - control_lines:
             SPa
             AOa
             Ti
             MDo
+            PCe
       3:
         - control_lines:
             Ai
@@ -5744,7 +5744,6 @@ instructions:
         - control_lines:
             PCa
             Ti
-            PCe
             MDo
       2:
         - control_lines:
@@ -5752,6 +5751,7 @@ instructions:
             SUMo
             S1
             CRY
+            PCe
       3:
         - control_lines:
             SCr
@@ -5951,13 +5951,13 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - control_lines:
             HLa
             AOa
             MDo
             Ti
+            PCe
       3:
         - control_lines:
             Ai
@@ -5974,7 +5974,6 @@ instructions:
         - control_lines:
             PCa
             AOi
-            PCe
             MDo
       2:
         - control_lines:
@@ -5982,6 +5981,7 @@ instructions:
             AOa
             Ti
             MDo
+            PCe
       3:
         - control_lines:
             Ai
@@ -6028,7 +6028,6 @@ instructions:
         - control_lines:
             PCa
             Ti
-            PCe
             MDo
       2:
         - control_lines:
@@ -6036,6 +6035,7 @@ instructions:
             SUMo
             S1
             S2
+            PCe
       3:
         - control_lines:
             SCr
@@ -6095,13 +6095,13 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - control_lines:
             HLa
             AOa
             MDo
             Ti
+            PCe
       3:
         - control_lines:
             Ai
@@ -6118,7 +6118,6 @@ instructions:
         - control_lines:
             PCa
             AOi
-            PCe
             MDo
       2:
         - control_lines:
@@ -6126,6 +6125,7 @@ instructions:
             AOa
             Ti
             MDo
+            PCe
       3:
         - control_lines:
             Ai
@@ -6172,7 +6172,6 @@ instructions:
         - control_lines:
             PCa
             Ti
-            PCe
             MDo
       2:
         - control_lines:
@@ -6180,6 +6179,7 @@ instructions:
             SUMo
             S0
             S2
+            PCe
       3:
         - control_lines:
             SCr
@@ -6236,13 +6236,13 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - control_lines:
             HLa
             AOa
             MDo
             Ti
+            PCe
       3:
         - control_lines:
             Ai
@@ -6258,7 +6258,6 @@ instructions:
         - control_lines:
             PCa
             AOi
-            PCe
             MDo
       2:
         - control_lines:
@@ -6266,6 +6265,7 @@ instructions:
             AOa
             Ti
             MDo
+            PCe
       3:
         - control_lines:
             Ai
@@ -6310,13 +6310,13 @@ instructions:
         - control_lines:
             PCa
             Ti
-            PCe
             MDo
       2:
         - control_lines:
             Ai
             SUMo
             S2
+            PCe
       3:
         - control_lines:
             SCr
@@ -7070,8 +7070,6 @@ instructions:
           control_lines:
             Ao
             AOi
-            SPe
-            SUB
       2:
         - flags:
             extended: 1
@@ -7121,8 +7119,6 @@ instructions:
           control_lines:
             Io
             AOi
-            SPe
-            SUB
       2:
         - flags:
             extended: 1
@@ -7172,8 +7168,6 @@ instructions:
           control_lines:
             Jo
             AOi
-            SPe
-            SUB
       2:
         - flags:
             extended: 1
@@ -7535,15 +7529,20 @@ instructions:
             SPa
             MDo
             HLi
-            SPe
       2:
         - control_lines:
             SPa
+            AP1
             MDo
             HILO
             HLi
-            SPe
       3:
+        - control_lines:
+            SPe
+      4:
+        - control_lines:
+            SPe
+      5:
         - control_lines:
             SCr
   POP2_indirect_hl:
@@ -7566,22 +7565,25 @@ instructions:
             AOa
             MDi
             To
-            SPe
       4:
         - control_lines:
             SPa
+            AP1
             MDo
             Ti
       5:
         - control_lines:
             HLa
             AOa
+            AP1
             MDi
             To
-            SPe
       6:
         - control_lines:
-            SCr
+            SPe
+      7:
+        - control_lines:
+            SPe
   POP2_mar:
     value: 34
     steps:
@@ -7594,19 +7596,24 @@ instructions:
         - control_lines:
             ARi
             To
-            SPe
       3:
         - control_lines:
             SPa
-            Ti
+            AP1
             MDo
+            Ti
       4:
         - control_lines:
             HILO
             ARi
             To
-            SPe
       5:
+        - control_lines:
+            SPe
+      6:
+        - control_lines:
+            SPe
+      7:
         - control_lines:
             SCr
   POP2_indirect_mar:
@@ -7629,12 +7636,12 @@ instructions:
             AOa
             MDi
             To
-            SPe
       4:
         - control_lines:
             SPa
-            Ti
+            AP1
             MDo
+            Ti
       5:
         - control_lines:
             ARa
@@ -7642,10 +7649,12 @@ instructions:
             AP1
             MDi
             To
-            SPe
       6:
         - control_lines:
-            SCr
+            SPe
+      7:
+        - control_lines:
+            SPe
   POP2_sp_offset:
     value: 37
     steps:
@@ -7679,13 +7688,12 @@ instructions:
             AP1
             MDi
             To
-            SPe
       6:
         - control_lines:
             SPe
       7:
         - control_lines:
-            SCr
+            SPe
   POP2_iaddr:
     value: 38
     steps:
@@ -7697,10 +7705,10 @@ instructions:
             PCe
       2:
         - control_lines:
-            HILO
             PCa
-            ARi
             MDo
+            HILO
+            ARi
             PCe
       3:
         - control_lines:
@@ -7716,18 +7724,17 @@ instructions:
       5:
         - control_lines:
             SPa
-            Ti
             MDo
+            Ti
       6:
         - control_lines:
             ARa
             AP1
             MDi
             To
-            SPe
       7:
         - control_lines:
-            SCr
+            SPe
   POP2_no_operands:
     value: 39
     steps:
@@ -8549,13 +8556,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8757,13 +8768,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -8965,13 +8980,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -9173,13 +9192,17 @@ instructions:
           control_lines:
             PCa
             MDo
-            PCe
             S0
             S1
             S2
             S3
             CMPs
       3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      4:
         - flags:
             extended: 1
           control_lines:
@@ -9194,7 +9217,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9203,6 +9225,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9228,7 +9251,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9237,6 +9259,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9262,7 +9285,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9271,6 +9293,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9296,7 +9319,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9305,6 +9327,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9330,7 +9353,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9339,6 +9361,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9346,7 +9369,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       4:
         - flags:
             extended: 1
@@ -9359,6 +9381,7 @@ instructions:
             S2
             S3
             CMPs
+            PCe
       5:
         - flags:
             extended: 1
@@ -9374,7 +9397,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9383,6 +9405,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9390,7 +9413,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       4:
         - flags:
             extended: 1
@@ -9403,6 +9425,7 @@ instructions:
             S2
             S3
             CMPs
+            PCe
       5:
         - flags:
             extended: 1
@@ -9418,7 +9441,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9427,6 +9449,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9470,7 +9493,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9479,6 +9501,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9490,8 +9513,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -9506,7 +9533,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9515,6 +9541,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9540,7 +9567,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9549,6 +9575,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9574,7 +9601,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9583,6 +9609,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9608,7 +9635,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9617,6 +9643,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9642,7 +9669,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9651,6 +9677,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9658,7 +9685,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       4:
         - flags:
             extended: 1
@@ -9671,6 +9697,7 @@ instructions:
             S2
             S3
             CMPs
+            PCe
       5:
         - flags:
             extended: 1
@@ -9686,7 +9713,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9695,6 +9721,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9702,7 +9729,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       4:
         - flags:
             extended: 1
@@ -9715,6 +9741,7 @@ instructions:
             S2
             S3
             CMPs
+            PCe
       5:
         - flags:
             extended: 1
@@ -9730,7 +9757,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9739,6 +9765,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9782,7 +9809,6 @@ instructions:
             PCa
             MDo
             AOi
-            PCe
       2:
         - flags:
             extended: 1
@@ -9791,6 +9817,7 @@ instructions:
             AOa
             MDo
             Ti
+            PCe
       3:
         - flags:
             extended: 1
@@ -9802,8 +9829,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -10178,8 +10209,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      6:
         - flags:
             extended: 1
           control_lines:
@@ -10694,8 +10729,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -10990,8 +11029,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -11286,8 +11329,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       4:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      5:
         - flags:
             extended: 1
           control_lines:
@@ -11662,8 +11709,12 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       5:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      6:
         - flags:
             extended: 1
           control_lines:
