@@ -18,8 +18,10 @@ def get_kwargs():
 class Microcode:
     # the general format of the microcode dict is:
     #
-    #   microcode[extended][instruction][step][c-flag][z-flag][n-flag][o-flag]
+    #   microcode[extended][instruction][step][c-flag][z-flag][o-flag][e-flag]
     def __init__(self, config_dict):
+        self._allowed_flags = set(config_dict['flags'])
+
         self.microcode = {'X':{'X':{'X':{'X':{'X':{'X':{'X':MicroBits(0)}}}}}}}
         # first generate the microbits objects
         microbits = {
@@ -33,6 +35,12 @@ class Microcode:
 
         for step_num, step_config_list in config_dict['instruction_prefix_steps'].items():
             for step_config in step_config_list:
+                if (
+                    'flags' in step_config 
+                    and 
+                    len(set(step_config['flags'].keys()).difference(self._allowed_flags)) > 0
+                ):
+                    sys.exit(f'ERROR - Prefix set {step_num} has an invalid flag')
                 for instruction_val in set(instruction_values):
                     self._insert_step_config(step_config, step_num, instruction_val, microbits)
 
@@ -42,6 +50,12 @@ class Microcode:
 
             for step_num, step_config_list in instruction_config['steps'].items():
                 for step_config in step_config_list:
+                    if (
+                        'flags' in step_config 
+                        and 
+                        len(set(step_config['flags'].keys()).difference(self._allowed_flags)) > 0
+                    ):
+                        sys.exit(f'ERROR - Instruction "{instruction}" step {step_num} has an invalid flag')
                     self._insert_step_config(step_config, step_num, instruction_config['value'], microbits)
         # and thats it
         return
@@ -51,14 +65,15 @@ class Microcode:
         # the extended flag should always be 0 unless explicitly stated otherwise.
         extended_flag=(step_config['flags'].get('extended', 0) if 'flags' in step_config else 0)
 
-        print(f'Generated microbits for instruction {instr_val}, step {step_num}, extended {extended_flag}: {mb}')
+        flags_str = step_config["flags"] if 'flags' in step_config else 'none'
+        print(f'Generated microbits for instruction {instr_val}, step {step_num}, flags {flags_str}: {mb} --> 0x{mb.getLeftByteValue():04x}-0x{mb.getRightByteValue():04x}')
         self._setBits(
             mb,
             instruction=instr_val,
             step=step_num,
             carrry_flag=(step_config['flags'].get('carry', 'X') if 'flags' in step_config else 'X'),
             zero_flag=(step_config['flags'].get('zero', 'X') if 'flags' in step_config else 'X'),
-            negative_flag=(step_config['flags'].get('negative', 'X') if 'flags' in step_config else 'X'),
+            equal_flag=(step_config['flags'].get('equal', 'X') if 'flags' in step_config else 'X'),
             overflow_flag=(step_config['flags'].get('overflow', 'X') if 'flags' in step_config else 'X'),
             # the extended flag should always be 0 unless explicitly stated otherwise.
             extended_flag=extended_flag,
@@ -84,7 +99,7 @@ class Microcode:
         step='X',
         carrry_flag='X',
         zero_flag='X',
-        negative_flag='X',
+        equal_flag='X',
         overflow_flag='X',
         extended_flag=0,
     ):
@@ -92,20 +107,20 @@ class Microcode:
         if extended_flag in self.microcode \
                 and instruction in self.microcode[extended_flag] \
                 and step in self.microcode[extended_flag][instruction] \
-                and carrry_flag in self.microcode[extended_flag][instruction][step] \
-                and zero_flag in self.microcode[extended_flag][instruction][step][carrry_flag] \
-                and negative_flag in self.microcode[extended_flag][instruction][step][carrry_flag][zero_flag] \
-                and overflow_flag in self.microcode[extended_flag][instruction][step][carrry_flag][zero_flag][negative_flag]:
+                and zero_flag in self.microcode[extended_flag][instruction][step] \
+                and carrry_flag in self.microcode[extended_flag][instruction][step][zero_flag] \
+                and overflow_flag in self.microcode[extended_flag][instruction][step][zero_flag][carrry_flag] \
+                and equal_flag in self.microcode[extended_flag][instruction][step][zero_flag][carrry_flag][overflow_flag]:
             sys.exit(f"ERROR - multiple sets to keys: {get_kwargs()}")
         (
             self.microcode
             .setdefault(extended_flag, dict())
             .setdefault(instruction, dict())
             .setdefault(step, dict())
-            .setdefault(carrry_flag, dict())
             .setdefault(zero_flag, dict())
-            .setdefault(negative_flag, dict())
-        )[overflow_flag] = bits
+            .setdefault(carrry_flag, dict())
+            .setdefault(overflow_flag, dict())
+        )[equal_flag] = bits
 
     def getBytesForAddress(self, address):
         instruction = (address&int('000000011111111000',2)) >> 3
@@ -113,8 +128,8 @@ class Microcode:
         extended_flag = (address&int('000000100000000000',2)) >> 11
         zero_flag = (address&int('000001000000000000',2)) >> 12
         carry_flag = (address&int('000010000000000000',2)) >> 13
-        negative_flag = (address&int('000100000000000000',2)) >> 14
-        overflow_flag = (address&int('001000000000000000',2)) >> 15
+        overflow_flag = (address&int('000100000000000000',2)) >> 14
+        equal_flag = (address&int('001000000000000000',2)) >> 15
         interupt_flag = (address&int('010000000000000000',2)) >> 16
         eeprom_select = (address&int('100000000000000000',2)) >> 17
 
@@ -126,10 +141,10 @@ class Microcode:
         #   1. extended
         #   2. instruction
         #   3. step
-        #   4. carry_flag
-        #   5. zero_flag
-        #   6. negative_flag
-        #   7. overflow_flag
+        #   4. zero_flag
+        #   5. carry_flag
+        #   6. overflow_flag
+        #   7. equal_flag
         #
 
         # The extended flag must be 0 or 1
@@ -149,19 +164,19 @@ class Microcode:
             if step_dict is None:
                 return 0
 
-        carry_dict = Microcode._get_with_defaulting(step_dict, carry_flag)
-        if carry_dict is None:
-            return 0
-
-        zero_dict = Microcode._get_with_defaulting(carry_dict, zero_flag)
+        zero_dict = Microcode._get_with_defaulting(step_dict, zero_flag)
         if zero_dict is None:
             return 0
 
-        negative_dict = Microcode._get_with_defaulting(zero_dict, negative_flag)
-        if negative_dict is None:
+        carry_dict = Microcode._get_with_defaulting(zero_dict, carry_flag)
+        if carry_dict is None:
             return 0
 
-        bits = Microcode._get_with_defaulting(negative_dict, overflow_flag)
+        overflow_dict = Microcode._get_with_defaulting(carry_dict, overflow_flag)
+        if overflow_dict is None:
+            return 0
+
+        bits = Microcode._get_with_defaulting(overflow_dict, equal_flag)
 
         if bits is None:
             return 0

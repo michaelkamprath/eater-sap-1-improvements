@@ -16,12 +16,12 @@ Multiple independent projects are described in this repository. It is recommende
 6. ~~**[Adding 64K of RAM and ROM](./ram-rom-upgrade/)**~~ - **It is recommended that this project be partially skipped. The program counter, memory address register, and run mode selector from this project should be completed, but is recommended to skip the rest and implement the 16 bit memory architecture describe in the Instruction Register project below**. This project changes the SAP-1's memory address space to 16 bit, and then splits the address space between ROM and RAM. The original 4-bit instructions are still maintained, as that will be changed in a later project. This project also introduces an assembler to help build the ROM code.
 7. **[Instruction Register and Memory Map Update](./instruction-register-8-bit/)** - In this project I upgrade the instruction register to use the full 8-bits. I also realized that I once again needed to upgrade my control logic, so I expanded the instruction-based control logic plus added a memory map mechanism.
 8. **[Stack Pointer and Index Register](./stack-pointer/)** - A stack pointer is added to enable things like subroutines and stack memory. Also adds an index register that can be used to track 16-bit values and memory addresses.
-9. **[LCD Display](./lcd-display/)** - A 20x4 LCD character display is added to give the TTL CPU the ability to display more complex output to the user than is afforded by the original 8-bit display of the SAP-1. 
+9. **[LCD Display](./lcd-display/)** - A 20x4 LCD character display is added to give the TTL CPU the ability to display more complex output to the user than is afforded by the original 8-bit display of the SAP-1.
+10. **[Advanced Arithmetic Logic Unit](./advanced-alu/)** - Adds an ALU that is more capable than just addition operations. In addition to addition  subtraction, enables bit shifting, logic operations, comparisons, and bit detection. Plus, allows reading the flags register directly. 
 
 
 # Future Projects
 The following projects are planned but have not been designed yet, however, I have put sufficient thought into them or have seen other attempt them to be convinced that they are viable:
-* Improved ALU
 * Adding a 8x8 LED pixel display
 * Interfacing with the TMS9918a video processor (?)
 * Interfacing with a 80's tech sound chip
