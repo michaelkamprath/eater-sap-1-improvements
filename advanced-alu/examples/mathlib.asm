@@ -683,6 +683,46 @@ inc16:
     mov2 [sp+2], hl             ; place results back into position on stack
     ret                         ; return
 
+; inc64
+;   Increments a 64-bit interger by 1.
+;
+; Arguments
+;   sp+2 - the value to increment
+;
+; Returns
+;   sp+2 - replaces argument with incremented value
+;
+; Registers used:
+;    hl
+inc64:
+    mov a,[sp+(2+0)]
+    add 1
+    mov [sp+(2+0)],a
+    mov a,[sp+(2+1)]
+    addc 0
+    mov [sp+(2+1)],a
+    mov a,[sp+(2+2)]
+    addc 0
+    mov [sp+(2+2)],a
+    mov a,[sp+(2+3)]
+    addc 0
+    mov [sp+(2+3)],a
+    mov a,[sp+(2+4)]
+    addc 0
+    mov [sp+(2+4)],a
+    mov a,[sp+(2+5)]
+    addc 0
+    mov [sp+(2+5)],a
+    mov a,[sp+(2+6)]
+    addc 0
+    mov [sp+(2+6)],a
+    mov a,[sp+(2+7)]
+    addc 0
+    mov [sp+(2+7)],a
+.end:
+    ret   
+
+
 ; dec16
 ; Decrements a 16-bit interger by 1.
 ;

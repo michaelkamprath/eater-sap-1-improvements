@@ -379,7 +379,7 @@ uint16_to_decimal_cstr:
 .div_loop_remainder:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+2],9
-    jo _error_remainder_too_large
+    jo .error_remainder_too_large
     mov2 hl,_numrical_digits_table
     mov a,[hl+[sp+2]]       ; get character of remainder
     mov2 hl,[sp+(4+4)]      ; set HL to character buffer
@@ -425,7 +425,7 @@ uint16_to_decimal_cstr:
     push2 _error_buffer_small
     call lcd_print_line_cstr
     hlt
-_error_remainder_too_large:
+.error_remainder_too_large:
     push2 _error_remainder_too_large_str
     call lcd_print_line_cstr
     hlt
@@ -511,7 +511,7 @@ uin64_to_decimal_cstr:
 .div_loop_remainder:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+8],9
-    jo _error_remainder_too_large
+    jo .error_remainder_too_large
     mov2 hl,_numrical_digits_table
     mov a,[hl+[sp+8]]       ; get character of remainder
     mov2 hl,[sp+(10+10)]    ; set HL to character buffer
@@ -560,7 +560,7 @@ uin64_to_decimal_cstr:
     push2 _error_buffer_small
     call lcd_print_line_cstr
     hlt
-_error_remainder_too_large:
+.error_remainder_too_large:
     push2 _error_remainder_too_large_str
     call lcd_print_line_cstr
     hlt
