@@ -445,22 +445,22 @@ uint16_to_decimal_cstr:
 ;       writes binary string to buffer. Will reset all other values in buffer to null (0)
 ;       updates sp+12 top the character length of the decimal string
 ; 
-_uin64_to_decimal_cmp_ws_to_9:
-    cmp [sp+9],0
+_uin64_to_decimal_cmp_10_to_ws:
+    cmp 0,[sp+9]
     jne .end
-    cmp [sp+8],0
+    cmp 0,[sp+8]
     jne .end
-    cmp [sp+7],0
+    cmp 0,[sp+7]
     jne .end
-    cmp [sp+6],0
+    cmp 0,[sp+6]
     jne .end
-    cmp [sp+5],0
+    cmp 0,[sp+5]
     jne .end
-    cmp [sp+4],0
+    cmp 0,[sp+4]
     jne .end
-    cmp [sp+3],0
+    cmp 0,[sp+3]
     jne .end
-    cmp [sp+2],9
+    cmp 10,[sp+2]
 .end:
     ret
 
@@ -479,7 +479,7 @@ uin64_to_decimal_cstr:
     push2 [sp+(2+6+2)]        ; valbytes 6 & 7
     push2 [sp+(2+4+4)]        ; valbytes 4 & 5
     push2 [sp+(2+2+6)]        ; valbytes 2 & 3
-    push2 [sp+(2+0+6)]        ; valbytes 0 & 1   
+    push2 [sp+(2+0+8)]        ; valbytes 0 & 1
     ; working stack is:
     ;    sp+0 : value (8 bytes)
     ;    sp+8 : high byte (1 bytes)
@@ -487,9 +487,9 @@ uin64_to_decimal_cstr:
     mov j,0                 ; J is digit counter
 .outer_loop:
     ; first check to see if we are done
-    call _uin64_to_decimal_cmp_ws_to_9
+    call _uin64_to_decimal_cmp_10_to_ws
     jo .last_digit          ; it is. jump to last digit
-
+.outer_loop_continue:
     mov i,64                ; I is divide loop counter
 .div_loop:
     call lsl72              ; shift working stack left 1 bit
@@ -517,7 +517,7 @@ uin64_to_decimal_cstr:
     mov2 hl,[sp+(10+10)]    ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
     ; do one more rotation before next loop
-    call lsl24
+    call lsl72
     mov a,[sp+9]            ; move carry bit flag into A
     or [sp+0]               ; OR the carry bit flag with the low working byte
     mov [sp+0],a            ; place OR'ed low byte back
