@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.dev2"
+#require "putey-1-beta >= 0.4.0"
 
 ;
 ; General System Utilities

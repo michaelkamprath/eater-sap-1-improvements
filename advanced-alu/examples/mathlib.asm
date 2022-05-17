@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.dev2"
+#require "putey-1-beta >= 0.4.0"
 
 ; cmp16
 ;   Compares two 16-bit values, and sets OF (left > right) or EF (left == right) flags
@@ -67,6 +67,48 @@ lsl24:
     mov [sp+4],a
     ret 
 
+
+; lsl72
+;   Logical left shift for a 72 bit value
+; 
+;   Arguments
+;       sp+2 : the value to be shift left (9 bytes)
+; 
+;   Returns
+;       sp+2 : the left shifted value
+; 
+;   Flags Set
+;       CF if carry occured to 73th bit
+; 
+lsl72:
+    mov a,[sp+2]            ; start with least significant byte
+    lsl                     ; shift it left, setting CF if needed
+    mov [sp+2],a            ; place shifted value back
+    mov a,[sp+3]            ; next byte
+    lslc
+    mov [sp+3],a
+    mov a,[sp+4]            ; next byte
+    lslc
+    mov [sp+4],a
+    mov a,[sp+5]            ; next byte
+    lslc
+    mov [sp+5],a
+    mov a,[sp+6]            ; next byte
+    lslc
+    mov [sp+6],a
+    mov a,[sp+7]            ; next byte
+    lslc
+    mov [sp+7],a
+    mov a,[sp+8]            ; next byte
+    lslc
+    mov [sp+8],a
+    mov a,[sp+9]            ; next byte
+    lslc
+    mov [sp+9],a
+    mov a,[sp+10]            ; next byte
+    lslc
+    mov [sp+10],a
+    ret 
 
 ; lsr16
 ;   Logical right shift for a 16 bit value
@@ -154,6 +196,70 @@ lsr64:
     lsrc 
     mov [sp+2],a
     ret                     ; done
+
+; lsr128
+;   Logical right shift for a 128 bit value
+; 
+;   Arguments
+;       sp+2 : the value to be shift right (16 bytes)
+; 
+;   Returns
+;       sp+2 : the right shifted value
+; 
+;   Flags Set
+;       CF if carry occured past 0th bit
+; 
+lsr128:
+    mov a,[sp+17]            ; start with most significant byte
+    lsr                     ; shift it right, setting CF if needed
+    mov [sp+17],a            ; place shifted value back
+    mov a,[sp+16]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+16],a
+    mov a,[sp+15]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+15],a
+    mov a,[sp+14]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+14],a
+    mov a,[sp+13]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+13],a
+    mov a,[sp+12]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+12],a
+    mov a,[sp+11]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+11],a
+    mov a,[sp+10]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+10],a
+    mov a,[sp+9]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+9],a
+    mov a,[sp+8]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+8],a
+    mov a,[sp+7]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+7],a
+    mov a,[sp+6]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+6],a
+    mov a,[sp+5]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+5],a
+    mov a,[sp+4]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+4],a
+    mov a,[sp+3]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+3],a
+    mov a,[sp+2]             ; repeat on next byte with carry
+    lsrc 
+    mov [sp+2],a
+    ret                     ; done
+
 
 ; multiply16
 ;   multiply two byte values X*Y, producing in a 4 byte results
@@ -255,6 +361,85 @@ multiply32:
     pop2 [sp+(4+6)]
     pop2 [sp+(6+4)]
     ret
+
+; multiply64
+;   multiply 8 byte values X*Y, producing in a 16 byte results
+;
+; Arguments
+;   sp+2 - value X (multiplier) (8 bytes)
+;   sp+10 - value Y (multiplicand) (8 bytes)
+;
+; Return Value
+;   sp+2 - results (8 bytes)
+; 
+; Registers used
+;   i
+; 
+multiply64:
+    ; set counter for 64 bits
+    mov i,64
+    ; set up 18 byte results memory block
+    push2 0                 ; high word inialized to 0
+    push2 0 
+    push2 0
+    push2 0
+    push2 [sp+(2+6+8)]      ; multiplier in low word
+    push2 [sp+(2+4+10)]
+    push2 [sp+(2+2+12)]
+    push2 [sp+(2+0+14)]
+
+    ; Stack state:
+    ;   sp+0  : 16 byte results memory (high word at sp+8)
+    ;   sp+18 : original multiplier (8 bytes)
+    ;   sp+26 : multiplicand (8 bytes)
+.loop:
+    ; check to see if LSb of working memory is 1
+    tstb [sp+0],0
+    jz .continue
+    ; add high word of results to multiplicand
+    mov a,[sp+(8+0)]
+    add [sp+(26+0)]
+    mov [sp+(8+0)],a
+    mov a,[sp+(8+1)]
+    addc [sp+(26+1)]
+    mov [sp+(8+1)],a    
+    mov a,[sp+(8+2)]
+    addc [sp+(26+2)]
+    mov [sp+(8+2)],a 
+    mov a,[sp+(8+3)]
+    addc [sp+(26+3)]
+    mov [sp+(8+3)],a 
+    mov a,[sp+(8+4)]
+    addc [sp+(26+4)]
+    mov [sp+(8+4)],a 
+    mov a,[sp+(8+5)]
+    addc [sp+(26+5)]
+    mov [sp+(8+5)],a 
+    mov a,[sp+(8+6)]
+    addc [sp+(26+6)]
+    mov [sp+(8+6)],a 
+    mov a,[sp+(8+7)]
+    addc [sp+(26+7)]
+    mov [sp+(8+7)],a 
+.continue:
+    ; shift results right one. alread at [sp] so just call
+    call lsr128
+    ; decrement counter and stop if 0
+    dec i
+    jz .done
+    jmp .loop
+.done:
+    ; pop results to return stack
+    pop2 [sp+(0+18)]
+    pop2 [sp+(2+16)]
+    pop2 [sp+(4+14)]
+    pop2 [sp+(6+12)]
+    pop2 [sp+(8+10)]
+    pop2 [sp+(10+8)]
+    pop2 [sp+(12+6)]
+    pop2 [sp+(14+4)]
+    ret
+
 
 ; divide8
 ;   Divides X by Y
@@ -376,7 +561,7 @@ add16:
     mov [sp+2], a                       ; move addition results to low byte of return value
     mov a, [sp+3]                       ; move high byte of value X into register A
     addc [sp+5] 
-    mov [sp+3], a                       ; move the high byte results to the stack
+    mov [sp+3], a                       ; move the the high bye results to the stack
     ret
 
 ; add32
@@ -409,6 +594,52 @@ add32:
     addc [sp+(6+3)] 
     mov [sp+(2+3)], a                   ; move the next bye results to the stack
     ret
+
+
+; add64
+;   adds values X+Y
+;
+; Arguments
+;   sp+2 - value X, 8 byte value
+;   sp+10 - value Y, 8 byte value
+;
+; Return Value
+;   sp+2 - replace the original 8 byte value with the sum
+;
+; Registers used:
+;    a
+; 
+; Flags Set
+;   CF if carry occured to 65th bit
+; 
+add64:
+    mov a, [sp+2]                       ; move low byte of value X into register A
+    add [sp+10]                          ; add low byte of value Y to alue in regsiter A
+    mov [sp+2], a                       ; move addition results to low byte of return value
+    mov a, [sp+(2+1)]                   ; move next byte of value X into register A
+    addc [sp+(10+1)] 
+    mov [sp+(2+1)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+2)]                   ; move next byte of value X into register A
+    addc [sp+(10+2)] 
+    mov [sp+(2+2)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+3)]                   ; move next byte of value X into register A
+    addc [sp+(10+3)] 
+    mov [sp+(2+3)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+4)]                   ; move next byte of value X into register A
+    addc [sp+(10+4)] 
+    mov [sp+(2+4)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+5)]                   ; move next byte of value X into register A
+    addc [sp+(10+5)] 
+    mov [sp+(2+5)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+6)]                   ; move next byte of value X into register A
+    addc [sp+(10+6)] 
+    mov [sp+(2+6)], a                   ; move the next bye results to the stack
+    mov a, [sp+(2+7)]                   ; move next byte of value X into register A
+    addc [sp+(10+7)] 
+    mov [sp+(2+7)], a                   ; move the next bye results to the stack
+    ret
+
+
 
 ; subtract16
 ;   subtracts Y value from X

@@ -16,7 +16,7 @@ general:
     - l
   identifier:
     name: putey-1-beta
-    version: "0.4.dev2"
+    version: "0.4.0"
 predefined:
   constants:
     - name: ZF

@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.dev"
+#require "putey-1-beta >= 0.4.0"
 #include "system.asm"
 
 NUMBER_VALUE = 48879

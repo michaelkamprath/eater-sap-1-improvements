@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.dev2"
+#require "putey-1-beta >= 0.4.0"
 
 ; cstr_len8
 ;   Calculates the length of a cstr not including the null terminator character, up to 255.
@@ -117,6 +117,38 @@ cstr_append:
     inc i                   ; increment position in buffer
     jnz .loop               ; restart loop if I hasn't rolled over to 0
     mov [hl+255], 0         ; make last character in buffer equal to 0
+.end:
+    ret
+
+
+; reverse_cstr
+;   Reverses the ordering of all characters in the cstr. 
+; 
+;   Arguments
+;       sp+2 : buffer address to cstr. Should be mutable, and less than 255 characters.
+; 
+;   Returns
+;       sp+2 : The contents of the buffer are reverse.
+; 
+;   Registers Used
+;       i
+; 
+reverse_cstr:
+    mov2 hl,[sp+2]
+    mov i,0
+.push_loop:
+    cmp [hl+i],0                ; if character is 0. we are done with pusshing    
+    je .pop_loop
+    push [hl+i]
+    inc i
+    jmp .push_loop
+.pop_loop:
+    cmp i,0                     ; if I is 0, we are done popping
+    je .end
+    pop [hl]
+    inc hl
+    dec i
+    jmp .pop_loop
 .end:
     ret
 
@@ -297,7 +329,6 @@ _fetch_bit_char:
 ;
 ;   Returns
 ;       writes binary string to buffer. Will reset all other values in buffer to null (0)
-;       updates sp+4 to the buffer address (not including offset) that the first null char 
 ;       updates sp+6 top the character length of the decimal string
 ; 
 uint16_to_decimal_cstr:
@@ -376,30 +407,17 @@ uint16_to_decimal_cstr:
     pop
     pop
 
+    ; set the null terminating character
+    inc j
+    jz .err_buffer_size
+    mov [hl+j],0
+
     ; finally need to reverse digits
-.reverse_digits:            
-    mov i,0
-    mov2 hl,[sp+4]
-.push_loop:
-    push [hl+i]
-    cmp i,j                 ; if I is 0. we are done
-    je .pop_loop_init
-    inc i
-    jmp .push_loop
-.pop_loop_init:
-    mov i,0
-.pop_loop:
-    pop [hl]
-    inc hl
-    cmp i,j
-    je .end
-    inc i
-    jmp .pop_loop
+    push2 hl
+    call reverse_cstr
+    pop2 hl
 
 .end:
-    mov [hl],0
-    mov2 [sp+4],hl          ; move current HL value to return buffer address
-    inc j                   ; increment J to get charcter count
     mov [sp+6],j            ; move character count to return size
     ret
 .err_buffer_size:
@@ -411,6 +429,142 @@ _error_remainder_too_large:
     push2 _error_remainder_too_large_str
     call lcd_print_line_cstr
     hlt
+
+
+
+; uint16_to_decimal_cstr
+; 
+;   converts the passed uint64 value to a decimal formatted cstr.
+;
+;   Arguments
+;       sp+2  : the uint64 value (8 byte)
+;       sp+10 : buffer address (2 bytes)
+;       sp+12 : buffer size (1 byte)
+;
+;   Returns
+;       writes binary string to buffer. Will reset all other values in buffer to null (0)
+;       updates sp+12 top the character length of the decimal string
+; 
+_uin64_to_decimal_cmp_ws_to_9:
+    cmp [sp+9],0
+    jne .end
+    cmp [sp+8],0
+    jne .end
+    cmp [sp+7],0
+    jne .end
+    cmp [sp+6],0
+    jne .end
+    cmp [sp+5],0
+    jne .end
+    cmp [sp+4],0
+    jne .end
+    cmp [sp+3],0
+    jne .end
+    cmp [sp+2],9
+.end:
+    ret
+
+uin64_to_decimal_cstr:
+    ; set buffer to to all 0s
+    push [sp+12]
+    push 0
+    push2 [sp+(10+2)]
+    call memset8
+    pop2
+    pop
+    pop
+    ; set up working stack
+    push 0                  ; init bit carry flag
+    push 0                  ; init high byte
+    push2 [sp+(2+6+2)]        ; valbytes 6 & 7
+    push2 [sp+(2+4+4)]        ; valbytes 4 & 5
+    push2 [sp+(2+2+6)]        ; valbytes 2 & 3
+    push2 [sp+(2+0+6)]        ; valbytes 0 & 1   
+    ; working stack is:
+    ;    sp+0 : value (8 bytes)
+    ;    sp+8 : high byte (1 bytes)
+    ;    sp+9 : carry bit flag for rotations, inited to 0 (1 byte)
+    mov j,0                 ; J is digit counter
+.outer_loop:
+    ; first check to see if we are done
+    call _uin64_to_decimal_cmp_ws_to_9
+    jo .last_digit          ; it is. jump to last digit
+
+    mov i,64                ; I is divide loop counter
+.div_loop:
+    call lsl72              ; shift working stack left 1 bit
+    mov a,[sp+9]            ; move carry bit flag into A
+    or [sp+0]               ; OR the carry bit flag with the low working byte
+    mov [sp+0],a            ; place OR'ed low byte back
+    mov [sp+9],0            ; reset carry bit
+
+    cmp 10,[sp+8]           ; check to see if upper word by is >= 10. Assume high word won't be >255.
+    jo .div_loop_continue   ; if 10 is subtractable from high byte, proceed with subtraction, otherwise continue loop
+.div_loop_subtraction:
+    mov a,[sp+8]
+    sub 10
+    mov [sp+8],a
+    mov [sp+9],1            ; set carry bit flag
+.div_loop_continue:
+    dec i                   ; check to see if we are done with this digit
+    jnz .div_loop
+.div_loop_remainder:
+    ; we are done with this digit. High byte is the /10 remainder, or the current digit
+    cmp [sp+8],9
+    jo _error_remainder_too_large
+    mov2 hl,_numrical_digits_table
+    mov a,[hl+[sp+8]]       ; get character of remainder
+    mov2 hl,[sp+(10+10)]    ; set HL to character buffer
+    mov [hl+j],a            ; set next buffer position to character
+    ; do one more rotation before next loop
+    call lsl24
+    mov a,[sp+9]            ; move carry bit flag into A
+    or [sp+0]               ; OR the carry bit flag with the low working byte
+    mov [sp+0],a            ; place OR'ed low byte back
+    mov [sp+8],0            ; clear remainder
+    mov [sp+9],0            ; reset carry flag
+
+    inc j
+    cmp j,[sp+(12+10)]      ; check to see if we have run out of buffer
+    je .err_buffer_size
+    jmp .outer_loop         ; do next character
+.last_digit:
+    mov2 hl,_numrical_digits_table
+    mov a,[hl+[sp+0]]       ; get character of remainder
+    mov2 hl,[sp+(10+10)]    ; set HL to character buffer
+    mov [hl+j],a            ; set next buffer position to character
+
+    ; clear working stack
+    pop2
+    pop2
+    pop2
+    pop2
+    pop
+    pop
+
+    ; set the null terminating character
+    inc j
+    jz .err_buffer_size
+    mov [hl+j],0
+
+    ; finally need to reverse digits
+    push2 hl
+    call reverse_cstr
+    pop2 hl
+
+.end:
+    mov [sp+12],j           ; move character count to return size
+    ret
+.err_buffer_size:
+    ; print error message to LCD
+    push2 _error_buffer_small
+    call lcd_print_line_cstr
+    hlt
+_error_remainder_too_large:
+    push2 _error_remainder_too_large_str
+    call lcd_print_line_cstr
+    hlt
+
 ;
 ; String Lib Data
 ;

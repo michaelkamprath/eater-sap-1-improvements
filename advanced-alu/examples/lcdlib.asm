@@ -4,7 +4,7 @@
 ; Dependencies:
 ;   general system utilities
 ;
-#require "putey-1-beta >= 0.4.dev2"
+#require "putey-1-beta >= 0.4.0"
 
 LCD_DATA_REG = $7811                ; address for the LCD Module data register
 LCD_INSTRUCTION_REG = $7810         ; address for the LCD Module instruction register

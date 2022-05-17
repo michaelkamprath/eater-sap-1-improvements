@@ -10,6 +10,7 @@
 ;           * $F000 - $F1FF : General system needs
 ;           * $F200 - $F2FF : LCD Display Module
 ;
+#require "putey-1-beta >= 0.4.0"
 
 .org $3000
 #include "stringlib.asm"
