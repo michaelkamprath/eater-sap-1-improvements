@@ -121,7 +121,7 @@ cstr_append:
     ret
 
 
-; reverse_cstr
+; cstr_reverse
 ;   Reverses the ordering of all characters in the cstr. 
 ; 
 ;   Arguments
@@ -133,7 +133,7 @@ cstr_append:
 ;   Registers Used
 ;       i
 ; 
-reverse_cstr:
+cstr_reverse:
     mov2 hl,[sp+2]
     mov i,0
 .push_loop:
@@ -414,7 +414,7 @@ uint16_to_decimal_cstr:
 
     ; finally need to reverse digits
     push2 hl
-    call reverse_cstr
+    call cstr_reverse
     pop2 hl
 
 .end:
@@ -549,7 +549,7 @@ uin64_to_decimal_cstr:
 
     ; finally need to reverse digits
     push2 hl
-    call reverse_cstr
+    call cstr_reverse
     pop2 hl
 
 .end:
