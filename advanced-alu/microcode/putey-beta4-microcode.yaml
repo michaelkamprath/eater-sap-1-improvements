@@ -8049,6 +8049,136 @@ instructions:
       5:
         - control_lines:
             SCr
+  PUSHR:
+    value: 44
+    steps:
+      0:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            MDi
+            To
+      1:
+        - flags:
+            extended: 0
+          control_lines:
+            SPe
+            SUB
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            ABo
+            Ti
+            SPe
+            SUB
+      2:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDi
+            Ao
+            SPe
+            SUB
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            MDi
+            To
+      3:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDi
+            Io
+            SPe
+            SUB
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
+      4:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDi
+            Jo
+            SPe
+            SUB
+      5:
+        - flags:
+            extended: 0
+          control_lines:
+            HLa
+            ABo
+            HILO
+            Ti
+            SPe
+            SUB
+      6:
+        - flags:
+            extended: 0
+          control_lines:
+            XTD
+        - flags:
+            extended: 1
+          control_lines:
+            XTD
+  POPR:
+    value: 45
+    steps:
+      1:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDo
+            HLi
+            SPe
+      2:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDo
+            HILO
+            HLi
+            SPe
+      3:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDo
+            Ji
+            SPe
+      4:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDo
+            Ii
+            SPe
+      5:
+        - flags:
+            extended: 0
+          control_lines:
+            SPa
+            MDo
+            Ai
+            SPe
+      6:
+        - flags:
+            extended: 0
+          control_lines:
+            SCr
+
 
   #
   # Comparison and Testing
