@@ -5,11 +5,11 @@
 ; Will cycle through calculaintg factorial from N=1 to N=20 (max
 ; calculatable factorial for 64 bit math). The DELAY_COUNT is used to pause
 ; display long enough for a human to see the results. It is tuned for a system
-; clock of about 4 KHz. 
+; clock of about 40 KHz. 
 #require "putey-1-beta >= 0.4.0"
 #include "system.asm"
 
-DELAY_COUNT = $0300      ; Number of steps for delay counter
+DELAY_COUNT = $0D00       ; Number of steps for delay counter
 MAX_N = 20                ; max calculatable N value
 BUFFER_SIZE = 32
 
@@ -108,6 +108,13 @@ display_calculating:
     pop2
     pop2
     pop
+    push BUFFER_SIZE
+    push2 calculating_suffix_cstr
+    push2 string_buffer
+    call cstr_append
+    pop2
+    pop2
+    pop
     push2 string_buffer                 ; the cstr to print
     call lcd_print_line_cstr            ; print it
     pop2
@@ -120,29 +127,6 @@ display_calculating:
 ;       sp+2 : the N value calculated (8 byte)
 ;       sp+10 : the results value (8 bytes)
 display_results:
-    push BUFFER_SIZE                    ; buffer size
-    push2 string_buffer                 ; the string buffer
-    push2 [sp+(2+6+3)]                  ; push the N value
-    push2 [sp+(2+4+5)]
-    push2 [sp+(2+2+7)]
-    push2 [sp+(2+0+9)]
-    call uin64_to_decimal_cstr          ; cconver N value to decimal string
-    pop2
-    pop2
-    pop2
-    pop2
-    pop2
-    pop
-
-    push BUFFER_SIZE
-    push2 string_buffer
-    push2 factorial_results_mid_cstr
-    push2 string_buffer
-    call cstr_concat                    ; concat mid string
-    pop2
-    pop2
-    pop2
-    pop
 
     push BUFFER_SIZE                    ; buffer size
     push2 decimal_buffer                ; the string buffer
@@ -158,17 +142,8 @@ display_results:
     pop2
     pop
 
-    push BUFFER_SIZE
-    push2 string_buffer
-    push2 decimal_buffer    
-    push2 string_buffer
-    call cstr_concat                    ; concat result decimal cstr
-    pop2
-    pop2
-    pop2
-    pop
 
-    push2 string_buffer
+    push2 decimal_buffer
     call lcd_print_line_cstr            ; current top of stack is string buffer. print it.
     pop2                                ; pop string buffer
     push2 blank_line_cstr               ; now print a blank line
@@ -289,5 +264,5 @@ blank_line_cstr:
     .cstr " "
 calculating_prefix_cstr:
     .cstr "Calculating: "
-factorial_results_mid_cstr:
-    .cstr "! = "
+calculating_suffix_cstr:
+	.cstr "! ="
