@@ -261,6 +261,49 @@ lsr128:
     ret                     ; done
 
 
+; multiply8
+;   multiply one byte values X*Y, producing in a 2 byte results
+;
+; Arguments
+;   sp+2 - value X (multiplier) (1 bytes)
+;   sp+3 - value Y (multiplicand) (1 bytes)
+;
+; Return Value
+;   sp+2 - results (2 bytes)
+; 
+; Registers used
+;   i, a
+; 
+multiply8:
+    ; set counter for 16 bits
+    mov i,8
+    ; set up 4 byte results memory block
+    push 0                 ; high word inialized to 0
+    push [sp+(2+1)]        ; multiplier in low word
+    ; Stack state:
+    ;   sp+0 : 2 byte results memory
+    ;   sp+4 : original multiplier
+    ;   sp+5 : multiplicand
+.loop:
+    ; check to see if LSb of working memory multiplier is 1
+    tstb [sp+0],0           ; right most (LSB) bit of multiplier 
+    jz .continue
+    ; add high word of results to multiplicand
+    mov a, [sp+(0+1)]
+    add [sp+5]
+    mov [sp+(0+1)], a
+.continue:
+    ; shift results right one. alread at [sp] so just call
+    call lsr16
+    ; decrement counter and stop if 0
+    dec i
+    jz .done
+    jmp .loop
+.done:
+    ; pop results to return stack
+    pop2 [sp+4]
+    ret
+
 ; multiply16
 ;   multiply two byte values X*Y, producing in a 4 byte results
 ;

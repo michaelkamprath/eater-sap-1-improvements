@@ -30,6 +30,12 @@ string_buffer:
 decimal_buffer:
     .zero BUFFER_SIZE
 
+cached_values:
+	.zero 8*(MAX_N+1)
+
+max_calculated_n:
+    .byte 0
+
 ;
 ; Code
 ;
@@ -37,6 +43,14 @@ decimal_buffer:
 init:
     rsp                                ; init the stack pointer
     call lcd_init                      ; init device
+    mov [max_calculated_n],0           ; init cache max value
+    push 8*(MAX_N+1)
+    push 0
+    push2 cached_values
+    call memset8
+    pop2
+    pop
+    pop
 restart:
     mov2 [current_n], 1                ; init N variable
     mov2 [current_n+2],0
@@ -179,6 +193,25 @@ calc_factorial64:
 	cmp [sp+(2+0)],1
 	je .basecase
 .not_basecase:
+    ; first check for cached value. Assume uint8 value
+    cmp [sp+(2+0)],[max_calculated_n]
+    jo .calculate_factorial
+    ;calculate array offset
+    push [sp+(2+0)]
+    push 8
+    call multiply8
+    push2 cached_values
+    call add16
+    pop2 hl
+    pop
+    pop
+    ; copy cached factorial value to stack and return
+    mov2 [sp+(2+0)],[hl+0]
+    mov2 [sp+(2+2)],[hl+2]
+    mov2 [sp+(2+4)],[hl+4]
+    mov2 [sp+(2+6)],[hl+6] 
+    ret
+.calculate_factorial:
 	; push N value on stack
 	push2 [sp+(2+6+0)]
 	push2 [sp+(2+4+2)]
@@ -216,6 +249,7 @@ calc_factorial64:
     push2 [sp+(2+4+10)]
     push2 [sp+(2+2+12)]
     push2 [sp+(2+0+14)]
+    mov [max_calculated_n],[sp+(0)]         ; update max calculated n
     call multiply64                         ; calculate factorial(N-1)*N
     ; ensure the high 8 bytesd of results are 0 -> only suppoprt 64-bit result
     cmp [sp+15],0
@@ -244,8 +278,22 @@ calc_factorial64:
 	pop2
 	pop2
 	pop2
-.basecase:
 .finish:
+    ; placed calculated value in cache
+    ; calculate array offset
+    push [max_calculated_n]
+    push 8
+    call multiply8
+    push2 cached_values
+    call add16
+    pop2 hl
+    pop
+    pop
+    mov2 [hl+0],[sp+(2+0)]
+    mov2 [hl+2],[sp+(2+2)]
+    mov2 [hl+4],[sp+(2+4)]
+    mov2 [hl+6],[sp+(2+6)]
+.basecase:
     ret
 .factorial_overflow:
 	push2 .factorial_overflow_cstr
