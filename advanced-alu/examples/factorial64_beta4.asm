@@ -5,11 +5,11 @@
 ; Will cycle through calculaintg factorial from N=1 to N=20 (max
 ; calculatable factorial for 64 bit math). The DELAY_COUNT is used to pause
 ; display long enough for a human to see the results. It is tuned for a system
-; clock of about 40 KHz. 
+; clock of about 300 KHz. 
 #require "putey-1-beta >= 0.4.0"
 #include "system.asm"
 
-DELAY_COUNT = $0D00       ; Number of steps for delay counter
+DELAY_COUNT = $F000       ; Number of steps for delay counter
 MAX_N = 20                ; max calculatable N value
 BUFFER_SIZE = 32
 
@@ -62,6 +62,9 @@ restart:
     mov2 [sp], blank_line_cstr
     call lcd_print_line_cstr
     pop2
+    push2 DELAY_COUNT/2
+    call delay16
+    pop2
 start:
     push2 [current_n+6]
     push2 [current_n+4]
@@ -90,9 +93,9 @@ start:
     push2 DELAY_COUNT
     call delay16
     pop2
-    cmp [current_n],MAX_N+1            ; check the low byte of current_n for value
-    je restart
-    jmp start
+    cmp MAX_N+1,[current_n]            ; check the low byte of current_n for value
+    jo start
+    jmp restart
 
 
 ; display_calculating
