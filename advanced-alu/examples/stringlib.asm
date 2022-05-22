@@ -330,6 +330,7 @@ _fetch_bit_char:
 ;   Returns
 ;       writes binary string to buffer. Will reset all other values in buffer to null (0)
 ;       updates sp+6 top the character length of the decimal string
+;       resets sp+4 to the buffer address that the null char was written to
 ; 
 uint16_to_decimal_cstr:
     ; set buffer to to all 0s
@@ -419,6 +420,7 @@ uint16_to_decimal_cstr:
 
 .end:
     mov [sp+6],j            ; move character count to return size
+    mov2 [sp+4],hl          ; set return buffer address to wher ethe null is
     ret
 .err_buffer_size:
     ; print error message to LCD
@@ -432,7 +434,7 @@ uint16_to_decimal_cstr:
 
 
 
-; uint16_to_decimal_cstr
+; uint64_to_decimal_cstr
 ; 
 ;   converts the passed uint64 value to a decimal formatted cstr.
 ;
@@ -444,6 +446,7 @@ uint16_to_decimal_cstr:
 ;   Returns
 ;       writes binary string to buffer. Will reset all other values in buffer to null (0)
 ;       updates sp+12 top the character length of the decimal string
+;       resets sp+10 to the buffer address that the null char was written to
 ; 
 _uin64_to_decimal_cmp_10_to_ws:
     cmp 0,[sp+9]
@@ -464,7 +467,30 @@ _uin64_to_decimal_cmp_10_to_ws:
 .end:
     ret
 
-uin64_to_decimal_cstr:
+uint64_to_decimal_cstr:
+    cmp 0,[sp+9]
+    jne .start
+    cmp 0,[sp+8]
+    jne .start
+    cmp 0,[sp+7]
+    jne .start
+    cmp 0,[sp+6]
+    jne .start
+    cmp 0,[sp+5]
+    jne .start
+    cmp 0,[sp+4]
+    jne .start
+    ; if we are here, this value would more quickly be
+    ; converter with uint16_to_decimal_cstr
+    push [sp+(12+0)]
+    push2 [sp+(10+1)]
+    push2 [sp+(2+3)]
+    call uint16_to_decimal_cstr
+    pop2
+    pop2 [sp+(10+3)]
+    pop [sp(12+1)]
+    ret
+.start:
     ; set buffer to to all 0s
     push [sp+12]
     push 0
@@ -554,6 +580,7 @@ uin64_to_decimal_cstr:
 
 .end:
     mov [sp+12],j           ; move character count to return size
+    mov2 [sp+10],hl          ; set return buffer address to wher ethe null is
     ret
 .err_buffer_size:
     ; print error message to LCD

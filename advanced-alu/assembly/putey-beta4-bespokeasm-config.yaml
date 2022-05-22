@@ -485,8 +485,6 @@ instructions:
       operand_sets:
         list:
           - 8_bit_destination
-        disallowed_pairs:
-          - [stack_pointer]
       specific_operands:
         no_operand:
           list:

@@ -7495,6 +7495,32 @@ instructions:
       4:
         - control_lines:
             SCr
+  POP_sp_offset:
+    value: 29
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            SPa
+            MDo
+            Ti
+      3:
+        - control_lines:
+            SPa
+            AOa
+            MDi
+            To
+      4:
+        - control_lines:
+            SPe
+      5:
+        - control_lines:
+            SCr
   POP_iaddr:
     value: 30
     steps:
