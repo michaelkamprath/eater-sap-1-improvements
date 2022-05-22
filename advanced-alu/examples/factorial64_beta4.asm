@@ -151,7 +151,7 @@ display_results:
     push2 [sp+(10+4+5)]
     push2 [sp+(10+2+7)]
     push2 [sp+(10+0+9)]
-    call uin64_to_decimal_cstr         ; cconver results value to decimal string
+    call uint64_to_decimal_cstr         ; cconver results value to decimal string
     pop2
     pop2
     pop2

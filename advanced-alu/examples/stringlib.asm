@@ -488,7 +488,7 @@ uint64_to_decimal_cstr:
     call uint16_to_decimal_cstr
     pop2
     pop2 [sp+(10+3)]
-    pop [sp(12+1)]
+    pop [sp+(12+1)]
     ret
 .start:
     ; set buffer to to all 0s
