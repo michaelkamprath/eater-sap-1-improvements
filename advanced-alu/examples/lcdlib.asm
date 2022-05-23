@@ -558,7 +558,7 @@ lcd_create_character:
     lsl
     lsl
     lsl                             ; three times for a <<3
-    add _CMD_CGRAM_ADDR             ; add CGGRAM instruction prefix (would prefer OR but not in ISA yet)
+    or _CMD_CGRAM_ADDR              ; OR CGGRAM instruction prefix
     mov [LCD_INSTRUCTION_REG], a    ; send command to set the CGRAM address
     ; now copy the character buffer
     mov i,8                         ; set buffer size in counter
