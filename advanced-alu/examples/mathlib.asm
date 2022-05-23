@@ -67,19 +67,48 @@ lsl24:
     mov [sp+4],a
     ret 
 
+; lsl40
+;   Logical left shift for a 40 bit value
+;
+;   Arguments
+;       sp+2 : the value to be shift left (5 bytes)
+;
+;   Returns
+;       sp+2 : the left shifted value
+;
+;   Flags Set
+;       CF if carry occured to 41st bit
+;
+lsl40:
+    mov a,[sp+2]            ; start with least significant byte
+    lsl                     ; shift it left, setting CF if needed
+    mov [sp+2],a            ; place shifted value back
+    mov a,[sp+3]            ; next byte
+    lslc
+    mov [sp+3],a
+    mov a,[sp+4]            ; next byte
+    lslc
+    mov [sp+4],a
+    mov a,[sp+5]            ; next byte
+    lslc
+    mov [sp+5],a
+    mov a,[sp+6]            ; next byte
+    lslc
+    mov [sp+6],a
+    ret
 
 ; lsl72
 ;   Logical left shift for a 72 bit value
-; 
+;
 ;   Arguments
 ;       sp+2 : the value to be shift left (9 bytes)
-; 
+;
 ;   Returns
 ;       sp+2 : the left shifted value
-; 
+;
 ;   Flags Set
 ;       CF if carry occured to 73th bit
-; 
+;
 lsl72:
     mov a,[sp+2]            ; start with least significant byte
     lsl                     ; shift it left, setting CF if needed
