@@ -67,6 +67,22 @@ lsl24:
     mov [sp+4],a
     ret 
 
+
+lsl32:
+    mov a,[sp+2]            ; start with least significant byte
+    lsl                     ; shift it left, setting CF if needed
+    mov [sp+2],a            ; place shifted value back
+    mov a,[sp+3]            ; next byte
+    lslc
+    mov [sp+3],a
+    mov a,[sp+4]            ; next byte
+    lslc
+    mov [sp+4],a
+    mov a,[sp+5]            ; next byte
+    lslc
+    mov [sp+5],a
+    ret
+
 ; lsl40
 ;   Logical left shift for a 40 bit value
 ;
@@ -568,48 +584,70 @@ divide8:
 ;   Registers Used:
 ;       hl
 ;       a
+; 
 divide16:
-    push2 [sp+4]                            ; Place Y on stack
     push2 0
+    push2 [sp+4]                            ; Place Y on stack
     call cmp16                              ; see if Y is zero
-    pop2
     pop2
     je .divide_by_zero                      ; handle divide by zero
     push2 [sp+2]                            ; place X on stack
-    push2 0
     call cmp16                              ; see if X is zero
     pop2
     pop2
     je .return_zero                         ; X is zero, answer is zero
-    mov2 hl,0                               ; initialize quotient counter HL to 0
-                                            ; at this point, stack variable locations:
-                                            ;   [sp+2] : argument value X (2 bytes)
-                                            ;   [sp+4] : argument value Y (2 bytes)
-    push2 [sp+4]                            ; push Y onto stack (local Y)
-    push2 [sp+(2+2)]                        ; push X onto stack (local X)
-.sub_loop:
-    call subtract16                         ; subtract Y from X
-    jc .no_borrow                           ; determine if no borrow in subtraction
-    jmp .done                               ; there was a borrow, subtraction loop is done    
-.no_borrow:
-    inc hl                                  ; subtraction complete, increment quotient counter
-    push2 0                                 ; determine if result value is zero
+    ; set up working stack
+    push 0                          ; init carry bit
+    push2 0                         ; init high value
+    push2 [sp+(2+3)]                ; p[ush the value to be divided
+    ; check to see if we are already done
+    push2 [sp+0]                    ; right side - current working value
+    push2 [sp+(4+5)]                ; left side - divisor
     call cmp16
-    pop2                                    ; get rid of zero
-    je .done_no_add                         ; if X value is now zero, we are done with subtraction loop
-    jmp .sub_loop                           ; subtract again. note stack has new X and original Y in place
-.done:
-    call add16                              ; subtraction loop went one too far, add Y back into X to get remainder
-.done_no_add:
-    mov2 [sp+(2+4)], hl                     ; copy final quotient counter to return position
-    pop2 [sp+(4+4)]                         ; pop remainder (local X) into return position
-    pop2                                    ; pop local Y. stack is restored.
+    pop2
+    pop2
+    jo .division_done
+    mov i,16
+.div_loop:
+    call lsl32                      ; shift working sack left 1 bit
+    mov a,[sp+5]                    ; place carry bit in a
+    or [sp+0]                       ; or the carry bit with the low working byte
+    mov [sp+0],a                    ; replace the updated low working byte
+    mov [sp+5],0                    ; reset carry bit 
+
+     ; attempt substraction
+    push2 [sp+(4+5)]                ; right side - divisor
+    push2 [sp+2]                    ; left side - current working high word
+    call subtract16
+    jc .div_loop_subtraction        ; if carry is set, that means divsor was smaller, no borrow needed
+    ; a borrow was needed, so divisor was larger. don't save and do continue
+    pop2
+    pop2
+    jmp .div_loop_continue
+.div_loop_subtraction:
+    ; save subtraction results and set carry bit
+    pop2 [sp+(0+2+4)]
+    pop2
+    mov [sp+5],1
+.div_loop_continue:
+    dec i
+    jnz .div_loop
+.division_done:
+    ; at this point we have the remainder in the low word
+    ; and then we let shift one mroe time to get the quotient
+    mov2 [sp+(4+4)],[sp+0]
+    call lsl32
+    pop2
+    pop2 [sp+(2+2)]
+    pop
     ret
 .divide_by_zero:                            ; for now, just return 0
+    pop2
     mov2 [sp+4],0                           ; set remainder to 0
 .return_zero:
     mov2 [sp+2],0                           ; set quotient to 0
     ret
+
     
 ; add16
 ;   adds values X+Y
@@ -714,14 +752,14 @@ add64:
 
 
 ; subtract16
-;   subtracts Y value from X
+;   subtracts Y value from X (X-Y)
 ;
 ; Arguments
 ;   sp+2 - value X, two byte value
 ;   sp+4 - value Y, two byte value
 ;
 ; Return Value
-;   sp+2 - replace the original two byte value with the sum
+;   sp+2 - replace the original two byte value with the difference
 ;
 ; Registers used:
 ;    a
@@ -764,8 +802,6 @@ inc16:
 ; Returns
 ;   sp+2 - replaces argument with incremented value
 ;
-; Registers used:
-;    hl
 inc64:
     mov a,[sp+(2+0)]
     add 1
