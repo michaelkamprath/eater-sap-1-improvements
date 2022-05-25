@@ -587,37 +587,39 @@ divide8:
 ; 
 divide16:
     push2 0
-    push2 [sp+4]                            ; Place Y on stack
+    push2 [sp+(4+2)]                            ; Place Y on stack
     call cmp16                              ; see if Y is zero
     pop2
     je .divide_by_zero                      ; handle divide by zero
-    push2 [sp+2]                            ; place X on stack
+    push2 [sp+(2+2)]                            ; place X on stack
     call cmp16                              ; see if X is zero
     pop2
     pop2
-    je .return_zero                         ; X is zero, answer is zero
+    je .return_zero                 ; X is zero, answer is zero
+    push2 [sp+2]                     ; right side - dividend
+    push2 [sp+(4+2)]                 ; left side - divisor
+    call cmp16
+    pop2
+    pop2
+    jo .divisor_too_large           ; divisor larger than dividend
     ; set up working stack
     push 0                          ; init carry bit
     push2 0                         ; init high value
     push2 [sp+(2+3)]                ; p[ush the value to be divided
-    ; check to see if we are already done
-    push2 [sp+0]                    ; right side - current working value
-    push2 [sp+(4+5)]                ; left side - divisor
-    call cmp16
-    pop2
-    pop2
-    jo .division_done
+    ; working stack:
+    ;   sp+0 : low word  (2 bytes) -> becomes quotient
+    ;   sp+2 : high word (2 bytes) -> becomes remainder
+    ;   sp+4 : carry bit (1 byte)
     mov i,16
 .div_loop:
     call lsl32                      ; shift working sack left 1 bit
-    mov a,[sp+5]                    ; place carry bit in a
-    or [sp+0]                       ; or the carry bit with the low working byte
+    mov a,[sp+0]                    ; place carry bit in a
+    or [sp+4]                       ; or the carry bit with the low working byte
     mov [sp+0],a                    ; replace the updated low working byte
-    mov [sp+5],0                    ; reset carry bit 
-
+    mov [sp+4],0                    ; reset carry bit 
      ; attempt substraction
     push2 [sp+(4+5)]                ; right side - divisor
-    push2 [sp+2]                    ; left side - current working high word
+    push2 [sp+(2+2)]                ; left side - current working high word
     call subtract16
     jc .div_loop_subtraction        ; if carry is set, that means divsor was smaller, no borrow needed
     ; a borrow was needed, so divisor was larger. don't save and do continue
@@ -625,21 +627,29 @@ divide16:
     pop2
     jmp .div_loop_continue
 .div_loop_subtraction:
-    ; save subtraction results and set carry bit
+    ; save subtraction results to high word and set carry bit
     pop2 [sp+(0+2+4)]
     pop2
-    mov [sp+5],1
+    mov [sp+4],1
 .div_loop_continue:
     dec i
     jnz .div_loop
 .division_done:
     ; at this point we have the remainder in the low word
-    ; and then we let shift one mroe time to get the quotient
-    mov2 [sp+(4+4)],[sp+0]
+    ; and then we let shift one more time to get the quotient
+    mov2 [sp+(4+5)],[sp+2]
     call lsl32
-    pop2
-    pop2 [sp+(2+2)]
+    mov a,[sp+0]                    ; place carry bit in a
+    or [sp+4]                       ; or the carry bit with the low working byte
+    mov [sp+0],a                    ; replace the updated low working byte    
+    pop2 [sp+(2+5)]
+    pop2 
     pop
+    ret
+.divisor_too_large:
+    ; quotient = 0, remander = dividend
+    mov2 [sp+4],[sp+2]
+    mov2 [sp+2],0
     ret
 .divide_by_zero:                            ; for now, just return 0
     pop2
