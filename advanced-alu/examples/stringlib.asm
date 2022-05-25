@@ -92,20 +92,20 @@ cstr_concat:
 ;   appends one string to the other
 ;
 ;   Arguments
-;       sp+2 : address of destination buffer containing left string (2 bytes)
-;       sp+4 : address of string to to appended (2 bytes)
+;       sp+2 : address of string to to appended (2 bytes)
+;       sp+4 : address of destination buffer containing left string (2 bytes)
 ;       sp+6 : size of destination buffer (1 byte)
 ; 
 ;   Returns
 ;       nothing
 ; 
 cstr_append:
-    push2 [sp+2]            ; place destination buffer on stack
+    push2 [sp+4]            ; place destination buffer on stack
     call cstr_len8          ; get length of buffer string
     pop2
     mov a,i                 ; copy buffer string size to I regsiter
-    mov2 hl,[sp+2]          ; place destination buffer address in HL
-    mov2 mar,[sp+4]         ; place string address to append in MAR
+    mov2 hl,[sp+4]          ; place destination buffer address in HL
+    mov2 mar,[sp+2]         ; place string address to append in MAR
 .loop:
     cmp i,[sp+6]
     je .end                 ; check to see of buffer is full

@@ -126,8 +126,8 @@ display_calculating:
     pop2
     pop
     push BUFFER_SIZE
-    push2 calculating_suffix_cstr
     push2 string_buffer
+    push2 calculating_suffix_cstr
     call cstr_append
     pop2
     pop2
