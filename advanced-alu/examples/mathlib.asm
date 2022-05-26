@@ -1,26 +1,5 @@
 #require "putey-1-beta >= 0.4.0"
 
-; cmp16
-;   Compares two 16-bit values, and sets OF (left > right) or EF (left == right) flags
-;
-;   Arguments
-;       sp+2 : left value (2 bytes)
-;       sp+4 : right value (2 bytes)
-;
-;   Returns
-;       Nothing
-;
-; Registers used:
-;    a
-cmp16:
-    ; first check high bytes
-    cmp [sp+3],[sp+5]
-    je .check_low_byte
-    ; high bytes are not equal, so return with current flags
-    ret
-.check_low_byte:
-    cmp [sp+2],[sp+4]
-    ret
 
 ; lsl16
 ;   Logical left shift for a 16 bit value
@@ -112,6 +91,45 @@ lsl40:
     lslc
     mov [sp+6],a
     ret
+
+; lsl64
+;   Logical left shift for a 64 bit value
+;
+;   Arguments
+;       sp+2 : the value to be shift left (8) bytes)
+;
+;   Returns
+;       sp+2 : the left shifted value
+;
+;   Flags Set
+;       CF if carry occured to 65th bit
+;
+lsl64:
+    mov a,[sp+2]            ; start with least significant byte
+    lsl                     ; shift it left, setting CF if needed
+    mov [sp+2],a            ; place shifted value back
+    mov a,[sp+3]            ; next byte
+    lslc
+    mov [sp+3],a
+    mov a,[sp+4]            ; next byte
+    lslc
+    mov [sp+4],a
+    mov a,[sp+5]            ; next byte
+    lslc
+    mov [sp+5],a
+    mov a,[sp+6]            ; next byte
+    lslc
+    mov [sp+6],a
+    mov a,[sp+7]            ; next byte
+    lslc
+    mov [sp+7],a
+    mov a,[sp+8]            ; next byte
+    lslc
+    mov [sp+8],a
+    mov a,[sp+9]            ; next byte
+    lslc
+    mov [sp+9],a
+    ret 
 
 ; lsl72
 ;   Logical left shift for a 72 bit value
@@ -658,6 +676,121 @@ divide16:
     mov2 [sp+2],0                           ; set quotient to 0
     ret
 
+
+; divide32
+;   Divides X by Y
+; 
+;   Arguments:
+;       sp+2 : value X dividend (4 bytes)
+;       sp+6 : value Y divisor (4 bytes)
+; 
+;   Return Value:
+;       sp+2 : the quotient (replaces X)
+;       sp+6 : the remainder (replaces Y)
+; 
+;   Registers Used:
+;       hl
+;       a
+; 
+divide32:
+    push2 0
+    push2 0
+    push2 [sp+(6+2+4)]                      ; Place Y on stack
+    push2 [sp+(6+0+6)]                      ; Place Y on stack
+    call cmp32                              ; see if Y is zero
+    pop2
+    pop2
+    je .divide_by_zero                      ; handle divide by zero
+    push2 [sp+(2+2+4)]                      ; place X on stack
+    push2 [sp+(2+0+6)]                      ; place X on stack
+    call cmp32                              ; see if X is zero
+    pop2
+    pop2
+    pop2
+    pop2
+    je .return_zero                  ; X is zero, answer is zero
+    push2 [sp+(2+2+0)]               ; right side - dividend
+    push2 [sp+(2+2+2)]
+    push2 [sp+(6+2+4)]               ; left side - divisor
+    push2 [sp+(6+0+6)]
+    call cmp32
+    pop2
+    pop2
+    pop2
+    pop2
+    jo .divisor_too_large           ; divisor larger than dividend
+    ; set up working stack
+    push 0                          ; init carry bit
+    push2 0                         ; init high value
+    push2 0
+    push2 [sp+(2+2+5)]              ; push the value to be divided
+    push2 [sp+(2+0+7)]
+    ; working stack:
+    ;   sp+0 : low word  (4 bytes) -> becomes quotient
+    ;   sp+4 : high word (4 bytes) -> becomes remainder
+    ;   sp+8 : carry bit (1 byte)
+    mov i,32
+.div_loop:
+    call lsl64                      ; shift working stack left 1 bit
+    mov a,[sp+0]                    ; place carry bit in a
+    or [sp+8]                       ; or the carry bit with the low working byte
+    mov [sp+0],a                    ; replace the updated low working byte
+    mov [sp+8],0                    ; reset carry bit 
+     ; attempt substraction
+    push2 [sp+(6+2+9)]              ; right side - divisor
+    push2 [sp+(6+0+11)]
+    push2 [sp+(4+2+4)]              ; left side - current working high word
+    push2 [sp+(4+0+6)]
+    call subtract32
+    jc .div_loop_subtraction        ; if carry is set, that means divsor was smaller, no borrow needed
+    ; a borrow was needed, so divisor was larger. don't save and do continue
+    pop2
+    pop2
+    pop2
+    pop2
+    jmp .div_loop_continue
+.div_loop_subtraction:
+    ; save subtraction results to high word and set carry bit
+    pop2 [sp+(4+0+8)]
+    pop2 [sp+(4+2+6)]
+    pop2
+    pop2
+    mov [sp+8],1
+.div_loop_continue:
+    dec i
+    jnz .div_loop
+.division_done:
+    ; at this point we have the remainder in the low word
+    ; and then we let shift one more time to get the quotient
+    mov2 [sp+(6+0+9)],[sp+(4+0)]
+    mov2 [sp+(6+2+9)],[sp+(4+2)]
+    call lsl64
+    mov a,[sp+0]                    ; place carry bit in a
+    or [sp+8]                       ; or the carry bit with the low working byte
+    mov [sp+0],a                    ; replace the updated low working byte    
+    pop2 [sp+(2+0+9)]
+    pop2 [sp+(2+2+7)]
+    pop2
+    pop2
+    pop
+    ret
+.divisor_too_large:
+    ; quotient = 0, remander = dividend
+    mov2 [sp+(6+0)],[sp+(2+0)]
+    mov2 [sp+(6+2)],[sp+(2+2)]
+    mov2 [sp+(2+0)],0
+    mov2 [sp+(2+2)],0
+    ret
+.divide_by_zero:                            ; for now, just return 0
+    pop2
+    pop2
+    mov2 [sp+(6+0)],0                       ; set remainder to 0
+    mov2 [sp+(6+2)],0
+.return_zero:
+    mov2 [sp+(2+0)],0                       ; set quotient to 0
+    mov2 [sp+(2+2)],0
+    ret
+
     
 ; add16
 ;   adds values X+Y
@@ -784,6 +917,38 @@ subtract16:
     mov a, [sp+3]                       ; move high byte of X to A
     subb [sp+5]                         ; subtract with borrow high byte
     mov [sp+3],a                        ; save results
+    ret
+
+
+; subtract32
+;   subtracts Y value from X (X-Y)
+;
+; Arguments
+;   sp+2 - value X, 4 byte value
+;   sp+6 - value Y, 4 byte value
+;
+; Return Value
+;   sp+2 - replace the original 4 byte value with the difference
+;
+; Registers used:
+;    a
+; 
+; Flags Set
+;   CF if no borrow was needed from 17th bit
+; 
+subtract32:
+    mov a,[sp+2]                        ; move low bye of X to A
+    sub [sp+6]                          ; subtract low byte of Y from X
+    mov [sp+2], a                       ; move results to low byte of return value
+    mov a, [sp+3]                       ; next byte
+    subb [sp+7]
+    mov [sp+3],a
+    mov a, [sp+4]                       ; next byte
+    subb [sp+8]
+    mov [sp+4],a
+    mov a, [sp+5]                       ; next byte
+    subb [sp+9]
+    mov [sp+5],a
     ret
 
 ; inc16
