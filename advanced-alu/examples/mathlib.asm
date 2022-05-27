@@ -710,7 +710,7 @@ divide32:
     pop2
     je .return_zero                  ; X is zero, answer is zero
     push2 [sp+(2+2+0)]               ; right side - dividend
-    push2 [sp+(2+2+2)]
+    push2 [sp+(2+0+2)]
     push2 [sp+(6+2+4)]               ; left side - divisor
     push2 [sp+(6+0+6)]
     call cmp32
@@ -967,6 +967,30 @@ inc16:
     inc hl                      ; increment it
     mov2 [sp+2], hl             ; place results back into position on stack
     ret                         ; return
+
+; inc32
+;   Increments a 32-bit interger by 1.
+;
+; Arguments
+;   sp+2 - the value to increment
+;
+; Returns
+;   sp+2 - replaces argument with incremented value
+;
+inc32:
+    mov a,[sp+(2+0)]
+    add 1
+    mov [sp+(2+0)],a
+    mov a,[sp+(2+1)]
+    addc 0
+    mov [sp+(2+1)],a
+    mov a,[sp+(2+2)]
+    addc 0
+    mov [sp+(2+2)],a
+    mov a,[sp+(2+3)]
+    addc 0
+    mov [sp+(2+3)],a
+    ret
 
 ; inc64
 ;   Increments a 64-bit interger by 1.
