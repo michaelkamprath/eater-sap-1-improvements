@@ -300,6 +300,7 @@ lcd_send_buffer_row:
     pop
     mov i, _COLUMN_WIDTH
 .loop:
+    call lcd_wait_busy
     mov [LCD_DATA_REG], [hl]
     dec i
     jz .end
@@ -438,8 +439,9 @@ lcd_scroll_up:
     pop2
     pop
     pop                                                 ; stack is restored
-    ; clear the screen
-    call lcd_clear
+    ; clear the screen - this is optional. looks better at slower clock speeds. causes blinking
+    ; at high clock speeds.
+    ; call lcd_clear
     ; now send each row in turn to the LCD module
     push 0
     call lcd_send_buffer_row
@@ -564,6 +566,7 @@ lcd_create_character:
     mov i,8                         ; set buffer size in counter
     mov2 hl,[sp+3]                  ; set buffer address in HL
 .loop:
+    call lcd_wait_busy
     mov [LCD_DATA_REG],[hl]         ; copy buffer data to LCD module
     dec i                           ; decrement counter
     jz .end                         ; exit loop after all bytes transfered
