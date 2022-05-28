@@ -85,7 +85,7 @@ is_prime32:
 	call cmp16
 	pop2
 	pop2
-	jne .moduolo_two
+	jne .modulo_two
 	; check 2
 	push2 [sp+(2+0+0)]
 	push2 2
@@ -108,12 +108,12 @@ is_prime32:
 	pop2
 	je .is_not_prime
 	jo .is_not_prime
-.moduolo_two:
+.modulo_two:
 	; check to see if a power of two
 	tstb [sp+2],0
 	jz .is_not_prime
 	; check to see if multiple of 3
-.moduolo_three:
+.modulo_three:
 	push2 0
 	push2 3
 	push2 [sp+(2+2+4)]
