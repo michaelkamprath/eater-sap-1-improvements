@@ -131,7 +131,7 @@ _lcd_init_buffers:
 ;       None
 lcd_wait_busy:
     tstb [LCD_INSTRUCTION_REG],7        ; test busy flag (BF) if 1 or 0
-    jnz lcd_wait_busy                   ; Check whether BF was 1, If som try again.
+    jnz lcd_wait_busy                   ; Check whether BF was 1, If so try again.
     ret                                 ; BF was 0, so not busy. Just return.
 
 ; lcd_send_command
@@ -144,7 +144,7 @@ lcd_wait_busy:
 ;       nothing
 ; 
 lcd_send_command:
-    call lcd_wait_busy                  ; wai to module is ready
+    call lcd_wait_busy                  ; wait until module is ready
     mov [LCD_INSTRUCTION_REG],[sp+2]    ; send the command on the stack
     ret
 
