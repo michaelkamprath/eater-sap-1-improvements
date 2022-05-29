@@ -131,7 +131,7 @@ _lcd_init_buffers:
 ;       None
 lcd_wait_busy:
     tstb [LCD_INSTRUCTION_REG],7        ; test busy flag (BF) if 1 or 0
-    jnz lcd_wait_busy                   ; Check whether BF was 1, If som try again.
+    jnz lcd_wait_busy                   ; Check whether BF was 1, If so try again.
     ret                                 ; BF was 0, so not busy. Just return.
 
 ; lcd_send_command
@@ -144,7 +144,7 @@ lcd_wait_busy:
 ;       nothing
 ; 
 lcd_send_command:
-    call lcd_wait_busy                  ; wai to module is ready
+    call lcd_wait_busy                  ; wait until module is ready
     mov [LCD_INSTRUCTION_REG],[sp+2]    ; send the command on the stack
     ret
 
@@ -300,6 +300,7 @@ lcd_send_buffer_row:
     pop
     mov i, _COLUMN_WIDTH
 .loop:
+    call lcd_wait_busy
     mov [LCD_DATA_REG], [hl]
     dec i
     jz .end
@@ -438,8 +439,9 @@ lcd_scroll_up:
     pop2
     pop
     pop                                                 ; stack is restored
-    ; clear the screen
-    call lcd_clear
+    ; clear the screen - this is optional. looks better at slower clock speeds. causes blinking
+    ; at high clock speeds.
+    ; call lcd_clear
     ; now send each row in turn to the LCD module
     push 0
     call lcd_send_buffer_row
@@ -564,6 +566,7 @@ lcd_create_character:
     mov i,8                         ; set buffer size in counter
     mov2 hl,[sp+3]                  ; set buffer address in HL
 .loop:
+    call lcd_wait_busy
     mov [LCD_DATA_REG],[hl]         ; copy buffer data to LCD module
     dec i                           ; decrement counter
     jz .end                         ; exit loop after all bytes transfered
