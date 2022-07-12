@@ -3,7 +3,7 @@
 ; 
 ;	Uses algorithm identified here: https://en.wikipedia.org/wiki/Primality_test
 ; 
-#require "putey-1-beta >= 0.4.0"
+#require "putey-1-beta >= 0.4.1"
 #include "system.asm"
 
 BUFFER_SIZE = 32
@@ -22,18 +22,15 @@ init:
 	call lcd_init
 start:
 	; place inistial N 32-bit value on stack
-	push2 0
-	push2 1
+	push4 1
 .n_loop:
 	call is_prime32
 	push a
 	push BUFFER_SIZE
 	push2 string_buffer
-	push2 [sp+(0+2+4)]
-	push2 [sp+(0+0+6)]
+	push4 [sp+(0+4)]
 	call uint32_to_decimal_cstr
-	pop2
-	pop2
+	pop4
 	pop2
 	pop	
 	pop a
@@ -114,35 +111,28 @@ is_prime32:
 	jz .is_not_prime
 	; check to see if multiple of 3
 .modulo_three:
-	push2 0
-	push2 3
-	push2 [sp+(2+2+4)]
-	push2 [sp+(2+0+6)]
+	push4 3
+	push4 [sp+(2+4)]
 	call divide32
-	pop2
-	pop2
-	push2 0 			; check remainder is 0
-	push2 0
+	pop4
+	push4 0 			; check remainder is 0
 	call cmp32
-	pop2
-	pop2
-	pop2
-	pop2
+	pop4
+	pop4
 	je .is_not_prime
 .loop_init:
 	; stack is back to initial state
 	; set up iterator: 32 bit value starting at 5
-	push2 0
-	push2 5
+	push4 5
 .loop:
 	; stack has 4 byte I value at sp+0
 	; check I*I <= N
-	push2 [sp+(0+2+0)]
-	push2 [sp+(0+0+2)]
-	push2 [sp+(0+2+4)]
-	push2 [sp+(0+0+6)]
+	push4 [sp+(0+0)]
+	push4 [sp+(0+4)]
 	call multiply32
 	; high 4 bytes of result should be 0 since we are only doing 32 bit N
+	; If these byes are non-zero, then we know I*I > N and we are done with
+	; this loop.
 	cmp [sp+7],0
 	jne .iteration_loop_done
 	cmp [sp+6],0
@@ -157,72 +147,52 @@ is_prime32:
 	mov2 [sp+(4+2)],[sp+(2+2+12)]
 	mov2 [sp+(4+0)],[sp+(2+0+12)]
 	call cmp32
-	pop2
-	pop2
-	pop2
-	pop2
+	pop4
+	pop4
 	jo .loop_done_is_prime
 	; now check various modulos. 4 byte iterator I is one stack at sp+0
 	; check N % I == 0
-	push2 [sp+(0+2+0)]
-	push2 [sp+(0+0+2)]
-	push2 [sp+(2+2+8)]
-	push2 [sp+(2+0+10)]
+	push4 [sp+(0+0)]
+	push4 [sp+(2+8)]
 	call divide32
-	pop2					; quotient
-	pop2
-	push2 0
-	push2 0
+	pop4					; quotient
+	push4 0
 	call cmp32
-	pop2					; 0 value
-	pop2
-	pop2					; remainder
-	pop2
+	pop4					; 0 value
+	pop4					; remainder
 	je .loop_done_is_not_prime
 
 	; check N % (I+2) == 0
-	push2 0
-	push2 2
+	push4 2
 	call add32
 	; at this point, sp+0 is (I+2)
-	push2 [sp+(2+2+8)]
-	push2 [sp+(2+0+10)]
+	push4 [sp+(2+8)]
 	call divide32
-	pop2		; quotient
-	pop2
-	push2 0
-	push2 0
+	pop4		; quotient
+	push4 0
 	call cmp32
-	pop2		; 0 value
-	pop2
-	pop2		; remainder (originally I+2)
-	pop2
+	pop4		; 0 value
+	pop4		; remainder (originally I+2)
 	je .loop_done_is_not_prime
 	; add I+6 and loop
 	; I should still be on stack
-	push2 0
-	push2 6
+	push4 6
 	call add32
-	pop2 [sp+(0+0+4)]
-	pop2 [sp+(0+2+2)]
+	pop4 [sp+(0+4)]
 	jmp .loop
 .iteration_loop_done:
 	; get rid of I*I stack
-	pop2
-	pop2
-	pop2
-	pop2	
+	pop4
+	pop4
 .loop_done_is_prime:
 	; remove I variable from stack
-	pop2
-	pop2
+	pop4
 .is_prime:
 	mov a,1
 	ret
 .loop_done_is_not_prime:
 	; remove I variable from stack
-	pop2
-	pop2
+	pop4
 .is_not_prime:
 	mov a,0
 	ret

@@ -6,7 +6,7 @@
 ; calculatable factorial for 64 bit math). The DELAY_COUNT is used to pause
 ; display long enough for a human to see the results. It is tuned for a system
 ; clock of about 300 KHz. 
-#require "putey-1-beta >= 0.4.0"
+#require "putey-1-beta >= 0.4.1"
 #include "system.asm"
 
 DELAY_COUNT = $F000       ; Number of steps for delay counter
@@ -19,10 +19,7 @@ BUFFER_SIZE = 32
 ;
 .org $8000
 current_n:
-    .2byte 0
-    .2byte 0
-    .2byte 0
-    .2byte 0
+    .8byte 0
 
 string_buffer:
     .zero BUFFER_SIZE
@@ -52,10 +49,7 @@ init:
     pop
     pop
 restart:
-    mov2 [current_n], 1                ; init N variable
-    mov2 [current_n+2],0
-    mov2 [current_n+4],0
-    mov2 [current_n+6],0
+    mov8 [current_n],1                  ; init N variable
     ; display title banner
     push2 title_cstr
     call lcd_print_line_cstr
@@ -66,29 +60,17 @@ restart:
     call delay16
     pop2
 start:
-    push2 [current_n+6]
-    push2 [current_n+4]
-    push2 [current_n+2]
-    push2 [current_n+0]
+    push8 [current_n]
     call display_calculating           ; display the current N value to calculate
     call calc_factorial64              ; call the factorial function, results on stack
     ; put N value on stack for results printing. results already on stack
-    push2 [current_n+6]
-    push2 [current_n+4]
-    push2 [current_n+2]
-    push2 [current_n+0]
+    push8 [current_n]
     call display_results               ; display factorial results and current n value
     call inc64                         ; increment the n value
     ; update current_n with next value
-    pop2 [current_n+0]
-    pop2 [current_n+2]              
-    pop2 [current_n+4]
-    pop2 [current_n+6]              
+    pop8 [current_n]           
     ; pop factorial result. stack is restored
-    pop2
-    pop2
-    pop2
-    pop2
+    pop8
     ; delay some for your viewing pleasure
     push2 DELAY_COUNT
     call delay16
@@ -147,15 +129,9 @@ display_results:
 
     push BUFFER_SIZE                    ; buffer size
     push2 decimal_buffer                ; the string buffer
-    push2 [sp+(10+6+3)]                 ; push the results value
-    push2 [sp+(10+4+5)]
-    push2 [sp+(10+2+7)]
-    push2 [sp+(10+0+9)]
+    push8 [sp+(10+3)]                   ; push the results value
     call uint64_to_decimal_cstr         ; cconver results value to decimal string
-    pop2
-    pop2
-    pop2
-    pop2
+    pop8
     pop2
     pop
 
@@ -209,17 +185,11 @@ calc_factorial64:
     pop
     pop
     ; copy cached factorial value to stack and return
-    mov2 [sp+(2+0)],[hl+0]
-    mov2 [sp+(2+2)],[hl+2]
-    mov2 [sp+(2+4)],[hl+4]
-    mov2 [sp+(2+6)],[hl+6] 
+    mov8 [sp+2],[hl+0]
     ret
 .calculate_factorial:
 	; push N value on stack
-	push2 [sp+(2+6+0)]
-	push2 [sp+(2+4+2)]
-	push2 [sp+(2+2+4)]
-	push2 [sp+(2+0+6)]
+    push8 [sp+2]
 	; decrement local N value
 	mov a,[sp+0]
 	sub 1
@@ -248,10 +218,7 @@ calc_factorial64:
 
 	; calculate factorial
     call calc_factorial64                   ; recurse to calculate factorial(N-1)
-    push2 [sp+(2+6+8)]                      ; push original N value on stack
-    push2 [sp+(2+4+10)]
-    push2 [sp+(2+2+12)]
-    push2 [sp+(2+0+14)]
+    push8 [sp+8]                            ; push original N value on stack
     mov [max_calculated_n],[sp+(0)]         ; update max calculated n
     call multiply64                         ; calculate factorial(N-1)*N
     ; ensure the high 8 bytesd of results are 0 -> only suppoprt 64-bit result
@@ -272,30 +239,21 @@ calc_factorial64:
     cmp [sp+8],0
     jne .factorial_overflow
 	; pop results into return value
-	pop2 [sp+(2+0+16)] 
-	pop2 [sp+(2+2+14)]
-	pop2 [sp+(2+4+12)]
-	pop2 [sp+(2+6+10)]
+    pop8 [sp+(2+16)]
 	; pop high 8 byte into oblivian
-	pop2
-	pop2
-	pop2
-	pop2
+	pop8
 .finish:
     ; placed calculated value in cache
     ; calculate array offset
     push [max_calculated_n]
     push 8
-    call multiply8
+    call multiply8                          ; result is 16 bit
     push2 cached_values
     call add16
     pop2 hl
     pop
     pop
-    mov2 [hl+0],[sp+(2+0)]
-    mov2 [hl+2],[sp+(2+2)]
-    mov2 [hl+4],[sp+(2+4)]
-    mov2 [hl+6],[sp+(2+6)]
+    mov8 [hl+0],[sp+2]                      ; copy to cache location in HL
 .basecase:
     ret
 .factorial_overflow:

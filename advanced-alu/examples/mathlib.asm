@@ -1,4 +1,4 @@
-#require "putey-1-beta >= 0.4.0"
+#require "putey-1-beta >= 0.4.1"
 
 
 ; lsl16
@@ -431,10 +431,8 @@ multiply32:
     ; set counter for 32 bits
     mov i,32
     ; set up 8 byte results memory block
-    push2 0                 ; high word inialized to 0
-    push2 0 
-    push2 [sp+(2+2+4)]      ; multiplier in low word
-    push2 [sp+(2+0+6)]
+    push4 0                 ; high word inialized to 0
+    push4 [sp+(2+4)]        ; multiplier in low word
     ; Stack state:
     ;   sp+0  : 8 byte results memory (high word at sp+4)
     ;   sp+10 : original multiplier (4 bytes)
@@ -444,15 +442,11 @@ multiply32:
     tstb [sp+0],0
     jz .continue
     ; add high word of results to multiplicand
-    push2 [sp+(4+2+0)]
-    push2 [sp+(4+0+2)]
-    push2 [sp+(10+2+4)]
-    push2 [sp+(10+0+6)]
+    push4 [sp+(4+0)]
+    push4 [sp+(10+4)]
     call add32
-    pop2 [sp+(0+4+8)]       ; place sum results into high word of results memory
-    pop2 [sp+(2+4+6)]
-    pop2
-    pop2
+    pop4 [sp+(4+8)]         ; place sum results into high word of results memory
+    pop4
 .continue:
     ; shift results right one. alread at [sp] so just call
     call lsr64
@@ -462,10 +456,8 @@ multiply32:
     jmp .loop
 .done:
     ; pop results to return stack
-    pop2 [sp+(0+10)]
-    pop2 [sp+(2+8)]
-    pop2 [sp+(4+6)]
-    pop2 [sp+(6+4)]
+    pop4 [sp+(2+8)]
+    pop4 [sp+(6+4)]
     ret
 
 ; multiply64
@@ -485,14 +477,8 @@ multiply64:
     ; set counter for 64 bits
     mov i,64
     ; set up 18 byte results memory block
-    push2 0                 ; high word inialized to 0
-    push2 0 
-    push2 0
-    push2 0
-    push2 [sp+(2+6+8)]      ; multiplier in low word
-    push2 [sp+(2+4+10)]
-    push2 [sp+(2+2+12)]
-    push2 [sp+(2+0+14)]
+    push8 0                 ; high word inialized to 0
+    push8 [sp+(2+8)]        ; multiplier in low word
 
     ; Stack state:
     ;   sp+0  : 16 byte results memory (high word at sp+8)
@@ -536,14 +522,8 @@ multiply64:
     jmp .loop
 .done:
     ; pop results to return stack
-    pop2 [sp+(0+18)]
-    pop2 [sp+(2+16)]
-    pop2 [sp+(4+14)]
-    pop2 [sp+(6+12)]
-    pop2 [sp+(8+10)]
-    pop2 [sp+(10+8)]
-    pop2 [sp+(12+6)]
-    pop2 [sp+(14+4)]
+    pop8 [sp+(2+16)]
+    pop8 [sp+(10+8)]
     ret
 
 
@@ -934,7 +914,7 @@ subtract16:
 ;    a
 ; 
 ; Flags Set
-;   CF if no borrow was needed from 17th bit
+;   CF if no borrow was needed from 33rd bit
 ; 
 subtract32:
     mov a,[sp+2]                        ; move low bye of X to A

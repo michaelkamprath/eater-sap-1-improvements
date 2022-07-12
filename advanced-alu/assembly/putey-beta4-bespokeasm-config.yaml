@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 4 Breadboard Computer
 general:
-  min_version: 0.2.1
+  min_version: 0.2.2
   address_size: 16
   endian: little
   registers:
@@ -16,7 +16,7 @@ general:
     - l
   identifier:
     name: putey-1-beta
-    version: "0.4.0"
+    version: "0.4.1"
 predefined:
   constants:
     - name: ZF
@@ -372,6 +372,30 @@ operand_sets:
             5: 5
             6: 6
             7: 7
+  macro_indirect_registers:
+    operand_values:
+      indirect_hl_register:
+        type: indirect_register
+        register: hl
+        bytecode:
+          value: 0
+          size: 0
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true
+      stack_pointer:
+        type: indirect_register
+        register: sp
+        bytecode:
+          value: 1
+          size: 0
+        offset:
+          max: 255
+          min: 0
+          size: 8
+          byte_align: true  
 instructions:
   # general
   nop:
@@ -1206,6 +1230,7 @@ instructions:
       value: 248
       size: 8
   lsrc:
+    # 9-bit rotate right (including carry)
     byte_code:
       value: 249
       size: 8
@@ -1214,14 +1239,17 @@ instructions:
       value: 250
       size: 8
   lslc:
+    # 9-bit rotate left (including carry)
     byte_code:
       value: 251
       size: 8
   rotr:
+    # 8-bit rotate right (without carry)
     byte_code:
       value: 252
       size: 8
   rotl:
+    # 8-bit rotate left (without carry)
     byte_code:
       value: 253
       size: 8
@@ -1295,5 +1323,285 @@ instructions:
             list:
               - hl_indirect_indexed
               - 8_bit_source
-
+macros:
+  push4:
+    - operands:
+        count: 1
+        specific_operands:
+          immediate:
+            list:
+              uint16:
+                type: numeric
+                argument:
+                  size: 16
+                  byte_align: true
+      instructions:
+        - "push2 ((@ARG(0)) >> 16)"
+        - "push2 ((@ARG(0)) & 0x0000FFFF)"
+    - operands:
+        count: 1
+        specific_operands:
+          indirect_addr:
+            list:
+              iaddr:
+                type: indirect_numeric
+                argument:
+                  size: 16
+                  byte_align: true
+      instructions:
+        - "push2 [@ARG(0)+2]"
+        - "push2 [@@ARG(0)]"
+    - operands:
+        count: 1
+        specific_operands:
+          stack_pointer:
+            list:
+              sp:
+                type: indirect_register
+                register: sp
+                bytecode:
+                  value: 5
+                  size: 3
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+      instructions:
+        - "push2 [@REG(0) + (@ARG(0)+2+0)]"
+        - "push2 [@REG(0) + (@ARG(0)+0+2)]"
+  push8:
+    - operands:
+        count: 1
+        specific_operands:
+          immediate:
+            list:
+              uint16:
+                type: numeric
+                argument:
+                  size: 16
+                  byte_align: true
+      instructions:
+        - "push2 ((@ARG(0)) >> 48) & 0xFFFF"
+        - "push2 ((@ARG(0)) >> 32) & 0xFFFF"
+        - "push2 ((@ARG(0)) >> 16) & 0xFFFF"
+        - "push2 ((@ARG(0)) & 0xFFFF)"
+    - operands:
+        count: 1
+        specific_operands:
+          indirect_addr:
+            list:
+              iaddr:
+                type: indirect_numeric
+                argument:
+                  size: 16
+                  byte_align: true
+      instructions:
+        - "push2 [@ARG(0)+6]"
+        - "push2 [@ARG(0)+4]"
+        - "push2 [@ARG(0)+2]"
+        - "push2 [@ARG(0)]"
+    - operands:
+        count: 1
+        specific_operands:
+          stack_pointer:
+            list:
+              sp:
+                type: indirect_register
+                register: sp
+                bytecode:
+                  value: 5
+                  size: 3
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+      instructions:
+        - "push2 [@REG(0) + (@ARG(0)+6+0)]"
+        - "push2 [@REG(0) + (@ARG(0)+4+2)]"
+        - "push2 [@REG(0) + (@ARG(0)+2+6)]"
+        - "push2 [@REG(0) + (@ARG(0)+0+6)]"
+  pop4:
+    - operands:
+        count: 1
+        specific_operands:
+          indirect_addr:
+            list:
+              iaddr:
+                type: indirect_numeric
+                argument:
+                  size: 16
+                  byte_align: true
+      instructions:
+        - "pop2 [@ARG(0)]"
+        - "pop2 [(0@ARG(0)) + 2]"
+    - operands:
+        count: 1
+        specific_operands:
+          stack_pointer:
+            list:
+              sp:
+                type: indirect_register
+                register: sp
+                bytecode:
+                  value: 5
+                  size: 3
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+      instructions:
+        - "pop2 [@REG(0) + @ARG(0)]"
+        - "pop2 [@REG(0) + @ARG(0)]"
+    - instructions:
+        - "pop2"
+        - "pop2"
+  pop8:
+    - operands:
+        count: 1
+        specific_operands:
+          indirect_addr:
+            list:
+              iaddr:
+                type: indirect_numeric
+                argument:
+                  size: 16
+                  byte_align: true
+      instructions:
+        - "pop2 [@ARG(0)]"
+        - "pop2 [(@ARG(0)) + 2]"
+        - "pop2 [(@ARG(0)) + 4]"
+        - "pop2 [(@ARG(0)) + 6]"
+    - operands:
+        count: 1
+        specific_operands:
+          stack_pointer:
+            list:
+              sp:
+                type: indirect_register
+                register: sp
+                bytecode:
+                  value: 5
+                  size: 3
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+      instructions:
+        - "pop2 [@REG(0) + @ARG(0)]"
+        - "pop2 [@REG(0) + @ARG(0)]"
+        - "pop2 [@REG(0) + @ARG(0)]"
+        - "pop2 [@REG(0) + @ARG(0)]"
+    - instructions:
+        - "pop2"
+        - "pop2"
+        - "pop2"
+        - "pop2"
+  mov4:
+    - operands:
+        count: 2
+        specific_operands:
+          indirect_addr_immediate:
+            list:
+              iaddr:
+                type: indirect_numeric
+                argument:
+                  size: 16
+                  byte_align: true
+              uint32:
+                type: numeric
+                argument:
+                  size: 32
+                  byte_align: true
+      instructions:
+        - "mov2 [@ARG(0)],((@ARG(1)&0xFFFF))"
+        - "mov2 [@ARG(0)+2],((@ARG(1)&0xFFFF0000) >> 16)"
+    - operands:
+        count: 2
+        operand_sets:
+          list:
+            - macro_indirect_registers
+            - macro_indirect_registers
+      instructions:
+        - "mov2 [@REG(0)+(@ARG(0))+0],[@REG(1)+(@ARG(1))+0]"
+        - "mov2 [@REG(0)+(@ARG(0))+2],[@REG(1)+(@ARG(1))+2]"
+  mov8:
+    - operands:
+        count: 2
+        specific_operands:
+          indirect_addr_immediate:
+            list:
+              iaddr:
+                type: indirect_numeric
+                argument:
+                  size: 16
+                  byte_align: true
+              uint64:
+                type: numeric
+                argument:
+                  size: 64
+                  byte_align: true
+      instructions:
+        - "mov2 [@ARG(0)],  ((@ARG(1)&0x000000000000FFFF))"
+        - "mov2 [@ARG(0)+2],((@ARG(1)&0x00000000FFFF0000) >> 16)"
+        - "mov2 [@ARG(0)+4],((@ARG(1)&0x0000FFFF00000000) >> 32)"
+        - "mov2 [@ARG(0)+6],((@ARG(1)&0xFFFF000000000000) >> 48)"
+    - operands:
+        count: 2
+        specific_operands:
+          indirect_hl_immediate:
+            list:
+              indirect_hl_register:
+                type: indirect_register
+                register: hl
+                bytecode:
+                  value: 0
+                  size: 0
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+              uint64:
+                type: numeric
+                argument:
+                  size: 64
+                  byte_align: true
+          indirect_sp_immediate:
+            list:
+              stack_pointer:
+                type: indirect_register
+                register: sp
+                bytecode:
+                  value: 1
+                  size: 0
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true  
+              uint64:
+                type: numeric
+                argument:
+                  size: 64
+                  byte_align: true
+      instructions:
+        - "mov2 [@REG(0)+(@ARG(0))+0],((@ARG(1)&0x000000000000FFFF))"
+        - "mov2 [@REG(0)+(@ARG(0))+2],((@ARG(1)&0x00000000FFFF0000) >> 16)"
+        - "mov2 [@REG(0)+(@ARG(0))+4],((@ARG(1)&0x0000FFFF00000000) >> 32)"
+        - "mov2 [@REG(0)+(@ARG(0))+6],((@ARG(1)&0xFFFF000000000000) >> 48)"
+    - operands:
+        count: 2
+        operand_sets:
+          list:
+            - macro_indirect_registers
+            - macro_indirect_registers
+      instructions:
+        - "mov2 [@REG(0)+(@ARG(0))+0],[@REG(1)+(@ARG(1))+0]"
+        - "mov2 [@REG(0)+(@ARG(0))+2],[@REG(1)+(@ARG(1))+2]"
+        - "mov2 [@REG(0)+(@ARG(0))+4],[@REG(1)+(@ARG(1))+4]"
+        - "mov2 [@REG(0)+(@ARG(0))+6],[@REG(1)+(@ARG(1))+6]"
 ...
