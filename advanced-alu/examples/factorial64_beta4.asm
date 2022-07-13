@@ -218,10 +218,10 @@ calc_factorial64:
 
 	; calculate factorial
     call calc_factorial64                   ; recurse to calculate factorial(N-1)
-    push8 [sp+8]                            ; push original N value on stack
+    push8 [sp+(2+8)]                            ; push original N value on stack
     mov [max_calculated_n],[sp+(0)]         ; update max calculated n
     call multiply64                         ; calculate factorial(N-1)*N
-    ; ensure the high 8 bytesd of results are 0 -> only suppoprt 64-bit result
+    ; ensure the high 8 bytes of results are 0 -> only suppoprt 64-bit result
     cmp [sp+15],0
     jne .factorial_overflow
     cmp [sp+14],0

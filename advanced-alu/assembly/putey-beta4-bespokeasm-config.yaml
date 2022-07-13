@@ -1350,7 +1350,7 @@ macros:
                   byte_align: true
       instructions:
         - "push2 [@ARG(0)+2]"
-        - "push2 [@@ARG(0)]"
+        - "push2 [@ARG(0)]"
     - operands:
         count: 1
         specific_operands:
@@ -1368,8 +1368,8 @@ macros:
                   size: 8
                   byte_align: true
       instructions:
-        - "push2 [@REG(0) + (@ARG(0)+2+0)]"
-        - "push2 [@REG(0) + (@ARG(0)+0+2)]"
+        - "push2 [@REG(0) + ((@ARG(0))+2+0)]"
+        - "push2 [@REG(0) + ((@ARG(0))+0+2)]"
   push8:
     - operands:
         count: 1
@@ -1418,10 +1418,10 @@ macros:
                   size: 8
                   byte_align: true
       instructions:
-        - "push2 [@REG(0) + (@ARG(0)+6+0)]"
-        - "push2 [@REG(0) + (@ARG(0)+4+2)]"
-        - "push2 [@REG(0) + (@ARG(0)+2+6)]"
-        - "push2 [@REG(0) + (@ARG(0)+0+6)]"
+        - "push2 [@REG(0) + ((@ARG(0))+6+0)]"
+        - "push2 [@REG(0) + ((@ARG(0))+4+2)]"
+        - "push2 [@REG(0) + ((@ARG(0))+2+4)]"
+        - "push2 [@REG(0) + ((@ARG(0))+0+6)]"
   pop4:
     - operands:
         count: 1
