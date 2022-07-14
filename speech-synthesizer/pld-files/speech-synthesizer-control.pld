@@ -1,0 +1,42 @@
+GAL22V10
+speechctl
+
+CLK   MMAP  MDO   MDI   A0    A1    RESET READY INT   NC    NC    GND
+NC    RSAUX NC    SFRO  DATAR BUSY  SDRO  SDRA  SDRI  WS    RS    VCC
+
+; global
+
+RSAUX = MMAP * MDO * /MDI * A0 * /A1 * CLK * /READY * WS * /RESET
+
+;
+; Pin Logic
+;
+
+; TMS5220C Controller
+
+/WS =    MMAP * /MDO * MDI * /A0 * /A1 * CLK * /READY * RS * /RESET
+       + READY * /WS * RS * /RESET
+
+/RS =    MMAP * /MDO * MDI * A0 * /A1 * CLK * /READY * WS * RS * /RESET
+       + /RS * /RSAUX
+
+; Register Control
+
+/SDRI =  MMAP * /MDO * MDI * /A0 * /A1 * /READY * RS * /RESET
+
+/SDRA =  READY * /WS * RS * /RESET
+
+/SDRO =   MMAP * MDO * /MDI * A0 * /A1 * /READY * WS * /RESET
+
+/SFRO =   MMAP * MDO * /MDI * /A0 * A1 * /RESET
+
+; Status
+
+BUSY =    READY + /WS + /RS + RESET
+
+DATAR =   /READY * WS * /RS * /RESET
+
+
+DESCRIPTION
+
+Glue logic to connect TMS5220C to 8 bit data bus and controlled via memory map.
