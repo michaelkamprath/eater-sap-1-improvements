@@ -4,6 +4,7 @@
 ;   one line of assembly code.  
 ;
 #include "system.asm"
+#require "putey-1-beta >= 0.4.1"
 
 .org $8000
 buffer:
