@@ -1,6 +1,14 @@
 #require "putey-1-beta >= 0.4.1"
 
 
+; RAM variables
+.org $F000
+_random_seed_x:     .byte 0
+_random_seed_a:     .byte 0
+_random_seed_b:     .byte 0
+_random_seed_c:     .byte 0
+
+.org $3700
 ; lsl16
 ;   Logical left shift for a 16 bit value
 ; 
@@ -1026,3 +1034,69 @@ dec16:
     dec hl                      ; decrement it
     mov2 [sp+2], hl             ; place results back into position on stack
     ret                         ; return
+
+;
+; 8-bit Random Number Generator
+; 
+;   Based on algorithm listed here:
+;       https://www.electro-tech-online.com/threads/ultra-fast-pseudorandom-number-generator-for-8-bit.124249/
+; 
+
+; init_random8:
+; 
+;   Arguments
+;       sp+2 : A value (1 byte)
+;       sp+3 : B value (1 byte)
+;       sp+4 : C value (1 byte)
+; 
+;   Returns
+;       nothing
+; 
+;   Registers Used
+;       A
+; 
+
+init_random8:
+    mov a,[_random_seed_a]
+    xor [sp+2]
+    mov [_random_seed_a],a
+    mov a,[_random_seed_b]
+    xor [sp+3]
+    mov [_random_seed_b],a
+    mov a,[_random_seed_c]
+    xor [sp+4]
+    mov [_random_seed_c],a
+    call random8
+    ret
+
+
+; random8
+; 
+;   Arguments
+;       none
+; 
+;   Returns
+;       register A - 8 bit randome value
+; 
+random8:
+    ; x++
+    mov a,[_random_seed_x]
+    add 1
+    mov [_random_seed_x],a
+    ; a = (a^c^x)
+    mov a,[_random_seed_a]
+    xor [_random_seed_c]
+    xor [_random_seed_x]
+    mov [_random_seed_a],a
+    ; b = (b+a)
+    mov a,[_random_seed_b]
+    add [_random_seed_a]
+    mov [_random_seed_b],a
+    ; c = (c+(b>>1)^a)
+    mov a,[_random_seed_b]
+    lsr
+    xor [_random_seed_a]
+    add [_random_seed_c]
+    mov [_random_seed_c],a
+    ret
+
