@@ -2,11 +2,8 @@ GAL22V10
 speechctl
 
 CLK   MMAP  MDO   MDI   A0    A1    RESET READY INT   NC    NC    GND
-NC    RSAUX NC    SFRO  DATAR BUSY  SDRO  SDRA  SDRI  WS    RS    VCC
+NC    RSAUX IRST  SFRO  DATAR BUSY  SDRO  SDRA  SDRI  WS    RS    VCC
 
-; global
-
-RSAUX = MMAP * MDO * /MDI * A0 * /A1 * CLK * /READY * WS * /RESET
 
 ;
 ; Pin Logic
@@ -14,15 +11,18 @@ RSAUX = MMAP * MDO * /MDI * A0 * /A1 * CLK * /READY * WS * /RESET
 
 ; TMS5220C Controller
 
-/WS =    MMAP * /MDO * MDI * /A0 * /A1 * CLK * /READY * RS * /RESET
-       + READY * /WS * RS * /RESET
+; RSAUX is used to simplify the "group NOT" encoding
+RSAUX = MMAP * MDO * /MDI * A0 * /A1 * CLK * /READY * /RESET
 
-/RS =    MMAP * /MDO * MDI * A0 * /A1 * CLK * /READY * WS * RS * /RESET
-       + /RS * /RSAUX
+/WS =    MMAP * /MDO * MDI * /A0 * /A1 * CLK * /READY * RS * /RESET * /IRST
+       + READY * /WS * RS * /RESET * /IRST
+
+/RS =    MMAP * /MDO * MDI * A0 * /A1 * CLK * /READY * WS * RS * /RESET * /IRST
+       + /RS * WS * /RSAUX * /IRST
 
 ; Register Control
 
-/SDRI =  MMAP * /MDO * MDI * /A0 * /A1 * /READY * RS * /RESET
+/SDRI =  MMAP * /MDO * MDI * /A0 * /A1 * /READY * /RESET
 
 /SDRA =  READY * /WS * RS * /RESET
 
@@ -36,6 +36,7 @@ BUSY =    READY + /WS + /RS + RESET
 
 DATAR =   /READY * WS * /RS * /RESET
 
+IRST = MMAP * /MDO * MDI * A0 * /A1 
 
 DESCRIPTION
 
