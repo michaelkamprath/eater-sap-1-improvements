@@ -6195,14 +6195,14 @@ instructions:
       1:
         - control_lines:
             PCa
-            Ti
             MDo
+            Ti
       2:
         - control_lines:
-            Ai
-            SUMo
             S1
             S2
+            SUMo
+            Ai
             PCe
       3:
         - control_lines:
