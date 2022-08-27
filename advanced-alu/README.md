@@ -1,5 +1,6 @@
 
 # Advanced Arithmetic Logic Unit
+
 ## Overview
 I have been building towards this for a while. Back when I started extending my Ben Eater SAP-1 and building my PUTEY-1 computer, I established a goad of doing 64-bit math reasonably efficiently on the 8-bit architecture. This project brings that goal to fruition. 
 
@@ -13,6 +14,8 @@ The complete set of features I desire to implement with this project:
 * A "test bit" instruction will test a 8-bit source and set the Z flag accordingly. 
 * A general compare operation that can determine equality and magnitude differences.
 * Ability to write flags register to data bus and be read by other entities on data bus, notably pushing the value on the stack.
+
+[![Advanced Arithmetic Logic Unit](https://img.youtube.com/vi/EK345Iy7LGQ/maxresdefault.jpg)](https://youtu.be/EK345Iy7LGQ)
 
 ## Design
 ### Chip Selection

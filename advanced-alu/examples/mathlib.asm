@@ -476,7 +476,7 @@ multiply32:
 ;   sp+10 - value Y (multiplicand) (8 bytes)
 ;
 ; Return Value
-;   sp+2 - results (8 bytes)
+;   sp+2 - results (16 bytes)
 ; 
 ; Registers used
 ;   i

@@ -46,7 +46,7 @@ init:
     dec i                           ; decrement the character position
     jmp line_cstr_loop
  end_line_loop:
-    mov [hl+20],0                   ; this line's tring has been build. append the terminator.
+    mov [hl+20],0                   ; this line's string has been built. append the terminator.
     push2 buffer                    ; print the built line string
     call lcd_print_line_cstr
     pop2
