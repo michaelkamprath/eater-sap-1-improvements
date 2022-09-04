@@ -1,4 +1,5 @@
 #require "putey-1-beta >= 0.4.0"
+.memzone system_code
 
 ; memset8
 ;   sets each byte in a block of memory to a particular value

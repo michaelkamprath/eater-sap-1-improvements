@@ -3,6 +3,7 @@
 ;
 ; General System Utilities
 ;
+.memzone system_code
 
 ; delay8
 ;   delays while counting down an 8-bit counter.

@@ -1,4 +1,5 @@
 #require "putey-1-beta >= 0.4.0"
+.memzone system_code
 
 ; cstr_len8
 ;   Calculates the length of a cstr not including the null terminator character, up to 255.
