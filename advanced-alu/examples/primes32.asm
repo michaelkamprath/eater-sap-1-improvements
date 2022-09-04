@@ -32,7 +32,7 @@ start:
 	call uint32_to_decimal_cstr
 	pop4
 	pop2
-	pop	
+	pop
 	pop a
 	cmp a,1
 	je .print_is_prime
@@ -45,7 +45,7 @@ start:
 	call cstr_append
 	pop2
 	pop2
-	pop	
+	pop
 	jmp .print_status
 .print_is_prime:
 	push BUFFER_SIZE
@@ -54,7 +54,7 @@ start:
 	call cstr_append
 	pop2
 	pop2
-	pop	
+	pop
 .print_status:
 	push2 string_buffer
 	call lcd_print_line_cstr
@@ -67,13 +67,13 @@ start:
 
 ; is_prime32
 ; 	determines wither the passed uint32 is a prime
-; 
+;
 ;	Arguments
 ; 		sp+2 : the value to determine if prime (4 bytes)
-; 
+;
 ;	returns
 ; 		register A - 0 is not prime, 1 if is prime
-; 
+;
 is_prime32:
 	; first check if N is 2 or 3
 	; if high word is not 0, then not 2 or 3

@@ -11,8 +11,9 @@
 ;           * $F200 - $F2FF : LCD Display Module
 ;
 #require "putey-1-beta >= 0.4.0"
+#create_memzone system_code $3000 $6FFF
+#create_memzone system_variables $D000 $FFFF
 
-.org $3000
 #include "stringlib.asm"
 #include "memlib.asm"
 #include "utilitylib.asm"

@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 4 Breadboard Computer
 general:
-  min_version: 0.2.2
+  min_version: 0.2.3
   address_size: 16
   endian: little
   registers:
