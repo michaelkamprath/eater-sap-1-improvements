@@ -2,13 +2,13 @@
 
 
 ; RAM variables
-.org $F000
+.memzone system_variables
 _random_seed_x:     .byte 0
 _random_seed_a:     .byte 0
 _random_seed_b:     .byte 0
 _random_seed_c:     .byte 0
 
-.org $3700
+.memzone system_code
 ; lsl16
 ;   Logical left shift for a 16 bit value
 ; 
@@ -137,7 +137,7 @@ lsl64:
     mov a,[sp+9]            ; next byte
     lslc
     mov [sp+9],a
-    ret 
+    ret
 
 ; lsl72
 ;   Logical left shift for a 72 bit value
@@ -179,7 +179,7 @@ lsl72:
     mov a,[sp+10]            ; next byte
     lslc
     mov [sp+10],a
-    ret 
+    ret
 
 ; lsr16
 ;   Logical right shift for a 16 bit value
@@ -285,49 +285,49 @@ lsr128:
     lsr                     ; shift it right, setting CF if needed
     mov [sp+17],a            ; place shifted value back
     mov a,[sp+16]            ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+16],a
     mov a,[sp+15]            ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+15],a
     mov a,[sp+14]            ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+14],a
     mov a,[sp+13]            ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+13],a
     mov a,[sp+12]            ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+12],a
     mov a,[sp+11]            ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+11],a
     mov a,[sp+10]            ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+10],a
     mov a,[sp+9]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+9],a
     mov a,[sp+8]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+8],a
     mov a,[sp+7]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+7],a
     mov a,[sp+6]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+6],a
     mov a,[sp+5]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+5],a
     mov a,[sp+4]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+4],a
     mov a,[sp+3]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+3],a
     mov a,[sp+2]             ; repeat on next byte with carry
-    lsrc 
+    lsrc
     mov [sp+2],a
     ret                     ; done
 
@@ -502,25 +502,25 @@ multiply64:
     mov [sp+(8+0)],a
     mov a,[sp+(8+1)]
     addc [sp+(26+1)]
-    mov [sp+(8+1)],a    
+    mov [sp+(8+1)],a
     mov a,[sp+(8+2)]
     addc [sp+(26+2)]
-    mov [sp+(8+2)],a 
+    mov [sp+(8+2)],a
     mov a,[sp+(8+3)]
     addc [sp+(26+3)]
-    mov [sp+(8+3)],a 
+    mov [sp+(8+3)],a
     mov a,[sp+(8+4)]
     addc [sp+(26+4)]
-    mov [sp+(8+4)],a 
+    mov [sp+(8+4)],a
     mov a,[sp+(8+5)]
     addc [sp+(26+5)]
-    mov [sp+(8+5)],a 
+    mov [sp+(8+5)],a
     mov a,[sp+(8+6)]
     addc [sp+(26+6)]
-    mov [sp+(8+6)],a 
+    mov [sp+(8+6)],a
     mov a,[sp+(8+7)]
     addc [sp+(26+7)]
-    mov [sp+(8+7)],a 
+    mov [sp+(8+7)],a
 .continue:
     ; shift results right one. alread at [sp] so just call
     call lsr128
@@ -647,9 +647,9 @@ divide16:
     call lsl32
     mov a,[sp+0]                    ; place carry bit in a
     or [sp+4]                       ; or the carry bit with the low working byte
-    mov [sp+0],a                    ; replace the updated low working byte    
+    mov [sp+0],a                    ; replace the updated low working byte
     pop2 [sp+(2+5)]
-    pop2 
+    pop2
     pop
     ret
 .divisor_too_large:
@@ -723,7 +723,7 @@ divide32:
     mov a,[sp+0]                    ; place carry bit in a
     or [sp+8]                       ; or the carry bit with the low working byte
     mov [sp+0],a                    ; replace the updated low working byte
-    mov [sp+8],0                    ; reset carry bit 
+    mov [sp+8],0                    ; reset carry bit
      ; attempt substraction
     push2 [sp+(6+2+9)]              ; right side - divisor
     push2 [sp+(6+0+11)]
@@ -755,7 +755,7 @@ divide32:
     call lsl64
     mov a,[sp+0]                    ; place carry bit in a
     or [sp+8]                       ; or the carry bit with the low working byte
-    mov [sp+0],a                    ; replace the updated low working byte    
+    mov [sp+0],a                    ; replace the updated low working byte
     pop2 [sp+(2+0+9)]
     pop2 [sp+(2+2+7)]
     pop2
@@ -779,7 +779,6 @@ divide32:
     mov2 [sp+(2+2)],0
     ret
 
-    
 ; add16
 ;   adds values X+Y
 ;
@@ -801,7 +800,7 @@ add16:
     add [sp+4]                          ; add low byte of value Y to alue in regsiter A
     mov [sp+2], a                       ; move addition results to low byte of return value
     mov a, [sp+3]                       ; move high byte of value X into register A
-    addc [sp+5] 
+    addc [sp+5]
     mov [sp+3], a                       ; move the the high bye results to the stack
     ret
 
@@ -826,13 +825,13 @@ add32:
     add [sp+6]                          ; add low byte of value Y to alue in regsiter A
     mov [sp+2], a                       ; move addition results to low byte of return value
     mov a, [sp+(2+1)]                   ; move next byte of value X into register A
-    addc [sp+(6+1)] 
+    addc [sp+(6+1)]
     mov [sp+(2+1)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+2)]                   ; move next byte of value X into register A
-    addc [sp+(6+2)] 
+    addc [sp+(6+2)]
     mov [sp+(2+2)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+3)]                   ; move next byte of value X into register A
-    addc [sp+(6+3)] 
+    addc [sp+(6+3)]
     mov [sp+(2+3)], a                   ; move the next bye results to the stack
     ret
 
@@ -858,25 +857,25 @@ add64:
     add [sp+10]                          ; add low byte of value Y to alue in regsiter A
     mov [sp+2], a                       ; move addition results to low byte of return value
     mov a, [sp+(2+1)]                   ; move next byte of value X into register A
-    addc [sp+(10+1)] 
+    addc [sp+(10+1)]
     mov [sp+(2+1)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+2)]                   ; move next byte of value X into register A
-    addc [sp+(10+2)] 
+    addc [sp+(10+2)]
     mov [sp+(2+2)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+3)]                   ; move next byte of value X into register A
-    addc [sp+(10+3)] 
+    addc [sp+(10+3)]
     mov [sp+(2+3)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+4)]                   ; move next byte of value X into register A
-    addc [sp+(10+4)] 
+    addc [sp+(10+4)]
     mov [sp+(2+4)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+5)]                   ; move next byte of value X into register A
-    addc [sp+(10+5)] 
+    addc [sp+(10+5)]
     mov [sp+(2+5)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+6)]                   ; move next byte of value X into register A
-    addc [sp+(10+6)] 
+    addc [sp+(10+6)]
     mov [sp+(2+6)], a                   ; move the next bye results to the stack
     mov a, [sp+(2+7)]                   ; move next byte of value X into register A
-    addc [sp+(10+7)] 
+    addc [sp+(10+7)]
     mov [sp+(2+7)], a                   ; move the next bye results to the stack
     ret
 
@@ -1015,7 +1014,7 @@ inc64:
     addc 0
     mov [sp+(2+7)],a
 .end:
-    ret   
+    ret
 
 
 ; dec16

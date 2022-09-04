@@ -31,10 +31,10 @@ _OPT_DISPLAY_CNTL_ALL = %0000111
 _CMD_DDRAM_ADDR = %10000000
 _CMD_CGRAM_ADDR = %01000000
 
-.org $F200
 ;
 ; LCD Module Library RAM variables
 ;
+.memzone system_variables
 
 _LCD_SCREEN_BUFFER_SIZE = 81
 
@@ -52,7 +52,7 @@ _lcd_row3_ptr:
 _temp_row_buffer:
     .zero _COLUMN_WIDTH+1
 
-.org $4000
+.memzone system_code
 ;
 ; LCD Module Library Code
 ;
