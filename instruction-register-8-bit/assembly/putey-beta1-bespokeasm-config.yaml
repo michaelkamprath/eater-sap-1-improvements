@@ -1,6 +1,6 @@
 description: Putey Beta 1 Breadboard Computer
 general:
-  min_version: 0.1.4
+  min_version: 0.3.0
   address_size: 16
   endian: little
   registers:
@@ -165,15 +165,15 @@ operand_sets:
           size: 2
 instructions:
   nop:
-    byte_code:
+    bytecode:
       value: 0
       size: 8
   hlt:
-    byte_code:
+    bytecode:
       value: 1
       size: 8
   jmp:
-    byte_code:
+    bytecode:
       value: 11
       size: 6
     operands:
@@ -182,7 +182,7 @@ instructions:
         list:
           - address_source
   jc:
-    byte_code:
+    bytecode:
       value: 12
       size: 6
     operands:
@@ -191,7 +191,7 @@ instructions:
         list:
           - address_source
   jz:
-    byte_code:
+    bytecode:
       value: 13
       size: 6
     operands:
@@ -200,7 +200,7 @@ instructions:
         list:
           - address_source
   jeq:
-    byte_code:
+    bytecode:
       value: 2
       size: 3
     operands:
@@ -215,7 +215,7 @@ instructions:
           - [immediate_value, a_register]
           - [indirect_addr, indirect_addr]
   mov:
-    byte_code:
+    bytecode:
       value: 2
       size: 2
     operands:
@@ -272,7 +272,7 @@ instructions:
                 value: 0b011
                 size: 3
   add:
-    byte_code:
+    bytecode:
       value: 23
       size: 5
     operands:
@@ -281,7 +281,7 @@ instructions:
         list:
           - 8_bit_source
   sub:
-    byte_code:
+    bytecode:
       value: 25
       size: 5
     operands:
@@ -290,7 +290,7 @@ instructions:
         list:
           - 8_bit_source
   inc:
-    byte_code:
+    bytecode:
       value: 54
       size: 6
     operands:
@@ -299,7 +299,7 @@ instructions:
         list:
           - incrementable_destination
   dec:
-    byte_code:
+    bytecode:
       value: 55
       size: 6
     operands:
@@ -308,7 +308,7 @@ instructions:
         list:
           - incrementable_destination
   swap:
-    byte_code:
+    bytecode:
       value: 1020
       size: 10
       endian: big
@@ -324,7 +324,7 @@ instructions:
           - [j_register, j_register]
           - [indirect_addr, indirect_addr]
   mov2:
-    byte_code:
+    bytecode:
       value: 1021
       size: 10
       endian: big
