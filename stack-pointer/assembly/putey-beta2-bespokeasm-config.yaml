@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 2 Breadboard Computer
 general:
-  min_version: 0.1.5
+  min_version: 0.3.0
   address_size: 16
   endian: little
   registers:
@@ -15,7 +15,7 @@ general:
     - l
   identifier:
     name: putey-1-beta
-    version: 0.2.0
+    version: 0.2.1
 operand_sets:
   8_bit_source:
     operand_values:
@@ -304,16 +304,16 @@ operand_sets:
 instructions:
   # general
   nop:
-    byte_code:
+    bytecode:
       value: 0
       size: 8
   hlt:
-    byte_code:
+    bytecode:
       value: 1
       size: 8
   # stack operations
   call:
-    byte_code:
+    bytecode:
       value: 0
       size: 5
     operands:
@@ -338,15 +338,15 @@ instructions:
                 value: 4
                 size: 3
   ret:
-    byte_code:
+    bytecode:
       value: 6
       size: 8
   rsp:
-    byte_code:
+    bytecode:
       value: 7
       size: 8
   push:
-    byte_code:
+    bytecode:
       value: 1
       size: 5
     operands:
@@ -355,7 +355,7 @@ instructions:
         list:
           - 8_bit_source
     variants:
-      - byte_code:
+      - bytecode:
           value: 6
           size: 4
         operands:
@@ -378,7 +378,7 @@ instructions:
                     value: 12
                     size: 4
   push2:
-    byte_code:
+    bytecode:
       value: 0b00010
       size: 5
     operands:
@@ -387,7 +387,7 @@ instructions:
         list:
           - 16_bit_source
   pop:
-    byte_code:
+    bytecode:
       value: 3
       size: 5
     operands:
@@ -406,7 +406,7 @@ instructions:
                 value: 7
                 size: 3
     variants:
-      - byte_code:
+      - bytecode:
           value: 60
           size: 7
         operands:
@@ -429,7 +429,7 @@ instructions:
                     value: 1
                     size: 1
   pop2:
-    byte_code:
+    bytecode:
       value: 0b00100
       size: 5
     operands:
@@ -449,7 +449,7 @@ instructions:
                 size: 3
   # branching
   jmp:
-    byte_code:
+    bytecode:
       value: 11
       size: 6
     operands:
@@ -458,7 +458,7 @@ instructions:
         list:
           - address_source
   jc:
-    byte_code:
+    bytecode:
       value: 12
       size: 6
     operands:
@@ -467,7 +467,7 @@ instructions:
         list:
           - address_source
   jz:
-    byte_code:
+    bytecode:
       value: 13
       size: 6
     operands:
@@ -476,7 +476,7 @@ instructions:
         list:
           - address_source
   jeq:
-    byte_code:
+    bytecode:
       value: 2
       size: 3
     operands:
@@ -514,7 +514,7 @@ instructions:
                 size: 8
   # data movement
   mov:
-    byte_code:
+    bytecode:
       value: 2
       size: 2
     operands:
@@ -748,7 +748,7 @@ instructions:
                 size: 16
                 byte_align: true
     variants:
-      - byte_code:
+      - bytecode:
           value: 6
           size: 4
         operands:
@@ -760,7 +760,7 @@ instructions:
             disallowed_pairs:
               - [subregister_l, indirect_hl_register]
               - [subregister_h, indirect_hl_register]
-      - byte_code:
+      - bytecode:
           value: 7
           size: 4
         operands:
@@ -802,7 +802,7 @@ instructions:
                     value: 0
                     size: 1
   swap:
-    byte_code:
+    bytecode:
       value: 1020
       size: 10
       endian: big
@@ -818,7 +818,7 @@ instructions:
           - [j_register, j_register]
           - [indirect_addr, indirect_addr]
   mov2:
-    byte_code:
+    bytecode:
       value: 1021
       size: 10
       endian: big
@@ -845,7 +845,7 @@ instructions:
           - [indirect_addr, indirect_addr]
   # arithmetic operations
   add:
-    byte_code:
+    bytecode:
       value: 23
       size: 5
     operands:
@@ -854,7 +854,7 @@ instructions:
         list:
           - 8_bit_source
   sub:
-    byte_code:
+    bytecode:
       value: 25
       size: 5
     operands:
@@ -863,7 +863,7 @@ instructions:
         list:
           - 8_bit_source
   inc:
-    byte_code:
+    bytecode:
       value: 54
       size: 6
     operands:
@@ -872,7 +872,7 @@ instructions:
         list:
           - incrementable_destination
   dec:
-    byte_code:
+    bytecode:
       value: 55
       size: 6
     operands:

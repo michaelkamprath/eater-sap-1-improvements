@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 4 Breadboard Computer
 general:
-  min_version: 0.2.3
+  min_version: 0.3.0
   address_size: 16
   endian: little
   registers:
@@ -16,7 +16,7 @@ general:
     - l
   identifier:
     name: putey-1-beta
-    version: "0.4.1"
+    version: "0.4.2"
 predefined:
   constants:
     - name: ZF
@@ -399,16 +399,16 @@ operand_sets:
 instructions:
   # general
   nop:
-    byte_code:
+    bytecode:
       value: 0
       size: 8
   hlt:
-    byte_code:
+    bytecode:
       value: 1
       size: 8
   # stack operations
   call:
-    byte_code:
+    bytecode:
       value: 0
       size: 5
     operands:
@@ -433,15 +433,15 @@ instructions:
                 value: 4
                 size: 3
   ret:
-    byte_code:
+    bytecode:
       value: 6
       size: 8
   rsp:
-    byte_code:
+    bytecode:
       value: 7
       size: 8
   push:
-    byte_code:
+    bytecode:
       value: 1
       size: 5
     operands:
@@ -450,7 +450,7 @@ instructions:
         list:
           - 8_bit_source
     variants:
-      - byte_code:
+      - bytecode:
           value: 6
           size: 4
         operands:
@@ -472,7 +472,7 @@ instructions:
                   bytecode:
                     value: 12
                     size: 4
-      - byte_code:
+      - bytecode:
           value: 16327
           size: 14
           endian: big
@@ -482,7 +482,7 @@ instructions:
             list:
               - hl_indirect_indexed
   push2:
-    byte_code:
+    bytecode:
       value: 0b00010
       size: 5
     operands:
@@ -491,7 +491,7 @@ instructions:
         list:
           - 16_bit_source
     variants:
-      - byte_code:
+      - bytecode:
           value: 16350
           size: 14
           endian: big
@@ -501,7 +501,7 @@ instructions:
             list:
               - hl_indirect_indexed
   pop:
-    byte_code:
+    bytecode:
       value: 3
       size: 5
     operands:
@@ -518,7 +518,7 @@ instructions:
                 value: 7
                 size: 3
     variants:
-      - byte_code:
+      - bytecode:
           value: 60
           size: 7
         operands:
@@ -540,7 +540,7 @@ instructions:
                   bytecode:
                     value: 1
                     size: 1
-      - byte_code:
+      - bytecode:
           value: 16321
           size: 14
           endian: big
@@ -550,7 +550,7 @@ instructions:
             list:
               - hl_indirect_indexed
   pop2:
-    byte_code:
+    bytecode:
       value: 0b00100
       size: 5
     operands:
@@ -567,7 +567,7 @@ instructions:
                 value: 0b111
                 size: 3
     variants:
-      - byte_code:
+      - bytecode:
           value: 16351
           size: 14
           endian: big
@@ -577,16 +577,16 @@ instructions:
             list:
               - hl_indirect_indexed
   pushr:
-    byte_code:
+    bytecode:
       value: 44
       size: 8    
   popr:
-    byte_code:
+    bytecode:
       value: 45
       size: 8 
   # branching
   jmp:
-    byte_code:
+    bytecode:
       value: 19
       size: 6
     operands:
@@ -595,7 +595,7 @@ instructions:
         list:
           - address_source
   jc:
-    byte_code:
+    bytecode:
       value: 12
       size: 6
     operands:
@@ -604,7 +604,7 @@ instructions:
         list:
           - address_source
   jz:
-    byte_code:
+    bytecode:
       value: 13
       size: 6
     operands:
@@ -613,7 +613,7 @@ instructions:
         list:
           - address_source
   jnz:
-    byte_code:
+    bytecode:
       value: 14
       size: 6
     operands:
@@ -622,7 +622,7 @@ instructions:
         list:
           - address_source
   jo:
-    byte_code:
+    bytecode:
       value: 15
       size: 6
     operands:
@@ -631,7 +631,7 @@ instructions:
         list:
           - address_source
   je:
-    byte_code:
+    bytecode:
       value: 16
       size: 6
     operands:
@@ -640,7 +640,7 @@ instructions:
         list:
           - address_source
   jne:
-    byte_code:
+    bytecode:
       value: 17
       size: 6
     operands:
@@ -650,7 +650,7 @@ instructions:
           - address_source
   # data movement
   mov:
-    byte_code:
+    bytecode:
       value: 2
       size: 2
     operands:
@@ -912,7 +912,7 @@ instructions:
                 size: 8
                 byte_align: true
     variants:
-      - byte_code:
+      - bytecode:
           value: 6
           size: 4
         operands:
@@ -924,7 +924,7 @@ instructions:
             disallowed_pairs:
               - [subregister_l, indirect_hl_register]
               - [subregister_h, indirect_hl_register]
-      - byte_code:
+      - bytecode:
           value: 7
           size: 4
         operands:
@@ -965,7 +965,7 @@ instructions:
                   bytecode:
                     value: 0
                     size: 1
-      - byte_code:
+      - bytecode:
           value: 2040
           size: 11
           endian: big
@@ -976,7 +976,7 @@ instructions:
             list:
               - 8_bit_destination
               - hl_indirect_indexed
-      - byte_code:
+      - bytecode:
           value: 2045
           size: 11
           endian: big
@@ -988,7 +988,7 @@ instructions:
               - hl_indirect_indexed
               - 8_bit_source
   mov2:
-    byte_code:
+    bytecode:
       value: 1021
       size: 10
       endian: big
@@ -1019,7 +1019,7 @@ instructions:
           - [indirect_addr, stack_pointer]
           - [indirect_addr, indirect_addr]
     variants:
-      - byte_code:
+      - bytecode:
           value: 40
           size: 8
         operands:
@@ -1044,7 +1044,7 @@ instructions:
                   argument:
                     size: 16
                     byte_align: true
-      - byte_code:
+      - bytecode:
           value: 41
           size: 8
         operands:
@@ -1075,7 +1075,7 @@ instructions:
                     min: 0
                     size: 8
                     byte_align: true
-      - byte_code:
+      - bytecode:
           value: 42
           size: 8
         operands:
@@ -1106,7 +1106,7 @@ instructions:
                     min: 0
                     size: 8
                     byte_align: true
-      - byte_code:
+      - bytecode:
           value: 43
           size: 8
         operands:
@@ -1139,7 +1139,7 @@ instructions:
                     byte_align: true
   # arithmetic operations
   add:
-    byte_code:
+    bytecode:
       value: 23
       size: 5
     operands:
@@ -1148,7 +1148,7 @@ instructions:
         list:
           - 8_bit_source
   addc:
-    byte_code:
+    bytecode:
       value: 24
       size: 5
     operands:
@@ -1157,7 +1157,7 @@ instructions:
         list:
           - 8_bit_source
   sub:
-    byte_code:
+    bytecode:
       value: 25
       size: 5
     operands:
@@ -1166,7 +1166,7 @@ instructions:
         list:
           - 8_bit_source
   subb:
-    byte_code:
+    bytecode:
       value: 26
       size: 5
     operands:
@@ -1175,7 +1175,7 @@ instructions:
         list:
           - 8_bit_source
   inc:
-    byte_code:
+    bytecode:
       value: 54
       size: 6
     operands:
@@ -1184,7 +1184,7 @@ instructions:
         list:
           - incrementable_destination
   dec:
-    byte_code:
+    bytecode:
       value: 55
       size: 6
     operands:
@@ -1193,7 +1193,7 @@ instructions:
         list:
           - incrementable_destination
   and:
-    byte_code:
+    bytecode:
       value: 28
       size: 5
     operands:
@@ -1204,7 +1204,7 @@ instructions:
         disallowed_pairs:
           - [a_register]
   or:
-    byte_code:
+    bytecode:
       value: 29
       size: 5
     operands:
@@ -1215,7 +1215,7 @@ instructions:
         disallowed_pairs:
           - [a_register]
   xor:
-    byte_code:
+    bytecode:
       value: 30
       size: 5
     operands:
@@ -1226,48 +1226,48 @@ instructions:
         disallowed_pairs:
           - [a_register]
   lsr:
-    byte_code:
+    bytecode:
       value: 248
       size: 8
   lsrc:
     # 9-bit rotate right (including carry)
-    byte_code:
+    bytecode:
       value: 249
       size: 8
   lsl:
-    byte_code:
+    bytecode:
       value: 250
       size: 8
   lslc:
     # 9-bit rotate left (including carry)
-    byte_code:
+    bytecode:
       value: 251
       size: 8
   rotr:
     # 8-bit rotate right (without carry)
-    byte_code:
+    bytecode:
       value: 252
       size: 8
   rotl:
     # 8-bit rotate left (without carry)
-    byte_code:
+    bytecode:
       value: 253
       size: 8
   rot4:
-    byte_code:
+    bytecode:
       value: 254
       size: 8
   lsr4:
-    byte_code:
+    bytecode:
       value: 224
       size: 8
   lsl4:
-    byte_code:
+    bytecode:
       value: 232
       size: 8
   # test and comparison
   tstb:
-    byte_code:
+    bytecode:
       value: 10
       size: 5
     operands:
@@ -1277,7 +1277,7 @@ instructions:
           - 8_bit_source
           - bit_number
     variants:
-      - byte_code:
+      - bytecode:
           value: 22
           size: 6
         operands:
@@ -1286,7 +1286,7 @@ instructions:
             list:
               - hl_indirect_indexed
               - bit_number
-      - byte_code:
+      - bytecode:
           value: 46
           size: 7
         operands:
@@ -1296,7 +1296,7 @@ instructions:
               - hl_subregisters
               - bit_number
   cmp:
-    byte_code:
+    bytecode:
       value: 1023
       size: 10
       endian: big
@@ -1313,7 +1313,7 @@ instructions:
           - [j_register, j_register]
           - [immediate_value, immediate_value]
     variants:
-      - byte_code:
+      - bytecode:
           value: 2044
           size: 11
           endian: big
