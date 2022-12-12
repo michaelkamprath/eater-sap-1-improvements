@@ -1,8 +1,18 @@
 GAL22V10
 speechctl
 
-CLK   MMAP  MDO   MDI   A0    A1    RESET READY INT   NC    NC    GND
-NC    RSAUX IRST  SFRO  DATAR BUSY  SDRO  SDRA  SDRI  WS    RS    VCC
+CLK   MMAP  MDO   MDI   A0      A1      RESET    READY  INT    NC    NC    GND
+OE    NC    NC    BUSY  STATEO  STATUSO STATUSI  DATAA  DATAI  WS    RS    VCC
+
+
+; Memory Map Lines
+;
+;   Function | A1 | A0
+;  ----------+----+----
+;   DATA_IN  |  0 |  0
+;   STATUS   |  0 |  1
+;   STATE    |  1 |  0
+
 
 
 ;
@@ -10,33 +20,37 @@ NC    RSAUX IRST  SFRO  DATAR BUSY  SDRO  SDRA  SDRI  WS    RS    VCC
 ;
 
 ; TMS5220C Controller
+;
+; Write Data for External Speech Data
 
-; RSAUX is used to simplify the "group NOT" encoding
-RSAUX = MMAP * MDO * /MDI * A0 * /A1 * CLK * /READY * /RESET
+/DATAI = MMAP * MDI * /MDO * /A1 * /A0 * /BUSY
 
-/WS =    MMAP * /MDO * MDI * /A0 * /A1 * CLK * /READY * RS * /RESET * /IRST
-       + READY * /WS * RS * /RESET * /IRST
+/WS.R = /DATAI * WS + /WS * READY
 
-/RS =    MMAP * /MDO * MDI * A0 * /A1 * CLK * /READY * WS * RS * /RESET * /IRST
-       + /RS * WS * /RSAUX * /IRST
+/DATAA = /WS * READY
 
-; Register Control
+;
+; TMS5220C Status Fetch Operation
+;
 
-/SDRI =  MMAP * /MDO * MDI * /A0 * /A1 * /READY * /RESET
+/RS.R = MMAP * MDI * /MDO * /A1 * A0 * /BUSY * RS + /RS * READY
 
-/SDRA =  READY * /WS * RS * /RESET
+STATUSI = /READY * /RS * BUSY
 
-/SDRO =   MMAP * MDO * /MDI * A0 * /A1 * /READY * WS * /RESET
+/STATUSO = /BUSY * MMAP * /MDI * MDO * /A1 * A0
 
-/SFRO =   MMAP * MDO * /MDI * /A0 * A1 * /RESET
+;
+; Module Status
+;
 
-; Status
+/STATEO = MMAP * /MDI * MDO * A1 * /A0
 
-BUSY =    READY + /WS + /RS + RESET
+;
+; Speech Module Busy
+;
 
-DATAR =   /READY * WS * /RS * /RESET
+BUSY = /RS + /WS + READY
 
-IRST = MMAP * /MDO * MDI * A0 * /A1 
 
 DESCRIPTION
 
