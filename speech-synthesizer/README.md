@@ -29,7 +29,7 @@ The speech module will have the following memory mapped interfaces:
 |`FETCH_STATUS`|0|1| R/W | Register to initiate fetching and then read the TMS5220 status |
 |`MODULE_STATE`|1|0|R| Register to read the module state |
 
-The following module operations will be supported:
+All of the operations below assume the data registers clock in their value on the rising edge and are not transparent latches.
 
 ### Write Byte to Data Register
 Since this design only supports "speak external" speech operation, writing a byte to the TMS5220 is designed around the timing requirements as specified in the TMS5220 data sheet under "WRITE CYCLE FOR EXTERNAL SPEECH DATA". From the TMS5220's perspective, the sequence of events are:

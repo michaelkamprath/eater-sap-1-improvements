@@ -16,40 +16,60 @@ OE    NC    NC    BUSY  STATEO  STATUSO STATUSI  DATAA  DATAI  WS    RS    VCC
 
 
 ;
-; Pin Logic
+; Pin Logic TMS5220C Controller
 ;
 
-; TMS5220C Controller
 ;
 ; Write Data for External Speech Data
+;
 
-/DATAI = MMAP * MDI * /MDO * /A1 * /A0 * /BUSY
+; clock in the data bus when memory map is appropriate and
+; speech module is not otherwise busy
+DATAI.R = MMAP * MDI * /MDO * /A1 * /A0 * /BUSY
 
-/WS.R = /DATAI * WS + /WS * READY
+; activate WS (active low) on initial data click in and keep
+; active when READY is high. Assumes READY will go high sooner
+; then the next clock cycle after WS activates.
+/WS.R = DATAI * /WS + WS * READY
 
-/DATAA = /WS * READY
+; output data from data register while WS is active and READY is high.
+; When REDY goes low the TMS5220 will have latched in data.
+/DATAA = WS * READY
 
 ;
 ; TMS5220C Status Fetch Operation
 ;
 
-/RS.R = MMAP * MDI * /MDO * /A1 * A0 * /BUSY * RS + /RS * READY
 
-STATUSI = /READY * /RS * BUSY
+; activate RS (active low) when memory map is appropriate and
+; speech module not otherwise busy, and keep active while READY
+; is high. Assumes READY will go high within 1 clock cycle.
+/RS.R = MMAP * MDI * /MDO * /A1 * A0 * /BUSY + RS * READY
 
-/STATUSO = /BUSY * MMAP * /MDI * MDO * /A1 * A0
+; clock in TMS5220 output to status register when READY goes low
+; while RS is active. Assumes READY went high within one clock cycle
+; from RS going active. Assumes TMS5220 data out will remain valid
+; for suffiecent time to be clocked in after RS deactivates.
+STATUSI.R = /READY * RS
+
+; Write status register to data bus when memory map is appropriate
+; and speech module not otherwise busy.
+/STATUSO = MMAP * /MDI * MDO * /A1 * A0 * /BUSY
 
 ;
-; Module Status
+; Module State
 ;
 
+; Write module state to data bus when memory map is appropriate,
 /STATEO = MMAP * /MDI * MDO * A1 * /A0
 
+; Write status register to data bus when memory map is appropriate
+; and speech module not otherwise busy.
 ;
 ; Speech Module Busy
 ;
 
-BUSY = /RS + /WS + READY
+BUSY = RS + WS + READY
 
 
 DESCRIPTION
