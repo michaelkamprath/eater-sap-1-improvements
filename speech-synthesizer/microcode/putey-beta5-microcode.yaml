@@ -711,8 +711,106 @@ instructions:
             equal: 0
           control_lines:
             SCr
-
-
+  JMP_hl_index_a:
+    value: 72
+    steps:
+      1:
+        - control_lines:
+            Ao
+            AOi
+      2:
+        - control_lines:
+            HLa
+            AOa
+            ABo
+            PCi
+      3:
+        - control_lines:
+            HLa
+            AOa
+            HILO
+            ABo
+            PCi
+      4:
+        - control_lines:
+            SCr
+  JMP_hl_index_i:
+    value: 73
+    steps:
+      1:
+        - control_lines:
+            Io
+            AOi
+      2:
+        - control_lines:
+            HLa
+            AOa
+            ABo
+            PCi
+      3:
+        - control_lines:
+            HLa
+            AOa
+            HILO
+            ABo
+            PCi
+      4:
+        - control_lines:
+            SCr
+  JMP_hl_index_j:
+    value: 74
+    steps:
+      1:
+        - control_lines:
+            Jo
+            AOi
+      2:
+        - control_lines:
+            HLa
+            AOa
+            ABo
+            PCi
+      3:
+        - control_lines:
+            HLa
+            AOa
+            HILO
+            ABo
+            PCi
+      4:
+        - control_lines:
+            SCr
+  JMP_hl_index_sp_offset:
+    value: 75
+    steps:
+      1:
+        - control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - control_lines:
+            SPa
+            AOa
+            MDo
+            AOi
+      3:
+        - control_lines:
+            HLa
+            AOa
+            ABo
+            PCi
+      4:
+        - control_lines:
+            HLa
+            AOa
+            HILO
+            ABo
+            PCi
+      5:
+        - control_lines:
+            SCr
   #
   # Move
   #

@@ -1,7 +1,7 @@
 ---
-description: Putey Beta 4 Breadboard Computer
+description: Putey Beta 5 Breadboard Computer
 general:
-  min_version: 0.3.0
+  min_version: 0.3.2
   address_size: 16
   endian: little
   registers:
@@ -356,6 +356,44 @@ operand_sets:
               min: 0
               size: 8
               byte_align: true
+  hl_indexed:
+    operand_values:
+      register_hl:
+        type: indexed_register
+        register: hl
+        bytecode:
+          value: 0
+          size: 0
+        index_operands:
+          register_a:
+            type: register
+            register: a
+            bytecode:
+              value: 0
+              size: 2
+          register_i:
+            type: register
+            register: i
+            bytecode:
+              value: 1
+              size: 2
+          register_j:
+            type: register
+            register: j
+            bytecode:
+              value: 2
+              size: 2
+          indirect_sp:
+            type: indirect_register
+            register: sp
+            bytecode:
+              value: 3
+              size: 2
+            offset:
+              max: 255
+              min: 0
+              size: 8
+              byte_align: true
   bit_number:
     operand_values:
       bit_number:
@@ -586,14 +624,23 @@ instructions:
       size: 8 
   # branching
   jmp:
-    bytecode:
-      value: 19
-      size: 6
-    operands:
-      count: 1
-      operand_sets:
-        list:
-          - address_source
+    variants:
+      - bytecode:
+          value: 19
+          size: 6
+        operands:
+          count: 1
+          operand_sets:
+            list:
+              - address_source
+      - bytecode:
+          value: 18
+          size: 6
+        operands:
+          count: 1
+          operand_sets:
+            list:
+              - hl_indexed
   jc:
     bytecode:
       value: 12
