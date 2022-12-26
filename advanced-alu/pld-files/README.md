@@ -19,11 +19,14 @@ Your TL866II+ may have an older version of firmware that is unable to program th
 
 1. Download Windows Minipro/XGecu Pro application from manufacturer site: [autoelectric.cn](http://www.autoelectric.cn/en/tl866_main.html)
 2. Extract executable from RAR file:
-```
-unrar xgproV1181_setup.rar
+```sh
+unrar x XgproV1220_Setup.rar
 ```
 
-3. Extract the `updateII.dat` file from the executable extracted in step 2. Use the [extract.me](https://extract.me) website to do this.
+3. Extract the `updateII.dat` file from the executable extracted in step 2.
+```sh
+unrar x XgproV1220_Setup.exe
+```
 4. Update the TL866II+ firmware with:
 ```
 minipro -F updateII.dat
