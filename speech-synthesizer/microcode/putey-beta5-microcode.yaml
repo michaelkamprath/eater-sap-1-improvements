@@ -8410,8 +8410,6 @@ instructions:
             ABo
             HILO
             Ti
-            SPe
-            SUB
       6:
         - flags:
             extended: 0

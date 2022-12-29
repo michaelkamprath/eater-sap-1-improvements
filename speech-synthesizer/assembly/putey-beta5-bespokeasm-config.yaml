@@ -615,10 +615,14 @@ instructions:
             list:
               - hl_indirect_indexed
   pushr:
+    # pushes A, I, J, and HL registers onto stack for later restoration
+    # Takes up 5 bytes of stack
     bytecode:
       value: 44
       size: 8    
   popr:
+    # pops 5 bytes of stack into the A, I, J, and HL regsiters. Complements
+    # the pushr instruction.
     bytecode:
       value: 45
       size: 8 
