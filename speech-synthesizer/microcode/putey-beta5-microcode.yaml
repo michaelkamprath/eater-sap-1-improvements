@@ -8024,9 +8024,10 @@ instructions:
             AP1
             MDi
             To
+            SPe
       7:
         - control_lines:
-            SPe
+            SCr
   POP2_no_operands:
     value: 39
     steps:

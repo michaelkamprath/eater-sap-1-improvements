@@ -1318,16 +1318,16 @@ instructions:
       size: 8
   # test and comparison
   tstb:
-    bytecode:
-      value: 10
-      size: 5
-    operands:
-      count: 2
-      operand_sets:
-        list:
-          - 8_bit_source
-          - bit_number
     variants:
+      - bytecode:
+          value: 10
+          size: 5
+        operands:
+          count: 2
+          operand_sets:
+            list:
+              - 8_bit_source
+              - bit_number
       - bytecode:
           value: 22
           size: 6

@@ -39,5 +39,5 @@ _system_init:
 
 .org 0 "application_code"
 _application_start:
-    ; nothing here. Just need a symbl for where to jump to
+    ; nothing here. Just need a symbol for where to jump to
     ; to start application
