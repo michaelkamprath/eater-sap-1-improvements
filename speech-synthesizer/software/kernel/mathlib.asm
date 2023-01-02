@@ -592,21 +592,13 @@ divide8:
 ;       a
 ; 
 divide16:
-    push2 0
-    push2 [sp+(4+2)]                            ; Place Y on stack
-    call cmp16                              ; see if Y is zero
-    pop2
-    je .divide_by_zero                      ; handle divide by zero
-    push2 [sp+(2+2)]                            ; place X on stack
-    call cmp16                              ; see if X is zero
-    pop2
-    pop2
+    mov2 hl,0
+    cmp2 hl,[sp+4]                  ; see if Y is zero
+    je .divide_by_zero              ; handle divide by zero
+    cmp2 hl,[sp+2]                  ; see if X is zero
     je .return_zero                 ; X is zero, answer is zero
-    push2 [sp+2]                     ; right side - dividend
-    push2 [sp+(4+2)]                 ; left side - divisor
-    call cmp16
-    pop2
-    pop2
+    mov2 hl,[sp+4]                  ; divsor
+    cmp2 hl,[sp+2]                  ; compare to dividend
     jo .divisor_too_large           ; divisor larger than dividend
     ; set up working stack
     push 0                          ; init carry bit

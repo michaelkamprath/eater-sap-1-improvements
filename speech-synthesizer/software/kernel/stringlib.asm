@@ -353,13 +353,9 @@ uint16_to_decimal_cstr:
     mov j,0                 ; J is digit counter
 .outer_loop:
     ; first check to see if we are done
-    push2 [sp+0]            ; right side
-    push2 10                ; left side
-    call cmp16              ; see if low byte is < 10
-    pop2
-    pop2
+    mov2 hl,10              ; left sde
+    cmp2 hl,[sp+0]          ; see if low byte is < 10
     jo .last_digit          ; it is. jump to last digit
-
     mov i,16                ; I is divide loop counter
 .div_loop:
     call lsl24              ; shift working stack left 1 bit
