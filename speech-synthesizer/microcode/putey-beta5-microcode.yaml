@@ -12140,5 +12140,202 @@ instructions:
             extended: 1
           control_lines:
             SCr
-
+  CMP2_hl_sp_offset:
+    # XTD Instruction 0xFF25
+    value: 37
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            ABo
+            Ti
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+            SCr
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            Ti
+      5:
+        # consider making this control line set up active in the not equal
+        # case to maintain control lines through the clock
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            SPa
+            AOa
+            AP1
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs             
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr 
+  CMP2_hl_iaddr:
+    # XTD instruction 0xFF26
+    value: 38
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            ABo
+            Ti
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            ARi
+            PCe
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            HILO
+            ARi
+            PCe
+      4:
+        - flags:
+            extended: 1
+          control_lines:
+            ARa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      5:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+            SCr
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            Ti
+      6:
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            ARa
+            AP1
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      7:
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            SCr                    
+  CMP2_hl_const:
+    # XTD instruction 0xFF27
+    value: 39
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            HLa
+            ABo
+            Ti
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      3:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+            PCe
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            HLa
+            HILO
+            ABo
+            Ti
+            PCe
+      4:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+            PCe
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            PCa
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+            PCe            
+      5:
+        - flags:
+            extended: 1
+          control_lines:
+            SCr
 ...

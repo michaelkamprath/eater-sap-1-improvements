@@ -394,6 +394,14 @@ operand_sets:
               min: 0
               size: 8
               byte_align: true
+  hl_only:
+    operand_values:
+      hl_register:
+        type: register
+        register: hl
+        bytecode:
+          value: 0
+          size: 0           
   bit_number:
     operand_values:
       bit_number:
@@ -1374,6 +1382,20 @@ instructions:
             list:
               - hl_indirect_indexed
               - 8_bit_source
+  cmp2:
+    bytecode:
+      value: 8164
+      size: 13
+      endian: big
+    operands:
+      count: 2
+      operand_sets:
+        list:
+          - hl_only
+          - 16_bit_source
+        disallowed_pairs:
+          - [hl_register, hl_register]
+          - [hl_register, indirect_hl_register]
 macros:
   push4:
     - operands:
