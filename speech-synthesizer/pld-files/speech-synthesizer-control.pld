@@ -34,7 +34,7 @@ DATAI.R = MMAP * MDI * /MDO * /A1 * /A0 * /BUSY
 
 ; output data from data register while WS is active and READY is high.
 ; When REDY goes low the TMS5220 will have latched in data.
-/DATAA = WS * READY
+/DATAA = WS
 
 ;
 ; TMS5220C Status Fetch Operation

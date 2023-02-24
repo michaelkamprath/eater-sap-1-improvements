@@ -1383,19 +1383,89 @@ instructions:
               - hl_indirect_indexed
               - 8_bit_source
   cmp2:
-    bytecode:
-      value: 8164
-      size: 13
-      endian: big
-    operands:
-      count: 2
-      operand_sets:
-        list:
-          - hl_only
-          - 16_bit_source
-        disallowed_pairs:
-          - [hl_register, hl_register]
-          - [hl_register, indirect_hl_register]
+    variants:
+      - bytecode:
+          value: 8164
+          size: 13
+          endian: big
+        operands:
+          count: 2
+          operand_sets:
+            list:
+              - hl_only
+              - 16_bit_source
+            disallowed_pairs:
+              - [hl_register, hl_register]
+              - [hl_register, indirect_hl_register]
+      - bytecode:
+          value: 0xFF20
+          size: 16
+          endian: big
+        operands:
+          count: 2
+          specific_operands:
+            stack_pointer:
+              list:
+                sp:
+                  type: indirect_register
+                  register: sp
+                  offset:
+                    max: 255
+                    min: 0
+                    size: 8
+                    byte_align: true
+            indirect_addr:
+              list:
+                iaddr:
+                  type: indirect_numeric
+                  argument:
+                    size: 16
+                    byte_align: true
+      - bytecode:
+          value: 0xFF21
+          size: 16
+          endian: big
+        operands:
+          count: 2
+          specific_operands:
+            stack_pointer:
+              list:
+                sp:
+                  type: indirect_register
+                  register: sp
+                  offset:
+                    max: 255
+                    min: 0
+                    size: 8
+                    byte_align: true
+            immediate_value:
+              list:
+                const:
+                  type: numeric
+                  argument:
+                    size: 16
+                    byte_align: true
+      - bytecode:
+          value: 0xFF24
+          size: 16
+          endian: big
+        operands:
+          count: 2
+          specific_operands:
+            mar_register:
+              list:
+                type: register
+                register: mar
+                bytecode:
+                  value: 0
+                  size: 0
+            immediate_value:
+              list:
+                const:
+                  type: numeric
+                  argument:
+                    size: 16
+                    byte_align: true
 macros:
   push4:
     - operands:

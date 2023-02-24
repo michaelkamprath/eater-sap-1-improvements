@@ -354,7 +354,7 @@ uint16_to_decimal_cstr:
 .outer_loop:
     ; first check to see if we are done
     mov2 hl,10              ; left sde
-    cmp2 hl,[sp+0]          ; see if low byte is < 10
+    cmp2 hl,[sp+0]          ; see if low word is < 10
     jo .last_digit          ; it is. jump to last digit
     mov i,16                ; I is divide loop counter
 .div_loop:
