@@ -31,7 +31,9 @@ class MicroBits_27c4096:
 
     def __or__(self, other):
         mb = MicroBits_27c4096()
+        self._areBitsCompatible(self.left, other.left)
         mb.left = self.left|other.left
+        self._areBitsCompatible(self.right, other.right)
         mb.right = self.right|other.right
         return mb
 
@@ -40,6 +42,20 @@ class MicroBits_27c4096:
         mb.left = self.left&other.left
         mb.right = self.right&other.right
         return mb
+
+    def _areBitsCompatible(self, bits1, bits2):
+        # need to check if both sides have bits in the same
+        # high or low bank of bits (representing the 27HCT238s)
+        # if this is a collision, raise and exception
+        highBank1 = (bits1&int('000000000011111110000000',2))
+        highBank2 = (bits2&int('000000000011111110000000',2))
+        if highBank1 > 0 and highBank2 > 0:
+            raise ValueError('High banks have control line collision')
+        lowBank1 = (bits1&int('000000000000000001111111',2))
+        lowBank2 = (bits2&int('000000000000000001111111',2))
+        if lowBank1 > 0 and lowBank2 > 0:
+            raise ValueError('Low banks have control line collision')
+
 
     def _convertBitsToByteValue(self,bits):
         if bits == 0:

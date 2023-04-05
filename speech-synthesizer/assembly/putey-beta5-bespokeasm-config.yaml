@@ -100,6 +100,12 @@ operand_sets:
         bytecode:
           value: 0
           size: 3
+      flags_register:
+        type: register
+        register: f
+        bytecode:
+          value: 1
+          size: 3
       i_register:
         type: register
         register: i
@@ -587,7 +593,7 @@ instructions:
                     value: 1
                     size: 1
       - bytecode:
-          value: 16321
+          value: 16332
           size: 14
           endian: big
         operands:
@@ -720,6 +726,7 @@ instructions:
           - 8_bit_source
         disallowed_pairs:
           - [a_register, a_register]
+          - [flags_register, flags_register]
           - [i_register, i_register]
           - [j_register, j_register]
           - [stack_pointer, stack_pointer]
@@ -963,7 +970,7 @@ instructions:
               type: indirect_register
               register: mar
               bytecode:
-                value: 0
+                value: 1
                 size: 3
               offset:
                 max: 255
@@ -1748,6 +1755,4 @@ macros:
         - "mov2 [@REG(0)+(@ARG(0))+2],[@REG(1)+(@ARG(1))+2]"
         - "mov2 [@REG(0)+(@ARG(0))+4],[@REG(1)+(@ARG(1))+4]"
         - "mov2 [@REG(0)+(@ARG(0))+6],[@REG(1)+(@ARG(1))+6]"
-
-
 ...
