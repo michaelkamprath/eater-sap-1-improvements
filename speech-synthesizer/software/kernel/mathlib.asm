@@ -673,38 +673,26 @@ divide16:
 ;       a
 ; 
 divide32:
-    push2 0
-    push2 0
-    push2 [sp+(6+2+4)]                      ; Place Y on stack
-    push2 [sp+(6+0+6)]                      ; Place Y on stack
+    push4 0
+    push4 [sp+(6+4)]                        ; Place Y on stack
     call cmp32                              ; see if Y is zero
-    pop2
-    pop2
+    pop4
     je .divide_by_zero                      ; handle divide by zero
-    push2 [sp+(2+2+4)]                      ; place X on stack
-    push2 [sp+(2+0+6)]                      ; place X on stack
+    push4 [sp+(2+4)]                        ; place X on stack
     call cmp32                              ; see if X is zero
-    pop2
-    pop2
-    pop2
-    pop2
+    pop4
+    pop4
     je .return_zero                  ; X is zero, answer is zero
-    push2 [sp+(2+2+0)]               ; right side - dividend
-    push2 [sp+(2+0+2)]
-    push2 [sp+(6+2+4)]               ; left side - divisor
-    push2 [sp+(6+0+6)]
+    push4 [sp+(2+0)]                 ; right side - dividend
+    push4 [sp+(6+4)]                 ; left side - divisor
     call cmp32
-    pop2
-    pop2
-    pop2
-    pop2
+    pop4
+    pop4
     jo .divisor_too_large           ; divisor larger than dividend
     ; set up working stack
     push 0                          ; init carry bit
-    push2 0                         ; init high value
-    push2 0
-    push2 [sp+(2+2+5)]              ; push the value to be divided
-    push2 [sp+(2+0+7)]
+    push4 0                         ; init high value
+    push4 [sp+(2+5)]              ; push the value to be divided
     ; working stack:
     ;   sp+0 : low word  (4 bytes) -> becomes quotient
     ;   sp+4 : high word (4 bytes) -> becomes remainder
