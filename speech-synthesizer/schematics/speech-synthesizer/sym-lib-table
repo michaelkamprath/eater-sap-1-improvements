@@ -1,3 +1,0 @@
-(sym_lib_table
-  (lib (name "common-symbols")(type "KiCad")(uri "${KIPRJMOD}/../../../common-symbols/common-symbols.kicad_sym")(options "")(descr ""))
-)
