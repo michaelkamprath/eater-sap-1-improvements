@@ -275,42 +275,42 @@ uint16_to_binary_cstr:
 uint8_to_binary_cstr:
     mov2 hl,[sp+3]
     tstb [sp+2],7
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],6
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],5
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],4
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],3
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],2
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],1
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],0
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     mov [hl+[sp+5]],0
     mov2 [sp+3],hl
     ret
 ; Set A to character 1 or 0 based on ZF flag
-_fetch_bit_char:
+.fetch_bit_char:
     jz .zerochar
     mov a,0x31
     ret

@@ -197,10 +197,7 @@ lsr16:
     mov a,[sp+3]            ; start with most significant byte
     lsr                     ; shift it right, setting CF if needed
     mov [sp+3],a            ; place shifted value back
-    mov a,[sp+2]            ; now load least significant byte
-    lsrc                    ; shift it right with carry
-    mov [sp+2],a            ; place shifted value back
-    ret                     ; done
+    jmp _lsr16_continued
 
 ; lsr32
 ;   Logical right shift for a 32 bit value
@@ -218,16 +215,7 @@ lsr32:
     mov a,[sp+5]            ; start with most significant byte
     lsr                     ; shift it right, setting CF if needed
     mov [sp+5],a            ; place shifted value back
-    mov a,[sp+4]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+4],a
-    mov a,[sp+3]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+3],a
-    mov a,[sp+2]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+2],a
-    ret                     ; done
+    jmp _lsr32_continued
 
 ; lsr64
 ;   Logical right shift for a 64 bit value
@@ -245,28 +233,7 @@ lsr64:
     mov a,[sp+9]            ; start with most significant byte
     lsr                     ; shift it right, setting CF if needed
     mov [sp+9],a            ; place shifted value back
-    mov a,[sp+8]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+8],a
-    mov a,[sp+7]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+7],a
-    mov a,[sp+6]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+6],a
-    mov a,[sp+5]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+5],a
-    mov a,[sp+4]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+4],a
-    mov a,[sp+3]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+3],a
-    mov a,[sp+2]            ; repeat on next byte with carry
-    lsrc 
-    mov [sp+2],a
-    ret                     ; done
+    jmp _lsr64_continued
 
 ; lsr128
 ;   Logical right shift for a 128 bit value
@@ -308,6 +275,7 @@ lsr128:
     mov a,[sp+9]             ; repeat on next byte with carry
     lsrc
     mov [sp+9],a
+_lsr64_continued:
     mov a,[sp+8]             ; repeat on next byte with carry
     lsrc
     mov [sp+8],a
@@ -320,12 +288,14 @@ lsr128:
     mov a,[sp+5]             ; repeat on next byte with carry
     lsrc
     mov [sp+5],a
+_lsr32_continued:
     mov a,[sp+4]             ; repeat on next byte with carry
     lsrc
     mov [sp+4],a
     mov a,[sp+3]             ; repeat on next byte with carry
     lsrc
     mov [sp+3],a
+_lsr16_continued:
     mov a,[sp+2]             ; repeat on next byte with carry
     lsrc
     mov [sp+2],a
