@@ -592,26 +592,18 @@ divide8:
 ;       a
 ; 
 divide16:
-    push2 0
-    push2 [sp+(4+2)]                            ; Place Y on stack
-    call cmp16                              ; see if Y is zero
-    pop2
-    je .divide_by_zero                      ; handle divide by zero
-    push2 [sp+(2+2)]                            ; place X on stack
-    call cmp16                              ; see if X is zero
-    pop2
-    pop2
+    mov2 hl,0
+    cmp2 hl,[sp+4]
+    je .divide_by_zero              ; handle divide by zero
+    cmp2 hl,[sp+(2+2)]              ; see if X is zero
     je .return_zero                 ; X is zero, answer is zero
-    push2 [sp+2]                     ; right side - dividend
-    push2 [sp+(4+2)]                 ; left side - divisor
-    call cmp16
-    pop2
-    pop2
+    mov2 hl,[sp+4]                  ; left side - divisor
+    cmp2 hl,[sp+2]                  ; right side - dividend
     jo .divisor_too_large           ; divisor larger than dividend
     ; set up working stack
     push 0                          ; init carry bit
     push2 0                         ; init high value
-    push2 [sp+(2+3)]                ; p[ush the value to be divided
+    push2 [sp+(2+3)]                ; push the value to be divided
     ; working stack:
     ;   sp+0 : low word  (2 bytes) -> becomes quotient
     ;   sp+2 : high word (2 bytes) -> becomes remainder
@@ -658,7 +650,6 @@ divide16:
     mov2 [sp+2],0
     ret
 .divide_by_zero:                            ; for now, just return 0
-    pop2
     mov2 [sp+4],0                           ; set remainder to 0
 .return_zero:
     mov2 [sp+2],0                           ; set quotient to 0
@@ -681,32 +672,29 @@ divide16:
 ;       a
 ; 
 divide32:
-    push2 0
-    push2 0
-    push2 [sp+(6+2+4)]                      ; Place Y on stack
-    push2 [sp+(6+0+6)]                      ; Place Y on stack
-    call cmp32                              ; see if Y is zero
-    pop2
-    pop2
-    je .divide_by_zero                      ; handle divide by zero
-    push2 [sp+(2+2+4)]                      ; place X on stack
-    push2 [sp+(2+0+6)]                      ; place X on stack
-    call cmp32                              ; see if X is zero
-    pop2
-    pop2
-    pop2
-    pop2
+    ; check for divide by zero ( is zero)
+    mov2 hl,0
+    cmp2 hl,[sp+6+2]
+    jne .compareXtozero
+    cmp2 hl,[sp+6+0]
+    je .divide_by_zero
+.compareXtozero:
+    ; check for dividing zero (Y is zero)
+    cmp2 hl,[sp+2+2]
+    jne .comparXtoY
+    cmp2 hl,[sp+2+0]
     je .return_zero                  ; X is zero, answer is zero
-    push2 [sp+(2+2+0)]               ; right side - dividend
-    push2 [sp+(2+0+2)]
-    push2 [sp+(6+2+4)]               ; left side - divisor
-    push2 [sp+(6+0+6)]
-    call cmp32
-    pop2
-    pop2
-    pop2
-    pop2
+.comparXtoY:
+    ; right side - dividend X
+    ; left side - divisor Y
+    mov2 hl,[sp+6+2]
+    cmp2 hl,[sp+2+2]
     jo .divisor_too_large           ; divisor larger than dividend
+    jne .set_up_for_division        ; not equal, so no need to check low word
+    mov2 hl,[sp+6+0]
+    cmp2 hl,[sp+2+0]
+    jo .divisor_too_large           ; divisor larger than dividend
+.set_up_for_division:
     ; set up working stack
     push 0                          ; init carry bit
     push2 0                         ; init high value
