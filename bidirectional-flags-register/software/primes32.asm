@@ -73,20 +73,33 @@ start:
 ;
 is_prime32:
 	; first check if N is 2 or 3
-	; if high word is not 0, then it is also not 2 or 3
-	mov2 hl,[sp+(2+2+0)]
-	cmp2 hl,0
+	; if high word is not 0, then not 2 or 3
+	push2 [sp+(2+2+0)]
+	push2 0
+	call cmp16
+	pop2
+	pop2
 	jne .modulo_two
-	; now check low word
-	mov2 hl,[sp+(2+0+0)]
 	; check 2
-	cmp2 hl,2
+	push2 [sp+(2+0+0)]
+	push2 2
+	call cmp16
+	pop2
+	pop2
 	je .is_prime
 	; check 3
-	cmp2 hl,3
+	push2 [sp+(2+0+0)]
+	push2 3
+	call cmp16
+	pop2
+	pop2
 	je .is_prime
 	; check <= 1
-	cmp2 hl,1
+	push2 [sp+(2+0+0)]
+	push2 1
+	call cmp16
+	pop2
+	pop2
 	je .is_not_prime
 	jo .is_not_prime
 .modulo_two:

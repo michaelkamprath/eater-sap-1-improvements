@@ -12449,6 +12449,8 @@ instructions:
   # CMP2_hl_indirect_mar_o:
   CMP2_hl_sp_offset:
     # XTD Instruction 0xFF25
+    # TODO - FIX this and other CMP2 instructions. The high byte should be compared first
+    # for the overflow flag to be correct. $00FF is not larger than $FF00
     value: 37
     steps:
       1:

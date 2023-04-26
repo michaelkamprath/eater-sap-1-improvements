@@ -197,7 +197,10 @@ lsr16:
     mov a,[sp+3]            ; start with most significant byte
     lsr                     ; shift it right, setting CF if needed
     mov [sp+3],a            ; place shifted value back
-    jmp _lsr16_continued
+    mov a,[sp+2]            ; now load least significant byte
+    lsrc                    ; shift it right with carry
+    mov [sp+2],a            ; place shifted value back
+    ret                     ; done
 
 ; lsr32
 ;   Logical right shift for a 32 bit value
@@ -215,7 +218,16 @@ lsr32:
     mov a,[sp+5]            ; start with most significant byte
     lsr                     ; shift it right, setting CF if needed
     mov [sp+5],a            ; place shifted value back
-    jmp _lsr32_continued
+    mov a,[sp+4]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+4],a
+    mov a,[sp+3]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+3],a
+    mov a,[sp+2]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+2],a
+    ret                     ; done
 
 ; lsr64
 ;   Logical right shift for a 64 bit value
@@ -233,7 +245,28 @@ lsr64:
     mov a,[sp+9]            ; start with most significant byte
     lsr                     ; shift it right, setting CF if needed
     mov [sp+9],a            ; place shifted value back
-    jmp _lsr64_continued
+    mov a,[sp+8]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+8],a
+    mov a,[sp+7]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+7],a
+    mov a,[sp+6]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+6],a
+    mov a,[sp+5]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+5],a
+    mov a,[sp+4]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+4],a
+    mov a,[sp+3]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+3],a
+    mov a,[sp+2]            ; repeat on next byte with carry
+    lsrc 
+    mov [sp+2],a
+    ret                     ; done
 
 ; lsr128
 ;   Logical right shift for a 128 bit value
@@ -275,7 +308,6 @@ lsr128:
     mov a,[sp+9]             ; repeat on next byte with carry
     lsrc
     mov [sp+9],a
-_lsr64_continued:
     mov a,[sp+8]             ; repeat on next byte with carry
     lsrc
     mov [sp+8],a
@@ -288,14 +320,12 @@ _lsr64_continued:
     mov a,[sp+5]             ; repeat on next byte with carry
     lsrc
     mov [sp+5],a
-_lsr32_continued:
     mov a,[sp+4]             ; repeat on next byte with carry
     lsrc
     mov [sp+4],a
     mov a,[sp+3]             ; repeat on next byte with carry
     lsrc
     mov [sp+3],a
-_lsr16_continued:
     mov a,[sp+2]             ; repeat on next byte with carry
     lsrc
     mov [sp+2],a
@@ -562,13 +592,21 @@ divide8:
 ;       a
 ; 
 divide16:
-    mov2 hl,0
-    cmp2 hl,[sp+4]                  ; see if Y is zero
-    je .divide_by_zero              ; handle divide by zero
-    cmp2 hl,[sp+2]                  ; see if X is zero
+    push2 0
+    push2 [sp+(4+2)]                            ; Place Y on stack
+    call cmp16                              ; see if Y is zero
+    pop2
+    je .divide_by_zero                      ; handle divide by zero
+    push2 [sp+(2+2)]                            ; place X on stack
+    call cmp16                              ; see if X is zero
+    pop2
+    pop2
     je .return_zero                 ; X is zero, answer is zero
-    mov2 hl,[sp+4]                  ; divsor
-    cmp2 hl,[sp+2]                  ; compare to dividend
+    push2 [sp+2]                     ; right side - dividend
+    push2 [sp+(4+2)]                 ; left side - divisor
+    call cmp16
+    pop2
+    pop2
     jo .divisor_too_large           ; divisor larger than dividend
     ; set up working stack
     push 0                          ; init carry bit
@@ -643,26 +681,38 @@ divide16:
 ;       a
 ; 
 divide32:
-    push4 0
-    push4 [sp+(6+4)]                        ; Place Y on stack
+    push2 0
+    push2 0
+    push2 [sp+(6+2+4)]                      ; Place Y on stack
+    push2 [sp+(6+0+6)]                      ; Place Y on stack
     call cmp32                              ; see if Y is zero
-    pop4
+    pop2
+    pop2
     je .divide_by_zero                      ; handle divide by zero
-    push4 [sp+(2+4)]                        ; place X on stack
+    push2 [sp+(2+2+4)]                      ; place X on stack
+    push2 [sp+(2+0+6)]                      ; place X on stack
     call cmp32                              ; see if X is zero
-    pop4
-    pop4
+    pop2
+    pop2
+    pop2
+    pop2
     je .return_zero                  ; X is zero, answer is zero
-    push4 [sp+(2+0)]                 ; right side - dividend
-    push4 [sp+(6+4)]                 ; left side - divisor
+    push2 [sp+(2+2+0)]               ; right side - dividend
+    push2 [sp+(2+0+2)]
+    push2 [sp+(6+2+4)]               ; left side - divisor
+    push2 [sp+(6+0+6)]
     call cmp32
-    pop4
-    pop4
+    pop2
+    pop2
+    pop2
+    pop2
     jo .divisor_too_large           ; divisor larger than dividend
     ; set up working stack
     push 0                          ; init carry bit
-    push4 0                         ; init high value
-    push4 [sp+(2+5)]              ; push the value to be divided
+    push2 0                         ; init high value
+    push2 0
+    push2 [sp+(2+2+5)]              ; push the value to be divided
+    push2 [sp+(2+0+7)]
     ; working stack:
     ;   sp+0 : low word  (4 bytes) -> becomes quotient
     ;   sp+4 : high word (4 bytes) -> becomes remainder
