@@ -353,12 +353,11 @@ uint16_to_decimal_cstr:
     mov j,0                 ; J is digit counter
 .outer_loop:
     ; first check to see if we are done
-    push2 [sp+0]            ; right side
-    push2 10                ; left side
-    call cmp16              ; see if low byte is < 10
-    pop2
-    pop2
+    cmp [sp+1],0
+    jne .div_loop_start
+    cmp 10,[sp+0]
     jo .last_digit          ; it is. jump to last digit
+.div_loop_start:
     mov i,16                ; I is divide loop counter
 .div_loop:
     call lsl24              ; shift working stack left 1 bit
@@ -448,21 +447,17 @@ uint16_to_decimal_cstr:
 ;       updates sp+8 top the character length of the decimal string
 ;       resets sp+6 to the buffer address that the null char was written to
 ; 
-_uin632_to_decimal_cmp_10_to_ws:
-    cmp 0,[sp+5]
+_uint32_to_decimal_cmp_10_to_ws:
+    cmp2 [sp+4],0
     jne .end
-    cmp 0,[sp+4]
-    jne .end
-    cmp 0,[sp+3]
+    cmp [sp+3],0
     jne .end
     cmp 10,[sp+2]
 .end:
     ret
 
 uint32_to_decimal_cstr:
-    cmp 0,[sp+5]
-    jne .start
-    cmp 0,[sp+4]
+    cmp2 [sp+4],0
     jne .start
     ; if we are here, this value would more quickly be
     ; converted with uint16_to_decimal_cstr
@@ -495,7 +490,7 @@ uint32_to_decimal_cstr:
     mov j,0                 ; J is digit counter
 .outer_loop:
     ; first check to see if we are done
-    call _uin632_to_decimal_cmp_10_to_ws
+    call _uint32_to_decimal_cmp_10_to_ws
     jo .last_digit          ; it is. jump to last digit
 .outer_loop_continue:
     mov i,32                ; I is divide loop counter
@@ -588,32 +583,22 @@ uint32_to_decimal_cstr:
 ;       resets sp+10 to the buffer address that the null char was written to
 ; 
 _uin64_to_decimal_cmp_10_to_ws:
-    cmp 0,[sp+9]
+    cmp2 [sp+8],0
     jne .end
-    cmp 0,[sp+8]
+    cmp2 [sp+6],0
     jne .end
-    cmp 0,[sp+7]
+    cmp2 [sp+4],0
     jne .end
-    cmp 0,[sp+6]
-    jne .end
-    cmp 0,[sp+5]
-    jne .end
-    cmp 0,[sp+4]
-    jne .end
-    cmp 0,[sp+3]
+    cmp [sp+3],0
     jne .end
     cmp 10,[sp+2]
 .end:
     ret
 
 uint64_to_decimal_cstr:
-    cmp 0,[sp+9]
+    cmp2 [sp+8],0
     jne .start
-    cmp 0,[sp+8]
-    jne .start
-    cmp 0,[sp+7]
-    jne .start
-    cmp 0,[sp+6]
+    cmp2 [sp+6],0
     jne .start
     ; if we are here, this value would more quickly be
     ; converted with uint32_to_decimal_cstr

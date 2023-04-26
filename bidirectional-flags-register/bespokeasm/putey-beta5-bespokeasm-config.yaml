@@ -1411,7 +1411,7 @@ instructions:
         operands:
           count: 2
           specific_operands:
-            stack_pointer:
+            stack_pointer_iaddr:
               list:
                 sp:
                   type: indirect_register
@@ -1421,9 +1421,7 @@ instructions:
                     min: 0
                     size: 8
                     byte_align: true
-            indirect_addr:
-              list:
-                iaddr:
+                indirect_addr:
                   type: indirect_numeric
                   argument:
                     size: 16
@@ -1435,7 +1433,7 @@ instructions:
         operands:
           count: 2
           specific_operands:
-            stack_pointer:
+            stack_pointer_const:
               list:
                 sp:
                   type: indirect_register
@@ -1445,9 +1443,7 @@ instructions:
                     min: 0
                     size: 8
                     byte_align: true
-            immediate_value:
-              list:
-                const:
+                immediate_value:
                   type: numeric
                   argument:
                     size: 16
@@ -1459,7 +1455,7 @@ instructions:
         operands:
           count: 2
           specific_operands:
-            mar_register:
+            mar_register_const:
               list:
                 mar_reg:
                   type: register
@@ -1467,9 +1463,7 @@ instructions:
                   bytecode:
                     value: 0
                     size: 0
-            immediate_value:
-              list:
-                const:
+                immediate_value:
                   type: numeric
                   argument:
                     size: 16
