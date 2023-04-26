@@ -292,12 +292,12 @@ lcd_send_buffer_row:
     push i
     push2 hl
 .start:
-    push [sp+2]
+    push [sp+2+3]
     call _lcd_set_hl_to_row_ptr
     pop
 .send_row:
     push 0                                  ; column 0
-    push [sp+(2+1)]                         ; pass row
+    push [sp+(2+1+3)]                         ; pass row
     call lcd_set_cursor_to_row_column
     pop
     pop
@@ -327,9 +327,9 @@ _lcd_set_hl_to_row_ptr:
     push a                      ; save A
     ; use a jump table to got to the right row instruction
     mov2 hl,.jump_table
-    mov a,[sp+2]
-    add [sp+2]
-    add [sp+2]              ; three bytes to each hump table entry
+    mov a,[sp+2+1]
+    add [sp+2+1]
+    add [sp+2+1]              ; three bytes to each hump table entry
     jmp hl+a
     ; jump table
 .jump_table:
@@ -369,9 +369,9 @@ lcd_set_cursor_to_row_column:
     call lcd_wait_busy
     ; use a jump table to got to the right row instruction
     mov2 hl,.jump_table
-    mov a,[sp+2]
-    add [sp+2]
-    add [sp+2]              ; three bytes to each hump table entry
+    mov a,[sp+2+3]
+    add [sp+2+3]
+    add [sp+2+3]              ; three bytes to each hump table entry
     jmp hl+a
     ; jump table
 .jump_table:
@@ -392,7 +392,7 @@ lcd_set_cursor_to_row_column:
 .row3:
     mov a, (_CMD_DDRAM_ADDR|$54)
 .set_cursor:
-    add [sp+3]
+    add [sp+3+3]
     mov [LCD_INSTRUCTION_REG], a
     pop a                           ; restore A
     pop2 hl                          ; restore hl
@@ -416,9 +416,9 @@ lcd_set_cursor_at_row_end:
     mov2 hl,.jump_table
     cmp a,3
     jo .end
-    mov a,[sp+2]
-    add [sp+2]
-    add [sp+2]              ; three bytes to each hump table entry
+    mov a,[sp+2+3]
+    add [sp+2+3]
+    add [sp+2+3]              ; three bytes to each hump table entry
     jmp hl+a
     ; jump table
 .jump_table:
