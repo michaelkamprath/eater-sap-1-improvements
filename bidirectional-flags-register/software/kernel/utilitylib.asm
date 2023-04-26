@@ -61,11 +61,11 @@ delay16:
 ; Registers used:
 ;    a
 cmp16:
-    ; first check high bytes
-    cmp [sp+3],[sp+5]
-    jne .done
-    cmp [sp+2],[sp+4]
+    push2 hl
+    mov2 hl,[sp+2+2]
+    cmp2 hl,[sp+4+2]
 .done:
+    pop2 hl
     ret
 
 
@@ -82,13 +82,13 @@ cmp16:
 ; Registers used:
 ;    a
 cmp32:
+    push2 hl
     ; first check high bytes
-    cmp [sp+5],[sp+9]
+    mov2 hl,[sp+2+2+2]
+    cmp2 hl,[sp+6+2+2]
     jne .done
-    cmp [sp+4],[sp+8]
-    jne .done
-    cmp [sp+3],[sp+7]
-    jne .done
-    cmp [sp+2],[sp+6]
+    mov2 hl,[sp+2+0+2]
+    cmp2 hl,[sp+6+0+2]
 .done:
+    pop2 hl
     ret
