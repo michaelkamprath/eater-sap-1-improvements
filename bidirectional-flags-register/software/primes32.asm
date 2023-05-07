@@ -74,34 +74,18 @@ start:
 is_prime32:
 	; first check if N is 2 or 3
 	; if high word is not 0, then not 2 or 3
-	push2 [sp+(2+2+0)]
-	push2 0
-	call cmp16
-	pop2
-	pop2
+	cmp2 [sp+2+2],0
 	jne .modulo_two
 	; check 2
-	push2 [sp+(2+0+0)]
-	push2 2
-	call cmp16
-	pop2
-	pop2
+	cmp2 [sp+2+0],2
 	je .is_prime
 	; check 3
-	push2 [sp+(2+0+0)]
-	push2 3
-	call cmp16
-	pop2
-	pop2
+	cmp2 [sp+2+0],3
 	je .is_prime
 	; check <= 1
-	push2 [sp+(2+0+0)]
-	push2 1
-	call cmp16
-	pop2
-	pop2
-	je .is_not_prime
-	jo .is_not_prime
+	cmp2 [sp+2+0],1
+	jo .modulo_two
+	jmp .is_not_prime	; the value is 0 or 1
 .modulo_two:
 	; check to see if a power of two
 	tstb [sp+2],0
@@ -130,13 +114,9 @@ is_prime32:
 	; high 4 bytes of result should be 0 since we are only doing 32 bit N
 	; If these byes are non-zero, then we know I*I > N and we are done with
 	; this loop.
-	cmp [sp+7],0
+	cmp2 [sp+6],0
 	jne .iteration_loop_done
-	cmp [sp+6],0
-	jne .iteration_loop_done
-	cmp [sp+5],0
-	jne .iteration_loop_done
-	cmp [sp+4],0
+	cmp2 [sp+4],0
 	jne .iteration_loop_done
 	; now compare low 4 bytes opf result to N
 	; reuse the verified 0-value high word of multiplication results

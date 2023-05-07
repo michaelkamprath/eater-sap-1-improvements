@@ -14,18 +14,17 @@
 ;   returns:
 ;       nothing
 ;
-;   registers used:
-;       a
-;       i
 ;
 delay8:
-    mov i, [sp+2]
+    push i
+    mov i, [sp+2+1]
     cmp i,0
     je .end
 .loop:
     dec i
     jnz .loop
 .end:
+    pop i
     ret
 
 
@@ -38,33 +37,13 @@ delay8:
 ;   returns:
 ;       nothing
 ;
-;   registers used:
-;       hl
 delay16:
-    mov2 hl, [sp+2]
+    push2 hl
+    mov2 hl, [sp+2+2]
 .loop:
     dec hl
     jnz .loop
 .end:
-    ret
-
-; cmp16
-;   Compares two 16-bit values, and sets OF (left > right) or EF (left == right) flags
-;
-;   Arguments
-;       sp+2 : left value (2 bytes)
-;       sp+4 : right value (2 bytes)
-;
-;   Returns
-;       Nothing
-;
-; Registers used:
-;    a
-cmp16:
-    push2 hl
-    mov2 hl,[sp+2+2]
-    cmp2 hl,[sp+4+2]
-.done:
     pop2 hl
     ret
 
@@ -79,8 +58,6 @@ cmp16:
 ;   Returns
 ;       Nothing
 ;
-; Registers used:
-;    a
 cmp32:
     push2 hl
     ; first check high bytes
