@@ -12772,7 +12772,7 @@ instructions:
             extended: 1
             equal: 0
           control_lines:
-            PCe
+            # no action
         - flags:
             extended: 1
             equal: 1
@@ -12786,7 +12786,7 @@ instructions:
             extended: 1
             equal: 0
           control_lines:
-            PCe
+            # no action
         - flags:
             extended: 1
             equal: 1
@@ -12798,13 +12798,7 @@ instructions:
             S2
             S3
             CMPs
-            PCe
       6:
-        - flags:
-            extended: 1
-            equal: 0
-          control_lines:
-            SCr
         - flags:
             extended: 1
           control_lines:
@@ -12813,7 +12807,7 @@ instructions:
         - flags:
             extended: 1
           control_lines:
-            SCr
+            PCe
   CMP2_mar_const:
     value: 0x24
     steps:
