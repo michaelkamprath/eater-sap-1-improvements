@@ -2,15 +2,15 @@
 #include "kernel.asm"
 
 BUFFER_SIZE = 21
-DELAY_COUNTER = $1000
+DELAY_COUNTER = $FFFF
 
 ; the goal of this program is to demonstrate the F (flags) register being able to be
 ; restored. It will do these steps:
 ;   1. clear flags register, and print its current content
-;   2. do some math that causes a carry, and then print flags register conent
-;   3. push flags register to stack, then clear flags egister contents and print that.
+;   2. do some math that causes a carry, and then print flags register content
+;   3. push flags register to stack, then clear flags register contents and print that.
 ;   4. pop flag register value from after step 2 and print that.
-;   5. set flag regiser so that only the equal flag (EF) is set, and demonstrate branching off that.
+;   5. set flag register so that only the equal flag (EF) is set, and demonstrate branching off that.
 ;   6. Success!
 
 .org 0 "application_code"
@@ -97,8 +97,8 @@ print_flag_bits:
     pop i                   ; restore F state to I
     pop2
     pop
-    push i                  ; save F state into I again
-    push2 uint8_to_binary_cstr
+    push i                  ; save F state in I to stack again
+    push2 str_buffer1
     call lcd_print_line_cstr
     pop2
 .done:

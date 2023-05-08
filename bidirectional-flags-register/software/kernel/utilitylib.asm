@@ -16,8 +16,9 @@
 ;
 ;
 delay8:
+    push f
     push i
-    mov i, [sp+2+1]
+    mov i, [sp+2+2]
     cmp i,0
     je .end
 .loop:
@@ -25,6 +26,7 @@ delay8:
     jnz .loop
 .end:
     pop i
+    pop f
     ret
 
 
@@ -38,13 +40,15 @@ delay8:
 ;       nothing
 ;
 delay16:
+    push f
     push2 hl
-    mov2 hl, [sp+2+2]
+    mov2 hl, [sp+2+3]
 .loop:
     dec hl
     jnz .loop
 .end:
     pop2 hl
+    pop f
     ret
 
 

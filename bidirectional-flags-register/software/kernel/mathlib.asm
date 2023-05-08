@@ -592,10 +592,9 @@ divide8:
 ;       a
 ; 
 divide16:
-    mov2 hl,0
-    cmp2 hl,[sp+4]
+    cmp2 0,[sp+4]                   ; see if Y is zero
     je .divide_by_zero              ; handle divide by zero
-    cmp2 hl,[sp+(2+2)]              ; see if X is zero
+    cmp2 0,[sp+2]                   ; see if X is zero
     je .return_zero                 ; X is zero, answer is zero
     mov2 hl,[sp+4]                  ; left side - divisor
     cmp2 hl,[sp+2]                  ; right side - dividend
@@ -673,7 +672,7 @@ divide16:
 ; 
 divide32:
     ; check for divide by zero ( is zero)
-    mov2 hl,0
+    mov2 hl,0                       ; using HL to compare 0 rather than immediate for efficiency
     cmp2 hl,[sp+6+2]
     jne .compareXtozero
     cmp2 hl,[sp+6+0]

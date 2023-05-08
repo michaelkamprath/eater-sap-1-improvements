@@ -220,13 +220,13 @@ uint16_to_hex_cstr:
 ;   Returns
 ;       nothing, but does write to passed buffer
 uint8_to_hex_cstr:
-    mov2 hl, _numrical_digits_table         ; set HL to address of look up table
+    mov2 hl, _numerical_digits_table         ; set HL to address of look up table
     mov a, [sp+2]                           ; place uint8 value in A
     lsr4                                    ; move upper nibble to lower nibble
     mov a, [hl+a]                           ; copy character value into A
     mov2 hl, [sp+3]                         ; place buffer address into HL
     mov [hl+[sp+5]], a                      ; write first character to buffer
-    mov2 hl, _numrical_digits_table         ; set HL to address of look up table
+    mov2 hl, _numerical_digits_table         ; set HL to address of look up table
     mov a, [sp+2]                           ; place uint8 value in A
     and %00001111                           ; mask out lower nibble
     mov a, [hl+a]                           ; copy second character value into A
@@ -312,10 +312,10 @@ uint8_to_binary_cstr:
 ; Set A to character 1 or 0 based on ZF flag
 .fetch_bit_char:
     jz .zerochar
-    mov a,0x31
+    mov a,'1'
     ret
 .zerochar:
-    mov a,0x30
+    mov a,'0'
     ret
 
 
@@ -380,7 +380,7 @@ uint16_to_decimal_cstr:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+2],9
     jo .error_remainder_too_large
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+2]]       ; get character of remainder
     mov2 hl,[sp+(4+4)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -397,7 +397,7 @@ uint16_to_decimal_cstr:
     je .err_buffer_size
     jmp .outer_loop         ; do next character
 .last_digit:
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+0]]       ; get character of remainder
     mov2 hl,[sp+(4+4)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -515,7 +515,7 @@ uint32_to_decimal_cstr:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+4],9
     jo .error_remainder_too_large
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+4]]       ; get character of remainder
     mov2 hl,[sp+(6+6)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -532,7 +532,7 @@ uint32_to_decimal_cstr:
     je .err_buffer_size
     jmp .outer_loop         ; do next character
 .last_digit:
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+0]]       ; get character of remainder
     mov2 hl,[sp+(6+6)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -660,7 +660,7 @@ uint64_to_decimal_cstr:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+8],9
     jo .error_remainder_too_large
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+8]]       ; get character of remainder
     mov2 hl,[sp+(10+10)]    ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -677,7 +677,7 @@ uint64_to_decimal_cstr:
     je .err_buffer_size
     jmp .outer_loop         ; do next character
 .last_digit:
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+0]]       ; get character of remainder
     mov2 hl,[sp+(10+10)]    ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -717,7 +717,7 @@ uint64_to_decimal_cstr:
 ;
 ; String Lib Data
 ;
-_numrical_digits_table:
+_numerical_digits_table:
     .byte "0123456789ABCDEF"
 
 _error_buffer_small:
