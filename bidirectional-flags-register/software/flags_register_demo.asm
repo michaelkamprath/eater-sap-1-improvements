@@ -67,11 +67,11 @@ start:
     call delay16
     pop2
     mov f,EQUALS_FLAG
-    je .branch_on_equals:
+    je .branch_on_equals
     push2 step5_not_equals_message
     jmp .end
 .branch_on_equals:
-    push2 step5_equals_message:
+    push2 step5_equals_message
 .end:
     call lcd_print_line_cstr
     pop2

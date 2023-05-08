@@ -1676,6 +1676,42 @@ macros:
       instructions:
         - "mov2 [@REG(0)+(@ARG(0))+0],[@REG(1)+(@ARG(1))+0]"
         - "mov2 [@REG(0)+(@ARG(0))+2],[@REG(1)+(@ARG(1))+2]"
+    - operands:
+        count: 2
+        specific_operands:
+          indirect_sp_o_const:
+            list:
+              sp:
+                type: indirect_register
+                register: sp
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+              uint32:
+                type: numeric
+                argument:
+                  size: 32
+                  byte_align: true
+          indirect_hl_o_const:
+            list:
+              stack_pointer:
+                type: indirect_register
+                register: hl
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+              uint32:
+                type: numeric
+                argument:
+                  size: 32
+                  byte_align: true
+      instructions:
+        - "mov2 [@REG(0)+(@ARG(0))+0],((@ARG(1)&0xFFFF))"
+        - "mov2 [@REG(0)+(@ARG(0))+2],((@ARG(1)&0xFFFF0000) >> 16)"
   mov8:
     - operands:
         count: 2

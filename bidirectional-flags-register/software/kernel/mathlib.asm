@@ -696,10 +696,8 @@ divide32:
 .set_up_for_division:
     ; set up working stack
     push 0                          ; init carry bit
-    push2 0                         ; init high value
-    push2 0
-    push2 [sp+(2+2+5)]              ; push the value to be divided
-    push2 [sp+(2+0+7)]
+    push4 0                         ; init high value
+    push4 [sp+(2+5)]                ; push the value to be divided
     ; working stack:
     ;   sp+0 : low word  (4 bytes) -> becomes quotient
     ;   sp+4 : high word (4 bytes) -> becomes remainder
@@ -711,25 +709,19 @@ divide32:
     or [sp+8]                       ; or the carry bit with the low working byte
     mov [sp+0],a                    ; replace the updated low working byte
     mov [sp+8],0                    ; reset carry bit
-     ; attempt substraction
-    push2 [sp+(6+2+9)]              ; right side - divisor
-    push2 [sp+(6+0+11)]
-    push2 [sp+(4+2+4)]              ; left side - current working high word
-    push2 [sp+(4+0+6)]
+    ; attempt substraction
+    push4 [sp+6+9]                  ; right side - divisor
+    push4 [sp+4+4]                  ; left side - current working high word
     call subtract32
     jc .div_loop_subtraction        ; if carry is set, that means divsor was smaller, no borrow needed
     ; a borrow was needed, so divisor was larger. don't save and do continue
-    pop2
-    pop2
-    pop2
-    pop2
+    pop4
+    pop4
     jmp .div_loop_continue
 .div_loop_subtraction:
     ; save subtraction results to high word and set carry bit
-    pop2 [sp+(4+0+8)]
-    pop2 [sp+(4+2+6)]
-    pop2
-    pop2
+    pop4 [sp+(4+8)]
+    pop4
     mov [sp+8],1
 .div_loop_continue:
     dec i
@@ -737,33 +729,25 @@ divide32:
 .division_done:
     ; at this point we have the remainder in the low word
     ; and then we let shift one more time to get the quotient
-    mov2 [sp+(6+0+9)],[sp+(4+0)]
-    mov2 [sp+(6+2+9)],[sp+(4+2)]
+    mov4 [sp+(6+9)],[sp+(4+0)]
     call lsl64
     mov a,[sp+0]                    ; place carry bit in a
     or [sp+8]                       ; or the carry bit with the low working byte
     mov [sp+0],a                    ; replace the updated low working byte
-    pop2 [sp+(2+0+9)]
-    pop2 [sp+(2+2+7)]
-    pop2
-    pop2
+    pop4 [sp+(2+9)]
+    pop4
     pop
     ret
 .divisor_too_large:
     ; quotient = 0, remander = dividend
-    mov2 [sp+(6+0)],[sp+(2+0)]
-    mov2 [sp+(6+2)],[sp+(2+2)]
-    mov2 [sp+(2+0)],0
-    mov2 [sp+(2+2)],0
+    mov4 [sp+(6+0)],[sp+(2+0)]
+    mov4 [sp+(2+0)],0
     ret
 .divide_by_zero:                            ; for now, just return 0
-    pop2
-    pop2
-    mov2 [sp+(6+0)],0                       ; set remainder to 0
-    mov2 [sp+(6+2)],0
+    pop4
+    mov4 [sp+(6+0)],0                       ; set remainder to 0
 .return_zero:
-    mov2 [sp+(2+0)],0                       ; set quotient to 0
-    mov2 [sp+(2+2)],0
+    mov4 [sp+(2+0)],0                       ; set quotient to 0
     ret
 
 ; add16
