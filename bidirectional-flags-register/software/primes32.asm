@@ -8,9 +8,7 @@
 
 BUFFER_SIZE = 32
 
-.org $8000
-n_value:
-	.8byte 0
+.memzone application_ram
 string_buffer:
 	.zero BUFFER_SIZE
 decimal_buffer:

@@ -448,9 +448,9 @@ uint16_to_decimal_cstr:
 ;       resets sp+6 to the buffer address that the null char was written to
 ; 
 _uint32_to_decimal_cmp_10_to_ws:
-    cmp2 [sp+4],0
+    cmp2 0,[sp+4]
     jne .end
-    cmp [sp+3],0
+    cmp 0,[sp+3]
     jne .end
     cmp 10,[sp+2]
 .end:
@@ -583,13 +583,13 @@ uint32_to_decimal_cstr:
 ;       resets sp+10 to the buffer address that the null char was written to
 ; 
 _uin64_to_decimal_cmp_10_to_ws:
-    cmp2 [sp+8],0
+    cmp2 0,[sp+8]
     jne .end
-    cmp2 [sp+6],0
+    cmp2 0,[sp+6]
     jne .end
-    cmp2 [sp+4],0
+    cmp2 0,[sp+4]
     jne .end
-    cmp [sp+3],0
+    cmp 0,[sp+3]
     jne .end
     cmp 10,[sp+2]
 .end:

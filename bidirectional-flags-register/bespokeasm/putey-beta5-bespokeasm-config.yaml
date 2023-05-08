@@ -1455,18 +1455,21 @@ instructions:
         operands:
           count: 2
           specific_operands:
-            mar_register_const:
+            const_stack_pointer:
+              reverse_argument_order: true
               list:
-                mar_reg:
-                  type: register
-                  register: mar
-                  bytecode:
-                    value: 0
-                    size: 0
                 immediate_value:
                   type: numeric
                   argument:
                     size: 16
+                    byte_align: true
+                sp:
+                  type: indirect_register
+                  register: sp
+                  offset:
+                    max: 255
+                    min: 0
+                    size: 8
                     byte_align: true
 macros:
   push4:
