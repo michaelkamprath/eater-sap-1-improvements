@@ -19,7 +19,8 @@ Multiple independent projects are described in this repository. It is recommende
 7. **[Instruction Register and Memory Map Update](./instruction-register-8-bit/)** - In this project I upgrade the instruction register to use the full 8-bits. I also realized that I once again needed to upgrade my control logic, so I expanded the instruction-based control logic plus added a memory map mechanism.
 8. **[Stack Pointer and Index Register](./stack-pointer/)** - A stack pointer is added to enable things like subroutines and stack memory. Also adds an index register that can be used to track 16-bit values and memory addresses.
 9. **[LCD Display](./lcd-display/)** - A 20x4 LCD character display is added to give the TTL CPU the ability to display more complex output to the user than is afforded by the original 8-bit display of the SAP-1.
-10. **[Advanced Arithmetic Logic Unit](./advanced-alu/)** - Adds an ALU that is more capable than just addition operations. In addition to addition  subtraction, enables bit shifting, logic operations, comparisons, and bit detection. Plus, allows reading the flags register directly. 
+10. **[Advanced Arithmetic Logic Unit](./advanced-alu/)** - Adds an ALU that is more capable than just addition operations. In addition to addition  subtraction, enables bit shifting, logic operations, comparisons, and bit detection. Plus, allows reading the flags register directly.
+11. **[Writable Flags Register](./bidirectional-flags-register/)** - Corrects a design oversight from the Advanced ALU design by allowing the Flags register to be written to from the data bus.
 
 
 # Future Projects
