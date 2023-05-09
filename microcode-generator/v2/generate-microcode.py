@@ -87,7 +87,14 @@ class Microcode:
         microbit = MicroBits()
         for cl in control_line_list:
             if cl in microbits:
-                microbit |= microbits[cl]
+                try:
+                    microbit |= microbits[cl]
+                except ValueError:
+                    sys.exit(
+                        f'ERROR - Could not add control line "{cl}" in step {step_num} '
+                        f'of instruction {instr_val} because another control line is already '
+                        f'active in its 74HCT238 bank'
+                    )
             else:
                 sys.exit(f'ERROR - unknown control line "{cl}" in step {step_num} of instruction {instr_val}')
         return microbit

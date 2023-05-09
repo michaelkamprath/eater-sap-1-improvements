@@ -1,3 +1,5 @@
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
+
 # Eater SAP-1 Improvements
 Ben Eater released [a YouTube video series](https://eater.net/8bit) that works you through the process of building a simple 8-bit computer on a breadboard made with simple logic gates. It's a great learning experience if you are so interested.
 
