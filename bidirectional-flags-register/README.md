@@ -1,7 +1,9 @@
 # Readable and Writable Flags Register
 
 
+[![Bi-directional Flags Register](https://img.youtube.com/vi/-E6FhDYj1dU/maxresdefault.jpg)](https://youtu.be/-E6FhDYj1dU)
 
+## Design
 ### Control Line Assignment
 This project continues to use the control logic design introduced in the [8-Bit Instruction Register project](../instruction-register-8-bit/), however the control line assignments are redone some. The control line assignments are:
 
@@ -57,4 +59,4 @@ This project continues to use the control logic design introduced in the [8-Bit 
 |48 | Right | Low | `HLT` | Halt the system clock |
 
 The significant changes over the last project are:
-* ASSIGNED CONTROL LINE 7 TO THE `Fi` (Flags in) control signal
+* Assigned control line 7 to the `Fi` (Flags in) control signal
