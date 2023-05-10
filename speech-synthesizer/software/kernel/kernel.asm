@@ -14,13 +14,13 @@
 #create_memzone application_code $0200 $3FFF
 #create_memzone system_code $4000 $6FFF
 #create_memzone system_variables $F000 $FFFF
+#create_memzone application_ram $8000 $EFFF
 
 #include "stringlib.asm"
 #include "memlib.asm"
 #include "utilitylib.asm"
 #include "mathlib.asm"
 #include "lcdlib.asm"
-#include "speechlib.asm"
 
 .org 0
 _system_init:

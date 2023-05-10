@@ -289,12 +289,15 @@ lcd_center_cstr_on_row:
 ;       sp+2    - row number (0-3)
 ;
 lcd_send_buffer_row:
-    push [sp+2]
+    push i
+    push2 hl
+.start:
+    push [sp+2+3]
     call _lcd_set_hl_to_row_ptr
     pop
 .send_row:
     push 0                                  ; column 0
-    push [sp+(2+1)]                         ; pass row
+    push [sp+(2+1+3)]                         ; pass row
     call lcd_set_cursor_to_row_column
     pop
     pop
@@ -307,6 +310,8 @@ lcd_send_buffer_row:
     inc hl
     jmp .loop
 .end:
+    pop2 hl
+    pop i
     ret
 
 ; _lcd_set_hl_to_row_ptr
@@ -319,26 +324,32 @@ lcd_send_buffer_row:
 ;       hl : set to the current row pointer for desired row
 ;
 _lcd_set_hl_to_row_ptr:
-    cmp [sp+2],0
-    je .row0
-    cmp [sp+2],1
-    je .row1
-    cmp [sp+2],2
-    je .row2
-    cmp [sp+2],3
-    je .row3
-    hlt                                  ; ERROR invalid row num
+    push a                      ; save A
+    ; use a jump table to got to the right row instruction
+    mov2 hl,.jump_table
+    mov a,[sp+2+1]
+    add [sp+2+1]
+    add [sp+2+1]              ; three bytes to each hump table entry
+    jmp hl+a
+    ; jump table
+.jump_table:
+    jmp .row0
+    jmp .row1
+    jmp .row2
+    jmp .row3                              ; ERROR invalid row num
 .row0:
     mov2 hl, [_lcd_row0_ptr]
-    ret
+    jmp .end
 .row1:
     mov2 hl, [_lcd_row1_ptr]
-    ret
+    jmp .end
 .row2:
     mov2 hl, [_lcd_row2_ptr]
-    ret
+    jmp .end
 .row3:
     mov2 hl, [_lcd_row3_ptr]
+.end:
+    pop a
     ret
 
 ; lcd_set_cursor_to_row_column
@@ -353,16 +364,22 @@ _lcd_set_hl_to_row_ptr:
 ;
 ;
 lcd_set_cursor_to_row_column:
+    push2 hl                    ; save HL
+    push a                      ; save A
     call lcd_wait_busy
-    cmp [sp+2],0
-    je .row0
-    cmp [sp+2],1
-    je .row1
-    cmp [sp+2],2
-    je .row2
-    cmp [sp+2],3
-    je .row3
-    hlt
+    ; use a jump table to got to the right row instruction
+    mov2 hl,.jump_table
+    mov a,[sp+2+3]
+    add [sp+2+3]
+    add [sp+2+3]              ; three bytes to each hump table entry
+    jmp hl+a
+    ; jump table
+.jump_table:
+    jmp .row0
+    jmp .row1
+    jmp .row2
+    jmp .row3
+
 .row0:
     mov a, _CMD_DDRAM_ADDR
     jmp .set_cursor
@@ -375,8 +392,10 @@ lcd_set_cursor_to_row_column:
 .row3:
     mov a, (_CMD_DDRAM_ADDR|$54)
 .set_cursor:
-    add [sp+3]
+    add [sp+3+3]
     mov [LCD_INSTRUCTION_REG], a
+    pop a                           ; restore A
+    pop2 hl                          ; restore hl
     ret
 
 ; lcd_set_cursor_at_row_end
@@ -390,29 +409,38 @@ lcd_set_cursor_to_row_column:
 ;
 ;
 lcd_set_cursor_at_row_end:
+    push2 hl
+    push a
     call lcd_wait_busy
-    cmp [sp+2],0
-    je .row0
-    cmp [sp+2],1
-    je .row1
-    cmp [sp+2],2
-    je .row2
-    cmp [sp+2],3
-    je .row3
-    hlt
+    ; use a jump table to got to the right row instruction
+    mov2 hl,.jump_table
+    cmp a,3
+    jo .end
+    mov a,[sp+2+3]
+    add [sp+2+3]
+    add [sp+2+3]              ; three bytes to each hump table entry
+    jmp hl+a
+    ; jump table
+.jump_table:
+    jmp .row0
+    jmp .row1
+    jmp .row2
+    jmp .row3
 .row0:
     mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|(_COLUMN_WIDTH-1))
-    ret
+    jmp .end
 .row1:
     mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|($40+_COLUMN_WIDTH-1))
-    ret
+    jmp .end
 .row2:
     mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|($14+_COLUMN_WIDTH-1))
-    ret
+    jmp .end
 .row3:
     mov [LCD_INSTRUCTION_REG], (_CMD_DDRAM_ADDR|($54+_COLUMN_WIDTH-1))
+.end:
+    pop a
+    pop2 hl
     ret
-
 
 ; lcd_scroll_up
 ;       Scrolls the LCD screen up one row, leaving row 4 blank
@@ -425,13 +453,13 @@ lcd_set_cursor_at_row_end:
 ;
 ;
 lcd_scroll_up:
-    ; Rotate the row pointers 
+    ; Rotate the row pointers
     push2 [_lcd_row0_ptr]                               ; save row 0 pointer to stack
     mov2 [_lcd_row0_ptr],[_lcd_row1_ptr]                ; copy row 1 pointer to row 0
     mov2 [_lcd_row1_ptr],[_lcd_row2_ptr]                ; copy row 2 pointer to row 1
     mov2 [_lcd_row2_ptr],[_lcd_row3_ptr]                ; copy row 3 pointer to row 2
     pop2 [_lcd_row3_ptr]                                ; pop saved row 0 pointer into row 3
-    ; set the bottom row to all zpaces
+    ; set the bottom row to all spaces
     push _COLUMN_WIDTH
     push $20
     push2 [_lcd_row3_ptr]

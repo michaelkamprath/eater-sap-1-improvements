@@ -12402,6 +12402,7 @@ instructions:
           control_lines:
             HLa
             ABo
+            HILO
             Ti
       2:
         - flags:
@@ -12409,6 +12410,7 @@ instructions:
           control_lines:
             ARa
             ABo
+            HILO
             S0
             S1
             S2
@@ -12425,7 +12427,6 @@ instructions:
             equal: 1
           control_lines:
             HLa
-            HILO
             ABo
             Ti
       4:
@@ -12434,7 +12435,6 @@ instructions:
             equal: 1
           control_lines:
             ARa
-            HILO
             ABo
             S0
             S1
@@ -12449,6 +12449,7 @@ instructions:
   # CMP2_hl_indirect_mar_o:
   CMP2_hl_sp_offset:
     # XTD Instruction 0xFF25
+    # LHS should be in temp, start with high byte
     value: 37
     steps:
       1:
@@ -12464,6 +12465,7 @@ instructions:
           control_lines:
             HLa
             ABo
+            HILO
             Ti
             PCe
       3:
@@ -12472,6 +12474,7 @@ instructions:
           control_lines:
             SPa
             AOa
+            AP1
             MDo
             S0
             S1
@@ -12489,19 +12492,15 @@ instructions:
             equal: 1
           control_lines:
             HLa
-            HILO
             ABo
             Ti
       5:
-        # consider making this control line set up active in the not equal
-        # case to maintain control lines through the clock
         - flags:
             extended: 1
             equal: 1
           control_lines:
             SPa
             AOa
-            AP1
             MDo
             S0
             S1
@@ -12523,6 +12522,7 @@ instructions:
           control_lines:
             HLa
             ABo
+            HILO
             Ti
       2:
         - flags:
@@ -12546,6 +12546,7 @@ instructions:
             extended: 1
           control_lines:
             ARa
+            AP1
             MDo
             S0
             S1
@@ -12563,7 +12564,6 @@ instructions:
             equal: 1
           control_lines:
             HLa
-            HILO
             ABo
             Ti
       6:
@@ -12572,7 +12572,6 @@ instructions:
             equal: 1
           control_lines:
             ARa
-            AP1
             MDo
             S0
             S1
@@ -12595,12 +12594,14 @@ instructions:
           control_lines:
             HLa
             ABo
+            HILO
             Ti
       2:
         - flags:
             extended: 1
           control_lines:
             PCa
+            AP1
             MDo
             S0
             S1
@@ -12618,10 +12619,8 @@ instructions:
             equal: 1
           control_lines:
             HLa
-            HILO
             ABo
             Ti
-            PCe
       4:
         - flags:
             extended: 1
@@ -12641,6 +12640,17 @@ instructions:
             CMPs
             PCe
       5:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+            SCr
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            PCe
+      6:
         - flags:
             extended: 1
           control_lines:
@@ -12679,6 +12689,7 @@ instructions:
           control_lines:
             SPa
             AOa
+            AP1
             MDo
             Ti
       5:
@@ -12686,6 +12697,7 @@ instructions:
             extended: 1
           control_lines:
             ARa
+            AP1
             MDo
             S0
             S1
@@ -12704,7 +12716,6 @@ instructions:
           control_lines:
             SPa
             AOa
-            AP1
             MDo
             Ti
       7:
@@ -12718,7 +12729,6 @@ instructions:
             equal: 1
           control_lines:
             ARa
-            AP1
             MDo
             S0
             S1
@@ -12742,11 +12752,44 @@ instructions:
           control_lines:
             SPa
             AOa
+            AP1
             MDo
             Ti
       3:
         - flags:
             extended: 1
+          control_lines:
+            PCa
+            AP1
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
+      4:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+          # no action
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            SPa
+            AOa
+            MDo
+            Ti
+      5:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+          # no action
+        - flags:
+            extended: 1
+            equal: 1
           control_lines:
             PCa
             MDo
@@ -12755,7 +12798,62 @@ instructions:
             S2
             S3
             CMPs
+      6:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+      7:
+        - flags:
+            extended: 1
+          control_lines:
+            PCe
+  CMP2_const_sp_o:
+    value: 0x24
+    steps:
+      1:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            MDo
+            AOi
+            PCe
+      2:
+        - flags:
+            extended: 1
+          control_lines:
+            PCa
+            AP1
+            MDo
+            Ti
+      3:
+        - flags:
+            extended: 1
+          control_lines:
+            SPa
+            AOa
+            AP1
+            MDo
+            S0
+            S1
+            S2
+            S3
+            CMPs
       4:
+        - flags:
+            extended: 1
+            equal: 0
+          control_lines:
+          # no action
+        - flags:
+            extended: 1
+            equal: 1
+          control_lines:
+            PCa
+            MDo
+            Ti
+      5:
         - flags:
             extended: 1
             equal: 0
@@ -12767,21 +12865,6 @@ instructions:
           control_lines:
             SPa
             AOa
-            AP1
-            MDo
-            Ti
-            PCe
-      5:
-        - flags:
-            extended: 1
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            extended: 1
-            equal: 1
-          control_lines:
-            PCa
             MDo
             S0
             S1
@@ -12793,62 +12876,8 @@ instructions:
         - flags:
             extended: 1
           control_lines:
-            SCr
-  CMP2_mar_const:
-    value: 0x24
-    steps:
-      1:
-        - flags:
-            extended: 1
-          control_lines:
-            ARa
-            ABo
-            Ti
-      2:
-        - flags:
-            extended: 1
-          control_lines:
-            PCa
-            MDo
-            S0
-            S1
-            S2
-            S3
-            CMPs
-      3:
-        - flags:
-            extended: 1
-            equal: 0
-          control_lines:
             PCe
-        - flags:
-            extended: 1
-            equal: 1
-          control_lines:
-            ARa
-            HILO
-            ABo
-            Ti
-            PCe
-      4:
-        - flags:
-            extended: 1
-            equal: 0
-          control_lines:
-            PCe
-        - flags:
-            extended: 1
-            equal: 1
-          control_lines:
-            PCa
-            MDo
-            S0
-            S1
-            S2
-            S3
-            CMPs
-            PCe
-      5:
+      7:
         - flags:
             extended: 1
           control_lines:

@@ -1,7 +1,7 @@
 ---
 description: Putey Beta 5 Breadboard Computer
 general:
-  min_version: 0.3.2
+  min_version: 0.4.0
   address_size: 16
   endian: little
   registers:
@@ -19,13 +19,13 @@ general:
     version: "0.5.0"
 predefined:
   constants:
-    - name: ZF
+    - name: ZERO_FLAG
       value: 1
-    - name: CF
+    - name: CARRY_FLAG
       value: 2
-    - name: OF
+    - name: OVERFLOW_FLAG
       value: 4
-    - name: EF
+    - name: EQUALS_FLAG
       value: 8
 operand_sets:
   8_bit_source:
@@ -407,7 +407,7 @@ operand_sets:
         register: hl
         bytecode:
           value: 0
-          size: 0           
+          size: 0
   bit_number:
     operand_values:
       bit_number:
@@ -447,7 +447,7 @@ operand_sets:
           max: 255
           min: 0
           size: 8
-          byte_align: true  
+          byte_align: true
 instructions:
   # general
   nop:
@@ -633,13 +633,13 @@ instructions:
     # Takes up 5 bytes of stack
     bytecode:
       value: 44
-      size: 8    
+      size: 8
   popr:
     # pops 5 bytes of stack into the A, I, J, and HL regsiters. Complements
     # the pushr instruction.
     bytecode:
       value: 45
-      size: 8 
+      size: 8
   # branching
   jmp:
     variants:
@@ -1411,7 +1411,7 @@ instructions:
         operands:
           count: 2
           specific_operands:
-            stack_pointer:
+            stack_pointer_iaddr:
               list:
                 sp:
                   type: indirect_register
@@ -1421,9 +1421,7 @@ instructions:
                     min: 0
                     size: 8
                     byte_align: true
-            indirect_addr:
-              list:
-                iaddr:
+                indirect_addr:
                   type: indirect_numeric
                   argument:
                     size: 16
@@ -1435,7 +1433,7 @@ instructions:
         operands:
           count: 2
           specific_operands:
-            stack_pointer:
+            stack_pointer_const:
               list:
                 sp:
                   type: indirect_register
@@ -1445,9 +1443,7 @@ instructions:
                     min: 0
                     size: 8
                     byte_align: true
-            immediate_value:
-              list:
-                const:
+                immediate_value:
                   type: numeric
                   argument:
                     size: 16
@@ -1459,20 +1455,21 @@ instructions:
         operands:
           count: 2
           specific_operands:
-            mar_register:
+            const_stack_pointer:
+              reverse_argument_order: true
               list:
-                mar_reg:
-                  type: register
-                  register: mar
-                  bytecode:
-                    value: 0
-                    size: 0
-            immediate_value:
-              list:
-                const:
+                immediate_value:
                   type: numeric
                   argument:
                     size: 16
+                    byte_align: true
+                sp:
+                  type: indirect_register
+                  register: sp
+                  offset:
+                    max: 255
+                    min: 0
+                    size: 8
                     byte_align: true
 macros:
   push4:
@@ -1679,6 +1676,42 @@ macros:
       instructions:
         - "mov2 [@REG(0)+(@ARG(0))+0],[@REG(1)+(@ARG(1))+0]"
         - "mov2 [@REG(0)+(@ARG(0))+2],[@REG(1)+(@ARG(1))+2]"
+    - operands:
+        count: 2
+        specific_operands:
+          indirect_sp_o_const:
+            list:
+              sp:
+                type: indirect_register
+                register: sp
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+              uint32:
+                type: numeric
+                argument:
+                  size: 32
+                  byte_align: true
+          indirect_hl_o_const:
+            list:
+              stack_pointer:
+                type: indirect_register
+                register: hl
+                offset:
+                  max: 255
+                  min: 0
+                  size: 8
+                  byte_align: true
+              uint32:
+                type: numeric
+                argument:
+                  size: 32
+                  byte_align: true
+      instructions:
+        - "mov2 [@REG(0)+(@ARG(0))+0],((@ARG(1)&0xFFFF))"
+        - "mov2 [@REG(0)+(@ARG(0))+2],((@ARG(1)&0xFFFF0000) >> 16)"
   mov8:
     - operands:
         count: 2

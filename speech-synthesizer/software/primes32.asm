@@ -8,18 +8,13 @@
 
 BUFFER_SIZE = 32
 
-.org $8000
-n_value:
-	.8byte 0
+.memzone application_ram
 string_buffer:
 	.zero BUFFER_SIZE
 decimal_buffer:
 	.zero BUFFER_SIZE
 
 .org 0 "application_code"
-init:
-	rsp
-	call lcd_init
 start:
 	; place inistial N 32-bit value on stack
 	push4 1
@@ -76,22 +71,19 @@ start:
 ;
 is_prime32:
 	; first check if N is 2 or 3
-	; if high word is not 0, then it is also not 2 or 3
-	mov2 hl,[sp+(2+2+0)]
-	cmp2 hl,0
+	; if high word is not 0, then not 2 or 3
+	cmp2 [sp+2+2],0
 	jne .modulo_two
-	; now check low word
-	mov2 hl,[sp+(2+0+0)]
 	; check 2
-	cmp2 hl,2
+	cmp2 [sp+2+0],2
 	je .is_prime
 	; check 3
-	cmp2 hl,3
+	cmp2 [sp+2+0],3
 	je .is_prime
 	; check <= 1
-	cmp2 hl,1
-	je .is_not_prime
-	jo .is_not_prime
+	cmp2 [sp+2+0],1
+	jo .modulo_two
+	jmp .is_not_prime	; the value is 0 or 1
 .modulo_two:
 	; check to see if a power of two
 	tstb [sp+2],0
@@ -120,13 +112,9 @@ is_prime32:
 	; high 4 bytes of result should be 0 since we are only doing 32 bit N
 	; If these byes are non-zero, then we know I*I > N and we are done with
 	; this loop.
-	cmp [sp+7],0
+	cmp2 [sp+6],0
 	jne .iteration_loop_done
-	cmp [sp+6],0
-	jne .iteration_loop_done
-	cmp [sp+5],0
-	jne .iteration_loop_done
-	cmp [sp+4],0
+	cmp2 [sp+4],0
 	jne .iteration_loop_done
 	; now compare low 4 bytes opf result to N
 	; reuse the verified 0-value high word of multiplication results

@@ -220,13 +220,13 @@ uint16_to_hex_cstr:
 ;   Returns
 ;       nothing, but does write to passed buffer
 uint8_to_hex_cstr:
-    mov2 hl, _numrical_digits_table         ; set HL to address of look up table
+    mov2 hl, _numerical_digits_table         ; set HL to address of look up table
     mov a, [sp+2]                           ; place uint8 value in A
     lsr4                                    ; move upper nibble to lower nibble
     mov a, [hl+a]                           ; copy character value into A
     mov2 hl, [sp+3]                         ; place buffer address into HL
     mov [hl+[sp+5]], a                      ; write first character to buffer
-    mov2 hl, _numrical_digits_table         ; set HL to address of look up table
+    mov2 hl, _numerical_digits_table         ; set HL to address of look up table
     mov a, [sp+2]                           ; place uint8 value in A
     and %00001111                           ; mask out lower nibble
     mov a, [hl+a]                           ; copy second character value into A
@@ -271,56 +271,56 @@ uint16_to_binary_cstr:
 ;   Returns
 ;       writes binary string to buffer
 ;       resets sp+3 to the buffer address (not including offset) that the null char was written to
-; 
+;
 uint8_to_binary_cstr:
     mov2 hl,[sp+3]
     tstb [sp+2],7
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],6
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],5
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],4
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],3
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],2
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],1
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     tstb [sp+2],0
-    call _fetch_bit_char
+    call .fetch_bit_char
     mov [hl+[sp+5]],a
     inc hl
     mov [hl+[sp+5]],0
     mov2 [sp+3],hl
     ret
 ; Set A to character 1 or 0 based on ZF flag
-_fetch_bit_char:
+.fetch_bit_char:
     jz .zerochar
-    mov a,0x31
+    mov a,'1'
     ret
 .zerochar:
-    mov a,0x30
+    mov a,'0'
     ret
 
 
 ; uint16_to_decimal_cstr
-; 
+;
 ;   converts the passed uint16 value to a decimal formatted cstr.
 ;
 ;   Arguments
@@ -332,7 +332,7 @@ _fetch_bit_char:
 ;       writes binary string to buffer. Will reset all other values in buffer to null (0)
 ;       updates sp+6 top the character length of the decimal string
 ;       resets sp+4 to the buffer address that the null char was written to
-; 
+;
 uint16_to_decimal_cstr:
     ; set buffer to to all 0s
     push [sp+6]
@@ -353,9 +353,11 @@ uint16_to_decimal_cstr:
     mov j,0                 ; J is digit counter
 .outer_loop:
     ; first check to see if we are done
-    mov2 hl,10              ; left sde
-    cmp2 hl,[sp+0]          ; see if low word is < 10
+    cmp [sp+1],0
+    jne .div_loop_start
+    cmp 10,[sp+0]
     jo .last_digit          ; it is. jump to last digit
+.div_loop_start:
     mov i,16                ; I is divide loop counter
 .div_loop:
     call lsl24              ; shift working stack left 1 bit
@@ -378,7 +380,7 @@ uint16_to_decimal_cstr:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+2],9
     jo .error_remainder_too_large
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+2]]       ; get character of remainder
     mov2 hl,[sp+(4+4)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -395,7 +397,7 @@ uint16_to_decimal_cstr:
     je .err_buffer_size
     jmp .outer_loop         ; do next character
 .last_digit:
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+0]]       ; get character of remainder
     mov2 hl,[sp+(4+4)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -432,7 +434,7 @@ uint16_to_decimal_cstr:
 
 
 ; uint32_to_decimal_cstr
-; 
+;
 ;   converts the passed uint64 value to a decimal formatted cstr.
 ;
 ;   Arguments
@@ -444,11 +446,9 @@ uint16_to_decimal_cstr:
 ;       writes binary string to buffer. Will reset all other values in buffer to null (0)
 ;       updates sp+8 top the character length of the decimal string
 ;       resets sp+6 to the buffer address that the null char was written to
-; 
-_uin632_to_decimal_cmp_10_to_ws:
-    cmp 0,[sp+5]
-    jne .end
-    cmp 0,[sp+4]
+;
+_uint32_to_decimal_cmp_10_to_ws:
+    cmp2 0,[sp+4]
     jne .end
     cmp 0,[sp+3]
     jne .end
@@ -457,9 +457,7 @@ _uin632_to_decimal_cmp_10_to_ws:
     ret
 
 uint32_to_decimal_cstr:
-    cmp 0,[sp+5]
-    jne .start
-    cmp 0,[sp+4]
+    cmp2 [sp+4],0
     jne .start
     ; if we are here, this value would more quickly be
     ; converted with uint16_to_decimal_cstr
@@ -492,7 +490,7 @@ uint32_to_decimal_cstr:
     mov j,0                 ; J is digit counter
 .outer_loop:
     ; first check to see if we are done
-    call _uin632_to_decimal_cmp_10_to_ws
+    call _uint32_to_decimal_cmp_10_to_ws
     jo .last_digit          ; it is. jump to last digit
 .outer_loop_continue:
     mov i,32                ; I is divide loop counter
@@ -517,7 +515,7 @@ uint32_to_decimal_cstr:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+4],9
     jo .error_remainder_too_large
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+4]]       ; get character of remainder
     mov2 hl,[sp+(6+6)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -534,7 +532,7 @@ uint32_to_decimal_cstr:
     je .err_buffer_size
     jmp .outer_loop         ; do next character
 .last_digit:
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+0]]       ; get character of remainder
     mov2 hl,[sp+(6+6)]      ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -571,7 +569,7 @@ uint32_to_decimal_cstr:
 
 
 ; uint64_to_decimal_cstr
-; 
+;
 ;   converts the passed uint64 value to a decimal formatted cstr.
 ;
 ;   Arguments
@@ -583,19 +581,13 @@ uint32_to_decimal_cstr:
 ;       writes binary string to buffer. Will reset all other values in buffer to null (0)
 ;       updates sp+12 top the character length of the decimal string
 ;       resets sp+10 to the buffer address that the null char was written to
-; 
+;
 _uin64_to_decimal_cmp_10_to_ws:
-    cmp 0,[sp+9]
+    cmp2 0,[sp+8]
     jne .end
-    cmp 0,[sp+8]
+    cmp2 0,[sp+6]
     jne .end
-    cmp 0,[sp+7]
-    jne .end
-    cmp 0,[sp+6]
-    jne .end
-    cmp 0,[sp+5]
-    jne .end
-    cmp 0,[sp+4]
+    cmp2 0,[sp+4]
     jne .end
     cmp 0,[sp+3]
     jne .end
@@ -604,13 +596,9 @@ _uin64_to_decimal_cmp_10_to_ws:
     ret
 
 uint64_to_decimal_cstr:
-    cmp 0,[sp+9]
+    cmp2 [sp+8],0
     jne .start
-    cmp 0,[sp+8]
-    jne .start
-    cmp 0,[sp+7]
-    jne .start
-    cmp 0,[sp+6]
+    cmp2 [sp+6],0
     jne .start
     ; if we are here, this value would more quickly be
     ; converted with uint32_to_decimal_cstr
@@ -672,7 +660,7 @@ uint64_to_decimal_cstr:
     ; we are done with this digit. High byte is the /10 remainder, or the current digit
     cmp [sp+8],9
     jo .error_remainder_too_large
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+8]]       ; get character of remainder
     mov2 hl,[sp+(10+10)]    ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -689,7 +677,7 @@ uint64_to_decimal_cstr:
     je .err_buffer_size
     jmp .outer_loop         ; do next character
 .last_digit:
-    mov2 hl,_numrical_digits_table
+    mov2 hl,_numerical_digits_table
     mov a,[hl+[sp+0]]       ; get character of remainder
     mov2 hl,[sp+(10+10)]    ; set HL to character buffer
     mov [hl+j],a            ; set next buffer position to character
@@ -729,7 +717,7 @@ uint64_to_decimal_cstr:
 ;
 ; String Lib Data
 ;
-_numrical_digits_table:
+_numerical_digits_table:
     .byte "0123456789ABCDEF"
 
 _error_buffer_small:

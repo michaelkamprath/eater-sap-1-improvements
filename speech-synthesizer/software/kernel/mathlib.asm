@@ -592,18 +592,17 @@ divide8:
 ;       a
 ; 
 divide16:
-    mov2 hl,0
-    cmp2 hl,[sp+4]                  ; see if Y is zero
+    cmp2 0,[sp+4]                   ; see if Y is zero
     je .divide_by_zero              ; handle divide by zero
-    cmp2 hl,[sp+2]                  ; see if X is zero
+    cmp2 0,[sp+2]                   ; see if X is zero
     je .return_zero                 ; X is zero, answer is zero
-    mov2 hl,[sp+4]                  ; divsor
-    cmp2 hl,[sp+2]                  ; compare to dividend
+    mov2 hl,[sp+4]                  ; left side - divisor
+    cmp2 hl,[sp+2]                  ; right side - dividend
     jo .divisor_too_large           ; divisor larger than dividend
     ; set up working stack
     push 0                          ; init carry bit
     push2 0                         ; init high value
-    push2 [sp+(2+3)]                ; p[ush the value to be divided
+    push2 [sp+(2+3)]                ; push the value to be divided
     ; working stack:
     ;   sp+0 : low word  (2 bytes) -> becomes quotient
     ;   sp+2 : high word (2 bytes) -> becomes remainder
@@ -614,7 +613,7 @@ divide16:
     mov a,[sp+0]                    ; place carry bit in a
     or [sp+4]                       ; or the carry bit with the low working byte
     mov [sp+0],a                    ; replace the updated low working byte
-    mov [sp+4],0                    ; reset carry bit 
+    mov [sp+4],0                    ; reset carry bit
      ; attempt substraction
     push2 [sp+(4+5)]                ; right side - divisor
     push2 [sp+(2+2)]                ; left side - current working high word
@@ -650,7 +649,6 @@ divide16:
     mov2 [sp+2],0
     ret
 .divide_by_zero:                            ; for now, just return 0
-    pop2
     mov2 [sp+4],0                           ; set remainder to 0
 .return_zero:
     mov2 [sp+2],0                           ; set quotient to 0
@@ -659,40 +657,47 @@ divide16:
 
 ; divide32
 ;   Divides X by Y
-; 
+;
 ;   Arguments:
 ;       sp+2 : value X dividend (4 bytes)
 ;       sp+6 : value Y divisor (4 bytes)
-; 
+;
 ;   Return Value:
 ;       sp+2 : the quotient (replaces X)
 ;       sp+6 : the remainder (replaces Y)
-; 
+;
 ;   Registers Used:
 ;       hl
 ;       a
-; 
+;
 divide32:
-    push4 0
-    push4 [sp+(6+4)]                        ; Place Y on stack
-    call cmp32                              ; see if Y is zero
-    pop4
-    je .divide_by_zero                      ; handle divide by zero
-    push4 [sp+(2+4)]                        ; place X on stack
-    call cmp32                              ; see if X is zero
-    pop4
-    pop4
+    ; check for divide by zero ( is zero)
+    mov2 hl,0                       ; using HL to compare 0 rather than immediate for efficiency
+    cmp2 hl,[sp+6+2]
+    jne .compareXtozero
+    cmp2 hl,[sp+6+0]
+    je .divide_by_zero
+.compareXtozero:
+    ; check for dividing zero (Y is zero)
+    cmp2 hl,[sp+2+2]
+    jne .comparXtoY
+    cmp2 hl,[sp+2+0]
     je .return_zero                  ; X is zero, answer is zero
-    push4 [sp+(2+0)]                 ; right side - dividend
-    push4 [sp+(6+4)]                 ; left side - divisor
-    call cmp32
-    pop4
-    pop4
+.comparXtoY:
+    ; right side - dividend X
+    ; left side - divisor Y
+    mov2 hl,[sp+6+2]
+    cmp2 hl,[sp+2+2]
     jo .divisor_too_large           ; divisor larger than dividend
+    jne .set_up_for_division        ; not equal, so no need to check low word
+    mov2 hl,[sp+6+0]
+    cmp2 hl,[sp+2+0]
+    jo .divisor_too_large           ; divisor larger than dividend
+.set_up_for_division:
     ; set up working stack
     push 0                          ; init carry bit
     push4 0                         ; init high value
-    push4 [sp+(2+5)]              ; push the value to be divided
+    push4 [sp+(2+5)]                ; push the value to be divided
     ; working stack:
     ;   sp+0 : low word  (4 bytes) -> becomes quotient
     ;   sp+4 : high word (4 bytes) -> becomes remainder
@@ -704,25 +709,19 @@ divide32:
     or [sp+8]                       ; or the carry bit with the low working byte
     mov [sp+0],a                    ; replace the updated low working byte
     mov [sp+8],0                    ; reset carry bit
-     ; attempt substraction
-    push2 [sp+(6+2+9)]              ; right side - divisor
-    push2 [sp+(6+0+11)]
-    push2 [sp+(4+2+4)]              ; left side - current working high word
-    push2 [sp+(4+0+6)]
+    ; attempt substraction
+    push4 [sp+6+9]                  ; right side - divisor
+    push4 [sp+4+4]                  ; left side - current working high word
     call subtract32
     jc .div_loop_subtraction        ; if carry is set, that means divsor was smaller, no borrow needed
     ; a borrow was needed, so divisor was larger. don't save and do continue
-    pop2
-    pop2
-    pop2
-    pop2
+    pop4
+    pop4
     jmp .div_loop_continue
 .div_loop_subtraction:
     ; save subtraction results to high word and set carry bit
-    pop2 [sp+(4+0+8)]
-    pop2 [sp+(4+2+6)]
-    pop2
-    pop2
+    pop4 [sp+(4+8)]
+    pop4
     mov [sp+8],1
 .div_loop_continue:
     dec i
@@ -730,33 +729,25 @@ divide32:
 .division_done:
     ; at this point we have the remainder in the low word
     ; and then we let shift one more time to get the quotient
-    mov2 [sp+(6+0+9)],[sp+(4+0)]
-    mov2 [sp+(6+2+9)],[sp+(4+2)]
+    mov4 [sp+(6+9)],[sp+(4+0)]
     call lsl64
     mov a,[sp+0]                    ; place carry bit in a
     or [sp+8]                       ; or the carry bit with the low working byte
     mov [sp+0],a                    ; replace the updated low working byte
-    pop2 [sp+(2+0+9)]
-    pop2 [sp+(2+2+7)]
-    pop2
-    pop2
+    pop4 [sp+(2+9)]
+    pop4
     pop
     ret
 .divisor_too_large:
     ; quotient = 0, remander = dividend
-    mov2 [sp+(6+0)],[sp+(2+0)]
-    mov2 [sp+(6+2)],[sp+(2+2)]
-    mov2 [sp+(2+0)],0
-    mov2 [sp+(2+2)],0
+    mov4 [sp+(6+0)],[sp+(2+0)]
+    mov4 [sp+(2+0)],0
     ret
 .divide_by_zero:                            ; for now, just return 0
-    pop2
-    pop2
-    mov2 [sp+(6+0)],0                       ; set remainder to 0
-    mov2 [sp+(6+2)],0
+    pop4
+    mov4 [sp+(6+0)],0                       ; set remainder to 0
 .return_zero:
-    mov2 [sp+(2+0)],0                       ; set quotient to 0
-    mov2 [sp+(2+2)],0
+    mov4 [sp+(2+0)],0                       ; set quotient to 0
     ret
 
 ; add16
