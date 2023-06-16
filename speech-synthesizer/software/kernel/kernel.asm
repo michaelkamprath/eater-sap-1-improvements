@@ -21,6 +21,7 @@
 #include "utilitylib.asm"
 #include "mathlib.asm"
 #include "lcdlib.asm"
+#include "speechlib.asm"
 
 .org 0
 _system_init:

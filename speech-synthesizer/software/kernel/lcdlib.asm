@@ -222,12 +222,16 @@ lcd_cursor_home:
 ;
 ;
 lcd_write_row_cstr:
-    push [sp+4]                         ; put row number on stack
+    push2 hl
+    push i
+    push a                              ; stack +4
+
+    push [sp+4+4]                       ; put row number on stack
     call _lcd_set_hl_to_row_ptr
     pop                                 ; restore stack
 .copy_to_row:
     mov i, _COLUMN_WIDTH
-    mov2 mar, [sp+2]                     ; put the string address into mar for later dereferencing
+    mov2 mar, [sp+2+4]                  ; put the string address into mar for later dereferencing
 .copy_loop:
     mov a,[mar]
     cmp a,0
@@ -239,15 +243,18 @@ lcd_write_row_cstr:
     inc hl
     jmp .copy_loop
 .copy_fill:
-    mov [hl], $20                         ; write space character
+    mov [hl], $20                       ; write space character
     dec i
     jz .lcd_write
     jmp .copy_fill
 .lcd_write:
-    push [sp+4]
+    push [sp+4+4]
     call lcd_send_buffer_row
     pop
 .end:
+    pop a
+    pop i
+    pop2 hl
     ret
 
 ; lcd_center_cstr_on_row
@@ -453,6 +460,7 @@ lcd_set_cursor_at_row_end:
 ;
 ;
 lcd_scroll_up:
+    push f                                              ; stack +1
     ; Rotate the row pointers
     push2 [_lcd_row0_ptr]                               ; save row 0 pointer to stack
     mov2 [_lcd_row0_ptr],[_lcd_row1_ptr]                ; copy row 1 pointer to row 0
@@ -478,12 +486,13 @@ lcd_scroll_up:
     mov [sp],2
     call lcd_send_buffer_row
     ; only send bottom row if requested
-    cmp [sp+3],0
+    cmp [sp+2+2],0
     je .end
     mov [sp],3
     call lcd_send_buffer_row
 .end:
     pop                                                 ; stack is restored
+    pop f
     ret
 
 
