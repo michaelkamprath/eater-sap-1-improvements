@@ -52,6 +52,23 @@ delay16:
     ret
 
 
+; cmp16
+;   Compares two 16-bit values, and sets OF (left > right) or EF (left == right) flags
+;
+;   Arguments
+;       sp+2 : left value (2 bytes)
+;       sp+4 : right value (2 bytes)
+;
+;   Returns
+;       Sets flags register per the comparison
+;
+cmp16:
+    push2 hl
+    mov2 hl,[sp+2+2]
+    cmp2 hl,[sp+4+2]
+    pop2 hl
+    ret
+
 ; cmp32
 ;   Compares two 32-bit values, and sets OF (left > right) or EF (left == right) flags
 ;

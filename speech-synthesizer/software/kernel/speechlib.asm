@@ -11,10 +11,14 @@ SPEECH_STATE_BIT_BUSY = 0
 SPEECH_STATE_BIT_READY = 1
 SPEECH_STATE_BIT_INTERUPT = 2
 
-SPEECH_BITMASK_TALK_STATUS  = b10000000
-SPEECH_BITMASK_BUFFER_LOW   = b01000000
-SPEECH_BITMASK_BUFFER_EMPTY = b00100000
+SPEECH_STATUS_BIT_TALK_STATUS   = 7
+SPEECH_STATUS_BIT_BUFFER_LOW    = 6
+SPEECH_STATUS_BIT_BUFFER_EMPTY  = 5
 
+.memzone system_variables
+_speech_buffer_cur_ptr: .2byte 0
+_speech_buffer_end_ptr: .2byte 0
+_string_buffer: .zero 32
 .memzone system_code
 ; speech_init
 ;
@@ -24,19 +28,23 @@ SPEECH_BITMASK_BUFFER_EMPTY = b00100000
 ;       None
 ;
 speech_init:
+    mov2 [_speech_buffer_cur_ptr],0
+    mov2 [_speech_buffer_end_ptr],0
     ; execute the TMS5220 init sequence documented in
     ; P7 of the TMS5220 data sheet
     ;
     ; First, send 9 bytes of all ones
     mov i,9
+    push $FF
 .loop:
-    mov a,$FF
     call _speech_send_cmd_data
     dec i
     jnz .loop
+    pop
     ; now send reset command
-    mov a,SPEECH_CMD_RESET
+    push SPEECH_CMD_RESET
     call _speech_send_cmd_data
+    pop
     ret
 
 
@@ -50,15 +58,22 @@ speech_init:
 ;       Register A - The TMS5220 status byte
 ;
 speech_get_status:
-    push f
     ; write a byte to the status register initiate a fetch
     mov [SPEECH_STATUS_REG],1
     ; now wait until TMS5220 is not busy
-.wait_loop:
-    tstb [SPEECH_STATE_REG],SPEECH_STATE_BIT_BUSY
-    jnz .wait_loop
+    call _wait_on_speech_busy
     ; and fetch the status
     mov a,[SPEECH_STATUS_REG]
+    ret
+
+; _wait_on_speech_busy
+;   wait until the speech subsystem is not busy
+;
+_wait_on_speech_busy:
+    push f
+.wait:
+    tstb [SPEECH_STATE_REG],SPEECH_STATE_BIT_BUSY
+    jnz .wait
     pop f
     ret
 
@@ -67,26 +82,15 @@ speech_get_status:
 ;   to become not busy
 ;
 ;   Arguments
-;       Regsiter A - the byte to send to the TMS5220
+;       sp+2 - the byte to send to the TMS5220
 ;
 ;   Returns
 ;       none
 _speech_send_cmd_data:
-    push f
-.wait_loop:
-    tstb [SPEECH_STATE_REG],SPEECH_STATE_BIT_BUSY
-    jnz .wait_loop
-    mov [SPEECH_COMMAND_REG],a
-    pop f
+    call _wait_on_speech_busy
+    mov [SPEECH_COMMAND_REG],[sp+2]
     ret
 
-; _send_stop_code
-;   sends a stop code. call at end of sending external speech data.
-;
-_send_stop_code:
-    mov a,$F0
-    call _speech_send_cmd_data
-    ret
 
 ; speak_external_buffer
 ;   Uses Speak External command to speak dta in passed buffer
@@ -107,93 +111,127 @@ _send_stop_code:
 ;       When all bytes are sent, send stop code.
 ;
 
-_MAX_POST_WRITE_COUNTS = 255        ; Tuned for a 1 MHz clock. "255" effectively means never repeat after long wait.
-speak_external_buffer:
+speech_start_synchronous:
+    push2 [sp+4+0]
+    push2 [sp+2+2]
+    call speech_start
+    pop2 pop2
+    push2 hl
+.buffer_loop:
+    mov2 hl,[_speech_buffer_cur_ptr]
+    cmp2 hl,0
+    je .done
+    call speech_update_buffer
+    jmp .buffer_loop
+.done:
+    pop2 hl
+    ret
+
+; speech_start
+;   Starts the asynchronous speaking process on the TMS5220 witht he passed buffer. Fills the TMS5220
+;   FIFO buffer with 16 bytes, then returns. Caller should call speech_update_buffer
+;   every 5-10 ms to check in on speech process and update FIFO buffer if needed.
+;   Speech completion status can be checked with speech_is_talking.
+;
+;   If talking is in progress when this function is called, it will wait for talking to
+;   complete.
+;
+;   Arguments:
+;       sp+2 : Buffer Start address (2 bytes)
+;       sp+4 : Buffer End address (2 bytes)
+;
+speech_start:
     push2 hl
     push a
-    push i
-    push f                          ; +5 to the stack
-
-    ; first check that TMS5220 FIFO is not talking
-.wait_loop:
-    call speech_get_status          ; place speech status in A register
-    and SPEECH_BITMASK_TALK_STATUS  ; Is it talking?
-    jnz .wait_loop
-
-    ; now send speek external command
-    mov a,SPEECH_CMD_SPEAK_EXTERNAL
+    push f          ; +4 to stack
+    ; first check if already talking
+    mov2 hl,[_speech_buffer_cur_ptr]
+    cmp2 hl,0
+    je _setup_talking
+.wait_for_talking:
+    call speech_get_status
+    tstb a,SPEECH_STATUS_BIT_TALK_STATUS
+    jnz .wait_for_talking
+_setup_talking:
+    ; save speech buffer to system variables
+    mov2 hl,[sp+2+4]
+    mov2 [_speech_buffer_cur_ptr],hl
+    mov2 hl,[sp+4+4]
+    mov2 [_speech_buffer_end_ptr],hl
+    ; send speak external command
+    push SPEECH_CMD_SPEAK_EXTERNAL
     call _speech_send_cmd_data
-
-    ; start the data block transfer
-    mov2 hl,[sp+2+5]
-    cmp2 hl,[sp+4+5]
-    jo .error_buffer
-    call print_current_speech_buffer_addr
-
-    ; init I 16 bytes for first dump
-    mov i,16
-.send_buffer_data:
-    cmp2 hl,[sp+4+5]
-    je .buffer_done
-.wait_not_busy:
-    tstb [SPEECH_STATE_REG],SPEECH_STATE_BIT_BUSY
-    jnz .wait_not_busy
-    mov [SPEECH_COMMAND_REG],[hl]       ; write the data value to the TMS5200
-    inc hl
-    ; determine if we need to pause or continue
-    dec i
-    jnz .send_buffer_data
-    ; now we need to pause until /INT goes low to indicate the buffer is low
-.wait_for_interupt:
-    tstb [SPEECH_STATE_REG],SPEECH_STATE_BIT_INTERUPT
-    jnz .wait_for_interupt
-    ; to reset the interupt, neeg to "read" the status register
-    call speech_get_status          ; place speech status in A register
-    ; check if talking has stopped using the speech status
-    and SPEECH_BITMASK_TALK_STATUS
-    jz .speaking_stopped
-    mov i,8                             ; reset I to 7 for 8 bytes (0-based)
-    jmp .send_buffer_data
-.buffer_done:
-    call print_tms5220_status
-    call print_current_speech_buffer_addr
-    ; done with sending speech data. wait for buffer low before sending stop code
-    ; call speech_get_status
-    ; and SPEECH_BITMASK_BUFFER_LOW
-    ; jz .buffer_done
-    mov a,$F0                       ; stop code
-    call _speech_send_cmd_data
+    pop
+    ; send 16 bytes
+    call _send_8_bytes
+    call _send_8_bytes
 .done:
-    ; restore registers and return
     pop f
-    pop i
     pop a
     pop2 hl
     ret
-.speaking_stopped:
-    ; first compare buffer status
-    cmp2 hl,[sp+4+5]
-    je .speaking_over               ; its really over
-    ; we were not fast enough and have more data to send. restart at where we left off
-    mov a,SPEECH_CMD_SPEAK_EXTERNAL
-    call _speech_send_cmd_data
-    mov i,16
-    jmp .send_buffer_data
-.speaking_over:
-    push2 .speaking_stopped_str
-    call lcd_print_line_cstr
-    pop2
-    jmp .buffer_done
-.error_buffer:
-    ; handle error
-    push2 .error_buffer_str
-    call lcd_print_line_cstr
-    pop2
+
+
+
+
+; speech_update_buffer
+;   Checks to see if there is an ongoing speech operation and send the TMS5220 more data if
+;   it is ready to receive it.
+;
+;   Arguments
+;       None
+;
+speech_update_buffer:
+    push2 hl
+    push a
+    push f          ; +4 to stack
+    ; first, check to see if we have a in-progress buffer, signified by a non-zero pointer
+    mov2 hl,[_speech_buffer_cur_ptr]
+    cmp2 hl,0
+    je .done
+.check_buffer_low:
+    call speech_get_status
+    tstb a,SPEECH_STATUS_BIT_BUFFER_LOW
+    jz .done
+    call _send_8_bytes
+.done:
+    pop f
+    pop a
+    pop2 hl
+    ret
+
+; _send_8_bytes
+;   Sends the next 8 bytes in the speech buffer. If less than
+;   8 bytes left, will send just that.
+_send_8_bytes:
+    push2 hl
+    push i          ; +3 to stack
+    mov i,8
+.send_loop:
+    ; ensure we are not at end of buffer
+    mov2 hl,[_speech_buffer_cur_ptr]
+    cmp2 hl,[_speech_buffer_end_ptr]
+    je .buffer_done
+    ; wait until speech is not busy
+    call _wait_on_speech_busy
+    ; write data to the speech submodule
+    mov2 hl,[_speech_buffer_cur_ptr]
+    mov [SPEECH_COMMAND_REG],[hl]
+    ; increase speech buffer pointer
+    inc hl
+    mov2 [_speech_buffer_cur_ptr],hl
+    ; decrement counter and check if done
+    dec i
+    jnz .send_loop
     jmp .done
-.speaking_stopped_str:
-    .cstr "Speech stopped"
-.error_buffer_str:
-    .cstr "ERROR: speech buffer"
+.buffer_done:
+    mov2 [_speech_buffer_cur_ptr],0
+    mov2 [_speech_buffer_end_ptr],0
+.done:
+    pop i
+    pop2 hl
+    ret
+
 
 print_tms5220_status:
     ; save a and i

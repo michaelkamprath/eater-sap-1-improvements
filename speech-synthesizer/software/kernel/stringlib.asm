@@ -273,41 +273,45 @@ uint16_to_binary_cstr:
 ;       resets sp+3 to the buffer address (not including offset) that the null char was written to
 ;
 uint8_to_binary_cstr:
-    mov2 hl,[sp+3]
-    tstb [sp+2],7
+    push2 hl
+    push f              ; +3 to stack
+    mov2 hl,[sp+3+3]
+    tstb [sp+2+3],7
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    tstb [sp+2],6
+    tstb [sp+2+3],6
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    tstb [sp+2],5
+    tstb [sp+2+3],5
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    tstb [sp+2],4
+    tstb [sp+2+3],4
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    tstb [sp+2],3
+    tstb [sp+2+3],3
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    tstb [sp+2],2
+    tstb [sp+2+3],2
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    tstb [sp+2],1
+    tstb [sp+2+3],1
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    tstb [sp+2],0
+    tstb [sp+2+3],0
     call .fetch_bit_char
-    mov [hl+[sp+5]],a
+    mov [hl+[sp+5+3]],a
     inc hl
-    mov [hl+[sp+5]],0
-    mov2 [sp+3],hl
+    mov [hl+[sp+5+3]],0
+    mov2 [sp+3+3],hl
+    pop f
+    pop2 hl
     ret
 ; Set A to character 1 or 0 based on ZF flag
 .fetch_bit_char:

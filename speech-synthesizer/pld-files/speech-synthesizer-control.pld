@@ -55,14 +55,14 @@ STATUSI.R = /RSCLK * RS * /READY
 
 ; Write status register to data bus when memory map is appropriate
 ; and speech module not otherwise busy.
- /STATUSO = MMAP * /MDI * MDO * /A1 * A0 * /BUSY
+ /STATUSO = MMAP * /MDI * MDO * /A1 * A0 * /BUSY * STATEO
 
 ;
 ; Module State
 ;
 
 ; Write module state to data bus when memory map is appropriate,
-/STATEO = MMAP * /MDI * MDO * A1 * /A0
+/STATEO = MMAP * /MDI * MDO * A1 * /A0 * STATUSO
 
 ; Write status register to data bus when memory map is appropriate
 ; and speech module not otherwise busy.
